@@ -1,0 +1,23 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title desc">
+  <title id="title">NZ Elite Hunts Logo</title>
+  <desc id="desc">Gold and green crest with mountains and stag antlers.</desc>
+  <defs>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f2d6a0"/>
+      <stop offset="100%" stop-color="#bb8944"/>
+    </linearGradient>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1d2d24"/>
+      <stop offset="100%" stop-color="#0f1913"/>
+    </linearGradient>
+  </defs>
+  <circle cx="120" cy="120" r="116" fill="url(#bg)" stroke="url(#ring)" stroke-width="8"/>
+  <circle cx="120" cy="120" r="98" fill="none" stroke="#a97a3f" stroke-width="1.5" opacity="0.7"/>
+  <path d="M52 86 L88 54 L113 82 L132 64 L170 98" fill="none" stroke="#e6c98f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M63 104 L93 73 L112 94 L132 77 L156 102" fill="none" stroke="#f1ddba" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  <path d="M72 153 C59 140, 54 127, 56 113 M72 153 C58 154, 48 146, 45 135 M72 153 C59 161, 45 161, 34 156" fill="none" stroke="#e7cc96" stroke-width="4" stroke-linecap="round"/>
+  <path d="M168 153 C181 140, 186 127, 184 113 M168 153 C182 154, 192 146, 195 135 M168 153 C181 161, 195 161, 206 156" fill="none" stroke="#e7cc96" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="120" cy="152" r="14" fill="#e6c98f"/>
+  <text x="120" y="158" text-anchor="middle" font-family="Cinzel, Georgia, serif" font-size="14" font-weight="700" fill="#1c281f">NZ</text>
+  <text x="120" y="196" text-anchor="middle" font-family="Cinzel, Georgia, serif" font-size="14" letter-spacing="2" fill="#e8d8bc">ELITE HUNTS</text>
+</svg>

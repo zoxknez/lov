@@ -1,0 +1,23 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260" role="img" aria-labelledby="title desc">
+  <title id="title">KAIMANAWA logo</title>
+  <desc id="desc">Premium mountain hunting crest.</desc>
+  <defs>
+    <linearGradient id="a" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f0d5a0"/>
+      <stop offset="100%" stop-color="#b98645"/>
+    </linearGradient>
+    <linearGradient id="b" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1f3127"/>
+      <stop offset="100%" stop-color="#0c1410"/>
+    </linearGradient>
+  </defs>
+  <circle cx="130" cy="130" r="124" fill="url(#b)" stroke="url(#a)" stroke-width="8"/>
+  <circle cx="130" cy="130" r="102" fill="none" stroke="#aa7a3d" stroke-width="1.5" opacity="0.7"/>
+  <path d="M56 98 L92 64 L121 92 L142 74 L187 112" fill="none" stroke="#e7cb95" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M66 117 L97 86 L121 105 L142 89 L173 115" fill="none" stroke="#f5e5c5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M82 168 C65 154,60 136,64 121 M82 168 C65 170,53 162,47 149 M82 168 C68 178,50 179,35 173" fill="none" stroke="#e7cb95" stroke-width="4" stroke-linecap="round"/>
+  <path d="M178 168 C195 154,200 136,196 121 M178 168 C195 170,207 162,213 149 M178 168 C192 178,210 179,225 173" fill="none" stroke="#e7cb95" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="130" cy="167" r="16" fill="#e7cb95"/>
+  <text x="130" y="173" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-size="15" font-weight="700" fill="#132019">NZ</text>
+  <text x="130" y="215" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-size="15" letter-spacing="2.2" fill="#eedfc2">KAIMANAWA</text>
+</svg>
