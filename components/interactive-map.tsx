@@ -37,7 +37,7 @@ export default function InteractiveMap() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(214,170,95,0.16),transparent_42%),radial-gradient(circle_at_82%_70%,rgba(110,170,138,0.12),transparent_44%)]" />
 
         <div className="relative z-10 min-h-[250px] overflow-hidden rounded-xl border border-white/10 bg-black/20">
-          <svg viewBox="0 0 100 70" className="h-[250px] w-full" role="img" aria-label="Illustrative estate map with selectable zones">
+          <svg viewBox="0 0 100 70" className="h-[250px] w-full">
             <defs>
               <linearGradient id="terrainGlow" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="rgba(223,194,143,0.22)" />
@@ -50,20 +50,12 @@ export default function InteractiveMap() {
 
             {mapZones.map((zone) => (
               <g key={zone.id}>
-                <foreignObject x={zone.x - 4} y={zone.y - 4} width="8" height="8">
-                  <button
-                    type="button"
-                    aria-label={`Show details for ${zone.title}`}
-                    onClick={() => setActiveId(zone.id)}
-                    className="h-8 w-8 rounded-full bg-transparent"
-                    style={{ transform: "translate(-50%, -50%)" }}
-                  />
-                </foreignObject>
                 <circle
                   cx={zone.x}
                   cy={zone.y}
                   r={zone.id === activeId ? 3.2 : 2.4}
                   fill={zone.id === activeId ? "#f1cf90" : "#d0b17d"}
+                  onClick={() => setActiveId(zone.id)}
                   style={{ cursor: "pointer" }}
                 />
                 <circle cx={zone.x} cy={zone.y} r={zone.id === activeId ? 7.5 : 5.2} fill="none" stroke="rgba(241,207,144,0.4)" />
@@ -72,7 +64,7 @@ export default function InteractiveMap() {
           </svg>
         </div>
 
-        <div className="relative z-10 mt-3 grid gap-2 sm:grid-cols-2" aria-live="polite">
+        <div className="relative z-10 mt-3 grid gap-2 sm:grid-cols-2">
           <div className="premium-panel rounded-xl bg-black/35 p-3">
             <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">{active.title}</p>
             <p className="mt-1 text-sm text-stone-200">{active.text}</p>

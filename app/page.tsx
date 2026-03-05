@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import ModernSite from "@/components/modern-site";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 function StaticFallback() {
   return (
@@ -19,7 +19,7 @@ function StaticFallback() {
             </div>
           </div>
           <span className="premium-panel rounded-full bg-black/40 px-3 py-2 text-xs uppercase tracking-[0.14em] text-[#dfc28f]">
-            Loading Private Program...
+            Loading Premium Experience...
           </span>
         </div>
       </header>
@@ -27,7 +27,7 @@ function StaticFallback() {
       <section className="section-shell py-24">
         <p className="text-xs uppercase tracking-[0.2em] text-[#d9b167]">KAIMANAWA 2027</p>
         <h1 className="mt-3 max-w-[14ch] font-serif text-5xl leading-[1] md:text-7xl">
-          Private program overview is loading.
+          Premium hunting platform is initializing.
         </h1>
         <p className="mt-5 max-w-2xl text-stone-200">
           Kaimanawa Range, Central North Island (Manawatu-Whanganui / Waikato), New Zealand.
