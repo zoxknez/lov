@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import ModernSite from "@/components/modern-site";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
 
 function StaticFallback() {
   return (
@@ -43,8 +43,7 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "SportsActivityLocation",
     name: "KAIMANAWA Premium Hunts",
-    url: siteUrl,
-    logo: `${siteUrl}/brand-logo.png`,
+    ...(siteUrl ? { url: siteUrl, logo: `${siteUrl}/brand-logo.png` } : {}),
     description:
       "Private New Zealand trophy hunting programs with guide-led logistics and concierge expedition planning.",
     areaServed: "New Zealand",
@@ -71,7 +70,7 @@ export default function Home() {
       "@type": "Offer",
       priceCurrency: "NZD",
       availability: "https://schema.org/InStock",
-      url: siteUrl
+      ...(siteUrl ? { url: siteUrl } : {})
     }
   };
 

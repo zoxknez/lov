@@ -33,14 +33,13 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
         month: "short",
         hour: "2-digit",
         minute: "2-digit",
-        second: "2-digit",
         hour12: false,
         timeZone: selectedZone.timezone
       }).format(clock),
     [clock, selectedZone.timezone]
   );
 
-  const comfortIndex = useMemo(() => {
+  const planningScore = useMemo(() => {
     const tempFactor = Math.max(0, Math.min(100, 100 - Math.abs(11 - selectedZone.feelsLikeC) * 6));
     const windPenalty = Math.min(28, selectedZone.windKmh * 0.9);
     const humidityPenalty = Math.max(0, selectedZone.humidity - 70) * 0.7;
@@ -48,7 +47,8 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
   }, [selectedZone.feelsLikeC, selectedZone.humidity, selectedZone.windKmh]);
 
   const windTier =
-    selectedZone.windKmh >= 28 ? "High drift" : selectedZone.windKmh >= 18 ? "Tactical wind" : "Stable wind";
+    selectedZone.windKmh >= 28 ? "Wind-sensitive" : selectedZone.windKmh >= 18 ? "Moderate adjustment" : "Stable window";
+  const planningBand = planningScore >= 78 ? "High comfort" : planningScore >= 60 ? "Balanced comfort" : "Technical comfort";
 
   return (
     <section className={`section-shell command-center-shell command-center-phase relative z-10 ${isNight ? "is-night" : "is-day"}`}>
@@ -61,13 +61,13 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
       >
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#d9b167]">Live Command Center</p>
-            <h3 className="font-serif text-3xl text-white md:text-4xl">Estate mission control and live field packet</h3>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-[#d9b167]">Estate Planning Desk</p>
+            <h3 className="font-serif text-3xl text-white md:text-4xl">Field conditions, timing, and route context in one visual brief</h3>
           </div>
           <div className="flex items-center gap-2">
             <span className="command-live-led" aria-hidden />
             <span className="rounded-full border border-emerald-200/30 bg-emerald-500/15 px-3 py-1 text-[10px] uppercase tracking-[0.15em] text-emerald-200">
-              system online
+              concierge synced
             </span>
           </div>
         </div>
@@ -91,13 +91,13 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
         <div className="grid gap-4 lg:grid-cols-[0.75fr_1.25fr]">
           <div className="space-y-4">
             <div className="premium-panel command-metric rounded-2xl bg-[rgba(20,48,36,0.42)] p-4">
-              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Zone time</p>
+              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Local estate time</p>
               <p className="mt-1 text-sm text-stone-100">{zoneTime}</p>
               <p className="text-xs text-stone-300">{selectedZone.timezone}</p>
             </div>
 
             <div className="premium-panel command-metric rounded-2xl bg-[rgba(20,48,36,0.42)] p-4">
-              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Coordinates / Elevation</p>
+              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Coordinates / elevation</p>
               <p className="mt-1 text-sm text-stone-100">{selectedZone.coordinates}</p>
               <p className="text-xs text-stone-300">{selectedZone.elevationM}m ASL</p>
             </div>
@@ -112,6 +112,9 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
                 <span className="radar-blip b2" />
                 <span className="radar-blip b3" />
               </div>
+              <p className="mt-3 text-center text-[10px] uppercase tracking-[0.14em] text-stone-300">
+                Illustrative route pulse visualization
+              </p>
             </div>
           </div>
 
@@ -122,7 +125,7 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
               viewport={{ once: true }}
               className="premium-panel command-feed-card rounded-2xl bg-[rgba(17,38,30,0.45)] p-4"
             >
-              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Weather packet</p>
+              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Field conditions</p>
               <div className="mt-2 grid gap-2 sm:grid-cols-3">
                 <div className="command-chip">
                   <p className="command-chip-label">Temp</p>
@@ -152,7 +155,7 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
                 </div>
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
-                <span className="command-inline-pill">Comfort index {comfortIndex}%</span>
+                <span className="command-inline-pill">{planningBand}</span>
                 <span className="command-inline-pill">{windTier}</span>
                 <span className="command-inline-pill">Risk {selectedZone.riskLevel}</span>
               </div>
@@ -168,14 +171,14 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
               transition={{ delay: 0.06 }}
               className="premium-panel command-feed-card rounded-2xl bg-[rgba(17,38,30,0.45)] p-4"
             >
-              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Hunt window intelligence</p>
+              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Timing brief</p>
               <div className="mt-2 grid gap-2 sm:grid-cols-2">
                 <p className="text-sm text-stone-100">Sunrise: {selectedZone.sunrise}</p>
                 <p className="text-sm text-stone-100">Sunset: {selectedZone.sunset}</p>
                 <p className="text-sm text-stone-100">Moon: {selectedZone.moonPhase}</p>
                 <p className="text-sm text-stone-100">Risk: {selectedZone.riskLevel}</p>
               </div>
-              <p className="mt-2 text-sm text-[#f0d8ac]">Prime shot window: {selectedZone.shotWindow}</p>
+              <p className="mt-2 text-sm text-[#f0d8ac]">Preferred field window: {selectedZone.shotWindow}</p>
             </motion.article>
 
             <motion.article
@@ -185,7 +188,7 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
               transition={{ delay: 0.12 }}
               className="premium-panel command-feed-card rounded-2xl bg-[rgba(17,38,30,0.45)] p-4"
             >
-              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Species activity board</p>
+              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Observed movement pattern</p>
               <div className="mt-2 space-y-2">
                 {selectedZone.species.map((item) => (
                   <div key={item.name} className="rounded-xl border border-white/10 bg-black/20 p-2">
@@ -209,7 +212,7 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
               transition={{ delay: 0.18 }}
               className="premium-panel command-feed-card rounded-2xl bg-[rgba(17,38,30,0.45)] p-4"
             >
-              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Guide recommendation</p>
+              <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Planning note</p>
               <p className="mt-2 text-sm text-stone-100">{selectedZone.recommendation}</p>
             </motion.article>
           </div>

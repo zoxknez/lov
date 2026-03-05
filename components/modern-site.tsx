@@ -40,6 +40,14 @@ const reveal = {
 
 type WeatherMode = "sun" | "wind" | "rain" | "snow";
 const weatherModes: WeatherMode[] = ["sun", "wind", "rain", "snow"];
+const heroVideoSources = [
+  "/media/hero-kaimanawa.webm",
+  "/media/hero-kaimanawa.mp4",
+  "https://assets.mixkit.co/videos/preview/mixkit-rocky-mountains-20024-large.mp4",
+  "https://assets.mixkit.co/videos/preview/mixkit-forest-and-mountain-landscape-9714-large.mp4",
+  "https://assets.mixkit.co/videos/preview/mixkit-rough-mountain-landscape-21002-large.mp4"
+];
+const heroPoster = "/hero-poster.svg";
 
 export default function ModernSite() {
   const [tickerIndex, setTickerIndex] = useState(0);
@@ -57,6 +65,9 @@ export default function ModernSite() {
   const [deviceProfile, setDeviceProfile] = useState<"low-mobile" | "high-mobile" | "tablet" | "desktop">("desktop");
   const [navVisible, setNavVisible] = useState(true);
   const [sectionWipeTick, setSectionWipeTick] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [heroVideoReady, setHeroVideoReady] = useState(false);
+  const [heroVideoFailed, setHeroVideoFailed] = useState(false);
   const [bookingConfig, setBookingConfig] = useState<BookingConfig>({
     species: "Red Stag",
     stay: "5 Nights",
@@ -119,6 +130,14 @@ export default function ModernSite() {
     } catch {
       // ignore
     }
+  }, []);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setPrefersReducedMotion(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
   }, []);
 
   useEffect(() => {
@@ -314,6 +333,7 @@ export default function ModernSite() {
   const dayCycle = 0.08 + daylight * 0.86;
   const isNight = daylight < 0.38;
   const heavyMode = performanceMode === "ultra" && (deviceProfile === "desktop" || isTablet);
+  const heroUsesVideo = !prefersReducedMotion && !heroVideoFailed;
 
   return (
     <div className={`relative z-10 pb-20 profile-${deviceProfile}`}>
@@ -406,20 +426,29 @@ export default function ModernSite() {
           onMouseMove={handleHeroMove}
           onMouseLeave={resetHeroParallax}
         >
-          <video
-            className="hero-video-canvas absolute inset-0 h-full w-full scale-[1.06] object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=80"
-            style={{ filter: `saturate(${1.12 + daylight * 0.1}) contrast(${1.03 + daylight * 0.08}) brightness(${0.92 + nightGlow * 0.17})` }}
-          >
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-rocky-mountains-20024-large.mp4" type="video/mp4" />
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-and-mountain-landscape-9714-large.mp4" type="video/mp4" />
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-rough-mountain-landscape-21002-large.mp4" type="video/mp4" />
-          </video>
+          <div className={`hero-media-shell absolute inset-0 ${heroVideoReady ? "is-ready" : "is-loading"}`}>
+            {heroUsesVideo ? (
+              <video
+                className="hero-video-canvas absolute inset-0 h-full w-full scale-[1.06] object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster={heroPoster}
+                onCanPlay={() => setHeroVideoReady(true)}
+                onError={() => setHeroVideoFailed(true)}
+                aria-hidden
+                style={{ filter: `saturate(${1.12 + daylight * 0.1}) contrast(${1.03 + daylight * 0.08}) brightness(${0.92 + nightGlow * 0.17})` }}
+              >
+                {heroVideoSources.map((src) => (
+                  <source key={src} src={src} type={src.endsWith(".webm") ? "video/webm" : "video/mp4"} />
+                ))}
+              </video>
+            ) : null}
+            <div className="hero-video-fallback absolute inset-0" aria-hidden />
+            <div className="hero-video-noise absolute inset-0" aria-hidden />
+          </div>
           <motion.div className="hero-vignette absolute inset-0" style={{ x: heroBgX, y: heroBgY }} />
           <motion.div className="hero-aurora absolute inset-0" style={{ x: heroBgX, y: heroBgY }} />
           <div className="hero-dawn-wash absolute inset-0" style={{ opacity: Math.max(dawnGlow, duskGlow) * 0.52 }} aria-hidden />
@@ -439,7 +468,7 @@ export default function ModernSite() {
             <div className="hero-copy-shell max-w-3xl">
               <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#efcf97]/50 bg-black/45 px-4 py-1 text-xs uppercase tracking-[0.2em] text-[#e3c387]">
                 <Sparkles size={14} />
-                Cinematic 2027 Experience
+                Cinematic Estate Arrival
               </p>
 
               <h1 className="max-w-[14ch] font-serif text-5xl leading-[0.98] text-white md:text-7xl xl:text-8xl">
@@ -447,8 +476,8 @@ export default function ModernSite() {
               </h1>
 
               <p className="mt-7 max-w-2xl text-lg text-stone-100/90 md:text-xl">
-                Ultra-premium visual direction for New Zealand trophy hunting. Cinematic motion, layered light, and a luxury-first interface
-                designed to feel alive from first frame to final scroll.
+                Cinematic motion, layered light, and a premium arrival sequence designed to feel alive from the first frame,
+                while still reading clearly as a high-ticket booking experience.
               </p>
               <p className="mt-3 text-sm uppercase tracking-[0.14em] text-[#dfc28f]">
                 Kaimanawa Range, Central North Island (Manawatu-Whanganui / Waikato), New Zealand
@@ -476,7 +505,7 @@ export default function ModernSite() {
             <motion.div className="hero-side-shell space-y-4" style={{ y: heroFrontY }}>
               {isDesktopProfile && (
                 <div className="premium-panel hero-telemetry-card w-fit rounded-xl bg-black/45 px-3 py-2 text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">
-                  Signal lock: Kaimanawa sector ready
+                  Estate visual feed: active
                 </div>
               )}
               <div className="premium-panel hero-weather-pill inline-flex w-fit items-center gap-2 rounded-full bg-black/45 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">
@@ -499,10 +528,10 @@ export default function ModernSite() {
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                 className="premium-panel hero-update-card rounded-2xl bg-black/50 p-5"
               >
-                <div className="hero-update-badge mb-2 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.16em] text-[#e3c387]">
-                  <Crown size={13} />
-                  live elite update
-                </div>
+                  <div className="hero-update-badge mb-2 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.16em] text-[#e3c387]">
+                    <Crown size={13} />
+                    concierge note
+                  </div>
                 <motion.p key={tickerIndex} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="text-sm text-stone-100">
                   {rotatingNotes[tickerIndex]}
                 </motion.p>
@@ -535,12 +564,12 @@ export default function ModernSite() {
           <motion.div {...reveal} className="relative z-10 mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-[#d9b167]">01 Estate Overview</p>
-              <h2 className="font-serif text-4xl md:text-5xl">Terrain intelligence with cinematic depth</h2>
+              <h2 className="font-serif text-4xl md:text-5xl">Estate character with cinematic depth</h2>
             </div>
             <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.17em]">
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Live Wind Mapping</span>
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Thermal Route Logic</span>
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Low-Signature Access</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Private access lines</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Terrain rhythm</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Guest comfort pacing</span>
             </div>
           </motion.div>
 
@@ -557,7 +586,7 @@ export default function ModernSite() {
                 className="object-cover transition duration-700 group-hover:scale-105"
               />
               <div className="absolute left-5 top-5 z-10 rounded-full border border-white/30 bg-black/40 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">
-                Prime Terrain Core
+                Signature estate view
               </div>
               <div className="relative z-10 flex h-full flex-col justify-end p-7">
                 <h3 className="font-serif text-4xl text-white">{estateHighlights[0].title}</h3>
@@ -565,15 +594,15 @@ export default function ModernSite() {
                 <div className="mt-5 grid max-w-xl gap-3 sm:grid-cols-3">
                   <div className="premium-panel rounded-xl bg-black/45 p-3">
                     <p className="text-xl font-semibold text-[#f0d8ac]">420m</p>
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">Elevation range</p>
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">Elevation spread</p>
                   </div>
                   <div className="premium-panel rounded-xl bg-black/45 p-3">
                     <p className="text-xl font-semibold text-[#f0d8ac]">18</p>
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">Scout routes</p>
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">Access routes</p>
                   </div>
                   <div className="premium-panel rounded-xl bg-black/45 p-3">
                     <p className="text-xl font-semibold text-[#f0d8ac]">96%</p>
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">Shot confidence</p>
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">Planning confidence</p>
                   </div>
                 </div>
               </div>
@@ -590,7 +619,7 @@ export default function ModernSite() {
                 >
                   <Image src={card.image} alt={card.title} fill className="object-cover transition duration-700 group-hover:scale-110" />
                   <div className="absolute left-4 top-4 z-10 text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">
-                    Sector 0{idx + 2}
+                    Estate detail 0{idx + 2}
                   </div>
                   <div className="relative z-10 flex h-full flex-col justify-end p-5">
                     <h3 className="font-serif text-2xl text-white">{card.title}</h3>
@@ -603,16 +632,16 @@ export default function ModernSite() {
 
           <div className="relative z-10 mt-5 grid gap-4 md:grid-cols-3">
             <motion.div {...reveal} whileHover={{ y: -5 }} className="premium-panel rounded-2xl bg-black/35 p-4">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Visibility Grid</p>
-              <p className="mt-2 text-sm text-stone-200">Long-lens lines from 12 ridge points with live weather-aware route switching.</p>
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Visual openness</p>
+              <p className="mt-2 text-sm text-stone-200">Long alpine sight lines create a composed sense of scale before the program even begins.</p>
             </motion.div>
             <motion.div {...reveal} whileHover={{ y: -5 }} className="premium-panel rounded-2xl bg-black/35 p-4">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Acoustic Discipline</p>
-              <p className="mt-2 text-sm text-stone-200">Silent movement corridors reduce disturbance and increase controlled opportunities.</p>
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Quiet approach</p>
+              <p className="mt-2 text-sm text-stone-200">Forest corridors and basin transitions support calmer movement and better guest composure.</p>
             </motion.div>
             <motion.div {...reveal} whileHover={{ y: -5 }} className="premium-panel rounded-2xl bg-black/35 p-4">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Recovery Logistics</p>
-              <p className="mt-2 text-sm text-stone-200">Integrated extraction paths with low-impact mobility and guide synchronization.</p>
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Operational polish</p>
+              <p className="mt-2 text-sm text-stone-200">Access, recovery, and lodge return are planned so the day still feels refined after field time.</p>
             </motion.div>
           </div>
         </section>
@@ -626,27 +655,27 @@ export default function ModernSite() {
           <motion.div {...reveal} className="relative z-10 mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-[#d9b167]">02 Game Species</p>
-              <h2 className="font-serif text-4xl md:text-5xl">Trophy-class hunting portfolio</h2>
+              <h2 className="font-serif text-4xl md:text-5xl">Curated trophy programs with clearer luxury positioning</h2>
             </div>
             <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.17em]">
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Rut Priority Calendar</span>
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Trophy Score Bands</span>
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Ethical Shot Standard</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Season-led planning</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Trophy maturity focus</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Guide-matched pacing</span>
             </div>
           </motion.div>
 
           <div className="relative z-10 mb-4 grid gap-3 md:grid-cols-3">
             <motion.div {...reveal} whileHover={{ y: -5 }} className="premium-panel rounded-2xl bg-black/35 p-4">
               <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Top trophy potential</p>
-              <p className="mt-2 text-sm text-stone-200">Red Stag band reaches 410+ SCI under strict maturity and pressure-control policies.</p>
+              <p className="mt-2 text-sm text-stone-200">Red Stag remains the signature expression of the estate when timing and maturity align correctly.</p>
             </motion.div>
             <motion.div {...reveal} whileHover={{ y: -5 }} className="premium-panel rounded-2xl bg-black/35 p-4">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Prime timing engine</p>
-              <p className="mt-2 text-sm text-stone-200">Season matrix tuned by rut rhythm, moon phases, and daily wind-window probability.</p>
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Season logic</p>
+              <p className="mt-2 text-sm text-stone-200">Each program is shaped around timing, guest appetite, and the rhythm of the estate rather than fixed packages.</p>
             </motion.div>
             <motion.div {...reveal} whileHover={{ y: -5 }} className="premium-panel rounded-2xl bg-black/35 p-4">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Ethical shot profile</p>
-              <p className="mt-2 text-sm text-stone-200">Distance and angle control designed for high-confidence, low-stress execution.</p>
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Field composure</p>
+              <p className="mt-2 text-sm text-stone-200">Distance, angle, and guide pacing are managed to keep the day calm, ethical, and controlled.</p>
             </motion.div>
           </div>
 
@@ -660,7 +689,7 @@ export default function ModernSite() {
                 className="premium-panel species-card group relative min-h-[430px] overflow-hidden rounded-[28px] p-3"
               >
                 <div className="absolute left-6 top-6 z-20 rounded-full border border-white/30 bg-black/35 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">
-                  Tier 0{i + 1}
+                  Signature 0{i + 1}
                 </div>
                 <div className="relative h-[54%] overflow-hidden rounded-2xl">
                   {!failedSpeciesImages[game.title] ? (
@@ -686,16 +715,16 @@ export default function ModernSite() {
                   <p className="text-sm text-stone-300">{game.detail}</p>
                   <div className="mt-3 grid gap-2 text-xs text-stone-100">
                     <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Trophy band</span><span className="text-[#f0d8ac]">{game.trophyBand}</span></p>
-                    <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Prime season</span><span className="text-[#f0d8ac]">{game.primeSeason}</span></p>
-                    <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Shot range</span><span className="text-[#f0d8ac]">{game.shotRange}</span></p>
+                    <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Season window</span><span className="text-[#f0d8ac]">{game.primeSeason}</span></p>
+                    <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Typical range</span><span className="text-[#f0d8ac]">{game.shotRange}</span></p>
                     <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Terrain</span><span className="text-[#f0d8ac]">{game.terrain}</span></p>
                   </div>
                   <div className="mt-3">
-                    <p className="mb-1 text-[10px] uppercase tracking-[0.13em] text-[#e7cb95]">Success model</p>
+                    <p className="mb-1 text-[10px] uppercase tracking-[0.13em] text-[#e7cb95]">Planning fit</p>
                     <div className="h-1.5 overflow-hidden rounded-full bg-black/35">
                       <div className="h-full rounded-full bg-gradient-to-r from-[#e9c888] to-[#8ad9a7]" style={{ width: `${game.successRate}%` }} />
                     </div>
-                    <p className="mt-1 text-xs text-stone-300">{game.successRate}% controlled outcome probability</p>
+                    <p className="mt-1 text-xs text-stone-300">{game.successRate}% alignment score for timing, terrain, and guest fit</p>
                   </div>
                 </div>
                 <ArrowUpRight className="absolute right-5 top-5 text-[#d9b167] opacity-0 transition group-hover:opacity-100" size={18} />
@@ -705,16 +734,16 @@ export default function ModernSite() {
 
           <div className="relative z-10 mt-5 grid gap-4 md:grid-cols-3">
             <motion.div {...reveal} whileHover={{ y: -5 }} className="premium-panel rounded-2xl bg-black/35 p-4">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Genetics Program</p>
-              <p className="mt-2 text-sm text-stone-200">Selective management with strict maturity rules and annual score auditing.</p>
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Maturity standards</p>
+              <p className="mt-2 text-sm text-stone-200">Selective management and maturity thresholds help the portfolio feel premium rather than opportunistic.</p>
             </motion.div>
             <motion.div {...reveal} whileHover={{ y: -5 }} className="premium-panel rounded-2xl bg-black/35 p-4">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Shot Opportunity Design</p>
-              <p className="mt-2 text-sm text-stone-200">Approach angles and distance windows optimized for ethical confidence.</p>
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Approach design</p>
+              <p className="mt-2 text-sm text-stone-200">Angle, access, and timing are shaped to keep the experience composed as well as effective.</p>
             </motion.div>
             <motion.div {...reveal} whileHover={{ y: -5 }} className="premium-panel rounded-2xl bg-black/35 p-4">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Package Flexibility</p>
-              <p className="mt-2 text-sm text-stone-200">Single-species and mixed expeditions with tailored lodge and transfer plans.</p>
+              <p className="text-[10px] uppercase tracking-[0.18em] text-[#e7cb95]">Program flexibility</p>
+              <p className="mt-2 text-sm text-stone-200">Single-species and mixed itineraries can still be tailored around lodge rhythm and transfer preference.</p>
             </motion.div>
           </div>
         </section>
@@ -726,12 +755,12 @@ export default function ModernSite() {
           <motion.div {...reveal} className="relative z-10 mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-[#d9b167]">03 Surrounding Experiences</p>
-              <h2 className="font-serif text-4xl md:text-5xl">Beyond hunting: premium companion journeys</h2>
+              <h2 className="font-serif text-4xl md:text-5xl">Hospitality layers that make the stay feel complete</h2>
             </div>
             <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.17em]">
               <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Lodge Concierge</span>
               <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Private Transfer</span>
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Family Itineraries</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Companion Itineraries</span>
             </div>
           </motion.div>
 
@@ -745,13 +774,13 @@ export default function ModernSite() {
               <div className="relative z-10 flex h-full flex-col justify-between">
                 <div>
                   <p className="inline-flex rounded-full border border-white/30 bg-black/35 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">
-                    Signature Lifestyle Layer
+                    Signature Hospitality Layer
                   </p>
                   <h3 className="mt-4 max-w-[12ch] font-serif text-4xl text-white md:text-5xl">
-                    Your group gets a fully orchestrated luxury ecosystem.
+                    Your stay should feel composed beyond the hunt itself.
                   </h3>
                   <p className="mt-3 max-w-xl text-sm text-stone-200">
-                    Beyond trophy hunting, every companion experience is synchronized with hunt windows and guest energy cycles for a seamless premium stay.
+                    Companion activities, lodge pacing, dining, and transfer timing are arranged around the field program so the wider experience stays calm and premium.
                   </p>
                 </div>
 
@@ -759,20 +788,20 @@ export default function ModernSite() {
                   <div className="grid gap-3 sm:grid-cols-3">
                     <div className="premium-panel rounded-xl bg-black/45 p-3">
                       <p className="text-xl font-semibold text-[#f0d8ac]">4x4</p>
-                      <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">terrain tours</p>
+                      <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">estate touring</p>
                     </div>
                     <div className="premium-panel rounded-xl bg-black/45 p-3">
                       <p className="text-xl font-semibold text-[#f0d8ac]">Chef</p>
                       <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">private dining</p>
                     </div>
                     <div className="premium-panel rounded-xl bg-black/45 p-3">
-                      <p className="text-xl font-semibold text-[#f0d8ac]">VIP</p>
+                      <p className="text-xl font-semibold text-[#f0d8ac]">Suite</p>
                       <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">lodge support</p>
                     </div>
                   </div>
                   <div className="premium-panel rounded-xl bg-black/35 p-3">
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Companion flow</p>
-                    <p className="mt-1 text-sm text-stone-200">Morning excursion - Afternoon reset - Evening private program</p>
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Daily flow</p>
+                    <p className="mt-1 text-sm text-stone-200">Morning field split, afternoon reset, evening dining and private lodge rhythm.</p>
                   </div>
                 </div>
               </div>
@@ -799,8 +828,8 @@ export default function ModernSite() {
                     <p className="mt-2 text-sm text-stone-300">{item.text}</p>
                     <div className="mt-3 space-y-1 text-xs text-stone-200">
                       <p>Duration: {item.duration}</p>
-                      <p>Ideal group: {item.group}</p>
-                      <p>Cadence: {item.cadence}</p>
+                      <p>Guest profile: {item.group}</p>
+                      <p>Scheduling: {item.cadence}</p>
                     </div>
                     <ArrowUpRight className="mt-4 text-[#d9b167] opacity-70 transition group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" size={18} />
                   </div>
@@ -812,19 +841,19 @@ export default function ModernSite() {
           <div className="relative z-10 mt-4 grid gap-3 md:grid-cols-4">
             <motion.div {...reveal} whileHover={{ y: -4 }} className="premium-panel rounded-xl bg-black/35 p-3">
               <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Guest wellbeing</p>
-              <p className="mt-1 text-sm text-stone-200">Recovery-oriented pacing and comfort buffering.</p>
+              <p className="mt-1 text-sm text-stone-200">Recovery-oriented pacing keeps the overall stay feeling generous rather than compressed.</p>
             </motion.div>
             <motion.div {...reveal} whileHover={{ y: -4 }} className="premium-panel rounded-xl bg-black/35 p-3">
               <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Travel continuity</p>
-              <p className="mt-1 text-sm text-stone-200">Private transfer routing with minimal idle time.</p>
+              <p className="mt-1 text-sm text-stone-200">Private transfers and lodge timing reduce friction across the entire itinerary.</p>
             </motion.div>
             <motion.div {...reveal} whileHover={{ y: -4 }} className="premium-panel rounded-xl bg-black/35 p-3">
-              <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Family integration</p>
-              <p className="mt-1 text-sm text-stone-200">Parallel companion itineraries during hunt sessions.</p>
+              <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Companion integration</p>
+              <p className="mt-1 text-sm text-stone-200">Parallel itineraries allow non-hunting guests to feel equally considered.</p>
             </motion.div>
             <motion.div {...reveal} whileHover={{ y: -4 }} className="premium-panel rounded-xl bg-black/35 p-3">
               <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Concierge orchestration</p>
-              <p className="mt-1 text-sm text-stone-200">Single control desk for lodge, route, and activities.</p>
+              <p className="mt-1 text-sm text-stone-200">A single planning desk keeps the estate, lodge, and activity rhythm coherent.</p>
             </motion.div>
           </div>
         </section>
@@ -835,12 +864,12 @@ export default function ModernSite() {
           <motion.div {...reveal} className="relative z-10 mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
             <p className="text-xs uppercase tracking-[0.2em] text-[#d9b167]">Trophy Insights</p>
-            <h2 className="font-serif text-4xl md:text-5xl">Interactive map and story intelligence</h2>
+            <h2 className="font-serif text-4xl md:text-5xl">Private archive and route context</h2>
             </div>
             <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.17em]">
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Route Heat Mapping</span>
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Shot Window Analytics</span>
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Species Density Board</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Route context</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Trophy archive</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Estate notes</span>
             </div>
           </motion.div>
           <div className="relative z-10 grid gap-5 lg:grid-cols-2">
@@ -858,48 +887,48 @@ export default function ModernSite() {
           <motion.div {...reveal} className="relative z-10 mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-[#d9b167]">04 Guide Stories</p>
-              <h2 className="font-serif text-4xl md:text-5xl">Field masters behind every trophy</h2>
+              <h2 className="font-serif text-4xl md:text-5xl">The private team behind the pace, judgment, and guest care</h2>
             </div>
             <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.17em]">
               <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Certified Team</span>
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">24/7 Safety Protocol</span>
-              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Trophy Planning</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Guest safety</span>
+              <span className="premium-panel rounded-full bg-black/35 px-3 py-1 text-[#dfc28f]">Private planning</span>
             </div>
           </motion.div>
 
           <div className="relative z-10 grid gap-4 lg:grid-cols-[1.08fr_0.92fr]">
             <motion.article {...reveal} whileHover={{ y: -8 }} className="premium-panel guides-command rounded-[30px] bg-black/45 p-7">
               <p className="inline-flex rounded-full border border-white/30 bg-black/35 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">
-                Guide Intelligence Unit
+                Private Expedition Team
               </p>
               <h3 className="mt-4 max-w-[15ch] font-serif text-4xl text-white md:text-5xl">
-                Every move is planned by terrain, wind, and client profile.
+                Every day is shaped around terrain, timing, and the guest profile.
               </h3>
               <p className="mt-4 max-w-2xl text-sm text-stone-300">
-                Our guides run premium pre-hunt assessments, route strategy sessions, and real-time adjustments to keep outcomes controlled and ethical.
+                The guide team handles pre-hunt review, route selection, field pacing, and return-to-lodge rhythm so the experience stays calm as well as effective.
               </p>
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
                 <div className="premium-panel rounded-xl bg-black/45 p-3">
                   <p className="text-xl font-semibold text-[#f0d8ac]">15+</p>
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">avg years field time</p>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">average field years</p>
                 </div>
                 <div className="premium-panel rounded-xl bg-black/45 p-3">
                   <p className="text-xl font-semibold text-[#f0d8ac]">1:1</p>
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">guide to hunter ratio</p>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">guide-to-guest ratio</p>
                 </div>
                 <div className="premium-panel rounded-xl bg-black/45 p-3">
                   <p className="text-xl font-semibold text-[#f0d8ac]">100%</p>
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">briefed safety routes</p>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-stone-200">briefed safety routing</p>
                 </div>
               </div>
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
                 <div className="premium-panel rounded-xl bg-black/35 p-3">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Live guide protocol</p>
-                  <p className="mt-1 text-sm text-stone-200">Wind verification - route call - ethical shot gate - recovery command.</p>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Field rhythm</p>
+                  <p className="mt-1 text-sm text-stone-200">Wind check, route selection, shot discipline, and recovery handled in one clear sequence.</p>
                 </div>
                 <div className="premium-panel rounded-xl bg-black/35 p-3">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Operational focus</p>
-                  <p className="mt-1 text-sm text-stone-200">Client safety, trophy quality, and clean execution under variable terrain.</p>
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Service focus</p>
+                  <p className="mt-1 text-sm text-stone-200">Client safety, trophy quality, and a composed experience under changing terrain conditions.</p>
                 </div>
               </div>
             </motion.article>
@@ -917,14 +946,14 @@ export default function ModernSite() {
                     <Image src={guide.image} alt={guide.name} fill className="object-cover transition duration-700 group-hover:scale-105" />
                   </div>
                   <div className="p-4">
-                    <p className="text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">Lead Guide 0{idx + 1}</p>
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">Guide Profile 0{idx + 1}</p>
                     <h3 className="mt-1 font-serif text-2xl text-white">{guide.name}</h3>
                     <p className="text-xs uppercase tracking-[0.13em] text-[#d9b167]">{guide.role}</p>
                     <p className="mt-2 text-sm text-stone-300">{guide.story}</p>
                     <div className="mt-3 grid gap-2 text-xs text-stone-100 sm:grid-cols-2">
                       <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Experience</span><span className="text-[#f0d8ac]">{guide.years}y</span></p>
-                      <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Trophies</span><span className="text-[#f0d8ac]">{guide.trophies}+</span></p>
-                      <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Success</span><span className="text-[#f0d8ac]">{guide.successRate}%</span></p>
+                      <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Archive</span><span className="text-[#f0d8ac]">{guide.trophies}+</span></p>
+                      <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Guest fit</span><span className="text-[#f0d8ac]">{guide.successRate}%</span></p>
                       <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-2 py-1"><span>Safety</span><span className="text-[#f0d8ac]">{guide.safetyScore}</span></p>
                     </div>
                     <div className="mt-2 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.12em]">
@@ -944,19 +973,19 @@ export default function ModernSite() {
 
           <motion.div {...reveal} className="relative z-10 mb-8">
             <p className="text-xs uppercase tracking-[0.2em] text-[#d9b167]">Concierge Intake</p>
-            <h2 className="font-serif text-4xl md:text-5xl">Build your KAIMANAWA program</h2>
+            <h2 className="font-serif text-4xl md:text-5xl">Begin a private planning conversation</h2>
           </motion.div>
 
           <div className="relative z-10 grid gap-6 lg:grid-cols-[1.06fr_0.94fr]">
             <motion.article {...reveal} className="premium-panel rounded-[30px] bg-black/45 p-7">
               <p className="inline-flex rounded-full border border-white/30 bg-black/35 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">
-                Private Concierge Protocol
+                Private Concierge Review
               </p>
               <h3 className="mt-4 max-w-[16ch] font-serif text-4xl text-white">
-                From request to arrival, we engineer a full premium flow.
+                From first note to arrival, the program is shaped around clarity and ease.
               </h3>
               <p className="mt-4 text-sm text-stone-300">
-                Submit your details and our operations desk prepares species timing, guide pairing, transfer logistics, and lodge composition.
+                Share the outline of your trip and the planning desk will return a composed brief covering season timing, guide pairing, lodge rhythm, transfers, and guest priorities.
               </p>
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 <div className="premium-panel rounded-xl bg-black/45 p-3">
@@ -971,7 +1000,7 @@ export default function ModernSite() {
               <div className="mt-5 space-y-3 text-sm text-stone-200">
                 <p className="inline-flex items-center gap-2"><MountainSnow size={16} className="text-[#d9b167]" /> Kaimanawa Range, Central North Island, New Zealand</p>
                 <p className="inline-flex items-center gap-2"><Compass size={16} className="text-[#d9b167]" /> Advanced logistics and transfer planning</p>
-                <p className="inline-flex items-center gap-2"><ShieldCheck size={16} className="text-[#d9b167]" /> Fully briefed and insured field operation</p>
+                <p className="inline-flex items-center gap-2"><ShieldCheck size={16} className="text-[#d9b167]" /> Briefed and insured field operation</p>
               </div>
               <div className="mt-6">
                 <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Availability Snapshot</p>
@@ -979,7 +1008,7 @@ export default function ModernSite() {
                   {availabilitySlots.map((slot) => (
                     <div key={slot.month} className="premium-panel flex items-center justify-between rounded-xl bg-black/35 px-3 py-2">
                       <span className="text-sm text-stone-200">{slot.month}</span>
-                      <span className="text-xs uppercase tracking-[0.12em] text-[#dfc28f]">{slot.status} - {slot.spots} spots</span>
+                      <span className="text-xs uppercase tracking-[0.12em] text-[#dfc28f]">{slot.status} - {slot.spots} placements</span>
                     </div>
                   ))}
                 </div>
@@ -989,7 +1018,15 @@ export default function ModernSite() {
             <div className="grid gap-6">
               <BookingConfigurator onConfigChange={setBookingConfig} />
               <motion.form {...reveal} onSubmit={onSubmit} className="premium-panel rounded-[30px] bg-black/35 p-7">
-              <p className="text-[10px] uppercase tracking-[0.15em] text-[#e7cb95]">Step {formStep} of 2</p>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.15em] text-[#e7cb95]">Step {formStep} of 2</p>
+                  <h3 className="mt-2 font-serif text-2xl text-white">Request private review</h3>
+                </div>
+                <span className="inline-flex rounded-full border border-white/15 bg-black/25 px-3 py-1 text-[10px] uppercase tracking-[0.13em] text-[#e7cb95]">
+                  Config linked
+                </span>
+              </div>
               <input type="hidden" name="accommodation" value={bookingConfig.comfort} />
               <input type="hidden" name="transferMode" value={bookingConfig.transfer} />
               <input type="hidden" name="programLength" value={bookingConfig.stay} />
@@ -1001,10 +1038,10 @@ export default function ModernSite() {
                 <>
                   <div className="mt-2 grid gap-4 sm:grid-cols-2">
                     <label className="text-sm">Full name
-                      <input required name="fullName" className="field-control mt-2" />
+                      <input required name="fullName" className="field-control mt-2" placeholder="Your full name" />
                     </label>
                     <label className="text-sm">Email
-                      <input required type="email" name="email" className="field-control mt-2" />
+                      <input required type="email" name="email" className="field-control mt-2" placeholder="name@email.com" />
                     </label>
                   </div>
                   <label className="mt-4 block text-sm">Target species
@@ -1022,18 +1059,21 @@ export default function ModernSite() {
                 <>
                   <div className="mt-2 grid gap-4 sm:grid-cols-2">
                     <label className="text-sm">Preferred month
-                      <input name="preferredMonth" className="field-control mt-2" placeholder="e.g. May 2026" />
+                      <input name="preferredMonth" className="field-control mt-2" placeholder="e.g. March or flexible" />
                     </label>
                     <label className="text-sm">Group size
-                      <input name="groupSize" className="field-control mt-2" placeholder="e.g. 2 hunters" defaultValue={`${bookingConfig.guests} hunters`} />
+                      <input name="groupSize" className="field-control mt-2" placeholder="e.g. 2 guests" defaultValue={`${bookingConfig.guests} guests`} />
                     </label>
                   </div>
-                  <label className="mt-4 block text-sm">Configured package
+                  <label className="mt-4 block text-sm">Configured brief
                     <input value={`${bookingConfig.comfort} / ${bookingConfig.transfer} / ${bookingConfig.stay}`} readOnly className="field-control mt-2 opacity-80" />
                   </label>
                   <label className="mt-4 block text-sm">Program notes
-                    <textarea required name="message" rows={5} className="field-control mt-2" placeholder="Preferred month, group size, hunt duration, and special lodge requests." />
+                    <textarea required name="message" rows={5} className="field-control mt-2" placeholder="Preferred timing, trip style, desired comfort level, and any lodge or travel preferences." />
                   </label>
+                  <p className="mt-3 text-xs text-stone-300">
+                    This is a planning request, not an instant booking. Final timing, hosting, and pricing are confirmed after concierge review.
+                  </p>
                   <TurnstileWidget onTokenChange={setTurnstileToken} />
                 </>
               )}

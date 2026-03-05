@@ -51,7 +51,7 @@ export const estateHighlights = [
 export const gameSpecies = [
   {
     title: "Red Stag",
-    detail: "Signature New Zealand trophy class with premium rut scheduling.",
+    detail: "Signature New Zealand trophy class arranged around the strongest rut windows and guest expectations.",
     image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1300&q=80",
     trophyBand: "360 - 410+ SCI",
     primeSeason: "March - April",
@@ -62,7 +62,7 @@ export const gameSpecies = [
   },
   {
     title: "Fallow Buck",
-    detail: "Selective trophy management with curated hunt windows.",
+    detail: "Selective trophy management with calmer, curated windows for guests who value precision and pacing.",
     image: "https://images.unsplash.com/photo-1516934024742-b461fba47600?auto=format&fit=crop&w=1300&q=80",
     trophyBand: "175 - 210 SCI",
     primeSeason: "April - May",
@@ -73,7 +73,7 @@ export const gameSpecies = [
   },
   {
     title: "Wild Boar",
-    detail: "Dynamic terrain hunts under strict modern safety systems.",
+    detail: "A more dynamic program style balanced by strong safety discipline and tight guide coordination.",
     image: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?auto=format&fit=crop&w=1300&q=80",
     trophyBand: "Elite tusk class",
     primeSeason: "Year-round",
@@ -88,7 +88,7 @@ export const trophyItems = [
   {
     title: "410+ Red Stag",
     season: "Autumn Peak Rut",
-    note: "Executed via dawn ridge approach after a two-day weather hold.",
+    note: "Archived from a dawn ridge approach after a two-day weather hold and careful timing reset.",
     image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1600&q=80",
     score: "SCI 410+",
     distanceM: 236,
@@ -100,7 +100,7 @@ export const trophyItems = [
   {
     title: "Highland Fallow",
     season: "Late Winter",
-    note: "Low-signature access route with controlled 240m confidence shot.",
+    note: "Recorded from a low-signature access route where the day rewarded patience more than speed.",
     image: "https://images.unsplash.com/photo-1516934024742-b461fba47600?auto=format&fit=crop&w=1600&q=80",
     score: "SCI 198",
     distanceM: 212,
@@ -112,7 +112,7 @@ export const trophyItems = [
   {
     title: "Boar Multi-Day",
     season: "All Season",
-    note: "Mixed-terrain tactical program with night-safe logistics support.",
+    note: "Drawn from a mixed-terrain program where logistics and pacing mattered as much as the final moment.",
     image: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?auto=format&fit=crop&w=1600&q=80",
     score: "Elite Class",
     distanceM: 148,
@@ -172,7 +172,7 @@ export const availabilitySlots = [
 export const experiences = [
   {
     title: "Heli Access and Scenic Flights",
-    text: "Fast private transfer and cinematic mountain routes for guests.",
+    text: "Private arrival or scenic lift options that add drama without disturbing the itinerary rhythm.",
     icon: "Aerial",
     duration: "45-90 min",
     group: "2-5 guests",
@@ -181,7 +181,7 @@ export const experiences = [
   },
   {
     title: "Lodge Gastronomy Program",
-    text: "Chef-led seasonal menus with pairing experiences.",
+    text: "Chef-led seasonal dining that gives the evenings the same sense of care as the field program.",
     icon: "Cuisine",
     duration: "Evening service",
     group: "Private table",
@@ -190,7 +190,7 @@ export const experiences = [
   },
   {
     title: "Alpine Fishing Sessions",
-    text: "Guided premium sessions on remote still-water locations.",
+    text: "Quiet guided sessions on remote water for guests who want a softer contrast to the main program.",
     icon: "Fishing",
     duration: "Half-day / Full-day",
     group: "1-3 guests",
@@ -199,7 +199,7 @@ export const experiences = [
   },
   {
     title: "Private Family Adventure Days",
-    text: "Horseback trails, 4x4 tours and curated nature itineraries.",
+    text: "Horseback routes, estate touring, and curated outdoor days designed for companions and families.",
     icon: "Family",
     duration: "Full-day",
     group: "Family capsule",
@@ -213,7 +213,7 @@ export const guideStories = [
     name: "Mason Clarke",
     role: "Lead Trophy Director",
     image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=900&q=80",
-    story: "Guided a 410+ class red stag program after a two-day weather hold and ridge repositioning.",
+    story: "Known for shaping strong red stag days around patience, weather discipline, and guest calm rather than rushed decisions.",
     years: 17,
     trophies: 240,
     successRate: 94,
@@ -225,7 +225,7 @@ export const guideStories = [
     name: "Reid Kavanagh",
     role: "Field Strategy Specialist",
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
-    story: "Known for wind-reading and low-signature access on high-pressure days.",
+    story: "Favored for wind-reading, quiet access, and keeping pressured days tactically clean without feeling tense.",
     years: 14,
     trophies: 188,
     successRate: 91,
@@ -237,7 +237,7 @@ export const guideStories = [
     name: "Noah Bennett",
     role: "Safety and Expedition Lead",
     image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80",
-    story: "Coordinates logistics, comms, and emergency readiness for every client group.",
+    story: "Coordinates logistics, communications, and contingency planning so guest confidence stays high from start to finish.",
     years: 16,
     trophies: 203,
     successRate: 92,
@@ -273,11 +273,11 @@ export const commandCenterZones = [
     sunset: "19:52",
     shotWindow: "06:05 - 07:40 / 18:20 - 19:35",
     riskLevel: "Controlled",
-    recommendation: "Use ridge approach 2B. Thermal layers stable after 06:10.",
+    recommendation: "Ridge approach 2B is preferred once thermal layers settle after 06:10.",
     species: [
-      { name: "Red Stag", activity: 84, status: "Prime movement" },
-      { name: "Fallow Buck", activity: 62, status: "Moderate movement" },
-      { name: "Wild Boar", activity: 55, status: "Forest-edge movement" }
+      { name: "Red Stag", activity: 84, status: "Strong dawn movement" },
+      { name: "Fallow Buck", activity: 62, status: "Moderate crossing pattern" },
+      { name: "Wild Boar", activity: 55, status: "Forest-edge activity" }
     ]
   },
   {
@@ -299,11 +299,11 @@ export const commandCenterZones = [
     sunset: "19:50",
     shotWindow: "06:00 - 07:25 / 18:10 - 19:25",
     riskLevel: "Wind-sensitive",
-    recommendation: "Switch to corridor North-3 if crosswind rises above 30 km/h.",
+    recommendation: "Corridor North-3 becomes the cleaner option if crosswind rises above 30 km/h.",
     species: [
-      { name: "Red Stag", activity: 73, status: "Ridge line transit" },
-      { name: "Chamois", activity: 58, status: "High-face sightings" },
-      { name: "Wild Boar", activity: 49, status: "Low ravine signs" }
+      { name: "Red Stag", activity: 73, status: "Ridge transit pattern" },
+      { name: "Chamois", activity: 58, status: "Higher face visibility" },
+      { name: "Wild Boar", activity: 49, status: "Lower ravine sign" }
     ]
   },
   {
@@ -325,11 +325,11 @@ export const commandCenterZones = [
     sunset: "19:48",
     shotWindow: "05:55 - 07:20 / 18:05 - 19:20",
     riskLevel: "Low",
-    recommendation: "Forest edge line C is optimal for close-range ethical shots.",
+    recommendation: "Forest edge line C offers the most composed close-range setup under these conditions.",
     species: [
-      { name: "Sika Deer", activity: 81, status: "Prime dawn feed" },
-      { name: "Red Stag", activity: 64, status: "Mixed corridor movement" },
-      { name: "Wild Boar", activity: 59, status: "Creek route movement" }
+      { name: "Sika Deer", activity: 81, status: "Strong dawn feed" },
+      { name: "Red Stag", activity: 64, status: "Mixed corridor pattern" },
+      { name: "Wild Boar", activity: 59, status: "Creek route activity" }
     ]
   }
 ];

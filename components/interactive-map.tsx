@@ -16,7 +16,7 @@ export default function InteractiveMap() {
       className="premium-panel map-intel-card rounded-[28px] p-5"
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <p className="text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">Interactive Territory Map</p>
+        <p className="text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">Interactive Estate Map</p>
         <div className="flex flex-wrap gap-2">
           {mapZones.map((zone) => (
             <button
@@ -70,14 +70,14 @@ export default function InteractiveMap() {
             <p className="mt-1 text-sm text-stone-200">{active.text}</p>
           </div>
           <div className="premium-panel rounded-xl bg-black/35 p-3">
-            <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Zone Metrics</p>
+            <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Estate Notes</p>
             <div className="mt-1 grid grid-cols-2 gap-1 text-xs text-stone-100">
               <p>Elevation: {active.elevationM}m</p>
               <p>Risk: {active.risk}</p>
-              <p>Density: {active.density}</p>
-              <p>Species: {active.dominantSpecies}</p>
+              <p>Movement: {active.density}</p>
+              <p>Focus: {active.dominantSpecies}</p>
             </div>
-            <p className="mt-2 text-xs text-[#f0d8ac]">Prime window: {active.shotWindow}</p>
+            <p className="mt-2 text-xs text-[#f0d8ac]">Preferred window: {active.shotWindow}</p>
           </div>
         </div>
       </div>

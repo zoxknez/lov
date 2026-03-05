@@ -39,21 +39,21 @@ export default function TrophyCarousel() {
 
       <div className="grid gap-3 border-t border-white/10 bg-black/35 p-4 sm:grid-cols-2">
         <div className="grid gap-2 text-sm text-stone-100">
-          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Score</span><span className="text-[#f0d8ac]">{item.score}</span></p>
-          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Shot distance</span><span className="text-[#f0d8ac]">{item.distanceM}m</span></p>
-          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Wind</span><span className="text-[#f0d8ac]">{item.wind}</span></p>
+          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Trophy class</span><span className="text-[#f0d8ac]">{item.score}</span></p>
+          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Field distance</span><span className="text-[#f0d8ac]">{item.distanceM}m</span></p>
+          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Conditions</span><span className="text-[#f0d8ac]">{item.wind}</span></p>
         </div>
 
         <div className="grid gap-2 text-sm text-stone-100">
-          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Caliber</span><span className="text-[#f0d8ac]">{item.caliber}</span></p>
-          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Guide</span><span className="text-[#f0d8ac]">{item.guide}</span></p>
-          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Confidence</span><span className="text-[#f0d8ac]">{item.confidence}%</span></p>
+          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Rifle setup</span><span className="text-[#f0d8ac]">{item.caliber}</span></p>
+          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Lead guide</span><span className="text-[#f0d8ac]">{item.guide}</span></p>
+          <p className="inline-flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2"><span>Planning fit</span><span className="text-[#f0d8ac]">{item.confidence}%</span></p>
         </div>
       </div>
 
       <div className="border-t border-white/10 bg-black/30 p-4">
         <div className="mb-3 flex items-center justify-between">
-          <p className="text-xs uppercase tracking-[0.13em] text-stone-300">Trophy Sequence Deck</p>
+          <p className="text-xs uppercase tracking-[0.13em] text-stone-300">Archive Selection</p>
           <p className="text-xs uppercase tracking-[0.13em] text-[#d9b167]">{index + 1} / {trophyItems.length}</p>
         </div>
         <div className="grid gap-2 sm:grid-cols-3">

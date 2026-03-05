@@ -93,9 +93,9 @@ export default function BookingConfigurator({ onConfigChange }: BookingConfigura
 
   const recommendation = useMemo(() => {
     if (species === "Red Stag") return "Recommended guide profile: High-score Red Stag specialist.";
-    if (species === "Fallow Buck") return "Recommended guide profile: Wind and terrain tactician.";
-    if (species === "Wild Boar") return "Recommended guide profile: Safety and extraction lead.";
-    return "Recommended guide profile: Mixed expedition command duo.";
+    if (species === "Fallow Buck") return "Recommended guide profile: Wind and terrain specialist.";
+    if (species === "Wild Boar") return "Recommended guide profile: Safety and expedition lead.";
+    return "Recommended guide profile: Mixed itinerary lead pair.";
   }, [species]);
 
   useEffect(() => {
@@ -117,8 +117,8 @@ export default function BookingConfigurator({ onConfigChange }: BookingConfigura
     <article className="premium-panel rounded-[30px] bg-black/40 p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">Luxury Configurator</p>
-          <h3 className="mt-2 font-serif text-3xl text-white">Compose your expedition stack</h3>
+          <p className="text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">Program Configurator</p>
+          <h3 className="mt-2 font-serif text-3xl text-white">Shape the outline of your stay</h3>
         </div>
         <div className="inline-flex rounded-full border border-white/20 bg-black/25 p-1 text-[10px] uppercase tracking-[0.13em]">
           {[1, 2, 3].map((item) => (
@@ -204,7 +204,7 @@ export default function BookingConfigurator({ onConfigChange }: BookingConfigura
 
       <div className="mt-5 grid gap-3 sm:grid-cols-3">
         <div className="premium-panel rounded-xl bg-black/35 p-3">
-          <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Per hunter estimate</p>
+          <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Per guest estimate</p>
           <p className="mt-1 text-2xl font-semibold text-[#f0d8ac]">NZ${quote.perHunter.toLocaleString()}</p>
         </div>
         <div className="premium-panel rounded-xl bg-black/35 p-3">
@@ -216,7 +216,7 @@ export default function BookingConfigurator({ onConfigChange }: BookingConfigura
           <p className="mt-1 text-xl font-semibold text-[#f0d8ac]">{quote.budgetBand}</p>
         </div>
       </div>
-      <p className="mt-3 text-xs text-stone-300">Indicative pricing only. Final program is refined by concierge operations.</p>
+      <p className="mt-3 text-xs text-stone-300">Indicative pricing only. Final program and pricing are refined through concierge review.</p>
     </article>
   );
 }
