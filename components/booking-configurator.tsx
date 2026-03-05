@@ -47,30 +47,42 @@ type BookingConfiguratorProps = {
   onConfigChange?: (config: BookingConfig) => void;
 };
 
-export default function BookingConfigurator({ onConfigChange }: BookingConfiguratorProps) {
-  const [species, setSpecies] = useState("Red Stag");
-  const [stay, setStay] = useState("5 Nights");
-  const [comfort, setComfort] = useState("Private Chalet");
-  const [transfer, setTransfer] = useState("Premium 4x4");
-  const [guests, setGuests] = useState(2);
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+function getInitialConfig() {
+  const fallback = {
+    species: "Red Stag",
+    stay: "5 Nights",
+    comfort: "Private Chalet",
+    transfer: "Premium 4x4",
+    guests: 2
+  };
 
-  useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem("kaimanawa-config");
-      if (!raw) return;
-      const parsed = JSON.parse(raw) as Partial<BookingConfig>;
-      if (parsed.species && speciesMap[parsed.species]) setSpecies(parsed.species);
-      if (parsed.stay && stayMap[parsed.stay]) setStay(parsed.stay);
-      if (parsed.comfort && comfortMap[parsed.comfort]) setComfort(parsed.comfort);
-      if (parsed.transfer && transferMap[parsed.transfer]) setTransfer(parsed.transfer);
-      if (typeof parsed.guests === "number" && parsed.guests >= 1 && parsed.guests <= 6) setGuests(parsed.guests);
-    } catch {
-      // ignore bad local data
-    }
-    // only initial load
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  if (typeof window === "undefined") return fallback;
+
+  try {
+    const raw = window.localStorage.getItem("kaimanawa-config");
+    if (!raw) return fallback;
+    const parsed = JSON.parse(raw) as Partial<BookingConfig>;
+
+    return {
+      species: parsed.species && speciesMap[parsed.species] ? parsed.species : fallback.species,
+      stay: parsed.stay && stayMap[parsed.stay] ? parsed.stay : fallback.stay,
+      comfort: parsed.comfort && comfortMap[parsed.comfort] ? parsed.comfort : fallback.comfort,
+      transfer: parsed.transfer && transferMap[parsed.transfer] ? parsed.transfer : fallback.transfer,
+      guests: typeof parsed.guests === "number" && parsed.guests >= 1 && parsed.guests <= 6 ? parsed.guests : fallback.guests
+    };
+  } catch {
+    return fallback;
+  }
+}
+
+export default function BookingConfigurator({ onConfigChange }: BookingConfiguratorProps) {
+  const [initialConfig] = useState(getInitialConfig);
+  const [species, setSpecies] = useState(initialConfig.species);
+  const [stay, setStay] = useState(initialConfig.stay);
+  const [comfort, setComfort] = useState(initialConfig.comfort);
+  const [transfer, setTransfer] = useState(initialConfig.transfer);
+  const [guests, setGuests] = useState(initialConfig.guests);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
 
   const quote = useMemo(() => {
     const perHunter = speciesMap[species] + stayMap[stay] + comfortMap[comfort] + transferMap[transfer];

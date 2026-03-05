@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { storeLead } from "@/lib/lead-store";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 const inquirySchema = z.object({
@@ -110,6 +111,8 @@ export async function POST(request: Request) {
       }
     };
 
+    await storeLead(enrichedLead);
+
     const crmWebhook = process.env.LEAD_WEBHOOK_URL;
     const slackWebhook = process.env.SLACK_WEBHOOK_URL;
 
@@ -129,14 +132,14 @@ export async function POST(request: Request) {
       );
     }
 
-    if (webhookJobs.length > 0) {
-      await Promise.all(webhookJobs);
-    }
+    const webhookResults = webhookJobs.length > 0 ? await Promise.all(webhookJobs) : [];
+    const forwarded = webhookResults.every(Boolean);
 
     return NextResponse.json(
       {
         ok: true,
-        inquiry: enrichedLead.payload
+        inquiry: enrichedLead.payload,
+        forwarded
       },
       {
         status: 200

@@ -13,6 +13,7 @@ import AmbientAudio from "@/components/ambient-audio";
 import ScrollCompass from "@/components/scroll-compass";
 import CinematicTransition from "@/components/cinematic-transition";
 import BookingConfigurator, { type BookingConfig } from "@/components/booking-configurator";
+import TurnstileWidget from "@/components/turnstile-widget";
 import {
   availabilitySlots,
   estateHighlights,
@@ -51,6 +52,7 @@ export default function ModernSite() {
   const [performanceMode, setPerformanceMode] = useState<"ultra" | "balanced">("ultra");
   const [formStep, setFormStep] = useState<1 | 2>(1);
   const [activeSection, setActiveSection] = useState("hero");
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [failedSpeciesImages, setFailedSpeciesImages] = useState<Record<string, boolean>>({});
   const [deviceProfile, setDeviceProfile] = useState<"low-mobile" | "high-mobile" | "tablet" | "desktop">("desktop");
   const [navVisible, setNavVisible] = useState(true);
@@ -253,7 +255,7 @@ export default function ModernSite() {
       programLength: String(formData.get("programLength") ?? ""),
       budgetBand: String(formData.get("budgetBand") ?? ""),
       antiBotField: String(formData.get("antiBotField") ?? ""),
-      turnstileToken: String(formData.get("turnstileToken") ?? "")
+      turnstileToken
     };
 
     setSubmitting(true);
@@ -267,11 +269,17 @@ export default function ModernSite() {
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) throw new Error("Failed");
+      const result = (await response.json()) as { ok?: boolean; forwarded?: boolean; error?: string };
+      if (!response.ok || !result.ok) throw new Error(result.error ?? "Failed");
 
-      setStatus("Request submitted. KAIMANAWA concierge will contact you shortly.");
+      setStatus(
+        result.forwarded === false
+          ? "Request stored. Concierge forwarding needs manual review."
+          : "Request submitted. KAIMANAWA concierge will contact you shortly."
+      );
       setStatusTone("ok");
       setFormStep(1);
+      setTurnstileToken("");
       event.currentTarget.reset();
     } catch {
       setStatus("Submission failed. Please retry.");
@@ -986,7 +994,7 @@ export default function ModernSite() {
               <input type="hidden" name="transferMode" value={bookingConfig.transfer} />
               <input type="hidden" name="programLength" value={bookingConfig.stay} />
               <input type="hidden" name="budgetBand" value={bookingConfig.budgetBand} />
-              <input type="hidden" name="turnstileToken" value="" />
+              <input type="hidden" name="turnstileToken" value={turnstileToken} />
               <input type="text" name="antiBotField" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden />
 
               {formStep === 1 && (
@@ -1026,6 +1034,7 @@ export default function ModernSite() {
                   <label className="mt-4 block text-sm">Program notes
                     <textarea required name="message" rows={5} className="field-control mt-2" placeholder="Preferred month, group size, hunt duration, and special lodge requests." />
                   </label>
+                  <TurnstileWidget onTokenChange={setTurnstileToken} />
                 </>
               )}
 
