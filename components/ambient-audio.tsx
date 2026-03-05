@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
 type WeatherMode = "sun" | "wind" | "rain" | "snow";
+const hasLocalAudio = false;
 
 const sectionMix: Record<string, number> = {
   hero: 0.12,
@@ -25,7 +26,7 @@ export default function AmbientAudio({ mode, dayCycle, activeSection }: { mode: 
     const wind = windRef.current;
     const rain = rainRef.current;
     const tone = toneRef.current;
-    if (!wind || !rain || !tone) return;
+    if (!hasLocalAudio || !wind || !rain || !tone) return;
 
     const nightBoost = 0.08 + (1 - dayCycle) * 0.14;
     const sceneBoost = sectionMix[activeSection] ?? 0.12;
@@ -54,11 +55,15 @@ export default function AmbientAudio({ mode, dayCycle, activeSection }: { mode: 
     }
   }, [activeSection, dayCycle, enabled, mode]);
 
+  if (!hasLocalAudio) {
+    return null;
+  }
+
   return (
     <>
-      <audio ref={windRef} loop preload="none" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_31f4f8f9ca.mp3?filename=wind-blowing-ambient-11067.mp3" />
-      <audio ref={rainRef} loop preload="none" src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_1f4c238f4a.mp3?filename=light-rain-ambient-114354.mp3" />
-      <audio ref={toneRef} loop preload="none" src="https://cdn.pixabay.com/download/audio/2022/06/07/audio_3dba6d3b58.mp3?filename=ambient-piano-logo-106694.mp3" />
+      <audio ref={windRef} loop preload="none" src="/audio/wind.mp3" />
+      <audio ref={rainRef} loop preload="none" src="/audio/rain.mp3" />
+      <audio ref={toneRef} loop preload="none" src="/audio/tone.mp3" />
 
       <button
         type="button"

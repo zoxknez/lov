@@ -77,6 +77,15 @@ export default function WeatherOverlay({
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const particlesRef = useRef<Particle[]>([]);
+  const modeRef = useRef(mode);
+  const windRef = useRef(wind);
+  const dayCycleRef = useRef(dayCycle);
+
+  useEffect(() => {
+    modeRef.current = mode;
+    windRef.current = wind;
+    dayCycleRef.current = dayCycle;
+  }, [dayCycle, mode, wind]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -93,8 +102,8 @@ export default function WeatherOverlay({
       canvasEl.width = window.innerWidth;
       canvasEl.height = window.innerHeight;
       particlesRef.current = Array.from(
-        { length: particleCount(mode) },
-        () => buildParticle(canvasEl.width, canvasEl.height, mode, wind)
+        { length: particleCount(modeRef.current) },
+        () => buildParticle(canvasEl.width, canvasEl.height, modeRef.current, windRef.current)
       );
     }
 
@@ -104,7 +113,10 @@ export default function WeatherOverlay({
 
       ctx2d.clearRect(0, 0, width, height);
 
-      const tone = 0.12 + (1 - dayCycle) * 0.36;
+      const activeMode = modeRef.current;
+      const activeWind = windRef.current;
+      const activeDayCycle = dayCycleRef.current;
+      const tone = 0.12 + (1 - activeDayCycle) * 0.36;
       ctx2d.fillStyle = `rgba(4, 8, 6, ${tone})`;
       ctx2d.fillRect(0, 0, width, height);
 
@@ -114,34 +126,34 @@ export default function WeatherOverlay({
         p.y += p.vy;
         p.life -= 1;
 
-        if (mode === "rain") {
-          ctx2d.strokeStyle = `rgba(189, 220, 255, ${0.36 + (1 - dayCycle) * 0.28})`;
+        if (activeMode === "rain") {
+          ctx2d.strokeStyle = `rgba(189, 220, 255, ${0.36 + (1 - activeDayCycle) * 0.28})`;
           ctx2d.lineWidth = 1;
           ctx2d.beginPath();
           ctx2d.moveTo(p.x, p.y);
           ctx2d.lineTo(p.x - p.vx * 1.4, p.y - p.size);
           ctx2d.stroke();
-        } else if (mode === "snow") {
-          ctx2d.fillStyle = `rgba(246, 249, 255, ${0.4 + (1 - dayCycle) * 0.25})`;
+        } else if (activeMode === "snow") {
+          ctx2d.fillStyle = `rgba(246, 249, 255, ${0.4 + (1 - activeDayCycle) * 0.25})`;
           ctx2d.beginPath();
           ctx2d.arc(p.x, p.y, p.size, 0, Math.PI * 2);
           ctx2d.fill();
-        } else if (mode === "wind") {
-          ctx2d.strokeStyle = `rgba(224, 231, 245, ${0.18 + (1 - dayCycle) * 0.2})`;
+        } else if (activeMode === "wind") {
+          ctx2d.strokeStyle = `rgba(224, 231, 245, ${0.18 + (1 - activeDayCycle) * 0.2})`;
           ctx2d.lineWidth = 1;
           ctx2d.beginPath();
           ctx2d.moveTo(p.x, p.y);
           ctx2d.lineTo(p.x - p.size, p.y - p.vy * 3);
           ctx2d.stroke();
         } else {
-          ctx2d.fillStyle = `rgba(255, 221, 166, ${0.16 + dayCycle * 0.2})`;
+          ctx2d.fillStyle = `rgba(255, 221, 166, ${0.16 + activeDayCycle * 0.2})`;
           ctx2d.beginPath();
           ctx2d.arc(p.x, p.y, p.size, 0, Math.PI * 2);
           ctx2d.fill();
         }
 
         if (p.x < -40 || p.x > width + 40 || p.y > height + 40 || p.life < 0) {
-          particlesRef.current[i] = buildParticle(width, height, mode, wind);
+          particlesRef.current[i] = buildParticle(width, height, activeMode, activeWind);
           particlesRef.current[i].y = -8;
         }
       }
@@ -157,7 +169,7 @@ export default function WeatherOverlay({
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", resize);
     };
-  }, [dayCycle, mode, wind]);
+  }, []);
 
   return <canvas ref={canvasRef} className="weather-canvas" aria-hidden />;
 }

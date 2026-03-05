@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { storeLead } from "@/lib/lead-store";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 const inquirySchema = z.object({
@@ -94,8 +95,6 @@ export async function POST(request: Request) {
     const enrichedLead = {
       source: "kaimanawa-web",
       createdAt: new Date().toISOString(),
-      ip,
-      userAgent: request.headers.get("user-agent") ?? "",
       payload: {
         fullName: payload.fullName,
         email: payload.email,
@@ -109,6 +108,8 @@ export async function POST(request: Request) {
         budgetBand: payload.budgetBand
       }
     };
+
+    await storeLead(enrichedLead);
 
     const crmWebhook = process.env.LEAD_WEBHOOK_URL;
     const slackWebhook = process.env.SLACK_WEBHOOK_URL;
@@ -129,14 +130,14 @@ export async function POST(request: Request) {
       );
     }
 
-    if (webhookJobs.length > 0) {
-      await Promise.all(webhookJobs);
-    }
+    const webhookResults = webhookJobs.length > 0 ? await Promise.all(webhookJobs) : [];
+    const webhookFailed = webhookResults.some((result) => !result);
 
     return NextResponse.json(
       {
         ok: true,
-        inquiry: enrichedLead.payload
+        inquiry: enrichedLead.payload,
+        forwarded: !webhookFailed
       },
       {
         status: 200

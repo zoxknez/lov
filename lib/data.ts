@@ -7,43 +7,43 @@
 ];
 
 export const metrics = [
-  { value: "46,000+", label: "private alpine hectares" },
-  { value: "1,300+", label: "guided trophy programs" },
-  { value: "82%", label: "repeat guest rebook rate" },
-  { value: "24/7", label: "concierge field support" }
+  { value: "Private", label: "concierge itinerary design" },
+  { value: "1:1", label: "guide-led guest format" },
+  { value: "Tailored", label: "lodge and transfer planning" },
+  { value: "24h", label: "target response window" }
 ];
 
 export const trustBadges = [
-  "Licensed NZ operation",
+  "Licensed NZ outfitter coordination",
   "Insured field protocols",
-  "International client desk",
+  "International travel support",
   "Private lodge concierge",
-  "1:1 guide model"
+  "Ethical field planning"
 ];
 
 export const estateHighlights = [
   {
     title: "Kaimanawa high-country ridges",
     description: "Long-range visibility and controlled access lines for precision stalks.",
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80",
+    image: "/placeholders/estate-editorial.svg",
     span: "md:col-span-7"
   },
   {
     title: "Native beech forest corridors",
     description: "Silent transition zones mapped by wind and thermal behavior.",
-    image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80",
+    image: "/placeholders/estate-editorial.svg",
     span: "md:col-span-5"
   },
   {
     title: "River basin movement lanes",
     description: "Natural game routes supported by year-round monitoring.",
-    image: "https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?auto=format&fit=crop&w=1600&q=80",
+    image: "/placeholders/estate-editorial.svg",
     span: "md:col-span-6"
   },
   {
     title: "Dawn and dusk thermal windows",
     description: "Ethical, high-confidence opportunities in stable conditions.",
-    image: "https://images.unsplash.com/photo-1470093851219-69951fcbb533?auto=format&fit=crop&w=1600&q=80",
+    image: "/placeholders/estate-editorial.svg",
     span: "md:col-span-6"
   }
 ];
@@ -52,7 +52,7 @@ export const gameSpecies = [
   {
     title: "Red Stag",
     detail: "Signature New Zealand trophy class with premium rut scheduling.",
-    image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1300&q=80",
+    image: "/placeholders/species-editorial.svg",
     trophyBand: "360 - 410+ SCI",
     primeSeason: "March - April",
     shotRange: "180m - 320m",
@@ -63,7 +63,7 @@ export const gameSpecies = [
   {
     title: "Fallow Buck",
     detail: "Selective trophy management with curated hunt windows.",
-    image: "https://images.unsplash.com/photo-1516934024742-b461fba47600?auto=format&fit=crop&w=1300&q=80",
+    image: "/placeholders/species-editorial.svg",
     trophyBand: "175 - 210 SCI",
     primeSeason: "April - May",
     shotRange: "120m - 260m",
@@ -74,7 +74,7 @@ export const gameSpecies = [
   {
     title: "Wild Boar",
     detail: "Dynamic terrain hunts under strict modern safety systems.",
-    image: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?auto=format&fit=crop&w=1300&q=80",
+    image: "/placeholders/species-editorial.svg",
     trophyBand: "Elite tusk class",
     primeSeason: "Year-round",
     shotRange: "70m - 190m",
@@ -89,7 +89,7 @@ export const trophyItems = [
     title: "410+ Red Stag",
     season: "Autumn Peak Rut",
     note: "Executed via dawn ridge approach after a two-day weather hold.",
-    image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1600&q=80",
+    image: "/placeholders/trophy-editorial.svg",
     score: "SCI 410+",
     distanceM: 236,
     wind: "4 km/h SW",
@@ -101,7 +101,7 @@ export const trophyItems = [
     title: "Highland Fallow",
     season: "Late Winter",
     note: "Low-signature access route with controlled 240m confidence shot.",
-    image: "https://images.unsplash.com/photo-1516934024742-b461fba47600?auto=format&fit=crop&w=1600&q=80",
+    image: "/placeholders/trophy-editorial.svg",
     score: "SCI 198",
     distanceM: 212,
     wind: "7 km/h E",
@@ -113,7 +113,7 @@ export const trophyItems = [
     title: "Boar Multi-Day",
     season: "All Season",
     note: "Mixed-terrain tactical program with night-safe logistics support.",
-    image: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?auto=format&fit=crop&w=1600&q=80",
+    image: "/placeholders/trophy-editorial.svg",
     score: "Elite Class",
     distanceM: 148,
     wind: "11 km/h SE",
@@ -163,10 +163,10 @@ export const mapZones = [
 ];
 
 export const availabilitySlots = [
-  { month: "April 2026", status: "Limited", spots: 3 },
-  { month: "May 2026", status: "Open", spots: 6 },
-  { month: "June 2026", status: "Open", spots: 5 },
-  { month: "July 2026", status: "Waitlist", spots: 0 }
+  { month: "Rut Priority Window", status: "Priority review", spots: 3 },
+  { month: "Autumn Signature Window", status: "Open", spots: 6 },
+  { month: "Winter Fallow Window", status: "Open", spots: 5 },
+  { month: "Private Mixed Program", status: "By request", spots: 2 }
 ];
 
 export const experiences = [
@@ -212,7 +212,7 @@ export const guideStories = [
   {
     name: "Mason Clarke",
     role: "Lead Trophy Director",
-    image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=900&q=80",
+    image: "/placeholders/guide-editorial.svg",
     story: "Guided a 410+ class red stag program after a two-day weather hold and ridge repositioning.",
     years: 17,
     trophies: 240,
@@ -224,7 +224,7 @@ export const guideStories = [
   {
     name: "Reid Kavanagh",
     role: "Field Strategy Specialist",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
+    image: "/placeholders/guide-editorial.svg",
     story: "Known for wind-reading and low-signature access on high-pressure days.",
     years: 14,
     trophies: 188,
@@ -236,7 +236,7 @@ export const guideStories = [
   {
     name: "Noah Bennett",
     role: "Safety and Expedition Lead",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80",
+    image: "/placeholders/guide-editorial.svg",
     story: "Coordinates logistics, comms, and emergency readiness for every client group.",
     years: 16,
     trophies: 203,
@@ -248,9 +248,9 @@ export const guideStories = [
 ];
 
 export const rotatingNotes = [
-  "Autumn peak-rut capsules now open for 2027 premium allocations.",
-  "Dual-guide signature package now includes drone scouting overlays.",
-  "New ultra-premium lodge wing now live for private group bookings."
+  "Private programs are structured around season fit, guide fit, and guest comfort.",
+  "Every inquiry is reviewed as one itinerary: arrival, lodge rhythm, field timing, and departure.",
+  "Original estate media and lodge photography will replace these placeholders shortly."
 ];
 
 export const commandCenterZones = [
