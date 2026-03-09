@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 
 export default function CustomCursor() {
-    const [isHovering, setIsHovering] = useState(false);
     const [cursorType, setCursorType] = useState<"default" | "tactical" | "link">("default");
     const [isVisible, setIsVisible] = useState(false);
 

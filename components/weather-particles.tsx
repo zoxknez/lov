@@ -1,13 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, useAnimationFrame } from "framer-motion";
+import { useAnimationFrame } from "framer-motion";
 
 type WeatherMode = "sun" | "wind" | "rain" | "snow";
 
+type Particle = { x: number; y: number; v: number; w: number; size: number; o: number };
+
 export default function WeatherParticles({ mode }: { mode: WeatherMode }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const particles = useRef<any[]>([]);
+    const particles = useRef<Particle[]>([]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -41,7 +43,7 @@ export default function WeatherParticles({ mode }: { mode: WeatherMode }) {
         return () => window.removeEventListener("resize", resize);
     }, [mode]);
 
-    useAnimationFrame((time, delta) => {
+    useAnimationFrame(() => {
         const canvas = canvasRef.current;
         if (!canvas || (mode !== "rain" && mode !== "snow")) return;
         const ctx = canvas.getContext("2d");

@@ -1,8 +1,7 @@
 ﻿"use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValueEvent, MotionValue } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { Volume2, VolumeX } from "lucide-react";
 
 type WeatherMode = "sun" | "wind" | "rain" | "snow";
 
@@ -16,7 +15,7 @@ const sectionMix: Record<string, number> = {
   contact: 0.1
 };
 
-export default function AmbientAudio({ mode, dayCycle, activeSection }: { mode: WeatherMode; dayCycle: number; activeSection: string }) {
+export default function AmbientAudio({ mode, dayCycle, activeSection }: { mode: WeatherMode; dayCycle: MotionValue<number>; activeSection: string }) {
   const [enabled, setEnabled] = useState(false);
   const windRef = useRef<HTMLAudioElement | null>(null);
   const rainRef = useRef<HTMLAudioElement | null>(null);
@@ -26,34 +25,40 @@ export default function AmbientAudio({ mode, dayCycle, activeSection }: { mode: 
     const wind = windRef.current;
     const rain = rainRef.current;
     const tone = toneRef.current;
-    if (!wind || !rain || !tone) return;
-
-    const nightBoost = 0.08 + (1 - dayCycle) * 0.14;
-    const sceneBoost = sectionMix[activeSection] ?? 0.12;
-
-    if (!enabled) {
-      wind.pause();
-      rain.pause();
-      tone.pause();
+    if (!wind || !rain || !tone || !enabled) {
+      if (wind) wind.pause();
+      if (rain) rain.pause();
+      if (tone) tone.pause();
       return;
     }
+  }, [enabled]);
 
-    wind.play().catch(() => undefined);
-    tone.play().catch(() => undefined);
+  useMotionValueEvent(dayCycle, "change", (latestDayCycle: number) => {
+    const wind = windRef.current;
+    const rain = rainRef.current;
+    const tone = toneRef.current;
+    if (!wind || !rain || !tone || !enabled) return;
+
+    const nightBoost = 0.08 + (1 - latestDayCycle) * 0.14;
+    const sceneBoost = sectionMix[activeSection] ?? 0.12;
+
+    if (wind.paused) wind.play().catch(() => undefined);
+    if (tone.paused) tone.play().catch(() => undefined);
+
     tone.volume = 0.06 + sceneBoost * 0.4 + nightBoost * 0.25;
 
     if (mode === "rain" || mode === "snow") {
-      rain.play().catch(() => undefined);
+      if (rain.paused) rain.play().catch(() => undefined);
       rain.volume = 0.1 + sceneBoost * 0.58 + nightBoost;
       wind.volume = 0.08 + sceneBoost * 0.42 + nightBoost;
     } else if (mode === "wind") {
-      rain.pause();
+      if (!rain.paused) rain.pause();
       wind.volume = 0.14 + sceneBoost * 0.65 + nightBoost;
     } else {
-      rain.pause();
+      if (!rain.paused) rain.pause();
       wind.volume = 0.06 + sceneBoost * 0.35 + nightBoost;
     }
-  }, [activeSection, dayCycle, enabled, mode]);
+  });
 
   return (
     <>

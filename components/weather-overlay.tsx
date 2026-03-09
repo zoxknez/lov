@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useRef } from "react";
+import { MotionValue } from "framer-motion";
 
 type WeatherMode = "sun" | "wind" | "rain" | "snow";
 
@@ -73,19 +74,17 @@ export default function WeatherOverlay({
 }: {
   mode: WeatherMode;
   wind: number;
-  dayCycle: number;
+  dayCycle: MotionValue<number>;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const particlesRef = useRef<Particle[]>([]);
   const modeRef = useRef(mode);
   const windRef = useRef(wind);
-  const dayCycleRef = useRef(dayCycle);
 
   useEffect(() => {
     modeRef.current = mode;
     windRef.current = wind;
-    dayCycleRef.current = dayCycle;
-  }, [dayCycle, mode, wind]);
+  }, [mode, wind]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -112,7 +111,7 @@ export default function WeatherOverlay({
       const height = canvasEl.height;
       const activeMode = modeRef.current;
       const activeWind = windRef.current;
-      const activeDayCycle = dayCycleRef.current;
+      const activeDayCycle = dayCycle.get();
 
       ctx2d.clearRect(0, 0, width, height);
 
@@ -169,7 +168,7 @@ export default function WeatherOverlay({
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", resize);
     };
-  }, []);
+  }, [dayCycle]);
 
   return <canvas ref={canvasRef} className="weather-canvas" aria-hidden />;
 }

@@ -57,18 +57,20 @@ export default function BookingConfigurator({ onConfigChange }: BookingConfigura
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-    try {
-      const raw = window.localStorage.getItem("kaimanawa-config");
-      if (raw) {
-        const parsed = JSON.parse(raw) as Partial<BookingConfig>;
-        if (parsed.species && speciesMap[parsed.species]) setSpecies(parsed.species);
-        if (parsed.stay && stayMap[parsed.stay]) setStay(parsed.stay);
-        if (parsed.comfort && comfortMap[parsed.comfort]) setComfort(parsed.comfort);
-        if (parsed.transfer && transferMap[parsed.transfer]) setTransfer(parsed.transfer);
-        if (typeof parsed.guests === "number") setGuests(parsed.guests);
-      }
-    } catch { }
+    setTimeout(() => {
+      setIsMounted(true);
+      try {
+        const raw = window.localStorage.getItem("kaimanawa-config");
+        if (raw) {
+          const parsed = JSON.parse(raw) as Partial<BookingConfig>;
+          if (parsed.species && speciesMap[parsed.species]) setSpecies(parsed.species);
+          if (parsed.stay && stayMap[parsed.stay]) setStay(parsed.stay);
+          if (parsed.comfort && comfortMap[parsed.comfort]) setComfort(parsed.comfort);
+          if (parsed.transfer && transferMap[parsed.transfer]) setTransfer(parsed.transfer);
+          if (typeof parsed.guests === "number") setGuests(parsed.guests);
+        }
+      } catch { }
+    }, 0);
   }, []);
 
   const quote = useMemo(() => {

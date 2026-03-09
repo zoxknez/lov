@@ -1,42 +1,23 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useMemo, useState } from "react";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { commandCenterZones } from "@/lib/data";
+import LocalTime from "@/components/local-time";
 
 type CommandCenterProps = {
-  daylight: number;
-  isNight: boolean;
+  daylight: MotionValue<number>;
+  isNight?: boolean;
 };
 
 export default function CommandCenter({ daylight, isNight }: CommandCenterProps) {
   const [selectedZoneId, setSelectedZoneId] = useState(commandCenterZones[0].id);
-  const [clock, setClock] = useState(new Date());
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0.02, 0.2], [0.72, 1]);
 
   const selectedZone = useMemo(
     () => commandCenterZones.find((zone) => zone.id === selectedZoneId) ?? commandCenterZones[0],
     [selectedZoneId]
-  );
-
-  useEffect(() => {
-    const id = setInterval(() => setClock(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  const zoneTime = useMemo(
-    () =>
-      new Intl.DateTimeFormat("en-NZ", {
-        weekday: "short",
-        day: "2-digit",
-        month: "short",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-        timeZone: selectedZone.timezone
-      }).format(clock),
-    [clock, selectedZone.timezone]
   );
 
   const planningScore = useMemo(() => {
@@ -52,8 +33,8 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
 
   return (
     <section className={`section-shell command-center-shell command-center-phase relative z-10 ${isNight ? "is-night" : "is-day"}`}>
-      <div className="command-phase-day" style={{ opacity: daylight * 0.56 }} aria-hidden />
-      <div className="command-phase-night" style={{ opacity: (1 - daylight) * 0.72 }} aria-hidden />
+      <motion.div className="command-phase-day" style={{ opacity: useTransform(daylight, v => v * 0.56) }} aria-hidden />
+      <motion.div className="command-phase-night" style={{ opacity: useTransform(daylight, v => (1 - v) * 0.72) }} aria-hidden />
       <div className="command-center-glow" aria-hidden />
       <motion.div
         style={{ opacity }}
@@ -78,9 +59,8 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
               key={zone.id}
               type="button"
               onClick={() => setSelectedZoneId(zone.id)}
-              className={`premium-panel command-zone rounded-xl px-3 py-2 text-left transition ${
-                zone.id === selectedZoneId ? "border-[#dfc28f] bg-[rgba(217,177,103,0.2)]" : "bg-black/25 hover:border-[#dfc28f]/60"
-              }`}
+              className={`premium-panel command-zone rounded-xl px-3 py-2 text-left transition ${zone.id === selectedZoneId ? "border-[#dfc28f] bg-[rgba(217,177,103,0.2)]" : "bg-black/25 hover:border-[#dfc28f]/60"
+                }`}
             >
               <p className="text-[10px] uppercase tracking-[0.14em] text-[#d9b167]">{zone.region}</p>
               <p className="font-serif text-lg text-white">{zone.name}</p>
@@ -92,7 +72,7 @@ export default function CommandCenter({ daylight, isNight }: CommandCenterProps)
           <div className="space-y-4">
             <div className="premium-panel command-metric rounded-2xl bg-[rgba(20,48,36,0.42)] p-4">
               <p className="text-[10px] uppercase tracking-[0.15em] text-[#d9b167]">Local estate time</p>
-              <p className="mt-1 text-sm text-stone-100">{zoneTime}</p>
+              <p className="mt-1 text-sm text-stone-100"><LocalTime timezone={selectedZone.timezone} /></p>
               <p className="text-xs text-stone-300">{selectedZone.timezone}</p>
             </div>
 

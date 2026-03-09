@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { motion, useMotionValue, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useMotionValue, useScroll, useSpring, useTransform, AnimatePresence, useAnimationFrame, MotionValue } from "framer-motion";
 import { FormEvent, MouseEvent, useEffect, useRef, useState } from "react";
-import { AlertTriangle, ArrowRight, ArrowUpRight, CheckCircle2, Compass, Crown, MountainSnow, ShieldCheck, Sparkles } from "lucide-react";
+import { AlertTriangle, ArrowRight, ArrowUpRight, CheckCircle2, Crown, Sparkles } from "lucide-react";
 import WeatherOverlay from "@/components/weather-overlay";
-import HunterCrosshair from "@/components/hunter-crosshair";
 import CursorSpotlight from "@/components/cursor-spotlight";
 import TrustStrip from "@/components/trust-strip";
 import AmbientAudio from "@/components/ambient-audio";
@@ -17,6 +16,7 @@ import BookingConfigurator, { type BookingConfig } from "@/components/booking-co
 import TurnstileWidget from "@/components/turnstile-widget";
 import CustomCursor from "@/components/custom-cursor";
 import ConciergeModal from "@/components/concierge-modal";
+import ConciergeStatusTicker from "@/components/concierge-status-ticker";
 import {
   availabilitySlots,
   estateHighlights,
@@ -24,14 +24,13 @@ import {
   gameSpecies,
   guideStories,
   metrics,
-  navItems,
-  rotatingNotes
+  navItems
 } from "@/lib/data";
 
-const CommandCenter = dynamic<{ daylight: number; isNight: boolean }>(() => import("@/components/command-center"));
+const CommandCenter = dynamic<{ daylight: MotionValue<number>; isNight: boolean }>(() => import("@/components/command-center"));
 const TrophyCarousel = dynamic(() => import("@/components/trophy-carousel"));
 const InteractiveMap = dynamic(() => import("@/components/interactive-map"));
-const SignatureReveal = dynamic<{ daylight: number; isNight: boolean }>(() => import("@/components/signature-reveal"));
+const SignatureReveal = dynamic<{ daylight: MotionValue<number>; isNight: boolean }>(() => import("@/components/signature-reveal"));
 const StoryChapters = dynamic(() => import("@/components/story-chapters"));
 
 function MagneticWrap({ children, strength = 15 }: { children: React.ReactNode; strength?: number }) {
@@ -103,14 +102,14 @@ const heroVideoSources = [
 const heroPoster = "/hero-poster.svg";
 
 export default function ModernSite() {
-  const [tickerIndex, setTickerIndex] = useState(0);
   const [status, setStatus] = useState("");
   const [statusTone, setStatusTone] = useState<"idle" | "ok" | "err">("idle");
   const [submitting, setSubmitting] = useState(false);
   const [showConcierge, setShowConcierge] = useState(false);
   const [weatherMode, setWeatherMode] = useState<WeatherMode>("sun");
   const [windStrength, setWindStrength] = useState(0.5);
-  const [dayProgress, setDayProgress] = useState(0.68);
+  const dayProgress = useMotionValue(0.68);
+  const [isNight, setIsNight] = useState(false);
   const [performanceMode, setPerformanceMode] = useState<"ultra" | "balanced">("ultra");
   const [formStep, setFormStep] = useState<1 | 2>(1);
   const [activeSection, setActiveSection] = useState("hero");
@@ -145,15 +144,20 @@ export default function ModernSite() {
   const heroBgX = useTransform(parallaxX, (v) => v * 0.4);
   const heroBgY = useTransform(parallaxY, (v) => v * 0.35);
   const heroFrontX = useTransform(parallaxX, (v) => v * -0.24);
-  const heroFrontY = useTransform(parallaxY, (v) => v * -0.2);
 
-  useEffect(() => {
-    const id = setInterval(() => {
-      setTickerIndex((prev) => (prev + 1) % rotatingNotes.length);
-    }, 2800);
+  useAnimationFrame((t, delta) => {
+    const current = dayProgress.get();
+    const next = (current + delta * 0.000019) % 1;
+    dayProgress.set(next);
 
-    return () => clearInterval(id);
-  }, []);
+    // Calculate night boundary to trigger rare React renders for conditional trees
+    const d = (Math.sin(next * Math.PI * 2 - Math.PI / 2) + 1) / 2;
+    const isNowNight = d < 0.38;
+    setIsNight(prev => {
+      if (prev !== isNowNight) return isNowNight;
+      return prev;
+    });
+  });
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -163,14 +167,6 @@ export default function ModernSite() {
       });
       setWindStrength(Math.random());
     }, 9000);
-
-    return () => clearInterval(id);
-  }, []);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setDayProgress((prev) => (prev + 0.0019) % 1);
-    }, 100);
 
     return () => clearInterval(id);
   }, []);
@@ -387,15 +383,13 @@ export default function ModernSite() {
   const isLowMobile = deviceProfile === "low-mobile";
   const isTablet = deviceProfile === "tablet";
   const isDesktopProfile = deviceProfile === "desktop";
-  const daylight = (Math.sin(dayProgress * Math.PI * 2 - Math.PI / 2) + 1) / 2;
-  const dawnGlow = Math.max(0, 1 - Math.abs(dayProgress - 0.23) / 0.16);
-  const duskGlow = Math.max(0, 1 - Math.abs(dayProgress - 0.73) / 0.16);
-  const noonGlow = Math.max(0, 1 - Math.abs(dayProgress - 0.5) / 0.24);
-  const nightGlow = Math.min(1, Math.max(0, (0.42 - daylight) / 0.42));
-  const dayCycle = 0.08 + daylight * 0.86;
-  const isNight = daylight < 0.38;
+
+  const daylight = useTransform(dayProgress, (v: number) => (Math.sin(v * Math.PI * 2 - Math.PI / 2) + 1) / 2);
+  const dayCycle = useTransform(daylight, (v: number) => 0.08 + v * 0.86);
+
   const heavyMode = performanceMode === "ultra" && (deviceProfile === "desktop" || isTablet);
   const heroUsesVideo = !prefersReducedMotion && !heroVideoFailed;
+  const videoFilter = useTransform(daylight, v => `saturate(${1.12 + v * 0.1}) contrast(${1.03 + v * 0.08}) brightness(${0.92 + Math.min(1, Math.max(0, (0.42 - v) / 0.42)) * 0.17})`);
 
   return (
     <div className={`relative z-10 pb-20 profile-${deviceProfile} ${isDesktopProfile ? 'custom-crosshair' : ''}`}>
@@ -424,10 +418,10 @@ export default function ModernSite() {
         />
       )}
       <div className="daynight-layer" aria-hidden>
-        <div className="day-layer" style={{ opacity: dayCycle * 0.8 }} />
-        <div className="night-layer" style={{ opacity: (1 - dayCycle) * 0.72 }} />
-        <div className="sun-core" style={{ left: `${8 + dayCycle * 74}%`, top: `${56 - dayCycle * 40}%`, opacity: Math.max(0, dayCycle - 0.15) }} />
-        <div className="moon-core" style={{ left: `${86 - dayCycle * 70}%`, top: `${18 + dayCycle * 26}%`, opacity: Math.max(0, 0.85 - dayCycle) }} />
+        <motion.div className="day-layer" style={{ opacity: useTransform(dayCycle, v => v * 0.8) }} />
+        <motion.div className="night-layer" style={{ opacity: useTransform(dayCycle, v => (1 - v) * 0.72) }} />
+        <motion.div className="sun-core" style={{ left: useTransform(dayCycle, v => `${8 + v * 74}%`), top: useTransform(dayCycle, v => `${56 - v * 40}%`), opacity: useTransform(dayCycle, v => Math.max(0, v - 0.15)) }} />
+        <motion.div className="moon-core" style={{ left: useTransform(dayCycle, v => `${86 - v * 70}%`), top: useTransform(dayCycle, v => `${18 + v * 26}%`), opacity: useTransform(dayCycle, v => Math.max(0, 0.85 - v)) }} />
       </div>
 
       <div
@@ -509,7 +503,7 @@ export default function ModernSite() {
               />
             )}
             {heroUsesVideo ? (
-              <video
+              <motion.video
                 className="hero-video-canvas absolute inset-0 h-full w-full scale-[1.06] object-cover"
                 autoPlay
                 muted
@@ -520,22 +514,22 @@ export default function ModernSite() {
                 onCanPlay={() => setHeroVideoReady(true)}
                 onError={() => setHeroVideoFailed(true)}
                 aria-hidden
-                style={{ filter: `saturate(${1.12 + daylight * 0.1}) contrast(${1.03 + daylight * 0.08}) brightness(${0.92 + nightGlow * 0.17})` }}
+                style={{ filter: videoFilter }}
               >
                 {heroVideoSources.map((src) => (
                   <source key={src} src={src} type={src.endsWith(".webm") ? "video/webm" : "video/mp4"} />
                 ))}
-              </video>
+              </motion.video>
             ) : null}
             <div className="hero-video-fallback absolute inset-0" aria-hidden />
             <div className="hero-video-noise absolute inset-0" aria-hidden />
           </div>
           <motion.div className="hero-vignette absolute inset-0 opacity-40" style={{ x: heroBgX, y: heroBgY }} />
           <motion.div className="hero-aurora absolute inset-0" style={{ x: heroBgX, y: heroBgY }} />
-          <div className="hero-dawn-wash absolute inset-0" style={{ opacity: Math.max(dawnGlow, duskGlow) * 0.52 }} aria-hidden />
-          <div className="hero-noon-wash absolute inset-0" style={{ opacity: noonGlow * 0.3 }} aria-hidden />
-          <div className="hero-night-stars absolute inset-0" style={{ opacity: nightGlow * 0.72 }} aria-hidden />
-          <div className="hero-sun-shaft absolute inset-0" style={{ opacity: daylight * 0.56 }} aria-hidden />
+          <motion.div className="hero-dawn-wash absolute inset-0" style={{ opacity: useTransform(dayProgress, v => Math.max(Math.max(0, 1 - Math.abs(v - 0.23) / 0.16), Math.max(0, 1 - Math.abs(v - 0.73) / 0.16)) * 0.52) }} aria-hidden />
+          <motion.div className="hero-noon-wash absolute inset-0" style={{ opacity: useTransform(dayProgress, v => Math.max(0, 1 - Math.abs(v - 0.5) / 0.24) * 0.3) }} aria-hidden />
+          <motion.div className="hero-night-stars absolute inset-0" style={{ opacity: useTransform(daylight, v => Math.min(1, Math.max(0, (0.42 - v) / 0.42)) * 0.72) }} aria-hidden />
+          <motion.div className="hero-sun-shaft absolute inset-0" style={{ opacity: useTransform(daylight, v => v * 0.56) }} aria-hidden />
           {isNight && <div className="hero-night-lift absolute inset-0" aria-hidden />}
           {isDesktopProfile && <div className="hero-scanline absolute inset-0" aria-hidden />}
           {isDesktopProfile && <div className="hero-glint absolute inset-0" aria-hidden />}
@@ -592,7 +586,7 @@ export default function ModernSite() {
 
               <p className="mt-12 max-w-xl text-lg leading-[1.9] text-stone-200/80 md:text-xl font-light">
                 Experience a masterclass in hunting logistics. A premium arrival sequence
-                meticulously crafted for the world's most discerning hunters.
+                meticulously crafted for the world&apos;s most discerning hunters.
               </p>
 
               <div className="mt-14 flex flex-wrap justify-center gap-6">
@@ -659,14 +653,7 @@ export default function ModernSite() {
                     <Crown size={14} className="opacity-70" />
                     <span className="text-[10px] uppercase tracking-[0.3em]">Concierge Dispatch</span>
                   </div>
-                  <motion.p
-                    key={tickerIndex}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-[12px] leading-relaxed text-stone-300 font-light"
-                  >
-                    "{rotatingNotes[tickerIndex]}"
-                  </motion.p>
+                  <ConciergeStatusTicker />
                   <div className="mt-5 flex gap-4 border-t border-white/5 pt-4">
                     {metrics.slice(2, 4).map((metric) => (
                       <div key={metric.label} className="flex-1">
@@ -1091,7 +1078,7 @@ export default function ModernSite() {
                     </div>
                   </div>
 
-                  <p className="mb-8 text-sm leading-relaxed text-stone-400 font-light italic">"{guide.story}"</p>
+                  <p className="mb-8 text-sm leading-relaxed text-stone-400 font-light italic">&quot;{guide.story}&quot;</p>
 
                   <div className="space-y-4 border-t border-white/5 pt-6">
                     <div className="flex items-center justify-between text-[10px] uppercase tracking-widest">

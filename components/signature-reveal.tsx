@@ -1,19 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useTransform, MotionValue } from "framer-motion";
 import { estateHighlights } from "@/lib/data";
 
 type SignatureRevealProps = {
-  daylight: number;
-  isNight: boolean;
+  daylight: MotionValue<number>;
+  isNight?: boolean;
 };
 
 export default function SignatureReveal({ daylight, isNight }: SignatureRevealProps) {
   return (
     <section className={`section-shell signature-shell signature-shell-tight signature-phase relative z-10 ${isNight ? "is-night" : "is-day"}`}>
-      <div className="signature-phase-day" style={{ opacity: daylight * 0.54 }} aria-hidden />
-      <div className="signature-phase-night" style={{ opacity: (1 - daylight) * 0.7 }} aria-hidden />
+      <motion.div className="signature-phase-day" style={{ opacity: useTransform(daylight, (v: number) => v * 0.54) }} aria-hidden />
+      <motion.div className="signature-phase-night" style={{ opacity: useTransform(daylight, (v: number) => (1 - v) * 0.7) }} aria-hidden />
       <div className="signature-glow" aria-hidden />
       <div className="signature-heading premium-panel rounded-2xl bg-black/35 p-5">
         <p className="text-xs uppercase tracking-[0.2em] text-[#d9b167]">Signature Estate Reveal</p>

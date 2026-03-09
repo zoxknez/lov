@@ -50,15 +50,19 @@ export default function InteractiveMap() {
           </div>
 
           <svg viewBox="0 0 100 70" className="h-[250px] w-full filter drop-shadow-[0_0_8px_rgba(217,177,103,0.2)]">
-            <defs>
-              <linearGradient id="terrainGlow" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="rgba(223,194,143,0.22)" />
-                <stop offset="100%" stopColor="rgba(116,181,142,0.12)" />
-              </linearGradient>
-            </defs>
-            <path d="M4,50 C18,33 27,16 48,14 C68,12 84,22 96,32 L96,68 L4,68 Z" fill="rgba(10,24,18,0.9)" stroke="url(#terrainGlow)" />
-            <path d="M12,46 C24,34 36,23 50,21 C66,19 79,25 90,33" fill="none" stroke="rgba(199,166,109,0.45)" strokeDasharray="2 2" />
-            <path d="M17,55 C28,47 40,40 53,39 C66,38 76,43 86,50" fill="none" stroke="rgba(137,203,166,0.32)" strokeDasharray="2 2" />
+            {useMemo(() => (
+              <>
+                <defs>
+                  <linearGradient id="terrainGlow" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="rgba(223,194,143,0.22)" />
+                    <stop offset="100%" stopColor="rgba(116,181,142,0.12)" />
+                  </linearGradient>
+                </defs>
+                <path d="M4,50 C18,33 27,16 48,14 C68,12 84,22 96,32 L96,68 L4,68 Z" fill="rgba(10,24,18,0.9)" stroke="url(#terrainGlow)" />
+                <path d="M12,46 C24,34 36,23 50,21 C66,19 79,25 90,33" fill="none" stroke="rgba(199,166,109,0.45)" strokeDasharray="2 2" />
+                <path d="M17,55 C28,47 40,40 53,39 C66,38 76,43 86,50" fill="none" stroke="rgba(137,203,166,0.32)" strokeDasharray="2 2" />
+              </>
+            ), [])}
 
             {mapZones.map((zone) => (
               <g key={zone.id}>

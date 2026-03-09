@@ -34,7 +34,7 @@ function CoreOrb() {
 export default function HeroScene() {
   return (
     <div className="absolute inset-0">
-      <Canvas camera={{ position: [0, 0.2, 4.8], fov: 45 }}>
+      <Canvas camera={{ position: [0, 0.2, 4.8], fov: 45 }} dpr={[1, 1.5]}>
         <color attach="background" args={["#060a07"]} />
         <fog attach="fog" args={["#060a07", 5, 11]} />
         <ambientLight intensity={0.7} />
