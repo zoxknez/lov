@@ -23,9 +23,8 @@ export default function InteractiveMap() {
               key={zone.id}
               type="button"
               onClick={() => setActiveId(zone.id)}
-              className={`rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.14em] transition ${
-                zone.id === activeId ? "border-[#d9b167] bg-[#d9b167]/20 text-[#f0d8ac]" : "border-white/20 text-stone-300 hover:border-[#d9b167]/60"
-              }`}
+              className={`rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.14em] transition ${zone.id === activeId ? "border-[#d9b167] bg-[#d9b167]/20 text-[#f0d8ac]" : "border-white/20 text-stone-300 hover:border-[#d9b167]/60"
+                }`}
             >
               {zone.title}
             </button>
@@ -35,9 +34,22 @@ export default function InteractiveMap() {
 
       <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-[linear-gradient(180deg,rgba(91,132,111,0.22),rgba(15,30,23,0.68))] p-4">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_25%,rgba(214,170,95,0.16),transparent_42%),radial-gradient(circle_at_82%_70%,rgba(110,170,138,0.12),transparent_44%)]" />
+        <div className="drone-scanline pointer-events-none absolute inset-0 z-[5] opacity-[0.15]" />
 
-        <div className="relative z-10 min-h-[250px] overflow-hidden rounded-xl border border-white/10 bg-black/20">
-          <svg viewBox="0 0 100 70" className="h-[250px] w-full">
+        {/* Drone Brackets */}
+        <div className="drone-ui-bracket -left-1 -top-1 border-l-2 border-t-2 border-[#d9b167]/40" />
+        <div className="drone-ui-bracket -right-1 -top-1 border-r-2 border-t-2 border-[#d9b167]/40" />
+        <div className="drone-ui-bracket -bottom-1 -left-1 border-b-2 border-l-2 border-[#d9b167]/40" />
+        <div className="drone-ui-bracket -bottom-1 -right-1 border-b-2 border-r-2 border-[#d9b167]/40" />
+
+        <div className="relative z-10 min-h-[250px] overflow-hidden rounded-xl border border-white/10 bg-black/40">
+          <div className="absolute left-4 top-4 z-20 flex flex-col gap-1 font-mono text-[8px] uppercase tracking-widest text-[#d9b167]/70">
+            <span className="animate-pulse">LAT: 39.04° S</span>
+            <span>LNG: 175.88° E</span>
+            <span>ALT: {active.elevationM}M</span>
+          </div>
+
+          <svg viewBox="0 0 100 70" className="h-[250px] w-full filter drop-shadow-[0_0_8px_rgba(217,177,103,0.2)]">
             <defs>
               <linearGradient id="terrainGlow" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="rgba(223,194,143,0.22)" />

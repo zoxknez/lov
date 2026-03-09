@@ -36,7 +36,7 @@ export default function SignatureReveal({ daylight, isNight }: SignatureRevealPr
             className="premium-panel reveal-card signature-card group relative min-h-[370px] overflow-hidden rounded-[28px] p-3"
           >
             <div className="relative h-full overflow-hidden rounded-2xl">
-              <Image src={item.image} alt={item.title} fill className="object-cover transition duration-700 group-hover:scale-110" />
+              <Image src={item.image} alt={item.title} fill className="object-cover transition duration-700 group-hover:scale-110" sizes="(max-width: 768px) 100vw, 33vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4">
                 <p className="text-[10px] uppercase tracking-[0.15em] text-[#dfc28f]">Estate frame 0{idx + 1}</p>

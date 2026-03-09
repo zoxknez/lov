@@ -26,7 +26,7 @@ export default function TrophyCarousel() {
       className="premium-panel trophy-intel-card overflow-hidden rounded-[28px]"
     >
       <div className="relative h-[360px]">
-        <Image src={item.image} alt={item.title} fill className="object-cover transition duration-700" />
+        <Image src={item.image} alt={item.title} fill className="object-cover transition duration-700" sizes="(max-width: 768px) 100vw, 600px" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <div className="absolute left-4 top-4 inline-flex rounded-full border border-[#e7cb95]/60 bg-black/45 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[#e7cb95]">
           {item.season}
@@ -63,12 +63,11 @@ export default function TrophyCarousel() {
               type="button"
               aria-label={`Show trophy ${i + 1}`}
               onClick={() => setIndex(i)}
-              className={`group relative overflow-hidden rounded-xl border transition ${
-                i === index ? "border-[#d9b167]/70" : "border-white/20 hover:border-[#d9b167]/45"
-              }`}
+              className={`group relative overflow-hidden rounded-xl border transition ${i === index ? "border-[#d9b167]/70" : "border-white/20 hover:border-[#d9b167]/45"
+                }`}
             >
               <div className="relative h-20">
-                <Image src={entry.image} alt={entry.title} fill className="object-cover" />
+                <Image src={entry.image} alt={entry.title} fill className="object-cover" sizes="120px" />
                 <div className="absolute inset-0 bg-black/40 transition group-hover:bg-black/25" />
                 <p className="absolute bottom-1 left-2 right-2 truncate text-left text-[10px] uppercase tracking-[0.12em] text-stone-100">{entry.title}</p>
               </div>

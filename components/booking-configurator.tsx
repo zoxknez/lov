@@ -47,42 +47,29 @@ type BookingConfiguratorProps = {
   onConfigChange?: (config: BookingConfig) => void;
 };
 
-function getInitialConfig() {
-  const fallback = {
-    species: "Red Stag",
-    stay: "5 Nights",
-    comfort: "Private Chalet",
-    transfer: "Premium 4x4",
-    guests: 2
-  };
-
-  if (typeof window === "undefined") return fallback;
-
-  try {
-    const raw = window.localStorage.getItem("kaimanawa-config");
-    if (!raw) return fallback;
-    const parsed = JSON.parse(raw) as Partial<BookingConfig>;
-
-    return {
-      species: parsed.species && speciesMap[parsed.species] ? parsed.species : fallback.species,
-      stay: parsed.stay && stayMap[parsed.stay] ? parsed.stay : fallback.stay,
-      comfort: parsed.comfort && comfortMap[parsed.comfort] ? parsed.comfort : fallback.comfort,
-      transfer: parsed.transfer && transferMap[parsed.transfer] ? parsed.transfer : fallback.transfer,
-      guests: typeof parsed.guests === "number" && parsed.guests >= 1 && parsed.guests <= 6 ? parsed.guests : fallback.guests
-    };
-  } catch {
-    return fallback;
-  }
-}
-
 export default function BookingConfigurator({ onConfigChange }: BookingConfiguratorProps) {
-  const [initialConfig] = useState(getInitialConfig);
-  const [species, setSpecies] = useState(initialConfig.species);
-  const [stay, setStay] = useState(initialConfig.stay);
-  const [comfort, setComfort] = useState(initialConfig.comfort);
-  const [transfer, setTransfer] = useState(initialConfig.transfer);
-  const [guests, setGuests] = useState(initialConfig.guests);
+  const [species, setSpecies] = useState("Red Stag");
+  const [stay, setStay] = useState("5 Nights");
+  const [comfort, setComfort] = useState("Private Chalet");
+  const [transfer, setTransfer] = useState("Premium 4x4");
+  const [guests, setGuests] = useState(2);
   const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    try {
+      const raw = window.localStorage.getItem("kaimanawa-config");
+      if (raw) {
+        const parsed = JSON.parse(raw) as Partial<BookingConfig>;
+        if (parsed.species && speciesMap[parsed.species]) setSpecies(parsed.species);
+        if (parsed.stay && stayMap[parsed.stay]) setStay(parsed.stay);
+        if (parsed.comfort && comfortMap[parsed.comfort]) setComfort(parsed.comfort);
+        if (parsed.transfer && transferMap[parsed.transfer]) setTransfer(parsed.transfer);
+        if (typeof parsed.guests === "number") setGuests(parsed.guests);
+      }
+    } catch { }
+  }, []);
 
   const quote = useMemo(() => {
     const perHunter = speciesMap[species] + stayMap[stay] + comfortMap[comfort] + transferMap[transfer];
@@ -99,6 +86,7 @@ export default function BookingConfigurator({ onConfigChange }: BookingConfigura
   }, [species]);
 
   useEffect(() => {
+    if (!isMounted) return;
     const payload: BookingConfig = {
       species,
       stay,
@@ -107,11 +95,11 @@ export default function BookingConfigurator({ onConfigChange }: BookingConfigura
       guests,
       perHunter: quote.perHunter,
       total: quote.total,
-      budgetBand: quote.budgetBand
+      budgetBand: quote.budgetBand,
     };
     window.localStorage.setItem("kaimanawa-config", JSON.stringify(payload));
     onConfigChange?.(payload);
-  }, [comfort, guests, onConfigChange, quote.budgetBand, quote.perHunter, quote.total, species, stay, transfer]);
+  }, [comfort, guests, isMounted, onConfigChange, quote.budgetBand, quote.perHunter, quote.total, species, stay, transfer]);
 
   return (
     <article className="premium-panel rounded-[30px] bg-black/40 p-6">
@@ -205,11 +193,11 @@ export default function BookingConfigurator({ onConfigChange }: BookingConfigura
       <div className="mt-5 grid gap-3 sm:grid-cols-3">
         <div className="premium-panel rounded-xl bg-black/35 p-3">
           <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Per guest estimate</p>
-          <p className="mt-1 text-2xl font-semibold text-[#f0d8ac]">NZ${quote.perHunter.toLocaleString()}</p>
+          <p className="mt-1 text-2xl font-semibold text-[#f0d8ac]">NZ${quote.perHunter.toLocaleString('en-NZ')}</p>
         </div>
         <div className="premium-panel rounded-xl bg-black/35 p-3">
           <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Group estimate</p>
-          <p className="mt-1 text-2xl font-semibold text-[#f0d8ac]">NZ${quote.total.toLocaleString()}</p>
+          <p className="mt-1 text-2xl font-semibold text-[#f0d8ac]">NZ${quote.total.toLocaleString('en-NZ')}</p>
         </div>
         <div className="premium-panel rounded-xl bg-black/35 p-3">
           <p className="text-[10px] uppercase tracking-[0.14em] text-[#e7cb95]">Budget profile</p>

@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
@@ -63,10 +64,19 @@ export default function AmbientAudio({ mode, dayCycle, activeSection }: { mode: 
       <button
         type="button"
         onClick={() => setEnabled((v) => !v)}
-        className="audio-toggle premium-panel fixed bottom-5 right-5 z-[92] inline-flex items-center gap-2 rounded-full bg-black/55 px-3 py-2 text-xs uppercase tracking-[0.12em] text-stone-100"
+        className="audio-toggle premium-panel fixed bottom-5 right-5 z-[92] inline-flex items-center gap-3 rounded-full bg-black/65 px-4 py-2.5 text-[10px] uppercase tracking-[0.16em] text-stone-100 backdrop-blur-xl border-white/10 transition-all hover:bg-black/80 hover:scale-105"
       >
-        {enabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
-        {enabled ? `Ambient On - ${activeSection}` : "Ambient Off"}
+        <div className="flex h-3 items-center gap-0.5" aria-hidden="true">
+          {[1, 2, 3, 4].map((i) => (
+            <motion.span
+              key={i}
+              animate={enabled ? { height: ["20%", "100%", "40%", "80%", "20%"] } : { height: "20%" }}
+              transition={{ repeat: Infinity, duration: 0.6 + i * 0.1 }}
+              className="w-0.5 rounded-full bg-[#d9b167]"
+            />
+          ))}
+        </div>
+        <span>{enabled ? "Ambient Active" : "Ambient Static"}</span>
       </button>
     </>
   );
