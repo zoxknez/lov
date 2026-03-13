@@ -2,13 +2,13 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "KAIMANAWA Premium Hunts",
+    name: "Kaimanawa Trophy Safaris",
     short_name: "KAIMANAWA",
-    description: "Premium New Zealand trophy hunting experience platform.",
+    description: "Guided New Zealand hunting programs across bush country and alpine terrain.",
     start_url: "/",
     display: "standalone",
-    background_color: "#050806",
-    theme_color: "#050806",
+    background_color: "#f7f3eb",
+    theme_color: "#f7f3eb",
     icons: [
       {
         src: "/brand-logo.png",

@@ -7,31 +7,30 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
 function StaticFallback() {
   return (
     <main className="relative z-10">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#040705]/80 backdrop-blur-xl">
-        <div className="section-shell flex min-h-[100px] items-center justify-between gap-4 py-2">
+      <header className="sticky top-0 z-50 border-b border-white/60 bg-[rgba(247,242,232,0.9)] backdrop-blur-xl">
+        <div className="section-shell flex min-h-[88px] items-center justify-between gap-4 py-2">
           <div className="flex items-center gap-4">
-            <span className="gradient-ring grid h-20 w-20 place-items-center overflow-hidden rounded-full bg-gradient-to-b from-[#213326] to-[#101811] p-1">
-              <Image src="/brand-logo.png" alt="Kaimanawa logo" width={96} height={96} className="h-full w-full rounded-full object-cover" />
+            <span className="brand-medallion">
+              <Image src="/brand-logo.png" alt="Kaimanawa logo" width={96} height={96} className="h-16 w-16 rounded-full object-cover" />
             </span>
             <div>
-              <p className="font-serif text-xl tracking-[0.24em]">KAIMANAWA</p>
-              <p className="text-[10px] uppercase tracking-[0.24em] text-[#d1b988]">New Zealand Private Hunts</p>
+              <p className="font-display text-xl tracking-[0.24em] text-[#142019]">KAIMANAWA</p>
+              <p className="text-[10px] uppercase tracking-[0.24em] text-[#7a6650]">Trophy Safaris | New Zealand</p>
             </div>
           </div>
-          <span className="premium-panel rounded-full bg-black/40 px-3 py-2 text-xs uppercase tracking-[0.14em] text-[#dfc28f]">
-            Loading Premium Experience...
+          <span className="eyebrow-pill">
+            Loading Site...
           </span>
         </div>
       </header>
 
       <section className="section-shell py-24">
-        <p className="text-xs uppercase tracking-[0.2em] text-[#d9b167]">KAIMANAWA 2027</p>
-        <h1 className="mt-3 max-w-[14ch] font-serif text-5xl leading-[1] md:text-7xl">
-          Premium hunting platform is initializing.
+        <p className="text-xs uppercase tracking-[0.2em] text-[#8d6b42]">KAIMANAWA TROPHY SAFARIS</p>
+        <h1 className="mt-3 max-w-[14ch] font-display text-5xl leading-[1] text-[#142019] md:text-7xl">
+          Guided New Zealand hunting is loading.
         </h1>
-        <p className="mt-5 max-w-2xl text-stone-200">
-          Kaimanawa Range, Central North Island (Manawatu-Whanganui / Waikato), New Zealand.
-          If the interactive version does not appear, refresh once with Ctrl+F5.
+        <p className="mt-5 max-w-2xl text-[#4f5c52]">
+          Central North Island bush country, South Island alpine access, and tailored hunt planning for international guests.
         </p>
       </section>
     </main>
@@ -42,25 +41,25 @@ export default function Home() {
   const organizationLd = {
     "@context": "https://schema.org",
     "@type": "SportsActivityLocation",
-    name: "KAIMANAWA Premium Hunts",
-    ...(siteUrl ? { url: siteUrl, logo: `${siteUrl}/brand-logo.png` } : {}),
+    name: "Kaimanawa Trophy Safaris",
+    ...(siteUrl ? { url: siteUrl, logo: `${siteUrl}/brand-logo.png`, email: "hunting@kaimanawasafaris.com", telephone: "+64 21 088 50131" } : {}),
     description:
-      "Private New Zealand trophy hunting programs with guide-led logistics and concierge expedition planning.",
+      "Guided New Zealand hunting programs with tailored planning across Central North Island bush country and South Island alpine terrain.",
     areaServed: "New Zealand",
     address: {
       "@type": "PostalAddress",
       addressCountry: "NZ",
-      addressRegion: "Manawatu-Whanganui / Waikato"
+      addressRegion: "Central North Island / South Island"
     }
   };
 
   const serviceLd = {
     "@context": "https://schema.org",
     "@type": "Service",
-    serviceType: "Private Trophy Hunting Expedition",
+    serviceType: "Guided New Zealand Hunting Program",
     provider: {
       "@type": "Organization",
-      name: "KAIMANAWA Premium Hunts"
+      name: "Kaimanawa Trophy Safaris"
     },
     areaServed: {
       "@type": "Country",

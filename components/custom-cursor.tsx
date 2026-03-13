@@ -1,111 +1,120 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useSpring, useMotionValue } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+
+type CursorMode = "default" | "interactive" | "focus";
 
 export default function CustomCursor() {
-    const [cursorType, setCursorType] = useState<"default" | "tactical" | "link">("default");
-    const [isVisible, setIsVisible] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [mode, setMode] = useState<CursorMode>("default");
 
-    const cursorX = useMotionValue(-100);
-    const cursorY = useMotionValue(-100);
+  const x = useMotionValue(-100);
+  const y = useMotionValue(-100);
+  const ringX = useSpring(x, { stiffness: 240, damping: 26, mass: 0.22 });
+  const ringY = useSpring(y, { stiffness: 240, damping: 26, mass: 0.22 });
+  const coreX = useSpring(x, { stiffness: 420, damping: 30, mass: 0.12 });
+  const coreY = useSpring(y, { stiffness: 420, damping: 30, mass: 0.12 });
 
-    const springConfig = { damping: 25, stiffness: 200 };
-    const springX = useSpring(cursorX, springConfig);
-    const springY = useSpring(cursorY, springConfig);
+  useEffect(() => {
+    const media = window.matchMedia("(pointer: fine)");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    useEffect(() => {
-        let ticking = false;
-        const moveCursor = (e: MouseEvent) => {
-            if (ticking) return;
-            ticking = true;
-            requestAnimationFrame(() => {
-                cursorX.set(e.clientX);
-                cursorY.set(e.clientY);
-                if (!isVisible) setIsVisible(true);
-                ticking = false;
-            });
-        };
+    const syncMode = () => {
+      const active = media.matches && !reduceMotion.matches;
+      setEnabled(active);
 
-        const handleOver = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
-            const link = target.closest('a, button, [role="button"]');
-            const tactical = target.closest('.species-card, .map-intel-card, .trophy-intel-card, .dossier-card');
+      if (active) {
+        document.body.classList.add("custom-crosshair");
+      } else {
+        document.body.classList.remove("custom-crosshair");
+      }
+    };
 
-            setCursorType(link ? "link" : tactical ? "tactical" : "default");
-        };
+    syncMode();
+    media.addEventListener("change", syncMode);
+    reduceMotion.addEventListener("change", syncMode);
 
-        window.addEventListener("mousemove", moveCursor);
-        window.addEventListener("mouseover", handleOver);
+    return () => {
+      media.removeEventListener("change", syncMode);
+      reduceMotion.removeEventListener("change", syncMode);
+      document.body.classList.remove("custom-crosshair");
+    };
+  }, []);
 
-        return () => {
-            window.removeEventListener("mousemove", moveCursor);
-            window.removeEventListener("mouseover", handleOver);
-        };
-    }, [cursorX, cursorY, isVisible]);
+  useEffect(() => {
+    if (!enabled) return;
 
-    if (!isVisible) return null;
+    const onMove = (event: MouseEvent) => {
+      x.set(event.clientX);
+      y.set(event.clientY);
+      setVisible(true);
+    };
 
-    return (
-        <div className="pointer-events-none fixed inset-0 z-[9999] hidden lg:block">
-            {/* Central Dot */}
-            <motion.div
-                style={{ x: springX, y: springY }}
-                className="absolute h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d9b167]"
-            />
+    const onLeave = () => setVisible(false);
+    const onOver = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
 
-            {/* Main Ring */}
-            <motion.div
-                style={{ x: springX, y: springY }}
-                animate={{
-                    scale: cursorType === "link" ? 1.8 : cursorType === "tactical" ? 2.5 : 1,
-                    opacity: cursorType === "default" ? 0.4 : 0.8,
-                }}
-                className="absolute h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#d9b167]/40 ring-1 ring-[#d9b167]/10"
-            />
+      if (target.closest(".aim-target")) {
+        setMode("focus");
+        return;
+      }
 
-            {/* Scope Crosshair Lines (Nisan) */}
-            <motion.div
-                style={{ x: springX, y: springY }}
-                animate={{ opacity: cursorType === "default" ? 0.3 : 0.6 }}
-                className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-            >
-                <div className="absolute top-1/2 left-1/2 h-px w-10 -translate-x-1/2 -translate-y-1/2 bg-[#d9b167]/40" />
-                <div className="absolute top-1/2 left-1/2 h-10 w-px -translate-x-1/2 -translate-y-1/2 bg-[#d9b167]/40" />
-            </motion.div>
+      if (target.closest("a, button, input, textarea, select, label")) {
+        setMode("interactive");
+        return;
+      }
 
-            {/* Tactical Optics */}
-            {cursorType === "tactical" && (
-                <motion.div
-                    style={{ x: springX, y: springY }}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2"
-                >
-                    {/* Rangefinder Brackets */}
-                    <div className="absolute -left-12 -top-12 h-4 w-4 border-l-2 border-t-2 border-[#d9b167]/30" />
-                    <div className="absolute -right-12 -top-12 h-4 w-4 border-r-2 border-t-2 border-[#d9b167]/30" />
-                    <div className="absolute -bottom-12 -left-12 h-4 w-4 border-b-2 border-l-2 border-[#d9b167]/30" />
-                    <div className="absolute -bottom-12 -right-12 h-4 w-4 border-b-2 border-r-2 border-[#d9b167]/30" />
+      setMode("default");
+    };
 
-                    {/* Fake Data Stream */}
-                    <div className="absolute -right-32 top-0 flex flex-col gap-1 font-mono text-[8px] uppercase tracking-wider text-[#d9b167]/60">
-                        <span className="animate-pulse">AZIMUTH: 184°</span>
-                        <span>ELEV: +12.4m</span>
-                        <span>SIG: OPTIMAL</span>
-                    </div>
-                </motion.div>
-            )}
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseover", onOver);
+    window.addEventListener("blur", onLeave);
+    document.documentElement.addEventListener("mouseleave", onLeave);
 
-            {/* Link Pulse */}
-            {cursorType === "link" && (
-                <motion.div
-                    style={{ x: springX, y: springY }}
-                    animate={{ scale: [1, 1.4, 1] }}
-                    transition={{ repeat: Infinity, duration: 1.5 }}
-                    className="absolute h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#d9b167]/20"
-                />
-            )}
-        </div>
-    );
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseover", onOver);
+      window.removeEventListener("blur", onLeave);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+    };
+  }, [enabled, x, y]);
+
+  if (!enabled || !visible) return null;
+
+  const scale = mode === "focus" ? 1.45 : mode === "interactive" ? 1.18 : 1;
+  const opacity = mode === "default" ? 0.72 : 0.96;
+
+  return (
+    <div className="pointer-events-none fixed inset-0 z-[120] hidden lg:block">
+      <motion.div
+        style={{ x: ringX, y: ringY }}
+        animate={{ scale, opacity }}
+        className="reticle-ring"
+      >
+        <span className="reticle-line reticle-line-h" />
+        <span className="reticle-line reticle-line-v" />
+      </motion.div>
+
+      <motion.div
+        style={{ x: coreX, y: coreY }}
+        animate={{ scale: mode === "focus" ? 1.25 : 1 }}
+        className="reticle-core"
+      />
+
+      <motion.div
+        style={{ x: ringX, y: ringY }}
+        animate={{ opacity: mode === "focus" ? 1 : 0 }}
+        className="reticle-brackets"
+      >
+        <span className="reticle-corner reticle-corner-tl" />
+        <span className="reticle-corner reticle-corner-tr" />
+        <span className="reticle-corner reticle-corner-bl" />
+        <span className="reticle-corner reticle-corner-br" />
+      </motion.div>
+    </div>
+  );
 }
