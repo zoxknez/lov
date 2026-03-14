@@ -55,43 +55,50 @@ export const speciesCatalog = [
     name: "Red Deer",
     season: "Late March to April",
     terrain: "High-country basins, bush margins, mixed private and public access",
-    note: "Classic New Zealand roar hunting for international guests chasing a mature stag, with spring also offering productive stalking in some areas."
+    note: "Classic New Zealand roar hunting for international guests chasing a mature stag, with spring also offering productive stalking in some areas.",
+    image: "https://images.unsplash.com/photo-1484406593171-eb2bd6208bb4?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Fallow Deer",
     season: "April to mid-May",
     terrain: "Open faces, scrub country, select private blocks",
-    note: "Fallow can be hunted year-round in New Zealand, but the autumn rut is the main trophy window for a selective stalk."
+    note: "Fallow can be hunted year-round in New Zealand, but the autumn rut is the main trophy window for a selective stalk.",
+    image: "https://images.unsplash.com/photo-1549471013-3364d7220b75?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Rusa Deer",
     season: "July to August",
     terrain: "North Island bush, especially Te Urewera-style habitat, and private-country programs by arrangement",
-    note: "A later-winter North Island option usually scheduled separately from autumn deer and alpine hunts, with the rut running through July and August."
+    note: "A later-winter North Island option usually scheduled separately from autumn deer and alpine hunts, with the rut running through July and August.",
+    image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Sika Deer",
     season: "Late March to early May",
     terrain: "Kaimanawa and Central North Island bush country",
-    note: "The Kaimanawa herd is internationally known and remains one of New Zealand's signature sika experiences, with spring also a productive time in some forests."
+    note: "The Kaimanawa herd is internationally known and remains one of New Zealand's signature sika experiences, with spring also a productive time in some forests.",
+    image: "https://images.unsplash.com/photo-1514489370845-8bcbaeaaab26?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Arapawa Rams",
     season: "By arrangement",
     terrain: "Private access ground only",
-    note: "Available as a specialist add-on when timing, access, and transport line up."
+    note: "Available as a specialist add-on when timing, access, and transport line up.",
+    image: "https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Chamois",
     season: "Year-round; favoured May to June",
     terrain: "Remote South Island alpine faces and steep valley systems",
-    note: "A true mountain hunt with long glassing sessions and weather-led decision making. DOC guidance treats May-June as a favoured buck period, with late summer also appealing in settled weather."
+    note: "A true mountain hunt with long glassing sessions and weather-led decision making. DOC guidance treats May-June as a favoured buck period, with late summer also appealing in settled weather.",
+    image: "https://images.unsplash.com/photo-1623832163935-71be19cb1e11?auto=format&fit=crop&w=1200&q=80"
   },
   {
     name: "Himalayan Tahr",
     season: "Year-round; rut late May to mid-July",
     terrain: "Southern Alps high country, often with helicopter support where needed",
-    note: "One of New Zealand's great alpine trophies, pursued in dramatic and demanding terrain. Aerial access rules can change by block, ballot, and concession conditions."
+    note: "One of New Zealand's great alpine trophies, pursued in dramatic and demanding terrain. Aerial access rules can change by block, ballot, and concession conditions.",
+    image: "https://images.unsplash.com/photo-1588725838575-d2fc0dc55fbd?auto=format&fit=crop&w=1200&q=80"
   }
 ];
 

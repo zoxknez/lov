@@ -6,32 +6,27 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
 
 function StaticFallback() {
   return (
-    <main className="relative z-10">
-      <header className="sticky top-0 z-50 border-b border-white/60 bg-[rgba(247,242,232,0.9)] backdrop-blur-xl">
-        <div className="section-shell flex min-h-[88px] items-center justify-between gap-4 py-2">
-          <div className="flex items-center gap-4">
-            <span className="brand-medallion">
-              <Image src="/brand-logo.png" alt="Kaimanawa logo" width={96} height={96} className="h-16 w-16 rounded-full object-cover" />
+    <main className="relative z-10 min-h-screen bg-[#060907] text-white">
+      <header className="absolute inset-x-0 top-0 z-50 border-b border-white/10 bg-[#060907]/60">
+        <div className="section-shell flex min-h-[90px] items-center justify-between gap-5 py-4">
+          <div className="flex items-center gap-3">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/5">
+              <span className="font-display text-xl text-white">K</span>
             </span>
             <div>
-              <p className="font-display text-xl tracking-[0.24em] text-[#142019]">KAIMANAWA</p>
-              <p className="text-[10px] uppercase tracking-[0.24em] text-[#7a6650]">Trophy Safaris | New Zealand</p>
+              <p className="font-display text-xl uppercase tracking-[0.24em]">KAIMANAWA</p>
+              <p className="text-[10px] uppercase tracking-[0.32em] text-white/70">Trophy Safaris | New Zealand</p>
             </div>
           </div>
-          <span className="eyebrow-pill">
-            Loading Site...
-          </span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-[#d9b167]">Loading...</span>
         </div>
       </header>
 
-      <section className="section-shell py-24">
-        <p className="text-xs uppercase tracking-[0.2em] text-[#8d6b42]">KAIMANAWA TROPHY SAFARIS</p>
-        <h1 className="mt-3 max-w-[14ch] font-display text-5xl leading-[1] text-[#142019] md:text-7xl">
-          Guided New Zealand hunting is loading.
+      <section className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
+        <span className="text-[11px] uppercase tracking-[0.2em] text-[#d9b167]">Kaimanawa Trophy Safaris</span>
+        <h1 className="mt-6 font-display text-5xl leading-tight text-white md:text-7xl">
+          Guided New Zealand hunting is loading
         </h1>
-        <p className="mt-5 max-w-2xl text-[#4f5c52]">
-          Central North Island bush country, South Island alpine access, and tailored hunt planning for international guests.
-        </p>
       </section>
     </main>
   );

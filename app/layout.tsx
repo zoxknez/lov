@@ -67,11 +67,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <a href="#top" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[200] focus:rounded-md focus:bg-white/95 focus:px-3 focus:py-2 focus:text-sm focus:text-[#142019]">
+      <body className="bg-[#060907] text-white">
+        <a href="#top" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[200] focus:rounded-md focus:bg-white/95 focus:px-3 focus:py-2 focus:text-sm focus:text-black">
           Skip to content
         </a>
-        <div className="noise-overlay" aria-hidden />
         <SmoothScroll />
         <AnalyticsBeacon />
         {children}
