@@ -35,18 +35,24 @@ export const heroVisuals = [
 export const fieldJournal = [
   {
     title: "An itinerary that feels composed",
-    text: "The strongest safari and expedition sites today present the trip as a considered sequence, not a pile of bullet points. This layout now does the same.",
-    accent: "Journal 01"
+    excerpt: "The strongest safari and expedition sites today present the trip as a considered sequence, not a pile of bullet points.",
+    date: "Autumn 2026",
+    accent: "Journal 01",
+    image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80"
   },
   {
     title: "Large visuals, then calm reading space",
-    text: "Modern premium travel pages alternate immersive imagery with quiet editorial blocks so the site feels expensive, not noisy.",
-    accent: "Journal 02"
+    excerpt: "Modern premium travel pages alternate immersive imagery with quiet editorial blocks so the site feels expensive.",
+    date: "April 12, 2026",
+    accent: "Journal 02",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80"
   },
   {
     title: "Planning language that builds trust",
-    text: "The strongest conversion detail for this niche is clarity around season, access, permits, and logistics. That is now integrated into the design instead of hidden.",
-    accent: "Journal 03"
+    excerpt: "The strongest conversion detail for this niche is clarity around season, access, permits, and logistics.",
+    date: "May 04, 2026",
+    accent: "Journal 03",
+    image: "https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?auto=format&fit=crop&w=1600&q=80"
   }
 ];
 
