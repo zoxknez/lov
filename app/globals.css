@@ -214,6 +214,74 @@ img, video, canvas, svg { display: block; max-width: 100%; }
   );
 }
 
+.experience-editorial {
+  background-image:
+    radial-gradient(circle at 14% 18%, rgba(200,169,110,0.14), transparent 28%),
+    linear-gradient(90deg, transparent 0 12%, rgba(245,240,232,0.05) 12%, rgba(245,240,232,0.05) 12.15%, transparent 12.15%, transparent 72%, rgba(200,169,110,0.08) 72%, rgba(200,169,110,0.08) 72.15%, transparent 72.15%),
+    repeating-linear-gradient(180deg, rgba(245,240,232,0.025) 0 1px, transparent 1px 72px),
+    linear-gradient(135deg, rgba(245,240,232,0.02), transparent 55%);
+}
+
+.species-dossier {
+  background-image:
+    radial-gradient(circle at 84% 14%, rgba(200,169,110,0.1), transparent 24%),
+    repeating-linear-gradient(180deg, rgba(245,240,232,0.03) 0 1px, transparent 1px 58px),
+    linear-gradient(90deg, transparent 0 18%, rgba(245,240,232,0.05) 18%, rgba(245,240,232,0.05) 18.12%, transparent 18.12%, transparent 82%, rgba(245,240,232,0.05) 82%, rgba(245,240,232,0.05) 82.12%, transparent 82.12%),
+    linear-gradient(135deg, rgba(39,69,58,0.12), transparent 58%);
+}
+
+.territory-contours {
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(200,169,110,0.14), transparent 28%),
+    radial-gradient(circle at 84% 18%, rgba(137,164,156,0.12), transparent 26%),
+    repeating-radial-gradient(circle at 20% 52%, rgba(245,240,232,0.025) 0 2px, transparent 2px 18px),
+    repeating-radial-gradient(circle at 80% 48%, rgba(245,240,232,0.022) 0 2px, transparent 2px 20px),
+    linear-gradient(90deg, rgba(245,240,232,0.02) 1px, transparent 1px);
+  background-size: auto, auto, 52% 100%, 52% 100%, 120px 120px;
+  background-position: 0 0, 0 0, left center, right center, center;
+}
+
+.planning-radar {
+  background-image:
+    radial-gradient(circle at center, rgba(200,169,110,0.1), transparent 16%),
+    repeating-radial-gradient(circle at center, rgba(245,240,232,0.025) 0 1px, transparent 1px 54px),
+    repeating-linear-gradient(90deg, rgba(245,240,232,0.03) 0 1px, transparent 1px 88px),
+    repeating-linear-gradient(180deg, rgba(245,240,232,0.03) 0 1px, transparent 1px 88px);
+}
+
+.standards-ledger {
+  background-image:
+    radial-gradient(circle at 14% 18%, rgba(200,169,110,0.12), transparent 24%),
+    repeating-linear-gradient(180deg, rgba(245,240,232,0.028) 0 1px, transparent 1px 64px),
+    linear-gradient(90deg, transparent 0 10%, rgba(245,240,232,0.045) 10%, rgba(245,240,232,0.045) 10.12%, transparent 10.12%);
+}
+
+.gallery-lighttable {
+  background-image:
+    radial-gradient(circle at 16% 18%, rgba(200,169,110,0.16), transparent 24%),
+    radial-gradient(circle at 82% 20%, rgba(245,240,232,0.05), transparent 20%),
+    linear-gradient(90deg, transparent 0 8%, rgba(245,240,232,0.04) 8%, rgba(245,240,232,0.04) 8.08%, transparent 8.08%, transparent 92%, rgba(245,240,232,0.03) 92%, rgba(245,240,232,0.03) 92.08%, transparent 92.08%),
+    repeating-linear-gradient(180deg, rgba(245,240,232,0.02) 0 1px, transparent 1px 82px),
+    linear-gradient(135deg, rgba(49,36,24,0.26), transparent 62%);
+}
+
+.concierge-station {
+  background-image:
+    radial-gradient(circle at 18% 16%, rgba(200,169,110,0.18), transparent 24%),
+    radial-gradient(circle at 82% 18%, rgba(245,240,232,0.05), transparent 18%),
+    linear-gradient(90deg, transparent 0 9%, rgba(245,240,232,0.035) 9%, rgba(245,240,232,0.035) 9.08%, transparent 9.08%, transparent 91%, rgba(245,240,232,0.028) 91%, rgba(245,240,232,0.028) 91.08%, transparent 91.08%),
+    repeating-linear-gradient(180deg, rgba(245,240,232,0.018) 0 1px, transparent 1px 90px),
+    linear-gradient(135deg, rgba(72,49,28,0.28), transparent 60%);
+}
+
+.contact-concierge {
+  background-image:
+    radial-gradient(circle at 18% 20%, rgba(200,169,110,0.12), transparent 24%),
+    radial-gradient(circle at 82% 18%, rgba(245,240,232,0.06), transparent 20%),
+    repeating-linear-gradient(90deg, rgba(245,240,232,0.025) 0 1px, transparent 1px 96px),
+    repeating-linear-gradient(180deg, rgba(245,240,232,0.022) 0 1px, transparent 1px 96px);
+}
+
 /* ── BOLD HEADING MASK ────────────────────────────────────────────── */
 .experience-grid {
   background-image:

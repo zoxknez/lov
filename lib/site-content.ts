@@ -276,19 +276,45 @@ export const galleryPlaceholders = [
 
 export const galleryShowcase = [
   {
-    title: "Bush edges and river crossings",
-    image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80"
+    title: "Sika in dark bush country",
+    image: "/media/species/sika-deer.jpg",
+    code: "Proof 01",
+    meta: "North Island / Bush edge",
+    note: "A tighter species-led frame that sells patience, cover, and proximity instead of postcard scale."
   },
   {
-    title: "Alpine glassing faces",
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80"
+    title: "Southern Alps weather line",
+    image: "/media/experience-alpine-forest.jpg",
+    code: "Proof 02",
+    meta: "South Island / Alpine access",
+    note: "A wide environmental image carrying the seriousness of the country before the animal even appears."
   },
   {
-    title: "Valley movement and access",
-    image: "https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?auto=format&fit=crop&w=1600&q=80"
+    title: "Lodge reset after the climb",
+    image: "/media/experience-lodge-view.jpg",
+    code: "Proof 03",
+    meta: "Hosted base / Recovery",
+    note: "Hospitality enters as texture and release, not as another luxury sales panel."
   },
   {
-    title: "Late-light returns",
-    image: "https://images.unsplash.com/photo-1470093851219-69951fcbb533?auto=format&fit=crop&w=1600&q=80"
+    title: "Red stag field portrait",
+    image: "/media/species/red-deer.jpg",
+    code: "Proof 04",
+    meta: "Species file / Red deer",
+    note: "Clean trophy detail for the kind of client who wants visual proof of animal quality."
+  },
+  {
+    title: "Chamois on exposed country",
+    image: "/media/species/chamois.jpg",
+    code: "Proof 05",
+    meta: "Species file / Chamois",
+    note: "A colder mountain frame that changes the emotional temperature of the gallery."
+  },
+  {
+    title: "Bull tahr ridge character",
+    image: "/media/species/himalayan-tahr.jpg",
+    code: "Proof 06",
+    meta: "Species file / Tahr",
+    note: "Strong silhouette and coat texture for the harder alpine part of the story."
   }
 ];

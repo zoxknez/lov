@@ -55,17 +55,17 @@ const EXPERIENCE_SCENES: ExperienceScene[] = [
     secondaryImage: "/media/experience-lodge-view.jpg",
     mediaPosition: "object-center",
     cinematicLabel: "Terrain-First Thinking",
-    cinematicTitle: "Place leads the hunt before any itinerary becomes fixed.",
+    cinematicTitle: "The country chooses the trip before the brochure ever can.",
     cinematicText:
-      "Bush, river valleys, and alpine faces are matched to species and season first, so the trip feels composed rather than packaged.",
+      "Bush, river valleys, and alpine faces are matched to species and season first, so the program feels shaped by ground truth instead of marketing symmetry.",
     tags: ["North Island bush", "South Island alpine", "Species-led timing"],
     facts: [
       { icon: Trees, label: "Terrain", value: "Bush, valley, alpine" },
-      { icon: Compass, label: "Approach", value: "Country before brochure" },
+      { icon: Compass, label: "Method", value: "Country before itinerary" },
       { icon: CalendarRange, label: "Window", value: "Built around species timing" }
     ],
-    supportTitle: "Hosted base, real reach",
-    supportText: "Comfort stays part of the experience, but the plan still starts with the right country."
+    supportTitle: "Country note",
+    supportText: "The tone here is about reading terrain well, not decorating it with empty luxury cues."
   },
   {
     key: "hosting",
@@ -76,17 +76,17 @@ const EXPERIENCE_SCENES: ExperienceScene[] = [
     mediaSrc: EXPERIENCE_VIDEO_SRC,
     secondaryImage: "/media/experience-alpine-forest.jpg",
     cinematicLabel: "Hosted Rhythm",
-    cinematicTitle: "Lodge comfort stays in frame without dulling the field standard.",
+    cinematicTitle: "Lodge comfort supports the hunt instead of replacing it.",
     cinematicText:
-      "Private rooms, proper recovery, and controlled transfers sit underneath the hunt instead of turning it into a tourist loop.",
+      "Private rooms, recovery, and controlled transfers remain in frame, but the field standard still leads. The section should feel composed, not resort-soft.",
     tags: ["Private lodge feel", "Remote camps when needed", "Small hosted groups"],
     facts: [
       { icon: House, label: "Stay", value: "Lodge-backed base" },
-      { icon: Users, label: "Group size", value: "Usually 2-4 hunters" },
+      { icon: Users, label: "Format", value: "Usually 2-4 hunters" },
       { icon: Compass, label: "Reach", value: "Remote only when needed" }
     ],
-    supportTitle: "Scene reference",
-    supportText: "This panel uses an external aerial lodge visual so the section feels alive instead of flat black."
+    supportTitle: "Hosting note",
+    supportText: "The hospitality layer is visible, but it stays secondary to the field logic and pace."
   },
   {
     key: "planning",
@@ -98,17 +98,17 @@ const EXPERIENCE_SCENES: ExperienceScene[] = [
     secondaryImage: "/media/experience-alpine-forest.jpg",
     mediaPosition: "object-center",
     cinematicLabel: "Travel Confidence",
-    cinematicTitle: "Permits, rifles, transfers, and export are handled before arrival.",
+    cinematicTitle: "The premium feeling comes from removing uncertainty before arrival.",
     cinematicText:
-      "The premium feeling is not just visual. It comes from removing uncertainty before the hunt starts and protecting the field pace once you land.",
+      "Permits, rifles, transfers, trophy-export steps, and pacing all get settled early, so the hunt itself can stay uncluttered once boots hit the ground.",
     tags: ["DOC aware", "Rifles + permits", "Transfer logic"],
     facts: [
       { icon: ShieldCheck, label: "Compliance", value: "DOC + MPI aware" },
       { icon: Plane, label: "Travel", value: "Arrival mapped early" },
       { icon: Compass, label: "Outcome", value: "Trip feels composed" }
     ],
-    supportTitle: "Planning card",
-    supportText: "Species, month, and group size turn into a tailored travel and field outline with less friction."
+    supportTitle: "Planning note",
+    supportText: "This chapter makes the site feel considered, because invisible friction is part of the design problem too."
   }
 ];
 
@@ -134,7 +134,7 @@ export default function ExperienceShowcase() {
 
     const id = window.setInterval(() => {
       setActiveIdx((prev) => (prev + 1) % EXPERIENCE_SCENES.length);
-    }, 6500);
+    }, 6800);
 
     return () => window.clearInterval(id);
   }, [reduceMotion]);
@@ -157,10 +157,10 @@ export default function ExperienceShowcase() {
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden py-28 lg:py-36">
-      <div className="experience-orb absolute left-[-8rem] top-16 h-72 w-72 rounded-full bg-[#c8a96e]/14 blur-3xl" />
-      <div className="experience-orb absolute bottom-[-5rem] right-[-2rem] h-80 w-80 rounded-full bg-[#36513c]/22 blur-3xl" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_18%,rgba(213,176,108,0.12),transparent_28%),radial-gradient(circle_at_82%_24%,rgba(74,104,76,0.18),transparent_34%),linear-gradient(135deg,rgba(7,8,7,0.98),rgba(12,14,11,0.96)_42%,rgba(24,18,12,0.94)_100%)]" />
-      <div className="experience-grid absolute inset-0 opacity-40" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,10,8,0.98)_0%,rgba(16,12,8,0.96)_42%,rgba(9,10,8,0.98)_100%)]" />
+      <div className="experience-editorial absolute inset-0 opacity-90" />
+      <div className="absolute inset-y-0 left-[10%] w-px bg-gradient-to-b from-transparent via-[#c8a96e]/35 to-transparent" />
+      <div className="absolute inset-y-0 right-[14%] hidden w-px bg-gradient-to-b from-transparent via-white/10 to-transparent xl:block" />
 
       <div className="shell-full relative z-10">
         <motion.div
@@ -168,176 +168,24 @@ export default function ExperienceShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-12 grid gap-8 xl:grid-cols-[minmax(0,1.1fr)_minmax(20rem,28rem)] xl:items-end"
+          className="grid gap-8 xl:grid-cols-[minmax(0,1.1fr)_minmax(18rem,24rem)] xl:items-end"
         >
-          <div className="max-w-[48rem]">
-            <Label gold>Field Standards / Editorial Feature</Label>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[clamp(3rem,5.6vw,6.1rem)] leading-[0.9] tracking-[-0.04em] text-[#f2ece2]">
-              Less outfitter.
-              <span className="block italic font-light text-[#d9cfbf]">More private guide.</span>
+          <div className="max-w-[54rem]">
+            <Label gold>Experience / Editorial Spread</Label>
+            <h2 className="mt-5 font-[family-name:var(--font-display)] text-[clamp(3rem,5.9vw,6.5rem)] leading-[0.88] tracking-[-0.05em] text-[#f4ede2]">
+              Not a luxury wrapper.
+              <span className="block italic font-light text-[#d8ccb8]">A field story with better manners.</span>
             </h2>
           </div>
 
-          <div className="xl:justify-self-end">
-            <p className="max-w-[28rem] text-[15px] leading-[1.9] text-white/68 sm:text-[16px]">
-              Kaimanawa Trophy Safaris works best when the site communicates atmosphere and operating
-              logic at the same time. This section now does both: terrain, hosting standard, and
-              travel confidence all move together instead of sitting in a flat black list.
-            </p>
-
-            <div className="mt-7 flex flex-wrap gap-3">
-              <MagneticButton
-                tag="a"
-                href="#species"
-                className="inline-flex items-center gap-3 rounded-full bg-[#c8a96e] px-6 py-3.5 label text-[10px] tracking-[0.32em] text-[#050605] transition-colors duration-300 hover:bg-[#e8c98a]"
-              >
-                EXPLORE SPECIES <ArrowRight size={14} />
-              </MagneticButton>
-              <MagneticButton
-                tag="a"
-                href="#planning"
-                className="inline-flex items-center gap-3 rounded-full border border-white/14 bg-white/[0.04] px-6 py-3.5 label text-[10px] tracking-[0.3em] text-white/82 backdrop-blur-md transition-colors duration-300 hover:bg-white/10"
-              >
-                VIEW PLANNING <ArrowRight size={14} />
-              </MagneticButton>
-            </div>
-          </div>
+          <p className="max-w-[25rem] text-[15px] leading-[1.9] text-white/65 sm:text-[16px]">
+            This section now behaves like a magazine spread. It opens the site with point of view,
+            chapter selection, and atmosphere instead of repeating another product dashboard.
+          </p>
         </motion.div>
 
-        <div className="grid gap-8 xl:grid-cols-[minmax(0,1.08fr)_minmax(20rem,30rem)] xl:gap-10">
-          <motion.div
-            initial={reduceMotion ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.18 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="relative min-h-[32rem] overflow-hidden rounded-[2rem] border border-white/12 bg-black/20 shadow-[0_32px_90px_rgba(0,0,0,0.32)]"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeScene.key}
-                initial={reduceMotion ? false : { opacity: 0.15, scale: 1.03 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={reduceMotion ? {} : { opacity: 0.1, scale: 1.02 }}
-                transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-0"
-              >
-                {activeScene.mediaType === "video" ? (
-                  <video
-                    ref={videoRef}
-                    className="h-full w-full object-cover object-center"
-                    muted
-                    loop
-                    playsInline
-                    preload="none"
-                    poster={EXPERIENCE_VIDEO_POSTER}
-                  >
-                    <source src={activeScene.mediaSrc} type="video/mp4" />
-                  </video>
-                ) : (
-                  <Image
-                    src={activeScene.mediaSrc}
-                    alt={activeScene.title}
-                    fill
-                    sizes="(min-width: 1280px) 60vw, 100vw"
-                    className={activeScene.mediaPosition ? `object-cover ${activeScene.mediaPosition}` : "object-cover object-center"}
-                  />
-                )}
-              </motion.div>
-            </AnimatePresence>
-
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(228,194,126,0.22),transparent_30%),linear-gradient(180deg,rgba(7,8,7,0.18)_0%,rgba(7,8,7,0.36)_42%,rgba(7,8,7,0.88)_100%)]" />
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,8,7,0.72)_0%,rgba(7,8,7,0.12)_42%,rgba(7,8,7,0.72)_100%)]" />
-
-            <div className="relative z-10 flex h-full flex-col justify-between p-6 lg:p-8">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-3 rounded-full border border-white/14 bg-black/24 px-4 py-2 backdrop-blur-md">
-                  <span className="h-2 w-2 rounded-full bg-[#c8a96e]" />
-                  <Label gold>{activeScene.cinematicLabel}</Label>
-                </span>
-                {activeScene.mediaType === "video" && (
-                  <span className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/18 px-4 py-2 backdrop-blur-md">
-                    <span className="label text-[9px] tracking-[0.28em] text-white/72">External video preview</span>
-                    <span className="relative flex h-2.5 w-2.5">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#c8a96e]/70" />
-                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#e8c98a]" />
-                    </span>
-                  </span>
-                )}
-              </div>
-
-              <div className="max-w-[35rem]">
-                <motion.div
-                  key={`${activeScene.key}-copy`}
-                  initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <h3 className="font-[family-name:var(--font-display)] text-[clamp(2rem,4vw,3.6rem)] leading-[0.94] tracking-[-0.03em] text-[#f5eee4]">
-                    {activeScene.cinematicTitle}
-                  </h3>
-                  <p className="mt-4 max-w-[34rem] text-[15px] leading-[1.85] text-white/72 sm:text-[16px]">
-                    {activeScene.cinematicText}
-                  </p>
-                </motion.div>
-              </div>
-
-              <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_15rem]">
-                <div className="rounded-[1.5rem] border border-white/12 bg-[linear-gradient(180deg,rgba(7,8,7,0.62),rgba(7,8,7,0.3))] p-4 backdrop-blur-xl">
-                  <div className="flex flex-wrap gap-2">
-                    {activeScene.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-[10px] uppercase tracking-[0.22em] text-white/60"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                    {activeScene.facts.map((fact) => {
-                      const Icon = fact.icon;
-
-                      return (
-                        <div key={fact.label} className="rounded-[1.1rem] border border-white/10 bg-black/16 p-3.5">
-                          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04]">
-                            <Icon size={16} className="text-[#c8a96e]" />
-                          </span>
-                          <p className="mt-3 label text-[8px] tracking-[0.25em] text-white/42">{fact.label}</p>
-                          <p className="mt-2 text-[13px] leading-5 text-white/80">{fact.value}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <motion.div
-                  key={`${activeScene.key}-support`}
-                  initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                  className="experience-float rounded-[1.4rem] border border-white/12 bg-[linear-gradient(180deg,rgba(10,11,10,0.74),rgba(10,11,10,0.42))] p-3 backdrop-blur-xl"
-                >
-                  <div className="relative h-32 overflow-hidden rounded-[1.1rem] border border-white/10">
-                    <Image
-                      src={activeScene.secondaryImage}
-                      alt={activeScene.supportTitle}
-                      fill
-                      sizes="240px"
-                      className="object-cover object-center"
-                    />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,8,7,0.05),rgba(7,8,7,0.68))]" />
-                  </div>
-                  <div className="mt-3">
-                    <Label gold>{activeScene.supportTitle}</Label>
-                    <p className="mt-2 text-[13px] leading-6 text-white/66">{activeScene.supportText}</p>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="space-y-3">
+        <div className="mt-12 grid gap-8 xl:grid-cols-[19rem_minmax(0,1fr)]">
+          <div className="space-y-3 xl:pr-4">
             {EXPERIENCE_SCENES.map((scene, index) => {
               const active = index === activeIdx;
 
@@ -345,58 +193,193 @@ export default function ExperienceShowcase() {
                 <motion.button
                   key={scene.key}
                   type="button"
-                  initial={reduceMotion ? false : { opacity: 0, x: 14 }}
+                  initial={reduceMotion ? false : { opacity: 0, x: -14 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{
-                    duration: 0.65,
+                    duration: 0.55,
                     delay: reduceMotion ? 0 : index * 0.08,
                     ease: [0.16, 1, 0.3, 1]
                   }}
                   onClick={() => setActiveIdx(index)}
                   onMouseEnter={() => setActiveIdx(index)}
-                  className={`w-full rounded-[1.7rem] border p-5 text-left transition-all duration-300 ${
-                    active
-                      ? "border-[#c8a96e]/40 bg-[linear-gradient(135deg,rgba(200,169,110,0.14),rgba(255,255,255,0.02))] shadow-[0_20px_60px_rgba(0,0,0,0.18)]"
-                      : "border-white/10 bg-white/[0.025] hover:border-white/20 hover:bg-white/[0.045]"
+                  className={`w-full border-b pb-5 pt-1 text-left transition-all duration-300 ${
+                    active ? "border-[#c8a96e]/45" : "border-white/10 hover:border-white/22"
                   }`}
                 >
-                  <div className="flex gap-4">
-                    <span className={`font-[family-name:var(--font-display)] text-[2.8rem] leading-none ${active ? "text-[#e8c98a]" : "text-white/12"}`}>
+                  <div className="flex items-start gap-4">
+                    <span className={`font-[family-name:var(--font-display)] text-[3rem] leading-none ${active ? "text-[#e8c98a]" : "text-white/14"}`}>
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="min-w-0">
-                          <Label gold={active}>{scene.badge}</Label>
-                          <h3 className="mt-2 font-[family-name:var(--font-display)] text-[1.6rem] leading-[1.04] text-white">
-                            {scene.title}
-                          </h3>
-                        </div>
-                        <span className={`mt-2 h-2.5 w-2.5 shrink-0 rounded-full ${active ? "bg-[#c8a96e]" : "bg-white/18"}`} />
-                      </div>
-
-                      <p className="mt-4 text-[14px] leading-[1.85] text-white/62">{scene.text}</p>
-
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {scene.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className={`rounded-full border px-3 py-1.5 text-[10px] uppercase tracking-[0.22em] ${
-                              active
-                                ? "border-[#c8a96e]/30 bg-[#c8a96e]/10 text-[#e8c98a]"
-                                : "border-white/10 bg-white/[0.04] text-white/54"
-                            }`}
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+                      <Label gold={active}>{scene.badge}</Label>
+                      <h3 className="mt-3 font-[family-name:var(--font-display)] text-[1.7rem] leading-[0.98] text-white">
+                        {scene.title}
+                      </h3>
+                      <p className="mt-3 text-[13px] leading-6 text-white/58">{scene.text}</p>
                     </div>
                   </div>
                 </motion.button>
               );
             })}
+
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.7, delay: reduceMotion ? 0 : 0.18, ease: [0.16, 1, 0.3, 1] }}
+              className="rounded-[1.7rem] border border-[#c8a96e]/20 bg-[linear-gradient(135deg,rgba(200,169,110,0.12),rgba(255,255,255,0.02))] p-5"
+            >
+              <Label gold>Editorial note</Label>
+              <p className="mt-3 text-[14px] leading-7 text-white/72">
+                The goal here is tone-setting. Before species, areas, or logistics, the site should
+                prove it understands what this experience actually feels like.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <MagneticButton
+                  tag="a"
+                  href="#species"
+                  className="inline-flex items-center gap-3 rounded-full bg-[#c8a96e] px-5 py-3 label text-[10px] tracking-[0.3em] text-[#050605] transition-colors duration-300 hover:bg-[#e8c98a]"
+                >
+                  SEE SPECIES <ArrowRight size={14} />
+                </MagneticButton>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_17rem] xl:items-start">
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.18 }}
+              transition={{ duration: 0.82, ease: [0.16, 1, 0.3, 1] }}
+              className="relative overflow-hidden rounded-[2.25rem] border border-white/12 bg-black/20 shadow-[0_40px_90px_rgba(0,0,0,0.28)]"
+            >
+              <div className="relative min-h-[35rem] overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeScene.key}
+                    initial={reduceMotion ? false : { opacity: 0.15, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={reduceMotion ? {} : { opacity: 0.08, scale: 1.02 }}
+                    transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute inset-0"
+                  >
+                    {activeScene.mediaType === "video" ? (
+                      <video
+                        ref={videoRef}
+                        className="h-full w-full object-cover object-center"
+                        muted
+                        loop
+                        playsInline
+                        preload="none"
+                        poster={EXPERIENCE_VIDEO_POSTER}
+                      >
+                        <source src={activeScene.mediaSrc} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <Image
+                        src={activeScene.mediaSrc}
+                        alt={activeScene.title}
+                        fill
+                        sizes="(min-width: 1280px) 55vw, 100vw"
+                        className={activeScene.mediaPosition ? `object-cover ${activeScene.mediaPosition}` : "object-cover object-center"}
+                      />
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,8,6,0.08)_0%,rgba(10,8,6,0.25)_35%,rgba(10,8,6,0.9)_100%)]" />
+                <div className="absolute inset-y-0 left-0 w-[45%] bg-[linear-gradient(90deg,rgba(10,8,6,0.78),rgba(10,8,6,0.1))]" />
+
+                <div className="absolute left-6 top-6 rounded-full border border-white/14 bg-black/20 px-4 py-2 backdrop-blur-md">
+                  <Label gold>{activeScene.cinematicLabel}</Label>
+                </div>
+                <div className="absolute right-6 top-6 rounded-full border border-white/10 bg-black/18 px-4 py-2 backdrop-blur-md">
+                  <span className="label text-[9px] tracking-[0.28em] text-white/72">
+                    CHAPTER {String(activeIdx + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                <div className="relative z-10 flex min-h-[35rem] flex-col justify-end p-6 lg:p-8">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={`${activeScene.key}-copy`}
+                      initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={reduceMotion ? {} : { opacity: 0, y: -10 }}
+                      transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
+                      className="max-w-[38rem]"
+                    >
+                      <h3 className="font-[family-name:var(--font-display)] text-[clamp(2.3rem,4.2vw,4.5rem)] leading-[0.92] tracking-[-0.04em] text-[#f5eee4]">
+                        {activeScene.cinematicTitle}
+                      </h3>
+                      <p className="mt-4 text-[15px] leading-[1.85] text-white/74 sm:text-[16px]">
+                        {activeScene.cinematicText}
+                      </p>
+                    </motion.div>
+                  </AnimatePresence>
+
+                  <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                    {activeScene.facts.map((fact) => {
+                      const Icon = fact.icon;
+
+                      return (
+                        <div
+                          key={fact.label}
+                          className="rounded-[1.2rem] border border-white/12 bg-[linear-gradient(180deg,rgba(15,12,9,0.62),rgba(15,12,9,0.28))] p-4 backdrop-blur-xl"
+                        >
+                          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04]">
+                            <Icon size={16} className="text-[#c8a96e]" />
+                          </span>
+                          <p className="mt-3 label text-[8px] tracking-[0.25em] text-white/40">{fact.label}</p>
+                          <p className="mt-2 text-[13px] leading-6 text-white/78">{fact.value}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.18 }}
+              transition={{ duration: 0.72, delay: reduceMotion ? 0 : 0.08, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-4"
+            >
+              <div className="overflow-hidden rounded-[1.7rem] border border-white/12 bg-[linear-gradient(180deg,rgba(15,12,9,0.72),rgba(15,12,9,0.42))] p-3">
+                <div className="relative h-44 overflow-hidden rounded-[1.2rem] border border-white/10">
+                  <Image
+                    src={activeScene.secondaryImage}
+                    alt={activeScene.supportTitle}
+                    fill
+                    sizes="280px"
+                    className="object-cover object-center"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,8,8,0.04),rgba(8,8,8,0.62))]" />
+                </div>
+                <div className="mt-4">
+                  <Label gold>{activeScene.supportTitle}</Label>
+                  <p className="mt-2 text-[13px] leading-6 text-white/66">{activeScene.supportText}</p>
+                </div>
+              </div>
+
+              <div className="rounded-[1.7rem] border border-white/10 bg-black/18 p-5">
+                <Label>Signal words</Label>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {activeScene.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-2 text-[10px] uppercase tracking-[0.22em] text-white/56"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>

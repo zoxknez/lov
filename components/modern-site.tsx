@@ -28,6 +28,8 @@ import StandardsShowcase from "@/components/standards-showcase";
 import TerritoryShowcase from "@/components/territory-showcase";
 import TurnstileWidget from "@/components/turnstile-widget";
 import AuroraCanvas from "@/components/aurora-canvas";
+import ConciergeDesk from "@/components/concierge-desk";
+import GalleryLightTable from "@/components/gallery-light-table";
 import MagneticButton from "@/components/magnetic-button";
 import ParallaxImage from "@/components/parallax-image";
 import {
@@ -81,6 +83,7 @@ const HERO_SCENE_META = [
     rhythm: "Long-form days"
   }
 ] as const;
+
 
 /* ─── tiny helpers ───────────────────────────── */
 function Label({ children, gold = false }: { children: React.ReactNode; gold?: boolean }) {
@@ -693,6 +696,8 @@ export default function ModernSite() {
 
         <HR />
 
+
+
         {/* ══ SPECIES ══════════════════════════════════════════════════════ */}
         <SpeciesShowcase />
         {false && <section id="species" className="py-28 lg:py-36">
@@ -972,7 +977,9 @@ export default function ModernSite() {
         <HR />
 
         {/* ══ GALLERY ══════════════════════════════════════════════════════ */}
-        <section id="gallery" className="py-28 lg:py-36">
+        <GalleryLightTable />
+
+        <section aria-hidden="true" className="hidden">
           <div className="shell-full mb-12">
             <motion.div {...rv} transition={tr0}>
               <Label gold>Gallery</Label>
@@ -1043,120 +1050,186 @@ export default function ModernSite() {
         <HR />
 
         {/* ══ CONTACT ══════════════════════════════════════════════════════ */}
-        <section id="contact" className="py-28 lg:py-36 shell-full">
-          <motion.div {...rv} transition={tr0} className="mb-16">
-            <Label gold>Enquiry</Label>
-            <h2 className="font-[family-name:var(--font-display)] text-[clamp(3rem,6vw,7rem)] leading-[0.88] text-white mt-4">
-              Begin your <br />
-              <span className="italic text-white/40">New Zealand story.</span>
-            </h2>
-          </motion.div>
+        <ConciergeDesk
+          email={EMAIL}
+          phone={PHONE}
+          steps={STEPS}
+          onSubmit={handleSubmit}
+          onTurnTokenChange={setTurnToken}
+          submitting={submitting}
+          status={status}
+          statusTone={statusTone}
+          turnEnabled={turnEnabled}
+          hasTurnToken={Boolean(turnToken)}
+        />
 
-          <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-20 items-start">
-            {/* Left — info */}
-            <motion.div {...rv} transition={tr0} className="space-y-8">
-              <div className="divide-y divide-white/[0.07]">
-                <a href={`mailto:${EMAIL}`}
-                  className="flex items-center justify-between gap-4 py-6 group hover:text-[#c8a96e] transition-colors duration-300">
-                  <span>
-                    <Label>Email</Label>
-                    <p className="mt-1 text-base text-white group-hover:text-[#c8a96e] transition-colors duration-300">{EMAIL}</p>
-                  </span>
-                  <Mail size={20} className="text-white/20 group-hover:text-[#c8a96e] transition-colors duration-300 shrink-0" />
-                </a>
-                <a href={`tel:${PHONE.replace(/\s+/g, "")}`}
-                  className="flex items-center justify-between gap-4 py-6 group hover:text-[#c8a96e] transition-colors duration-300">
-                  <span>
-                    <Label>WhatsApp / Call</Label>
-                    <p className="mt-1 text-base text-white group-hover:text-[#c8a96e] transition-colors duration-300">{PHONE}</p>
-                  </span>
-                  <PhoneCall size={20} className="text-white/20 group-hover:text-[#c8a96e] transition-colors duration-300 shrink-0" />
-                </a>
-              </div>
+        {false && <section id="contact" className="relative overflow-hidden py-28 lg:py-36">
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,9,8,0.99)_0%,rgba(11,10,9,0.98)_46%,rgba(8,8,8,0.99)_100%)]" />
+          <div className="contact-concierge absolute inset-0 opacity-70" />
 
-              {/* Steps */}
-              <div>
-                <Label gold>How it works</Label>
-                <div className="mt-5 divide-y divide-white/[0.07]">
-                  {STEPS.map((s, i) => (
-                    <div key={i} className="flex gap-5 py-5 items-start">
-                      <span className="font-[family-name:var(--font-display)] text-3xl text-[#c8a96e]/40 shrink-0 leading-none">{String(i + 1).padStart(2, "0")}</span>
-                      <p className="text-[13px] text-white/40 leading-relaxed font-light pt-1">{s}</p>
+          <div className="shell-full relative z-10">
+            <motion.div {...rv} transition={tr0} className="mb-16">
+              <Label gold>Enquiry / Concierge Desk</Label>
+              <h2 className="font-[family-name:var(--font-display)] text-[clamp(3rem,6vw,7rem)] leading-[0.88] text-white mt-4">
+                Begin your <br />
+                <span className="italic text-white/40">New Zealand story.</span>
+              </h2>
+            </motion.div>
+
+            <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] xl:gap-12 items-start">
+              <motion.div
+                {...rv}
+                transition={tr0}
+                className="rounded-[2rem] border border-white/12 bg-[linear-gradient(180deg,rgba(12,10,9,0.94),rgba(12,10,9,0.8))] p-6 shadow-[0_28px_80px_rgba(0,0,0,0.26)]"
+              >
+                <div className="flex items-start justify-between gap-6 border-b border-white/10 pb-6">
+                  <div>
+                    <Label gold>Direct channel</Label>
+                    <p className="mt-3 max-w-sm text-[14px] leading-7 text-white/68">
+                      This last section should feel like a private desk, not a generic web form.
+                    </p>
+                  </div>
+                  <span className="font-[family-name:var(--font-display)] text-[3.4rem] leading-none text-white/10">
+                    01
+                  </span>
+                </div>
+
+                <div className="mt-2 divide-y divide-white/[0.07]">
+                  <a
+                    href={`mailto:${EMAIL}`}
+                    className="flex items-center justify-between gap-4 py-6 group hover:text-[#c8a96e] transition-colors duration-300"
+                  >
+                    <span>
+                      <Label>Email</Label>
+                      <p className="mt-1 text-base text-white group-hover:text-[#c8a96e] transition-colors duration-300">{EMAIL}</p>
+                    </span>
+                    <Mail size={20} className="text-white/20 group-hover:text-[#c8a96e] transition-colors duration-300 shrink-0" />
+                  </a>
+                  <a
+                    href={`tel:${PHONE.replace(/\s+/g, "")}`}
+                    className="flex items-center justify-between gap-4 py-6 group hover:text-[#c8a96e] transition-colors duration-300"
+                  >
+                    <span>
+                      <Label>WhatsApp / Call</Label>
+                      <p className="mt-1 text-base text-white group-hover:text-[#c8a96e] transition-colors duration-300">{PHONE}</p>
+                    </span>
+                    <PhoneCall size={20} className="text-white/20 group-hover:text-[#c8a96e] transition-colors duration-300 shrink-0" />
+                  </a>
+                </div>
+
+                <div className="mt-8 rounded-[1.6rem] border border-[#c8a96e]/20 bg-[linear-gradient(135deg,rgba(200,169,110,0.12),rgba(255,255,255,0.03))] p-5">
+                  <Label gold>How it works</Label>
+                  <div className="mt-5 space-y-4">
+                    {STEPS.map((s, i) => (
+                      <div key={i} className="flex gap-4 items-start">
+                        <span className="font-[family-name:var(--font-display)] text-3xl text-[#c8a96e]/55 shrink-0 leading-none">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <p className="text-[13px] text-white/66 leading-relaxed pt-1">{s}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div {...rv} transition={{ ...tr0, delay: reduceMotion ? 0 : 0.1 }} className="relative">
+                <div className="absolute inset-3 rounded-[2rem] border border-white/10 bg-white/[0.02]" />
+                <div className="relative rounded-[2rem] border border-white/12 bg-[linear-gradient(180deg,rgba(12,10,9,0.96),rgba(12,10,9,0.84))] p-6 lg:p-8 shadow-[0_32px_90px_rgba(0,0,0,0.3)]">
+                  <div className="mb-8 flex items-end justify-between gap-6 border-b border-white/10 pb-6">
+                    <div>
+                      <Label gold>Trip brief</Label>
+                      <p className="mt-3 max-w-xl text-[14px] leading-7 text-white/68">
+                        Share the species, timing, and group shape. We will come back with a more tailored outline, not a canned reply.
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right — form */}
-            <motion.div {...rv} transition={{ ...tr0, delay: reduceMotion ? 0 : 0.1 }}>
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <input type="text" name="antiBotField" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden />
-
-                <div className="grid sm:grid-cols-2 gap-8">
-                  <div className="form-field">
-                    <label htmlFor="fn">Full name</label>
-                    <input id="fn" required name="fullName" placeholder=" " />
+                    <span className="hidden font-[family-name:var(--font-display)] text-[3.4rem] leading-none text-white/10 lg:block">
+                      02
+                    </span>
                   </div>
-                  <div className="form-field">
-                    <label htmlFor="em">Email address</label>
-                    <input id="em" required type="email" name="email" placeholder=" " />
-                  </div>
+
+                  <form onSubmit={handleSubmit} className="space-y-8">
+                    <input type="text" name="antiBotField" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden />
+
+                    <div className="grid sm:grid-cols-2 gap-8">
+                      <div className="form-field">
+                        <label htmlFor="fn">Full name</label>
+                        <input id="fn" required name="fullName" placeholder=" " />
+                      </div>
+                      <div className="form-field">
+                        <label htmlFor="em">Email address</label>
+                        <input id="em" required type="email" name="email" placeholder=" " />
+                      </div>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-8">
+                      <div className="form-field">
+                        <label htmlFor="sp">Target species</label>
+                        <select id="sp" required name="targetSpecies" defaultValue="Red Deer">
+                          {speciesCatalog.map((s) => (
+                            <option key={s.name} value={s.name} style={{ background: "#0e0e0e" }}>{s.name}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="form-field">
+                        <label htmlFor="gs">Group size</label>
+                        <select id="gs" required name="groupSize" defaultValue="2 hunters">
+                          {["1 hunter", "2 hunters", "3 hunters", "4 hunters", "Hunter + observer"].map((o) => (
+                            <option key={o} value={o} style={{ background: "#0e0e0e" }}>{o}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid sm:grid-cols-[minmax(0,1fr)_14rem] gap-8">
+                      <div className="form-field">
+                        <label htmlFor="pm">Preferred window</label>
+                        <input id="pm" name="preferredMonth" placeholder=" " />
+                      </div>
+                      <div className="rounded-[1.4rem] border border-white/10 bg-black/10 p-4">
+                        <Label gold>Response style</Label>
+                        <p className="mt-3 text-[13px] leading-6 text-white/66">
+                          Tailored outline, species fit, travel logic, and next steps.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="form-field">
+                      <label htmlFor="msg">Tell us about the trip</label>
+                      <textarea id="msg" required name="message" rows={5} placeholder=" " style={{ resize: "none" }} />
+                    </div>
+
+                    <div>
+                      <TurnstileWidget onTokenChange={setTurnToken} />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={submitting || (turnEnabled && !turnToken)}
+                      className="group w-full flex items-center justify-between gap-4 bg-[#c8a96e] text-[#080808] px-8 py-5 label text-[10px] tracking-[0.35em] hover:bg-[#e8c98a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
+                    >
+                      <span>{submitting ? "SENDING..." : "SUBMIT ENQUIRY"}</span>
+                      {!submitting && <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-300" />}
+                      {submitting && <span className="h-3.5 w-3.5 border border-[#080808]/30 border-t-[#080808] rounded-full animate-spin" />}
+                    </button>
+
+                    <AnimatePresence>
+                      {statusTone === "err" && status && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="label text-[9px] tracking-[0.25em] text-red-400 mt-4"
+                        >
+                          {status}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </form>
                 </div>
-
-                <div className="grid sm:grid-cols-2 gap-8">
-                  <div className="form-field">
-                    <label htmlFor="sp">Target species</label>
-                    <select id="sp" required name="targetSpecies" defaultValue="Red Deer">
-                      {speciesCatalog.map((s) => (
-                        <option key={s.name} value={s.name} style={{ background: "#0e0e0e" }}>{s.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-field">
-                    <label htmlFor="gs">Group size</label>
-                    <select id="gs" required name="groupSize" defaultValue="2 hunters">
-                      {["1 hunter", "2 hunters", "3 hunters", "4 hunters", "Hunter + observer"].map((o) => (
-                        <option key={o} value={o} style={{ background: "#0e0e0e" }}>{o}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="form-field">
-                  <label htmlFor="pm">Preferred window</label>
-                  <input id="pm" name="preferredMonth" placeholder=" " />
-                </div>
-
-                <div className="form-field">
-                  <label htmlFor="msg">Tell us about the trip</label>
-                  <textarea id="msg" required name="message" rows={5} placeholder=" " style={{ resize: "none" }} />
-                </div>
-
-                <div>
-                  <TurnstileWidget onTokenChange={setTurnToken} />
-                </div>
-
-                <button type="submit"
-                  disabled={submitting || (turnEnabled && !turnToken)}
-                  className="group w-full flex items-center justify-between gap-4 bg-[#c8a96e] text-[#080808] px-8 py-5 label text-[10px] tracking-[0.35em] hover:bg-[#e8c98a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300">
-                  <span>{submitting ? "SENDING..." : "SUBMIT ENQUIRY"}</span>
-                  {!submitting && <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-300" />}
-                  {submitting && <span className="h-3.5 w-3.5 border border-[#080808]/30 border-t-[#080808] rounded-full animate-spin" />}
-                </button>
-
-                <AnimatePresence>
-                  {statusTone === "err" && status && (
-                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                      className="label text-[9px] tracking-[0.25em] text-red-400 mt-4">
-                      {status}
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-              </form>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
-        </section>
+        </section>}
 
         {/* Cinematic Success Overlay */}
         <AnimatePresence>
