@@ -3,22 +3,25 @@
 import { useEffect, useState } from "react";
 
 export default function LocalTime({ timezone }: { timezone: string }) {
-    const [clock, setClock] = useState(new Date());
+    const [zoneTime, setZoneTime] = useState<string | null>(null);
 
     useEffect(() => {
-        const id = setInterval(() => setClock(new Date()), 1000);
+        const formatter = new Intl.DateTimeFormat("en-NZ", {
+            weekday: "short",
+            day: "2-digit",
+            month: "short",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: timezone
+        });
+
+        const updateClock = () => setZoneTime(formatter.format(new Date()));
+
+        updateClock();
+        const id = setInterval(updateClock, 1000);
         return () => clearInterval(id);
-    }, []);
+    }, [timezone]);
 
-    const zoneTime = new Intl.DateTimeFormat("en-NZ", {
-        weekday: "short",
-        day: "2-digit",
-        month: "short",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-        timeZone: timezone
-    }).format(clock);
-
-    return <>{zoneTime}</>;
+    return <span suppressHydrationWarning>{zoneTime ?? "--, -- --- --:--"}</span>;
 }

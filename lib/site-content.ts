@@ -1,17 +1,36 @@
 export const navigation = [
-  { href: "#species", label: "Species" },
-  { href: "#areas", label: "Areas" },
-  { href: "#story", label: "Story" },
+  { href: "#home", label: "Home" },
+  { href: "#species", label: "Collection" },
+  { href: "#areas", label: "Territory" },
   { href: "#planning", label: "Planning" },
+  { href: "#story", label: "Standards" },
   { href: "#gallery", label: "Gallery" },
-  { href: "#contact", label: "Contact" }
+  { href: "#contact", label: "Enquiry" }
 ];
 
 export const heroFacts = [
-  { value: "North + South Island", label: "guided access depending on species and conditions" },
-  { value: "2-4 hunters", label: "kept per program for a personal pace in the field" },
-  { value: "90+ years", label: "across founders and guide team, based on supplied bios" },
-  { value: "DOC + MPI aware", label: "planning language aligned to current public guidance" }
+  { value: "North + South Island", label: "bush, river valley, and alpine programs shaped by species" },
+  { value: "2-4 hunters", label: "small hosted groups keep the pace personal and flexible" },
+  { value: "90+ years", label: "shared field time across founders and the guide team" },
+  { value: "DOC + MPI aware", label: "travel, permits, and export considerations mapped early" }
+];
+
+export const experiencePillars = [
+  {
+    label: "Country",
+    title: "Place-led itineraries",
+    text: "Each program is framed around the right terrain first, then tuned to species, seasonal window, and the pace your group wants in the field."
+  },
+  {
+    label: "Hosting",
+    title: "Lodge comfort with real field access",
+    text: "The core rhythm stays comfortable and hosted, with remote camps used only when the hunt genuinely needs extra reach."
+  },
+  {
+    label: "Planning",
+    title: "Travel confidence before you arrive",
+    text: "Species timing, rifles, permits, transfers, and trophy export considerations are aligned early so the trip feels composed."
+  }
 ];
 
 export const heroVisuals = [
@@ -34,23 +53,23 @@ export const heroVisuals = [
 
 export const fieldJournal = [
   {
-    title: "An itinerary that feels composed",
-    excerpt: "The strongest safari and expedition sites today present the trip as a considered sequence, not a pile of bullet points.",
-    date: "Autumn 2026",
+    title: "First light in Kaimanawa country",
+    excerpt: "Roar mornings begin with quiet glassing lines, damp grass underfoot, and short decisions made before the valley fully wakes.",
+    date: "North Island",
     accent: "Journal 01",
     image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80"
   },
   {
-    title: "Large visuals, then calm reading space",
-    excerpt: "Modern premium travel pages alternate immersive imagery with quiet editorial blocks so the site feels expensive.",
-    date: "April 12, 2026",
+    title: "The lodge after the climb",
+    excerpt: "Warm rooms, proper meals, drying gear, and an unhurried evening reset the body between demanding hunting windows.",
+    date: "Hosted Comfort",
     accent: "Journal 02",
     image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80"
   },
   {
-    title: "Planning language that builds trust",
-    excerpt: "The strongest conversion detail for this niche is clarity around season, access, permits, and logistics.",
-    date: "May 04, 2026",
+    title: "South Island weather windows",
+    excerpt: "Alpine hunts reward patience. When the light opens and the wind eases, the country suddenly feels enormous and very possible.",
+    date: "Southern Alps",
     accent: "Journal 03",
     image: "https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?auto=format&fit=crop&w=1600&q=80"
   }
@@ -257,19 +276,19 @@ export const galleryPlaceholders = [
 
 export const galleryShowcase = [
   {
-    title: "Kaimanawa bush",
+    title: "Bush edges and river crossings",
     image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80"
   },
   {
-    title: "Alpine ridgelines",
+    title: "Alpine glassing faces",
     image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80"
   },
   {
-    title: "Valley crossings",
+    title: "Valley movement and access",
     image: "https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?auto=format&fit=crop&w=1600&q=80"
   },
   {
-    title: "Dawn and evening light",
+    title: "Late-light returns",
     image: "https://images.unsplash.com/photo-1470093851219-69951fcbb533?auto=format&fit=crop&w=1600&q=80"
   }
 ];
