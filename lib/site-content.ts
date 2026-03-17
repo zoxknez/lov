@@ -8,13 +8,6 @@ export const navigation = [
   { href: "#contact", label: "Enquiry" }
 ];
 
-export const heroFacts = [
-  { value: "North + South Island", label: "bush, river valley, and alpine programs shaped by species" },
-  { value: "2-4 hunters", label: "small hosted groups keep the pace personal and flexible" },
-  { value: "90+ years", label: "shared field time across founders and the guide team" },
-  { value: "DOC + MPI aware", label: "travel, permits, and export considerations mapped early" }
-];
-
 export const experiencePillars = [
   {
     label: "Country",
@@ -30,48 +23,6 @@ export const experiencePillars = [
     label: "Planning",
     title: "Travel confidence before you arrive",
     text: "Species timing, rifles, permits, transfers, and trophy export considerations are aligned early so the trip feels composed."
-  }
-];
-
-export const heroVisuals = [
-  {
-    title: "Central Plateau bush country",
-    detail: "Sika and red deer country shaped by forest edges, ridges, and quiet access lines.",
-    image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80"
-  },
-  {
-    title: "Southern Alps alpine faces",
-    detail: "Remote mountain terrain for Himalayan tahr and chamois once the weather opens the window.",
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80"
-  },
-  {
-    title: "Rivers, valleys, and backcountry",
-    detail: "The kind of mixed terrain that makes New Zealand hunts feel physical, scenic, and earned.",
-    image: "https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?auto=format&fit=crop&w=1600&q=80"
-  }
-];
-
-export const fieldJournal = [
-  {
-    title: "First light in Kaimanawa country",
-    excerpt: "Roar mornings begin with quiet glassing lines, damp grass underfoot, and short decisions made before the valley fully wakes.",
-    date: "North Island",
-    accent: "Journal 01",
-    image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=80"
-  },
-  {
-    title: "The lodge after the climb",
-    excerpt: "Warm rooms, proper meals, drying gear, and an unhurried evening reset the body between demanding hunting windows.",
-    date: "Hosted Comfort",
-    accent: "Journal 02",
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80"
-  },
-  {
-    title: "South Island weather windows",
-    excerpt: "Alpine hunts reward patience. When the light opens and the wind eases, the country suddenly feels enormous and very possible.",
-    date: "Southern Alps",
-    accent: "Journal 03",
-    image: "https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?auto=format&fit=crop&w=1600&q=80"
   }
 ];
 

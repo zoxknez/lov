@@ -89,8 +89,6 @@ export default function PremiumHero() {
   const [videoReady, setVideoReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
 
-  const activeScene = HERO_SCENES[sceneIdx];
-
   useEffect(() => {
     if (reduceMotion) return;
 

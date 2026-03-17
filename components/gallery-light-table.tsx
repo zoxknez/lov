@@ -1,19 +1,17 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
-import { ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Play } from "lucide-react";
 import MagneticButton from "@/components/magnetic-button";
-import ParallaxImage from "@/components/parallax-image";
 import { galleryPlaceholders, galleryShowcase } from "@/lib/site-content";
 
-const PROOF_LAYOUT = [
-  { shell: "left-[1%] top-0 w-[41%] -rotate-[7deg] z-[3]", media: "aspect-[4/5]" },
-  { shell: "right-[5%] top-[3rem] w-[38%] rotate-[5deg] z-[2]", media: "aspect-[5/4]" },
-  { shell: "left-[9%] top-[19rem] w-[46%] rotate-[2deg] z-[4]", media: "aspect-[6/5]" },
-  { shell: "right-0 top-[22rem] w-[36%] -rotate-[5deg] z-[1]", media: "aspect-[4/5]" },
-  { shell: "left-[23%] bottom-0 w-[48%] rotate-[3deg] z-[5]", media: "aspect-[16/10]" }
-] as const;
+const MOTION_REEL = {
+  src: "/media/hero-wilderness-demo.mp4",
+  poster: "/media/hero-wilderness-poster.jpg"
+} as const;
 
 function Label({ children, gold = false }: { children: ReactNode; gold?: boolean }) {
   return (
@@ -25,212 +23,264 @@ function Label({ children, gold = false }: { children: ReactNode; gold?: boolean
 
 export default function GalleryLightTable() {
   const reduceMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeItem = galleryShowcase[activeIndex];
+  const activeSlot = galleryPlaceholders[activeIndex % galleryPlaceholders.length];
+
   const reveal = {
     initial: reduceMotion ? false : { opacity: 0, y: 26 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, amount: 0.12 },
-    transition: { duration: reduceMotion ? 0 : 0.78, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
+    transition: {
+      duration: reduceMotion ? 0 : 0.78,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number]
+    }
   };
 
   return (
     <section id="gallery" className="relative overflow-hidden py-28 lg:py-36">
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,7,6,0.99)_0%,rgba(11,10,9,0.98)_42%,rgba(7,7,6,0.99)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,7,8,0.99)_0%,rgba(7,9,11,0.98)_48%,rgba(5,6,7,0.99)_100%)]" />
       <div className="gallery-lighttable absolute inset-0 opacity-80" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(200,169,110,0.16),transparent_22%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_20%,rgba(122,141,138,0.14),transparent_24%)]" />
 
       <div className="shell-full relative z-10">
         <motion.div
           {...reveal}
-          className="grid gap-8 border-b border-white/[0.08] pb-12 xl:grid-cols-[minmax(0,1fr)_23rem] xl:items-end"
+          className="grid gap-8 border-b border-white/[0.08] pb-12 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-end"
         >
-          <div>
-            <Label gold>Gallery / Light Table</Label>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(3rem,6vw,6.5rem)] leading-[0.88] tracking-[-0.05em] text-white">
-              Field proofs,
-              <span className="block italic font-light text-white/42">not brochure shots.</span>
+          <div className="max-w-[58rem]">
+            <Label gold>Gallery / Cinematic Edit</Label>
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(3rem,6vw,6.4rem)] leading-[0.88] tracking-[-0.05em] text-white">
+              A darker gallery,
+              <span className="block italic font-light text-[#d6ccc0]">cut like a private visual edit.</span>
             </h2>
           </div>
 
-          <div className="rounded-[1.8rem] border border-white/[0.08] bg-black/24 p-6 backdrop-blur-sm">
-            <Label gold>Selection note</Label>
-            <p className="mt-4 text-[14px] leading-[1.9] text-white/58">
-              Gallery sada izgleda kao radni light table: lokalne demo fotografije su slozene kao
-              proof printovi, tako da deo ima karakter i pre nego sto stignu finalni client shot-ovi.
+          <div className="rounded-[1.8rem] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(10,12,14,0.88),rgba(8,9,11,0.68))] p-6 backdrop-blur-sm">
+            <Label gold>Direction</Label>
+            <p className="mt-4 text-[14px] leading-[1.9] text-white/62">
+              Cream proof-sheet styling is gone. The gallery now sits in a darker, cleaner frame so
+              the demo imagery feels premium instead of scrapbook-like.
             </p>
           </div>
         </motion.div>
 
-        <div className="mt-10 grid gap-8 xl:grid-cols-[minmax(0,1fr)_23rem] xl:items-start">
-          <div className="min-w-0">
+        <div className="mt-10 grid gap-8 xl:grid-cols-[minmax(0,1.12fr)_24rem] xl:items-start">
+          <div className="min-w-0 space-y-6">
             <motion.div
               {...reveal}
-              className="hidden min-h-[54rem] rounded-[2.4rem] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(15,12,10,0.74),rgba(11,10,9,0.48))] p-8 shadow-[0_45px_140px_rgba(0,0,0,0.38)] lg:block"
+              className="overflow-hidden rounded-[2.4rem] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(9,11,13,0.94),rgba(7,8,10,0.84))] p-3 shadow-[0_45px_140px_rgba(0,0,0,0.38)]"
             >
-              <div className="relative h-full">
-                {galleryShowcase.slice(0, 5).map((item, index) => {
-                  const layout = PROOF_LAYOUT[index];
+              <div className="relative overflow-hidden rounded-[1.9rem] border border-white/10 bg-black/25 aspect-[16/10]">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeItem.title}
+                    initial={reduceMotion ? false : { opacity: 0.16, scale: 1.03 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={reduceMotion ? {} : { opacity: 0.08, scale: 1.01 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.68, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={activeItem.image}
+                      alt={activeItem.title}
+                      fill
+                      priority={activeIndex === 0}
+                      sizes="(min-width: 1280px) 62vw, 100vw"
+                      className="object-cover object-center"
+                    />
+                  </motion.div>
+                </AnimatePresence>
 
-                  return (
-                    <motion.article
-                      key={item.title}
-                      initial={reduceMotion ? false : { opacity: 0, y: 18, rotate: 0 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.1 }}
-                      transition={{
-                        duration: reduceMotion ? 0 : 0.72,
-                        delay: reduceMotion ? 0 : 0.06 * index,
-                        ease: [0.16, 1, 0.3, 1]
-                      }}
-                      className={`absolute ${layout.shell}`}
-                    >
-                      <div className="rounded-[1.6rem] bg-[#efe3cf] p-3 text-[#17120d] shadow-[0_22px_80px_rgba(0,0,0,0.28)]">
-                        <div className="mb-3 flex items-center justify-between gap-3 px-1">
-                          <span className="label text-[8px] tracking-[0.28em] text-[#79654f]">{item.code}</span>
-                          <span className="text-[11px] uppercase tracking-[0.2em] text-[#8e7660]">{item.meta}</span>
-                        </div>
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,7,8,0.14),rgba(5,7,8,0.24)_36%,rgba(5,7,8,0.88)_100%)]" />
+                <div className="absolute inset-y-0 left-0 w-[48%] bg-[linear-gradient(90deg,rgba(5,7,8,0.82),rgba(5,7,8,0.08))]" />
 
-                        <div className={`relative overflow-hidden rounded-[1rem] bg-black/10 ${layout.media}`}>
-                          <ParallaxImage
-                            src={item.image}
-                            alt={item.title}
-                            fill
-                            containerClassName="absolute inset-0"
-                            imageClassName="transition-transform duration-[1.8s] hover:scale-[1.03]"
-                            sizes="(max-width: 1280px) 40vw, 28vw"
-                            offset={24}
-                          />
-                        </div>
+                <div className="absolute left-5 top-5 rounded-full border border-white/12 bg-black/30 px-4 py-2 backdrop-blur-md">
+                  <Label gold>{activeItem.code}</Label>
+                </div>
+                <div className="absolute right-5 top-5 rounded-full border border-white/10 bg-black/28 px-4 py-2 backdrop-blur-md">
+                  <span className="label text-[8px] tracking-[0.24em] text-white/68">
+                    FRAME {String(activeIndex + 1).padStart(2, "0")} / {String(galleryShowcase.length).padStart(2, "0")}
+                  </span>
+                </div>
 
-                        <div className="px-1 pb-1 pt-4">
-                          <h3 className="font-[family-name:var(--font-display)] text-[2rem] leading-[0.94] text-[#17120d]">
-                            {item.title}
-                          </h3>
-                          <p className="mt-3 text-[12px] leading-[1.8] text-[#5c4b3b]">{item.note}</p>
-                        </div>
-                      </div>
-                    </motion.article>
-                  );
-                })}
+                <div className="absolute inset-x-0 bottom-0 grid gap-5 p-5 lg:grid-cols-[minmax(0,1fr)_15rem] lg:p-7">
+                  <div className="max-w-[38rem]">
+                    <Label gold>{activeItem.meta}</Label>
+                    <h3 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(2.5rem,4.6vw,4.9rem)] leading-[0.9] tracking-[-0.05em] text-white">
+                      {activeItem.title}
+                    </h3>
+                    <p className="mt-4 max-w-[34rem] text-[15px] leading-[1.85] text-white/72 sm:text-[16px]">
+                      {activeItem.note}
+                    </p>
+                  </div>
+
+                  <div className="rounded-[1.45rem] border border-white/12 bg-[linear-gradient(180deg,rgba(7,9,10,0.78),rgba(7,9,10,0.52))] p-4 backdrop-blur-xl">
+                    <Label>Shot Slot</Label>
+                    <h4 className="mt-3 font-[family-name:var(--font-display)] text-[1.55rem] leading-[0.98] text-white">
+                      {activeSlot.title}
+                    </h4>
+                    <p className="mt-3 text-[13px] leading-6 text-white/62">{activeSlot.description}</p>
+                  </div>
+                </div>
               </div>
             </motion.div>
 
-            <div className="grid gap-5 lg:hidden">
-              {galleryShowcase.slice(0, 4).map((item, index) => (
-                <motion.article
-                  key={item.title}
-                  {...reveal}
-                  transition={{ ...reveal.transition, delay: reduceMotion ? 0 : 0.05 * index }}
-                  className="rounded-[1.6rem] bg-[#efe3cf] p-3 text-[#17120d] shadow-[0_18px_50px_rgba(0,0,0,0.24)]"
-                >
-                  <div className="mb-3 flex items-center justify-between gap-3 px-1">
-                    <span className="label text-[8px] tracking-[0.28em] text-[#79654f]">{item.code}</span>
-                    <span className="text-[11px] uppercase tracking-[0.2em] text-[#8e7660]">{item.meta}</span>
-                  </div>
-                  <div className="relative aspect-[6/5] overflow-hidden rounded-[1rem] bg-black/10">
-                    <ParallaxImage
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      containerClassName="absolute inset-0"
-                      imageClassName="transition-transform duration-[1.8s] hover:scale-[1.03]"
-                      sizes="100vw"
-                      offset={18}
-                    />
-                  </div>
-                  <div className="px-1 pb-1 pt-4">
-                    <h3 className="font-[family-name:var(--font-display)] text-[1.9rem] leading-[0.96] text-[#17120d]">
-                      {item.title}
-                    </h3>
-                    <p className="mt-3 text-[12px] leading-[1.8] text-[#5c4b3b]">{item.note}</p>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
+            <motion.div
+              {...reveal}
+              transition={{ ...reveal.transition, delay: reduceMotion ? 0 : 0.08 }}
+              className="grid gap-4 md:grid-cols-3"
+            >
+              <article className="rounded-[1.55rem] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(10,12,14,0.92),rgba(8,9,10,0.74))] p-5">
+                <Label gold>Selection</Label>
+                <p className="mt-3 font-[family-name:var(--font-display)] text-[2rem] leading-none text-[#e8c98a]">
+                  {activeItem.code}
+                </p>
+                <p className="mt-3 text-[13px] leading-6 text-white/58">Focused, darker frames with cleaner contrast and less visual noise.</p>
+              </article>
+
+              <article className="rounded-[1.55rem] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(10,12,14,0.92),rgba(8,9,10,0.74))] p-5">
+                <Label>Why it works</Label>
+                <p className="mt-3 text-[1.08rem] leading-7 text-white">The image reads like a premium edit, not a pasted-in proof card.</p>
+              </article>
+
+              <article className="rounded-[1.55rem] border border-[#c8a96e]/18 bg-[linear-gradient(135deg,rgba(200,169,110,0.12),rgba(255,255,255,0.03))] p-5">
+                <Label gold>Use on page</Label>
+                <p className="mt-3 text-[13px] leading-6 text-white/66">
+                  Demo photos now carry atmosphere first, with metadata and slot logic kept secondary and cleaner.
+                </p>
+              </article>
+            </motion.div>
 
             <motion.div
               {...reveal}
               transition={{ ...reveal.transition, delay: reduceMotion ? 0 : 0.12 }}
-              className="mt-6 overflow-hidden rounded-[1.8rem] border border-white/[0.08] bg-[#080706]/92"
+              className="grid gap-4 md:grid-cols-2 xl:grid-cols-4"
             >
-              <div className="flex items-center justify-between gap-4 border-b border-white/[0.08] px-5 py-4">
-                <Label gold>Contact sheet</Label>
-                <p className="label text-[8px] tracking-[0.24em] text-white/32">
-                  {String(galleryShowcase.length).padStart(2, "0")} demo frames loaded
-                </p>
-              </div>
-
-              <div className="grid gap-px bg-white/[0.08] sm:grid-cols-2 xl:grid-cols-3">
-                {galleryShowcase.map((item, index) => (
-                  <div key={item.title} className="bg-[#0d0b09] p-3">
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-[1rem]">
-                      <ParallaxImage
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        containerClassName="absolute inset-0"
-                        imageClassName="transition-transform duration-[1.8s] hover:scale-[1.04]"
-                        sizes="(max-width: 1280px) 50vw, 22vw"
-                        offset={14}
-                      />
-                    </div>
-                    <div className="flex items-start justify-between gap-4 px-1 pb-1 pt-3">
-                      <div>
-                        <p className="label text-[8px] tracking-[0.24em] text-white/26">
-                          FRAME {String(index + 1).padStart(2, "0")}
-                        </p>
-                        <h3 className="mt-2 font-[family-name:var(--font-display)] text-[1.55rem] leading-[0.96] text-white">
-                          {item.title}
-                        </h3>
-                      </div>
-                      <span className="label mt-1 text-[8px] tracking-[0.24em] text-[#c8a96e]">
-                        {item.code}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {galleryPlaceholders.map((item, index) => (
+                <article
+                  key={item.title}
+                  className="rounded-[1.5rem] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(9,11,13,0.88),rgba(8,9,11,0.72))] p-5"
+                >
+                  <p className="label text-[8px] tracking-[0.24em] text-white/26">
+                    SLOT {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <h3 className="mt-4 font-[family-name:var(--font-display)] text-[1.6rem] leading-[0.98] text-white">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 text-[13px] leading-[1.85] text-white/54">{item.description}</p>
+                </article>
+              ))}
             </motion.div>
           </div>
 
           <motion.aside
             {...reveal}
-            transition={{ ...reveal.transition, delay: reduceMotion ? 0 : 0.08 }}
-            className="rounded-[2rem] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(12,10,9,0.86),rgba(9,8,7,0.72))] p-6"
+            transition={{ ...reveal.transition, delay: reduceMotion ? 0 : 0.06 }}
+            className="space-y-4"
           >
-            <Label gold>Shot list</Label>
-            <p className="mt-4 text-[14px] leading-[1.9] text-white/54">
-              Ovo vise nije jos jedan editorial grid. Sekcija sada izgleda kao odabir radnih
-              proofova sa jasnim razlogom zasto je svaki kadar unutra.
-            </p>
-
-            <div className="mt-8 space-y-5">
-              {galleryPlaceholders.map((item, index) => (
-                <article key={item.title} className="border-b border-white/[0.08] pb-5 last:border-b-0 last:pb-0">
-                  <p className="label text-[8px] tracking-[0.24em] text-white/24">
-                    SLOT {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <h3 className="mt-3 font-[family-name:var(--font-display)] text-[1.65rem] leading-[0.98] text-white">
-                    {item.title}
+            <div className="rounded-[2rem] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(10,12,14,0.9),rgba(8,9,11,0.76))] p-5">
+              <div className="mb-5 flex items-end justify-between gap-4 border-b border-white/[0.08] pb-5">
+                <div>
+                  <Label gold>Frame Rail</Label>
+                  <h3 className="mt-3 font-[family-name:var(--font-display)] text-[2rem] leading-[0.96] text-white">
+                    Choose the active frame.
                   </h3>
-                  <p className="mt-3 text-[13px] leading-[1.85] text-white/50">{item.description}</p>
-                </article>
-              ))}
+                </div>
+                <span className="rounded-full border border-white/10 bg-black/20 px-3 py-2 label text-[8px] tracking-[0.24em] text-white/50">
+                  LOCAL DEMO SET
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                {galleryShowcase.map((item, index) => {
+                  const active = index === activeIndex;
+
+                  return (
+                    <button
+                      key={item.title}
+                      type="button"
+                      onClick={() => setActiveIndex(index)}
+                      className={`group w-full rounded-[1.45rem] border p-3 text-left transition-all duration-300 ${
+                        active
+                          ? "border-[#c8a96e]/40 bg-[#c8a96e]/10"
+                          : "border-white/10 bg-black/10 hover:border-white/18 hover:bg-white/[0.03]"
+                      }`}
+                    >
+                      <div className="grid grid-cols-[5.6rem_minmax(0,1fr)] gap-4">
+                        <div className="relative h-24 overflow-hidden rounded-[1rem] border border-white/10">
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            fill
+                            sizes="96px"
+                            className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,8,9,0.05),rgba(7,8,9,0.55))]" />
+                        </div>
+
+                        <div className="min-w-0">
+                          <div className="flex items-center justify-between gap-3">
+                            <p className={`label text-[8px] tracking-[0.24em] ${active ? "text-[#e8c98a]" : "text-white/34"}`}>
+                              {item.code}
+                            </p>
+                            <span className={`h-2.5 w-2.5 rounded-full ${active ? "bg-[#c8a96e]" : "bg-white/18 group-hover:bg-white/36"}`} />
+                          </div>
+                          <h4 className="mt-3 font-[family-name:var(--font-display)] text-[1.4rem] leading-[0.96] text-white">
+                            {item.title}
+                          </h4>
+                          <p className="mt-2 text-[12px] leading-5 text-white/48">{item.meta}</p>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="mt-8 rounded-[1.4rem] border border-[#c8a96e]/18 bg-[#c8a96e]/[0.06] p-5">
-              <p className="label text-[8px] tracking-[0.24em] text-[#c8a96e]">Demo pack</p>
-              <p className="mt-3 text-[13px] leading-[1.85] text-white/56">
-                Koristim lokalne stand-in fotografije iz terrain, lodge i species biblioteke, tako da
-                gallery vec sada ima pravi ritam i bez finalnih custom snimaka.
-              </p>
-            </div>
+            <div className="overflow-hidden rounded-[2rem] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(10,12,14,0.9),rgba(8,9,11,0.76))] p-5">
+              <div className="mb-5 flex items-center justify-between gap-4">
+                <div>
+                  <Label gold>Motion Reference</Label>
+                  <p className="mt-3 text-[14px] leading-7 text-white/58">
+                    A restrained reel keeps the gallery feeling alive without dragging it back into brochure territory.
+                  </p>
+                </div>
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.05]">
+                  <Play size={15} className="text-[#c8a96e]" />
+                </span>
+              </div>
 
-            <MagneticButton
-              tag="a"
-              href="#contact"
-              className="mt-8 inline-flex items-center gap-3 label text-[10px] tracking-[0.3em] text-[#c8a96e] transition-all duration-300 hover:gap-5"
-            >
-              REQUEST PRIVATE SET <ArrowRight size={13} />
-            </MagneticButton>
+              <div className="relative overflow-hidden rounded-[1.4rem] border border-white/10 bg-black/20 aspect-[16/10]">
+                <video
+                  className="h-full w-full object-cover object-center"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster={MOTION_REEL.poster}
+                >
+                  <source src={MOTION_REEL.src} type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,7,8,0.08),rgba(6,7,8,0.45)_70%,rgba(6,7,8,0.8)_100%)]" />
+                <div className="absolute inset-x-0 bottom-0 p-4">
+                  <p className="label text-[8px] tracking-[0.24em] text-white/40">DEMO REEL</p>
+                  <p className="mt-2 text-[13px] leading-6 text-white/70">
+                    Used as atmosphere only, while the still-image edit remains the real focus.
+                  </p>
+                </div>
+              </div>
+
+              <MagneticButton
+                tag="a"
+                href="#contact"
+                className="mt-6 inline-flex items-center gap-3 label text-[10px] tracking-[0.3em] text-[#c8a96e] transition-all duration-300 hover:gap-5"
+              >
+                REQUEST PRIVATE SET <ArrowRight size={13} />
+              </MagneticButton>
+            </div>
           </motion.aside>
         </div>
       </div>

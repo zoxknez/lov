@@ -31,7 +31,7 @@ export default function TurnstileWidget({ onTokenChange }: { onTokenChange: (tok
 
     window.turnstile.render(container, {
       sitekey: siteKey,
-      theme: "light",
+      theme: "dark",
       callback: (token) => onTokenChange(token),
       "expired-callback": () => onTokenChange(""),
       "error-callback": () => onTokenChange("")

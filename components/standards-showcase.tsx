@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, CheckCircle2, ShieldCheck, Users } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import MagneticButton from "@/components/magnetic-button";
 import { teamProfiles, values } from "@/lib/site-content";
 
