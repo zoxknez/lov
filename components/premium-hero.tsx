@@ -15,6 +15,7 @@ import MagneticButton from "@/components/magnetic-button";
 
 const HERO_VIDEO_SRC = "/media/hero-wilderness-demo.mp4";
 const HERO_VIDEO_POSTER = "/media/hero-wilderness-poster.jpg";
+const BRAND_LOGO_SRC = "/brand-logo.png";
 
 const HERO_HIGHLIGHTS = [
   {
@@ -184,6 +185,21 @@ export default function PremiumHero() {
                     <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#e8c98a]" />
                   </span>
                 </span>
+              </div>
+
+              <div className="relative mt-8 w-full max-w-[13rem] sm:max-w-[15rem] lg:max-w-[17.5rem] xl:max-w-[19rem]">
+                <div className="absolute inset-[-10%] rounded-[2.4rem] bg-[radial-gradient(circle,rgba(200,169,110,0.22)_0%,rgba(200,169,110,0.08)_42%,transparent_72%)] blur-2xl" />
+                <div className="relative rounded-[2.1rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(8,9,8,0.16))] p-4 shadow-[0_26px_70px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:p-5">
+                  <Image
+                    src={BRAND_LOGO_SRC}
+                    alt="Kaimanawa Trophy Safaris logo"
+                    width={1024}
+                    height={1024}
+                    priority
+                    sizes="(min-width: 1280px) 19rem, (min-width: 1024px) 17.5rem, (min-width: 640px) 15rem, 13rem"
+                    className="h-auto w-full object-contain drop-shadow-[0_20px_44px_rgba(0,0,0,0.42)]"
+                  />
+                </div>
               </div>
 
               <h1 className="mt-8 max-w-[14ch] font-[family-name:var(--font-display)] text-[clamp(3.4rem,7.4vw,6.3rem)] leading-[0.9] tracking-[-0.05em] text-white">
