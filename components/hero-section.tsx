@@ -38,21 +38,21 @@ export default function HeroSection() {
       {/* Content */}
       <motion.div 
         style={{ opacity }}
-        className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center"
+        className="relative z-10 flex h-full flex-col items-center justify-center px-6 pt-32 pb-20 text-center"
       >
         <motion.div
            initial={{ opacity: 0, scale: 0.9, y: 30 }}
            animate={{ opacity: 1, scale: 1, y: 0 }}
            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="mb-10 flex justify-center">
+          <div className="mb-8 flex justify-center">
             <Image
               src={BRAND_LOGO_SRC}
               alt="Kaimanawa Trophy Safaris logo"
               width={480}
               height={480}
               priority
-              className="h-64 w-64 object-contain drop-shadow-2xl md:h-80 md:w-80 lg:h-[28rem] lg:w-[28rem] transition-transform duration-700 hover:scale-105"
+              className="h-64 w-64 object-contain drop-shadow-2xl md:h-80 md:w-80 lg:h-[22rem] lg:w-[22rem] transition-transform duration-700 hover:scale-105"
             />
           </div>
           
@@ -78,7 +78,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2 }}
-            className="mt-16 flex flex-col items-center justify-center gap-6 sm:flex-row"
+            className="mt-10 flex flex-col items-center justify-center gap-6 sm:flex-row"
           >
             <Link
               href="#contact"
