@@ -54,7 +54,7 @@ export default function StorySection() {
   return (
     <section id="story" className="relative overflow-hidden bg-transparent py-24 md:py-40 font-sans">
       {/* Editorial Depth Layer */}
-      <div className="absolute inset-0 bg-forest-950/20 backdrop-blur-[2px] pointer-events-none" />
+      <div className="absolute inset-0 bg-forest-950/12 backdrop-blur-[1px] pointer-events-none" />
       {/* Background Decorative Elements */}
       <div className="absolute left-0 top-0 h-full w-full pointer-events-none overflow-hidden opacity-20">
         <div className="absolute -left-[10%] top-[10%] h-[500px] w-[500px] rounded-full bg-gold-400/5 blur-[120px]" />

@@ -76,7 +76,7 @@ export default function AccommodationSection() {
   return (
     <section id="stay" className="relative overflow-hidden bg-transparent py-24 md:py-40 font-sans standards-ledger">
       {/* Warm Hospitality Gloom */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] pointer-events-none" />
+      <div className="absolute inset-0 bg-black/28 backdrop-blur-[1px] pointer-events-none" />
       {/* Background radial glow */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[800px] w-[800px] rounded-full bg-gold-500/5 blur-[120px] pointer-events-none" />
 

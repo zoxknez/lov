@@ -133,7 +133,7 @@ export default function GallerySection() {
   return (
     <section id="gallery" className="relative overflow-hidden bg-transparent py-24 md:py-40 font-sans gallery-lighttable">
       {/* Lighttable Reveal */}
-      <div className="absolute inset-0 bg-forest-950/20 backdrop-blur-[1px] pointer-events-none" />
+      <div className="absolute inset-0 bg-forest-950/12 backdrop-blur-[1px] pointer-events-none" />
       <div className="absolute left-[-10%] top-[-10%] h-[600px] w-[600px] rounded-full bg-gold-600/5 blur-[120px] pointer-events-none" />
       <div className="absolute right-[-10%] bottom-[-10%] h-[600px] w-[600px] rounded-full bg-forest-600/10 blur-[120px] pointer-events-none" />
 

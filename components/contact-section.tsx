@@ -90,7 +90,7 @@ export default function ContactSection() {
   return (
     <section id="contact" className="relative overflow-hidden bg-transparent py-24 md:py-40 font-sans concierge-station">
       {/* Concierge Atmospheric Layer */}
-      <div className="absolute inset-0 bg-forest-950/30 backdrop-blur-[3px] pointer-events-none" />
+      <div className="absolute inset-0 bg-forest-950/18 backdrop-blur-[2px] pointer-events-none" />
       {/* Background Accents */}
       <div className="absolute top-0 left-0 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 h-[600px] w-[600px] translate-x-1/2 translate-y-1/2 rounded-full bg-forest-600/10 blur-[100px] pointer-events-none" />

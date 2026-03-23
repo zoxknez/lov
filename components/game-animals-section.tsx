@@ -83,7 +83,7 @@ export default function GameAnimalsSection() {
   return (
     <section id="species" className="relative overflow-hidden bg-transparent py-24 md:py-40 font-sans species-dossier">
       {/* Dynamic Data-Grid Reveal */}
-      <div className="absolute inset-0 bg-forest-950/20 backdrop-blur-[2px] pointer-events-none" />
+      <div className="absolute inset-0 bg-forest-950/12 backdrop-blur-[1px] pointer-events-none" />
       {/* Decorative background element */}
       <div className="absolute left-0 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-forest-600/5 blur-[120px] pointer-events-none" />
 

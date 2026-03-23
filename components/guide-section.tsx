@@ -37,7 +37,7 @@ export default function GuideSection() {
   return (
     <section id="guide" className="relative overflow-hidden bg-transparent py-24 md:py-40 font-sans experience-editorial">
       {/* Editorial Shadow Layer */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] pointer-events-none" />
+      <div className="absolute inset-0 bg-black/28 backdrop-blur-[1px] pointer-events-none" />
       {/* Background Cinematic Accents */}
       <div className="absolute right-0 top-0 h-[800px] w-[800px] rounded-full bg-gold-500/5 blur-[150px] pointer-events-none" />
       <div className="absolute left-0 bottom-0 h-[600px] w-[600px] rounded-full bg-forest-500/5 blur-[120px] pointer-events-none" />

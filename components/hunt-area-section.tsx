@@ -54,7 +54,7 @@ export default function HuntAreaSection() {
   return (
     <section id="territory" className="relative h-screen bg-transparent overflow-hidden territory-contours">
       {/* Atmospheric Reveal Backdrop */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] pointer-events-none" />
+      <div className="absolute inset-0 bg-black/28 backdrop-blur-[1px] pointer-events-none" />
       {/* Background Decorative Accent */}
       <div className="absolute right-0 top-1/4 h-[600px] w-[600px] rounded-full bg-gold-500/5 blur-[120px] pointer-events-none" />
       

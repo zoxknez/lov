@@ -8,6 +8,7 @@ import AccommodationSection from '@/components/accommodation-section';
 import GallerySection from '@/components/gallery-section';
 import GuideSection from '@/components/guide-section';
 import ContactSection from '@/components/contact-section';
+import GlobalBackground from '@/components/global-background';
 import { getAbsoluteBlobAssetUrl } from '@/lib/blob-asset';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '');
@@ -62,15 +63,18 @@ export default function Home() {
       <Header />
       <main id="top" className="relative z-10 bg-black">
         <HeroSection />
-        <StorySection />
-        <HuntAreaSection />
-        <GameAnimalsSection />
-        <AccommodationSection />
-        <GallerySection />
-        <GuideSection />
-        <ContactSection />
+        <div className="relative isolate overflow-hidden">
+          <GlobalBackground />
+          <StorySection />
+          <HuntAreaSection />
+          <GameAnimalsSection />
+          <AccommodationSection />
+          <GallerySection />
+          <GuideSection />
+          <ContactSection />
+          <Footer />
+        </div>
       </main>
-      <Footer />
     </>
   );
 }
