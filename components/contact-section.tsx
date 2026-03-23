@@ -1,29 +1,35 @@
 'use client';
 
-import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, MessageSquare, Clock, ShieldCheck, Globe } from 'lucide-react';
 import TextReveal from '@/components/text-reveal';
 import MagneticButton from '@/components/magnetic-button';
+import TurnstileWidget from '@/components/turnstile-widget';
 
 interface FormData {
-  name: string;
+  fullName: string;
   email: string;
   phone: string;
   subject: string;
   message: string;
+  antiBotField: string;
 }
 
 export default function ContactSection() {
   const [formData, setFormData] = useState<FormData>({
-    name: '',
+    fullName: '',
     email: '',
     phone: '',
     subject: '',
     message: '',
+    antiBotField: '',
   });
-
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [turnstileKey, setTurnstileKey] = useState(0);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [submitMessage, setSubmitMessage] = useState('');
+  const turnstileEnabled = Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -36,25 +42,51 @@ export default function ContactSection() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitStatus('loading');
+    setSubmitMessage('');
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('Form submitted:', formData);
+      const response = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          turnstileToken,
+        }),
+      });
+
+      const result = (await response.json()) as { ok?: boolean; error?: string };
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error ?? 'Unable to send your inquiry right now.');
+      }
+
       setSubmitStatus('success');
+      setSubmitMessage('Field operations will review your inquiry within 24 standard hours.');
       setFormData({
-        name: '',
+        fullName: '',
         email: '',
         phone: '',
         subject: '',
         message: '',
+        antiBotField: '',
       });
+      setTurnstileToken('');
+      setTurnstileKey((current) => current + 1);
       setTimeout(() => setSubmitStatus('idle'), 5000);
     } catch (error) {
-      console.error('Submission error:', error);
       setSubmitStatus('error');
+      setSubmitMessage(error instanceof Error ? error.message : 'Unable to send your inquiry right now.');
       setTimeout(() => setSubmitStatus('idle'), 5000);
     }
   };
+
+  useEffect(() => {
+    if (submitStatus === 'idle') {
+      setSubmitMessage('');
+    }
+  }, [submitStatus]);
 
   const contactInfo = [
     {
@@ -101,7 +133,7 @@ export default function ContactSection() {
           <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-gold-400 mb-4">
              <TextReveal>Journey Start</TextReveal>
           </p>
-          <h2 className="font-display text-5xl font-bold uppercase tracking-tight text-white md:text-7xl lg:text-9xl uppercase tracking-tighter">
+          <h2 className="font-display text-5xl font-bold uppercase tracking-tighter text-white md:text-7xl lg:text-9xl">
              <TextReveal delay={0.2}>Secure Your Dates</TextReveal>
           </h2>
           <motion.div 
@@ -177,8 +209,8 @@ export default function ContactSection() {
                   <div className="group relative">
                     <input
                       type="text"
-                      name="name"
-                      value={formData.name}
+                      name="fullName"
+                      value={formData.fullName}
                       onChange={handleInputChange}
                       required
                       placeholder=" "
@@ -211,6 +243,16 @@ export default function ContactSection() {
                 <div className="grid gap-12 sm:grid-cols-2">
                   {/* Floating Label Input: Phone */}
                   <div className="group relative">
+                    <input
+                      tabIndex={-1}
+                      type="tel"
+                      name="antiBotField"
+                      value={formData.antiBotField}
+                      onChange={handleInputChange}
+                      autoComplete="off"
+                      className="absolute left-0 top-0 h-0 w-0 opacity-0 pointer-events-none"
+                      aria-hidden="true"
+                    />
                     <input
                       type="tel"
                       name="phone"
@@ -265,10 +307,19 @@ export default function ContactSection() {
                   </label>
                   <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-gold-500 to-gold-300 transition-all duration-700 group-hover:w-full peer-focus:w-full" />
                 </div>
+
+                {turnstileEnabled && (
+                  <div className="rounded-[2rem] border border-white/8 bg-white/[0.03] p-6 backdrop-blur-sm">
+                    <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.3em] text-gold-300/70">
+                      Verification
+                    </p>
+                    <TurnstileWidget key={turnstileKey} onTokenChange={setTurnstileToken} />
+                  </div>
+                )}
  
                 <MagneticButton
                   type="submit"
-                  disabled={submitStatus === 'loading'}
+                  disabled={submitStatus === 'loading' || (turnstileEnabled && !turnstileToken)}
                   className="group relative flex w-full items-center justify-center gap-6 overflow-hidden rounded-[1.5rem] bg-gold-400 py-7 font-bold uppercase tracking-[0.4em] text-[11px] text-black transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 shadow-premium shadow-gold-500/20"
                 >
                   <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0)_30%,rgba(255,255,255,0.2)_45%,rgba(255,255,255,0.3)_50%,rgba(255,255,255,0.2)_55%,rgba(255,255,255,0)_70%)] bg-[length:200%_100%] opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
@@ -289,8 +340,18 @@ export default function ContactSection() {
                      </div>
                      <div>
                         <p className="text-xs font-bold text-gold-200 uppercase tracking-widest leading-none">Transmission Successful</p>
-                        <p className="mt-2 text-[10px] text-gray-400 font-medium">Field operations will review your inquiry within 24 standard hours.</p>
+                        <p className="mt-2 text-[10px] text-gray-400 font-medium">{submitMessage}</p>
                      </div>
+                  </motion.div>
+                )}
+
+                {submitStatus === 'error' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-red-400/20 bg-red-500/10 p-6 text-sm text-red-100 shadow-premium"
+                  >
+                    {submitMessage}
                   </motion.div>
                 )}
               </form>

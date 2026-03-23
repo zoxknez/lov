@@ -23,8 +23,8 @@ export default function Header() {
 
   const navLinks = [
     { label: 'Story', href: '#story' },
-    { label: 'Territory', href: '#hunt' },
-    { label: 'Species', href: '#animals' },
+    { label: 'Territory', href: '#territory' },
+    { label: 'Species', href: '#species' },
     { label: 'Stay', href: '#stay' },
     { label: 'Gallery', href: '#gallery' },
     { label: 'Guide', href: '#guide' },

@@ -71,14 +71,14 @@ export default function Footer() {
 
             <div className="flex gap-6">
               {[Facebook, Instagram, Linkedin].map((Icon, i) => (
-                <a
+                <span
                   key={i}
-                  href="#"
-                  className="group relative flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-white/10 bg-white/[0.035] text-white/68 transition-all hover:border-gold-400/40 hover:bg-gold-500/10 hover:text-gold-200 shadow-premium"
+                  aria-hidden="true"
+                  className="group relative flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-white/10 bg-white/[0.035] text-white/68 shadow-premium"
                 >
-                  <div className="absolute inset-0 rounded-[1.25rem] bg-gold-400/8 opacity-0 transition-opacity group-hover:opacity-100" />
-                  <Icon className="relative z-10 h-6 w-6 transition-transform group-hover:scale-110" />
-                </a>
+                  <div className="absolute inset-0 rounded-[1.25rem] bg-gold-400/8 opacity-40" />
+                  <Icon className="relative z-10 h-6 w-6" />
+                </span>
               ))}
             </div>
           </motion.div>
@@ -128,12 +128,9 @@ export default function Footer() {
                   </li>
                 ))}
                 <li>
-                  <a
-                    href="#"
-                    className="group relative flex items-center gap-4 py-1 text-[11px] font-bold uppercase tracking-[0.3em] text-white/46 transition-all hover:text-white"
-                  >
-                    <span className="transition-transform duration-500 group-hover:translate-x-1">Legal Notice</span>
-                  </a>
+                  <span className="flex items-center gap-4 py-1 text-[11px] font-bold uppercase tracking-[0.3em] text-white/46">
+                    Legal Notice On Request
+                  </span>
                 </li>
               </ul>
             </motion.div>

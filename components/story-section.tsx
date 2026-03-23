@@ -7,16 +7,23 @@ import { ShieldCheck, Award } from 'lucide-react';
 import TextReveal from '@/components/text-reveal';
 
 export default function StorySection() {
+  type FounderProfile = {
+    name: string;
+    role: string;
+    origin: string;
+    experience: string;
+    description: string;
+    image: string | null;
+  };
 
-
-  const founders = [
+  const founders: FounderProfile[] = [
     {
       name: 'Alex Sipka',
       role: 'Co-Founder',
       origin: 'Serbia',
       experience: '40 Years',
       description: 'Veteran hunter whose decades in the field shaped the standards and pace behind the Kaimanawa program.',
-      image: 'PERSON_DEMO',
+      image: null,
     },
     {
       name: 'Artem Prikazov',
@@ -24,7 +31,7 @@ export default function StorySection() {
       origin: 'Russia',
       experience: '15 Years',
       description: 'Internationally travelled hunter focused on the quality of New Zealand game and the experience around it.',
-      image: 'PERSON_DEMO',
+      image: null,
     },
     {
       name: 'Vuk Mijatovic',
@@ -32,7 +39,7 @@ export default function StorySection() {
       origin: 'New Zealand Field Ops',
       experience: '35+ Years',
       description: 'Lead field guide with deep knowledge of New Zealand terrain, animal behaviour, and hunt execution.',
-      image: 'PERSON_DEMO',
+      image: null,
     },
   ];
 
@@ -218,7 +225,7 @@ export default function StorySection() {
               >
                 <div className="relative aspect-[4/5] w-full overflow-hidden">
                    {/* Personal Demo Placeholder / Image Handler */}
-                   {founder.image === 'PERSON_DEMO' ? (
+                   {!founder.image ? (
                      <div className="flex h-full w-full items-center justify-center bg-forest-950">
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(163,126,67,0.12),transparent)]" />
                         <div className="relative flex flex-col items-center">

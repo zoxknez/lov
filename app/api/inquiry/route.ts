@@ -6,14 +6,9 @@ import { checkRateLimit } from "@/lib/rate-limit";
 const inquirySchema = z.object({
   fullName: z.string().min(2).max(120),
   email: z.string().email().max(180),
-  targetSpecies: z.string().min(2).max(80),
+  phone: z.string().max(80).optional().default(""),
+  subject: z.string().min(2).max(80),
   message: z.string().min(10).max(2000),
-  preferredMonth: z.string().max(80).optional().default(""),
-  groupSize: z.string().max(80).optional().default(""),
-  accommodation: z.string().max(120).optional().default(""),
-  transferMode: z.string().max(120).optional().default(""),
-  programLength: z.string().max(80).optional().default(""),
-  budgetBand: z.string().max(80).optional().default(""),
   antiBotField: z.string().max(0).optional().default(""),
   turnstileToken: z.string().max(2048).optional().default("")
 });
@@ -100,21 +95,26 @@ export async function POST(request: Request) {
       payload: {
         fullName: payload.fullName,
         email: payload.email,
-        targetSpecies: payload.targetSpecies,
+        phone: payload.phone,
+        subject: payload.subject,
         message: payload.message,
-        preferredMonth: payload.preferredMonth,
-        groupSize: payload.groupSize,
-        accommodation: payload.accommodation,
-        transferMode: payload.transferMode,
-        programLength: payload.programLength,
-        budgetBand: payload.budgetBand
       }
     };
 
-    await storeLead(enrichedLead);
-
     const crmWebhook = process.env.LEAD_WEBHOOK_URL;
     const slackWebhook = process.env.SLACK_WEBHOOK_URL;
+    let stored = false;
+
+    try {
+      await storeLead(enrichedLead);
+      stored = true;
+    } catch (error) {
+      if (!crmWebhook && !slackWebhook) {
+        throw error;
+      }
+
+      console.error("Lead storage fallback skipped", error);
+    }
 
     const webhookJobs: Promise<boolean>[] = [];
     if (crmWebhook) webhookJobs.push(postWebhook(crmWebhook, enrichedLead));
@@ -125,9 +125,8 @@ export async function POST(request: Request) {
             `New KAIMANAWA lead\n` +
             `Name: ${payload.fullName}\n` +
             `Email: ${payload.email}\n` +
-            `Species: ${payload.targetSpecies}\n` +
-            `Month: ${payload.preferredMonth || "N/A"}\n` +
-            `Group: ${payload.groupSize || "N/A"}`
+            `Phone: ${payload.phone || "N/A"}\n` +
+            `Subject: ${payload.subject}`
         })
       );
     }
@@ -135,17 +134,27 @@ export async function POST(request: Request) {
     const webhookResults = webhookJobs.length > 0 ? await Promise.all(webhookJobs) : [];
     const forwarded = webhookResults.every(Boolean);
 
+    if (!stored && !forwarded) {
+      throw new Error("Inquiry persistence unavailable.");
+    }
+
     return NextResponse.json(
       {
         ok: true,
         inquiry: enrichedLead.payload,
-        forwarded
+        forwarded,
+        stored,
       },
       {
         status: 200
       }
     );
-  } catch {
-    return NextResponse.json({ ok: false, error: "Invalid request payload." }, { status: 400 });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ ok: false, error: "Invalid request payload." }, { status: 400 });
+    }
+
+    console.error("Inquiry submission failed", error);
+    return NextResponse.json({ ok: false, error: "Unable to save inquiry right now." }, { status: 500 });
   }
 }

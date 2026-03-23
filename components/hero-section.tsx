@@ -88,7 +88,7 @@ export default function HeroSection() {
               <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 transition-opacity group-hover:opacity-100" />
             </Link>
             <Link
-              href="#hunt"
+              href="#territory"
               className="inline-block rounded-full border-2 border-white/20 bg-white/5 backdrop-blur-md px-10 py-4 font-bold text-white transition-all duration-300 hover:border-gold-400 hover:text-gold-400"
             >
               Explore Territory

@@ -7,13 +7,24 @@ import { Quote, Target, Shield, Award, Mountain, Trophy } from 'lucide-react';
 import TextReveal from '@/components/text-reveal';
 
 export default function GuideSection() {
-  const guide = {
+  const guide: {
+    name: string;
+    title: string;
+    country: string;
+    experience: string;
+    bio: string;
+    image: string | null;
+    specialties: string[];
+    philosophy: string;
+    notableAchievements: string[];
+    closing: string;
+  } = {
     name: 'Vuk Mijatovic',
     title: 'Professional Hunting Guide',
     country: 'New Zealand Field Operations',
     experience: '35+ years',
     bio: 'With more than 35 years in the field, Vuk Mijatovic brings deep knowledge of New Zealand terrain, animal behaviour, and the patient, fair-chase pace required for successful trophy hunting.',
-    image: 'PERSON_DEMO',
+    image: null,
     specialties: [
       'Persistence in the field',
       'Sika stalking expertise',
@@ -70,7 +81,7 @@ export default function GuideSection() {
               className="relative aspect-[4/5] w-full overflow-hidden rounded-[3.5rem] border border-white/5 bg-forest-900/10 shadow-premium group"
             >
               {/* Personal Demo Placeholder / Image Handler */}
-              {guide.image === 'PERSON_DEMO' ? (
+              {!guide.image ? (
                 <div className="flex h-full w-full items-center justify-center bg-forest-950">
                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(163,126,67,0.15),transparent)]" />
                    <div className="relative flex flex-col items-center">
