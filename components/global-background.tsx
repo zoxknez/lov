@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 const contourPaths = [
   'M-120 210C76 156 198 288 398 258C582 230 704 148 900 160C1092 172 1230 286 1424 274C1556 266 1690 222 1810 182',
@@ -32,8 +33,34 @@ function RidgeBand() {
   );
 }
 
+interface ShootingStar {
+  id: number;
+  x: number;
+  y: number;
+  angle: number;
+}
+
 export default function GlobalBackground() {
   const prefersReducedMotion = useReducedMotion();
+  const [stars, setStars] = useState<ShootingStar[]>([]);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    let id = 0;
+    const spawn = () => {
+      const star: ShootingStar = {
+        id: ++id,
+        x: Math.random() * 100,
+        y: Math.random() * 40,
+        angle: -20 - Math.random() * 20,
+      };
+      setStars((s) => [...s, star]);
+      setTimeout(() => setStars((s) => s.filter((st) => st.id !== star.id)), 2000);
+    };
+    const interval = setInterval(spawn, 4000 + Math.random() * 6000);
+    setTimeout(spawn, 2000); // first star after 2s
+    return () => clearInterval(interval);
+  }, [prefersReducedMotion]);
 
   const ambientPools = [
     {
@@ -162,6 +189,22 @@ export default function GlobalBackground() {
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(245,240,232,0.018)_1px,transparent_1px),linear-gradient(180deg,rgba(245,240,232,0.014)_1px,transparent_1px)] bg-[size:140px_140px] opacity-[0.02]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(245,240,232,0.014)_12%,transparent_24%,rgba(245,240,232,0.01)_48%,transparent_66%,rgba(245,240,232,0.012)_88%,transparent_100%)]" />
       <div className="scene-grain absolute inset-[-30%] opacity-[0.026] mix-blend-soft-light" />
+      {/* Shooting Stars */}
+      {stars.map((star) => (
+        <motion.div
+          key={star.id}
+          className="pointer-events-none absolute h-px w-24"
+          style={{
+            left: `${star.x}%`,
+            top: `${star.y}%`,
+            rotate: star.angle,
+            background: 'linear-gradient(90deg, transparent, rgba(200,169,110,0.6), transparent)',
+          }}
+          initial={{ opacity: 0, scaleX: 0, x: -50 }}
+          animate={{ opacity: [0, 1, 1, 0], scaleX: [0, 1, 1, 0], x: ['-20%', '200%'] }}
+          transition={{ duration: 1.8, ease: 'easeOut' }}
+        />
+      ))}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.34)_48%,rgba(0,0,0,0.78)_100%)]" />
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-[#010203]/86" />
     </div>

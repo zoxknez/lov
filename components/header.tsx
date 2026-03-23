@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 
 const HEADER_LOGO_SRC = getBlobAssetUrl('/media/logo.png');
@@ -11,26 +12,41 @@ const HEADER_LOGO_SRC = getBlobAssetUrl('/media/logo.png');
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  const navLinks = [
+    { label: 'Story', href: '#story', id: 'story' },
+    { label: 'Territory', href: '#territory', id: 'territory' },
+    { label: 'Species', href: '#species', id: 'species' },
+    { label: 'Stay', href: '#stay', id: 'stay' },
+    { label: 'Gallery', href: '#gallery', id: 'gallery' },
+    { label: 'Guide', href: '#guide', id: 'guide' },
+    { label: 'Contact', href: '#contact', id: 'contact' },
+  ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 56);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 56);
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { label: 'Story', href: '#story' },
-    { label: 'Territory', href: '#territory' },
-    { label: 'Species', href: '#species' },
-    { label: 'Stay', href: '#stay' },
-    { label: 'Gallery', href: '#gallery' },
-    { label: 'Guide', href: '#guide' },
-    { label: 'Contact', href: '#contact' },
-  ];
+  // IntersectionObserver for active section highlight
+  useEffect(() => {
+    const sections = navLinks.map((l) => document.getElementById(l.id)).filter(Boolean) as HTMLElement[];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        }
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <header
@@ -53,7 +69,7 @@ export default function Header() {
               className={`relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border transition-all duration-500 ${
                 scrolled
                   ? 'border-gold-500/30 bg-forest-900/45 shadow-glow md:h-11 md:w-11'
-                  : 'border-white/10 bg-black/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'
+                  : 'border-white/10 bg-black/20'
               }`}
             >
               <Image
@@ -78,9 +94,7 @@ export default function Header() {
                 }`}
               >
                 <div className="h-px w-3 bg-gold-400/50" />
-                <p
-                  className="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-400"
-                >
+                <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-400">
                   Trophy Safaris
                 </p>
               </div>
@@ -88,19 +102,39 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`group relative px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] transition-all ${
-                  scrolled ? 'text-gray-300 hover:text-gold-400' : 'text-white/70 hover:text-white'
-                }`}
-              >
-                {link.label}
-                <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-gold-400/50 transition-transform duration-300 group-hover:scale-x-100" />
-              </a>
-            ))}
+          <nav className="relative hidden lg:flex items-center gap-2">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`group relative px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] transition-all duration-500 ${
+                    isActive
+                      ? 'text-gold-400'
+                      : scrolled
+                      ? 'text-gray-300 hover:text-gold-400'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  <span className="relative z-10">{link.label}</span>
+                  
+                  {/* Glass Pill Indicator */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-pill"
+                      className="absolute inset-0 z-0 rounded-full border border-gold-400/20 bg-gold-400/5 backdrop-blur-sm shadow-glow-gold"
+                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                  
+                  {/* Hover Trace */}
+                  {!isActive && (
+                    <span className="absolute bottom-1 left-5 right-5 h-px scale-x-0 bg-gold-400/40 transition-transform duration-500 group-hover:scale-x-100" />
+                  )}
+                </a>
+              );
+            })}
           </nav>
 
           {/* CTA Button - Desktop */}
@@ -111,9 +145,10 @@ export default function Header() {
           >
             <a
               href="#contact"
-              className="rounded-full border border-gold-400/70 bg-black/25 px-8 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gold-300 backdrop-blur-md transition-all duration-300 hover:border-gold-300 hover:bg-gold-400 hover:text-black"
+              className="group relative overflow-hidden rounded-full border border-gold-400/70 bg-black/25 px-8 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gold-300 backdrop-blur-md transition-all duration-300 hover:border-gold-300 hover:bg-gold-400 hover:text-black"
             >
-              Plan Your Hunt
+              <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0)_30%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0)_70%)] bg-[length:200%_100%] opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
+              <span className="relative">Plan Your Hunt</span>
             </a>
           </div>
 
@@ -131,31 +166,51 @@ export default function Header() {
       </div>
 
       {/* Mobile Navigation */}
-      {isOpen && (
-        <div id="mobile-navigation" className="fixed inset-x-0 top-[70px] h-screen border-t border-white/10 bg-forest-950/98 backdrop-blur-xl lg:hidden animate-fade-in">
-          <div className="flex flex-col items-center justify-center h-[70vh] gap-8 px-6">
-            {navLinks.map((link, idx) => (
-              <a
-                key={link.href}
-                href={link.href}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            id="mobile-navigation"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-x-0 top-[70px] h-screen border-t border-white/10 bg-forest-950/98 backdrop-blur-xl lg:hidden"
+          >
+            {/* Mobile Decorative */}
+            <div className="pointer-events-none absolute inset-0">
+              <div className="absolute top-12 left-1/2 -translate-x-1/2 h-px w-24 bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
+            </div>
+            <div className="flex flex-col items-center justify-center h-[70vh] gap-8 px-6">
+              {navLinks.map((link, idx) => (
+                <motion.a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.06, duration: 0.4 }}
+                  className={`group relative text-2xl font-display font-bold uppercase tracking-widest transition-all hover:text-gold-400 ${
+                    activeSection === link.id ? 'text-gold-400' : 'text-white'
+                  }`}
+                >
+                  {link.label}
+                  <span className="absolute -bottom-1 left-0 h-px w-0 bg-gold-400/50 transition-all duration-500 group-hover:w-full" />
+                </motion.a>
+              ))}
+              <motion.a
+                href="#contact"
                 onClick={() => setIsOpen(false)}
-                className="group text-2xl font-display font-bold uppercase tracking-widest text-white hover:text-gold-400 transition-all animate-fade-up"
-                style={{ animationDelay: `${idx * 100}ms` }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.4 }}
+                className="mt-8 w-full max-w-xs rounded-full border-2 border-gold-400 bg-gold-400 px-8 py-4 text-center text-sm font-bold uppercase tracking-widest text-black hover:bg-gold-300 transition-all"
               >
-                {link.label}
-              </a>
-            ))}
-            <a
-              href="#contact"
-              onClick={() => setIsOpen(false)}
-              className="mt-8 w-full max-w-xs rounded-full border-2 border-gold-400 bg-gold-400 px-8 py-4 text-center text-sm font-bold uppercase tracking-widest text-black hover:bg-gold-300 transition-all animate-fade-up"
-              style={{ animationDelay: '800ms' }}
-            >
-              Consult a Guide
-            </a>
-          </div>
-        </div>
-      )}
+                Consult a Guide
+              </motion.a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
