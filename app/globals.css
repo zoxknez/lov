@@ -284,6 +284,20 @@ svg {
   box-shadow: 0 0 40px rgba(201, 146, 42, 0.1);
 }
 
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.season-track-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+
 @media (max-width: 768px) {
   html {
     scroll-padding-top: 4rem;
@@ -291,5 +305,10 @@ svg {
   /* Disable custom cursor on mobile */
   .custom-cursor {
     display: none !important;
+  }
+
+  .season-track-fade {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }

@@ -117,6 +117,7 @@ export default function AccommodationSection() {
                   src={getBlobAssetUrl(lodge.image)}
                   alt={lodge.name}
                   fill
+                  sizes="(max-width: 767px) 100vw, 50vw"
                   className="object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/20 to-transparent opacity-80" />

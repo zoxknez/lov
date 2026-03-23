@@ -127,6 +127,7 @@ export default function GameAnimalsSection() {
                   src={getBlobAssetUrl(animal.image)}
                   alt={animal.name}
                   fill
+                  sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
                   className="object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/20 to-transparent opacity-90" />

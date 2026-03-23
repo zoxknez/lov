@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
+import { ChevronLeft, ChevronRight, Maximize2, X } from 'lucide-react';
+import MagneticButton from '@/components/magnetic-button';
+import TextReveal from '@/components/text-reveal';
 import gallerySlike from '@/lib/gallery-slike.json';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
-import { Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-react';
-import Image from 'next/image';
-import TextReveal from '@/components/text-reveal';
-import MagneticButton from '@/components/magnetic-button';
 
 type GalleryImage = {
   src: string;
@@ -29,60 +29,73 @@ function buildBlobImageSrc(image: GalleryImage) {
   return `/api/blob-image?${params.toString()}`;
 }
 
+const categoryLabels: Record<string, string> = {
+  all: 'All',
+  trophies: 'Trophies',
+  landscape: 'Country',
+  hunting: 'Experience',
+  lodge: 'Lodge',
+  recent: 'Recent',
+};
+
 export default function GallerySection() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-
   const galleries = [
     {
       category: 'trophies',
-      title: 'Trophies',
-      description: 'The pinnacle of the hunt. Portraits of world-class Red Stag, Fallow, and Sika deer.',
+      title: 'Trophy Archive',
+      description: 'Portraits of mature stags and selective heads that define the standard of the program.',
+      note: 'Red stag, sika, and fallow highlights',
       images: [
-        { src: '/media/hunting area  and deers/Red Deer Stag.jpg', alt: 'Red Stag Trophy' },
-        { src: '/media/hunting area  and deers/Sika  deer Stag.jpg', alt: 'Sika Deer' },
-        { src: '/media/hunting area  and deers/Fellow  deer.jpg', alt: 'Fallow Deer' },
-        { src: '/media/hunting area  and deers/Hunting  area  near Rotorua.jpg', alt: 'Hunting Area Trophy' },
+        { src: '/media/hunting area  and deers/Red Deer Stag.jpg', alt: 'Red stag trophy portrait' },
+        { src: '/media/hunting area  and deers/Sika  deer Stag.jpg', alt: 'Sika stag trophy portrait' },
+        { src: '/media/hunting area  and deers/Fellow  deer.jpg', alt: 'Fallow buck trophy portrait' },
+        { src: '/media/hunting area  and deers/Hunting  area  near Rotorua.jpg', alt: 'Country and trophy moment' },
       ] satisfies GalleryImage[],
     },
     {
       category: 'landscape',
-      title: 'Alpine & Bush',
-      description: 'The rugged beauty of New Zealand. From misty river valleys to high alpine basins.',
+      title: 'Country & Atmosphere',
+      description: 'Native bush, river systems, and high-country texture that give the hunts their New Zealand identity.',
+      note: 'North Island bush and alpine reach',
       images: [
-        { src: '/media/hunting area  and deers/Hunting  area  near Rotorua.jpg', alt: 'Alpine Terrain' },
-        { src: '/media/hunting area  and deers/Hunting  area  near Rotorua 2 jpg.jpg', alt: 'Bush Country' },
-        { src: '/media/hunting area  and deers/Hunting  area  near Rotorua 3 jpg.jpg', alt: 'Mountain Views' },
-        { src: '/media/hunting area  and deers/main  photo. small size .png', alt: 'Forest Valleys' },
+        { src: '/media/hunting area  and deers/Hunting  area  near Rotorua.jpg', alt: 'North Island hill country' },
+        { src: '/media/hunting area  and deers/Hunting  area  near Rotorua 2 jpg.jpg', alt: 'Native bush and ridgelines' },
+        { src: '/media/hunting area  and deers/Hunting  area  near Rotorua 3 jpg.jpg', alt: 'Remote backcountry cover' },
+        { src: '/media/hunting area  and deers/main  photo. small size .png', alt: 'Forest valley approach' },
       ] satisfies GalleryImage[],
     },
     {
       category: 'hunting',
-      title: 'The Stalk',
-      description: 'Raw moments from the field. Glassing, tracking, and the ultimate reward.',
+      title: 'Field Rhythm',
+      description: 'Moments from the stalk, the glassing, and the patient pace that sits behind a proper hosted hunt.',
+      note: 'Stalk, glass, recover, and host',
       images: [
-        { src: '/media/hunting area  and deers/Red Deer Stag.jpg', alt: 'Successful Hunt' },
-        { src: '/media/hunting area  and deers/Sika  deer Stag.jpg', alt: 'Stalking' },
-        { src: '/media/hunting area  and deers/Fellow  deer.jpg', alt: 'Field Work' },
-        { src: '/media/hunting area  and deers/Hunting  area  near Rotorua 2 jpg.jpg', alt: 'Trophy Moment' },
+        { src: '/media/hunting area  and deers/Red Deer Stag.jpg', alt: 'Red deer field result' },
+        { src: '/media/hunting area  and deers/Sika  deer Stag.jpg', alt: 'Sika field result' },
+        { src: '/media/hunting area  and deers/Fellow  deer.jpg', alt: 'Fallow field result' },
+        { src: '/media/hunting area  and deers/Hunting  area  near Rotorua 2 jpg.jpg', alt: 'Bush-country approach' },
       ] satisfies GalleryImage[],
     },
     {
       category: 'lodge',
-      title: 'Lodge Life',
-      description: 'Hostelry and recovery. Ohakune base comfort after a long day in the bush.',
+      title: 'Hosted Base',
+      description: 'Ohakune lodge life, warm recovery spaces, and the quieter side of the program once the field day is done.',
+      note: 'Comfortable base between field days',
       images: [
-        { src: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  house .jpg', alt: 'Lodge Interior' },
-        { src: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  dinning area .jpg', alt: 'Dining Area' },
-        { src: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  living area.jpg', alt: 'Living Area' },
-        { src: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  bedroom 1 .jpg', alt: 'Guest Room' },
+        { src: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  house .jpg', alt: 'Ohakune lodge exterior' },
+        { src: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  dinning area .jpg', alt: 'Shared dining area' },
+        { src: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  living area.jpg', alt: 'Lounge and recovery space' },
+        { src: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  bedroom 1 .jpg', alt: 'Guest room interior' },
       ] satisfies GalleryImage[],
     },
     {
       category: 'recent',
-      title: 'Recent Success',
-      description: 'Latest client captures and field highlights from the current season.',
+      title: 'Recent Frames',
+      description: 'Current-season captures from the field, including trophy moments, camps, and day-by-day atmosphere.',
+      note: 'Latest archive pulled from recent field uploads',
       images: gallerySlike.map((image) => ({
         src: image.localSrc,
         fallbackSrc: image.localSrc,
@@ -92,207 +105,412 @@ export default function GallerySection() {
     },
   ];
 
-  const categories = ['all', 'trophies', 'landscape', 'hunting', 'lodge', 'recent'];
-  
   const curatedAllImages = [
     galleries[0].images[0],
-    galleries[1].images[0],
-    galleries[2].images[1],
-    galleries[3].images[0],
-    galleries[0].images[1],
+    galleries[1].images[1],
+    galleries[2].images[0],
+    galleries[3].images[1],
+    galleries[0].images[2],
     galleries[1].images[3],
   ];
 
-  const activeGallery = selectedCategory === 'all' 
-    ? { title: 'Highlights', description: 'A curated selection of the finest New Zealand hunting moments.', images: curatedAllImages }
-    : galleries.find(g => g.category === selectedCategory)!;
+  const categories = [
+    { key: 'all', label: 'All', count: curatedAllImages.length },
+    ...galleries.map((gallery) => ({
+      key: gallery.category,
+      label: categoryLabels[gallery.category],
+      count: gallery.images.length,
+    })),
+  ];
 
-  const handleNext = useCallback(() => setLightboxIndex(prev => (prev !== null ? (prev + 1) % activeGallery.images.length : null)), [activeGallery.images.length]);
-  const handlePrev = useCallback(() => setLightboxIndex(prev => (prev !== null ? (prev - 1 + activeGallery.images.length) % activeGallery.images.length : null)), [activeGallery.images.length]);
+  const activeGallery =
+    selectedCategory === 'all'
+      ? {
+          title: 'Curated Highlights',
+          description: 'A distilled edit of trophy portraits, country texture, field rhythm, and hosted lodge atmosphere.',
+          note: 'A first read of the Kaimanawa experience',
+          images: curatedAllImages,
+        }
+      : galleries.find((gallery) => gallery.category === selectedCategory)!;
+
+  const featuredImages = activeGallery.images.slice(0, 6);
+  const previewStrip = activeGallery.images.slice(0, Math.min(activeGallery.images.length, 10));
+  const remainingImages = Math.max(0, activeGallery.images.length - featuredImages.length);
+
+  const handleNext = () => {
+    setLightboxIndex((prev) => (prev !== null ? (prev + 1) % activeGallery.images.length : null));
+  };
+
+  const handlePrev = () => {
+    setLightboxIndex((prev) =>
+      prev !== null ? (prev - 1 + activeGallery.images.length) % activeGallery.images.length : null,
+    );
+  };
 
   useEffect(() => {
-    if (lightboxIndex !== null) {
-      document.body.style.overflow = 'hidden';
-    } else {
+    document.body.style.overflow = lightboxIndex !== null ? 'hidden' : 'unset';
+
+    return () => {
       document.body.style.overflow = 'unset';
-    }
-    return () => { document.body.style.overflow = 'unset'; };
+    };
   }, [lightboxIndex]);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (lightboxIndex === null) return;
-      if (e.key === 'Escape') setLightboxIndex(null);
-      if (e.key === 'ArrowRight') handleNext();
-      if (e.key === 'ArrowLeft') handlePrev();
+      if (event.key === 'Escape') setLightboxIndex(null);
+      if (event.key === 'ArrowRight') {
+        setLightboxIndex((prev) => (prev !== null ? (prev + 1) % activeGallery.images.length : null));
+      }
+      if (event.key === 'ArrowLeft') {
+        setLightboxIndex((prev) =>
+          prev !== null ? (prev - 1 + activeGallery.images.length) % activeGallery.images.length : null,
+        );
+      }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxIndex, activeGallery.images.length, handleNext, handlePrev]);
+  }, [lightboxIndex, activeGallery.images.length]);
+
+  const lightboxImage = lightboxIndex !== null ? activeGallery.images[lightboxIndex] : null;
 
   return (
-    <section id="gallery" className="relative overflow-hidden bg-transparent py-24 md:py-40 font-sans gallery-lighttable">
-      {/* Lighttable Reveal */}
-      <div className="absolute inset-0 bg-forest-950/12 backdrop-blur-[1px] pointer-events-none" />
-      <div className="absolute left-[-10%] top-[-10%] h-[600px] w-[600px] rounded-full bg-gold-600/5 blur-[120px] pointer-events-none" />
-      <div className="absolute right-[-10%] bottom-[-10%] h-[600px] w-[600px] rounded-full bg-forest-600/10 blur-[120px] pointer-events-none" />
+    <section id="gallery" className="relative overflow-hidden bg-transparent py-24 font-sans gallery-lighttable md:py-40">
+      <div className="pointer-events-none absolute inset-0 bg-forest-950/12 backdrop-blur-[1px]" />
+      <div className="pointer-events-none absolute left-[-10%] top-[-10%] h-[36rem] w-[36rem] rounded-full bg-gold-600/5 blur-[140px]" />
+      <div className="pointer-events-none absolute bottom-[-10%] right-[-10%] h-[36rem] w-[36rem] rounded-full bg-forest-600/10 blur-[140px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-        {/* Section Header */}
-        <div className="mb-20 text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-gold-400 mb-4">
-             <TextReveal>The Visual Archive</TextReveal>
-          </p>
-          <h2 className="font-display text-5xl font-bold uppercase tracking-tight text-white md:text-7xl lg:text-9xl uppercase tracking-tighter">
-             <TextReveal delay={0.2}>Gallery</TextReveal>
-          </h2>
-          <motion.div 
-            initial={{ width: 0 }}
-            whileInView={{ width: 140 }}
-            className="mx-auto mt-6 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent" 
-          />
+        <div className="mb-14 grid gap-8 xl:grid-cols-[minmax(0,1fr)_25rem] xl:items-end">
+          <div className="min-w-0">
+            <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.4em] text-gold-400">
+              <TextReveal>The Visual Archive</TextReveal>
+            </p>
+            <h2 className="font-display text-5xl font-bold uppercase tracking-tighter text-white md:text-7xl lg:text-[6.8rem]">
+              <TextReveal delay={0.2}>Gallery</TextReveal>
+            </h2>
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: 140 }}
+              viewport={{ once: true }}
+              className="mt-6 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent"
+            />
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="rounded-[2rem] border border-white/10 bg-black/20 p-6 shadow-premium backdrop-blur-xl"
+          >
+            <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400/60">Archive Note</p>
+            <p className="mt-4 text-sm leading-7 text-gray-300">
+              The gallery is structured as a quick visual read first, then a clean lightbox archive for closer viewing.
+            </p>
+            <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-5">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-gold-400/45">Visible Categories</p>
+                <p className="mt-2 text-xl font-semibold text-white">{categories.length}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-gold-400/45">Current Archive</p>
+                <p className="mt-2 text-xl font-semibold text-white">{activeGallery.images.length} Frames</p>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
-        {/* Filter Navigation */}
-        <div className="mb-20 flex flex-wrap justify-center gap-4">
-          {categories.map((cat) => (
-            <MagneticButton
-              key={cat}
-              strength={0.2}
-              onClick={() => setSelectedCategory(cat)}
-              className={`group relative overflow-hidden rounded-full px-8 py-3 text-[10px] font-bold uppercase tracking-[0.3em] transition-all duration-700 shadow-premium ${
-                selectedCategory === cat ? 'text-black' : 'text-white/40 hover:text-white'
-              }`}
-            >
-              <div className={`absolute inset-0 transition-all duration-700 ${selectedCategory === cat ? 'bg-gold-400 scale-100 opacity-100' : 'bg-white/5 opacity-0 scale-50 group-hover:scale-100 group-hover:opacity-100'}`} />
-              <span className="relative z-10">
-                {cat === 'all' ? 'All' : cat === 'landscape' ? 'Country' : cat === 'hunting' ? 'Experience' : cat === 'lodge' ? 'Lodge' : cat === 'recent' ? 'Recent' : 'Trophies'}
-              </span>
-            </MagneticButton>
-          ))}
+        <div className="mb-12 rounded-[2rem] border border-white/10 bg-black/20 p-3 shadow-premium backdrop-blur-xl">
+          <div className="flex flex-wrap gap-3">
+            {categories.map((category) => (
+              <MagneticButton
+                key={category.key}
+                strength={0.18}
+                onClick={() => {
+                  setSelectedCategory(category.key);
+                  setLightboxIndex(null);
+                }}
+                className={`group relative overflow-hidden rounded-full px-5 py-3 text-[10px] font-bold uppercase tracking-[0.24em] transition-all duration-500 ${
+                  selectedCategory === category.key ? 'text-black' : 'text-white/68 hover:text-white'
+                }`}
+              >
+                <div
+                  className={`absolute inset-0 transition-all duration-500 ${
+                    selectedCategory === category.key
+                      ? 'bg-gold-400 opacity-100'
+                      : 'bg-white/[0.04] opacity-100 group-hover:bg-white/[0.1]'
+                  }`}
+                />
+                <span className="relative z-10 inline-flex items-center gap-3">
+                  <span>{category.label}</span>
+                  <span
+                    className={`rounded-full px-2 py-1 text-[9px] tracking-[0.16em] ${
+                      selectedCategory === category.key ? 'bg-black/10 text-black/70' : 'bg-black/20 text-gold-300/70'
+                    }`}
+                  >
+                    {category.count}
+                  </span>
+                </span>
+              </MagneticButton>
+            ))}
+          </div>
         </div>
 
-        {/* Active Content Meta */}
-        <motion.div 
+        <motion.div
           key={selectedCategory}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-16 text-center max-w-2xl mx-auto"
+          transition={{ duration: 0.55 }}
+          className="mb-12 grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]"
         >
-           <h3 className="font-display text-3xl font-bold text-white uppercase tracking-tighter mb-6 underline decoration-gold-400/30 decoration-offset-4">{activeGallery.title}</h3>
-           <p className="text-lg text-gray-400 italic leading-relaxed">{activeGallery.description}</p>
+          <div className="rounded-[2.25rem] border border-white/10 bg-forest-900/15 p-8 shadow-premium backdrop-blur-xl">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+              <div className="min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400/55">
+                  {categoryLabels[selectedCategory]}
+                </p>
+                <h3 className="mt-4 font-display text-4xl font-bold uppercase tracking-tight text-white md:text-5xl">
+                  {activeGallery.title}
+                </h3>
+              </div>
+              <div className="rounded-full border border-gold-400/15 bg-gold-400/[0.06] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.24em] text-gold-300">
+                {activeGallery.note}
+              </div>
+            </div>
+            <p className="mt-6 max-w-3xl text-lg italic leading-8 text-gray-300">{activeGallery.description}</p>
+          </div>
+
+          <div className="rounded-[2.25rem] border border-white/10 bg-black/20 p-6 shadow-premium backdrop-blur-xl">
+            <p className="text-[10px] font-bold uppercase tracking-[0.32em] text-gold-400/55">Viewing Mode</p>
+            <div className="mt-5 space-y-5">
+              <div>
+                <p className="text-3xl font-semibold text-white">{activeGallery.images.length}</p>
+                <p className="mt-1 text-sm text-gray-400">frames available in the active archive</p>
+              </div>
+              <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
+              <p className="text-sm leading-7 text-gray-300">
+                Open any frame for full-screen viewing, then move through the archive with arrows or the preview strip.
+              </p>
+            </div>
+          </div>
         </motion.div>
 
-        {/* Bento Grid Layout */}
-        <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-6 md:gap-8 h-[700px] md:h-[900px]">
-          {activeGallery.images.slice(0, 6).map((image, idx) => {
+        <div className="grid auto-rows-[11rem] grid-cols-2 gap-5 md:auto-rows-[13rem] md:grid-cols-12 md:gap-6">
+          {featuredImages.map((image, index) => {
             const resolvedSrc = buildBlobImageSrc(image);
+            const isLastVisible = index === featuredImages.length - 1 && remainingImages > 0;
             const gridClasses = [
-              "md:col-span-2 md:row-span-2 col-span-2 row-span-1", 
-              "md:col-span-1 md:row-span-1 col-span-1",
-              "md:col-span-1 md:row-span-1 col-span-1",
-              "md:col-span-1 md:row-span-1 col-span-1",
-              "md:col-span-1 md:row-span-1 col-span-1",
-              "hidden md:block md:col-span-2 md:row-span-1",
-            ][idx] || "col-span-1";
+              'col-span-2 row-span-2 md:col-span-7 md:row-span-2',
+              'col-span-1 row-span-1 md:col-span-5 md:row-span-1',
+              'col-span-1 row-span-1 md:col-span-5 md:row-span-1',
+              'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
+              'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
+              'col-span-2 row-span-1 md:col-span-4 md:row-span-1',
+            ][index];
 
             return (
-              <motion.div
-                key={`${selectedCategory}-${idx}`}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: idx * 0.1 }}
-                onClick={() => setLightboxIndex(idx)}
-                className={`group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-forest-900/10 cursor-none transition-all duration-700 hover:border-gold-500/40 shadow-premium ${gridClasses}`}
+              <motion.button
+                key={`${selectedCategory}-${image.alt}-${index}`}
+                type="button"
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.65, delay: index * 0.06 }}
+                onClick={() => setLightboxIndex(index)}
+                className={`group relative overflow-hidden rounded-[2.35rem] border border-white/10 bg-forest-900/12 text-left shadow-premium transition-all duration-700 hover:-translate-y-1 hover:border-gold-400/35 ${gridClasses}`}
               >
                 <Image
                   src={resolvedSrc}
                   alt={image.alt}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-110"
+                  className="object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/10 to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-90" />
-                <div className="absolute bottom-10 left-10 right-10 flex items-center justify-between opacity-0 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0 translate-y-8">
-                   <div>
-                      <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-gold-400 mb-2">Perspective</p>
-                      <p className="text-xl font-display font-bold text-white uppercase tracking-widest">{image.alt}</p>
-                   </div>
-                   <div className="h-12 w-12 flex items-center justify-center rounded-full bg-gold-400 text-black shadow-glow-gold transition-transform group-hover:rotate-45">
-                      <Maximize2 className="h-5 w-5" />
-                   </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(200,169,110,0.18),transparent_26%)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
+
+                <div className="absolute left-6 top-6 flex items-center gap-3">
+                  <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.22em] text-gold-300 backdrop-blur-md">
+                    Frame {String(index + 1).padStart(2, '0')}
+                  </div>
+                  {isLastVisible ? (
+                    <div className="rounded-full border border-gold-400/20 bg-gold-400/[0.08] px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.22em] text-gold-200 backdrop-blur-md">
+                      +{remainingImages} More
+                    </div>
+                  ) : null}
                 </div>
-              </motion.div>
+
+                <div className="absolute inset-x-0 bottom-0 p-6 md:p-7">
+                  <div className="flex items-end justify-between gap-5">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.32em] text-gold-400/70">Open Archive</p>
+                      <p className="mt-3 font-display text-2xl font-bold uppercase leading-tight tracking-tight text-white md:text-3xl">
+                        {image.alt}
+                      </p>
+                    </div>
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold-400/15 bg-gold-400/[0.08] text-gold-200 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-105">
+                      <Maximize2 className="h-5 w-5" />
+                    </div>
+                  </div>
+                </div>
+              </motion.button>
             );
           })}
         </div>
+
+        <div className="mt-8 rounded-[2rem] border border-white/10 bg-black/20 p-5 shadow-premium backdrop-blur-xl md:p-6">
+          <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.32em] text-gold-400/55">Filmstrip</p>
+              <p className="mt-2 text-sm text-gray-400">A faster way to move through the current archive without opening random frames.</p>
+            </div>
+            <div className="text-[10px] font-bold uppercase tracking-[0.28em] text-gold-400/50">
+              {previewStrip.length} preview frames
+            </div>
+          </div>
+
+          <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
+            {previewStrip.map((image, index) => (
+              <button
+                key={`${selectedCategory}-preview-${index}`}
+                type="button"
+                onClick={() => setLightboxIndex(index)}
+                className="group relative h-24 w-28 shrink-0 overflow-hidden rounded-[1.4rem] border border-white/10 bg-black/20 transition-all duration-300 hover:border-gold-400/30 md:h-28 md:w-36"
+                aria-label={`Open ${image.alt}`}
+              >
+                <Image
+                  src={buildBlobImageSrc(image)}
+                  alt={image.alt}
+                  fill
+                  sizes="160px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                <div className="absolute left-3 top-3 rounded-full bg-black/35 px-2 py-1 text-[8px] font-bold uppercase tracking-[0.18em] text-gold-300 backdrop-blur-md">
+                  {String(index + 1).padStart(2, '0')}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Lightbox */}
       <AnimatePresence>
-        {lightboxIndex !== null && (
-          <motion.div 
+        {lightboxIndex !== null && lightboxImage ? (
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-forest-950/98 p-4 md:p-12 backdrop-blur-3xl"
+            className="fixed inset-0 z-[100] bg-forest-950/96 backdrop-blur-2xl"
             onClick={() => setLightboxIndex(null)}
           >
-            <div className="absolute inset-0 cursor-zoom-out" />
+            <div className="absolute inset-x-0 top-0 z-[110] px-4 py-5 md:px-8 md:py-7">
+              <div className="mx-auto flex max-w-7xl items-start justify-between gap-6">
+                <div className="rounded-[1.75rem] border border-white/10 bg-black/25 px-5 py-4 shadow-premium backdrop-blur-xl">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/60">{activeGallery.title}</p>
+                  <h4 className="mt-3 font-display text-2xl font-bold uppercase tracking-tight text-white md:text-3xl">
+                    {lightboxImage.alt}
+                  </h4>
+                  <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.28em] text-gold-300/70">
+                    Frame {lightboxIndex + 1} / {activeGallery.images.length}
+                  </p>
+                </div>
 
-            <button 
-              onClick={(e) => { e.stopPropagation(); setLightboxIndex(null); }}
-              className="absolute top-10 right-10 z-[110] text-gold-400/50 hover:text-gold-400 transition-all hover:scale-110 p-4 bg-white/5 rounded-full hover:bg-white/10 shadow-premium"
-            >
-              <X className="h-10 w-10" />
-            </button>
-            
-            <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between px-6 md:px-12 pointer-events-none">
-              <MagneticButton
-                strength={0.4}
-                onClick={(e) => { e.stopPropagation(); handlePrev(); }}
-                className="pointer-events-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-gold-400/50 backdrop-blur-xl transition-all hover:bg-white/10 hover:text-gold-400 border border-gold-400/10"
-              >
-                <ChevronLeft className="h-12 w-12" />
-              </MagneticButton>
-              <MagneticButton
-                strength={0.4}
-                onClick={(e) => { e.stopPropagation(); handleNext(); }}
-                className="pointer-events-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-gold-400/50 backdrop-blur-xl transition-all hover:bg-white/10 hover:text-gold-400 border border-gold-400/10"
-              >
-                <ChevronRight className="h-12 w-12" />
-              </MagneticButton>
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setLightboxIndex(null);
+                  }}
+                  className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-black/25 text-white/80 shadow-premium backdrop-blur-xl transition-all duration-300 hover:border-gold-400/30 hover:text-gold-200"
+                  aria-label="Close gallery preview"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
             </div>
 
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="relative z-[105] max-w-7xl w-full h-[70vh] md:h-[80vh] flex items-center justify-center"
-              onClick={(e) => e.stopPropagation()}
+            <div className="absolute inset-y-0 left-0 right-0 z-[109] hidden items-center justify-between px-4 md:flex md:px-8">
+              <div className="mx-auto flex w-full max-w-[92rem] items-center justify-between">
+                <MagneticButton
+                  strength={0.3}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handlePrev();
+                  }}
+                  className="flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-black/25 text-white/80 shadow-premium backdrop-blur-xl transition-all duration-300 hover:border-gold-400/30 hover:text-gold-200"
+                >
+                  <ChevronLeft className="h-7 w-7" />
+                </MagneticButton>
+
+                <MagneticButton
+                  strength={0.3}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleNext();
+                  }}
+                  className="flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-black/25 text-white/80 shadow-premium backdrop-blur-xl transition-all duration-300 hover:border-gold-400/30 hover:text-gold-200"
+                >
+                  <ChevronRight className="h-7 w-7" />
+                </MagneticButton>
+              </div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 20 }}
+              transition={{ duration: 0.35 }}
+              className="relative z-[105] mx-auto flex h-full max-w-7xl items-center justify-center px-4 pb-28 pt-28 md:px-20 md:pb-40 md:pt-32"
+              onClick={(event) => event.stopPropagation()}
             >
-              <Image 
-                src={buildBlobImageSrc(activeGallery.images[lightboxIndex])} 
-                alt="Gallery Preview"
-                width={1920}
-                height={1080}
-                className="max-w-full max-h-full object-contain rounded-3xl shadow-glow-gold border border-white/10"
-              />
-              <div className="absolute bottom-[-100px] text-center w-full">
-                 <h4 className="font-display text-4xl font-bold text-white uppercase tracking-tighter mb-4">{activeGallery.images[lightboxIndex].alt}</h4>
-                 <div className="flex items-center justify-center gap-6">
-                    <div className="h-px w-10 bg-gold-400/30" />
-                    <p className="text-[10px] text-gold-400 uppercase tracking-[0.5em] font-bold">
-                      {lightboxIndex + 1} <span className="text-gray-700 mx-3">|</span> {activeGallery.images.length}
-                    </p>
-                    <div className="h-px w-10 bg-gold-400/30" />
-                 </div>
+              <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[2.8rem] border border-white/10 bg-black/30 shadow-premium">
+                <Image
+                  src={buildBlobImageSrc(lightboxImage)}
+                  alt={lightboxImage.alt}
+                  width={1920}
+                  height={1280}
+                  className="max-h-full max-w-full object-contain"
+                />
               </div>
             </motion.div>
+
+            <div className="absolute inset-x-0 bottom-0 z-[110] px-4 pb-4 md:px-8 md:pb-7">
+              <div className="mx-auto max-w-6xl rounded-[2rem] border border-white/10 bg-black/30 p-4 shadow-premium backdrop-blur-xl md:p-5">
+                <div className="no-scrollbar flex gap-3 overflow-x-auto">
+                  {previewStrip.map((image, index) => {
+                    const isActive = index === lightboxIndex;
+
+                    return (
+                      <button
+                        key={`lightbox-${index}`}
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setLightboxIndex(index);
+                        }}
+                        className={`group relative h-20 w-24 shrink-0 overflow-hidden rounded-[1.2rem] border transition-all duration-300 md:h-24 md:w-32 ${
+                          isActive ? 'border-gold-400/60 shadow-glow-gold' : 'border-white/10 hover:border-gold-400/25'
+                        }`}
+                        aria-label={`Open frame ${index + 1}`}
+                      >
+                        <Image
+                          src={buildBlobImageSrc(image)}
+                          alt={image.alt}
+                          fill
+                          sizes="160px"
+                          className="object-cover"
+                        />
+                        <div className={`absolute inset-0 ${isActive ? 'bg-black/20' : 'bg-black/45 group-hover:bg-black/25'}`} />
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
     </section>
   );

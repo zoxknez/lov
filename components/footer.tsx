@@ -46,7 +46,7 @@ export default function Footer() {
               <div className="relative z-10 flex items-center gap-6">
                 <div className="relative flex h-20 w-20 items-center justify-center rounded-[1.75rem] border border-gold-400/25 bg-white/[0.04] shadow-premium backdrop-blur-md transition-transform duration-700 hover:scale-105">
                   <div className="absolute inset-0 rounded-[1.75rem] bg-[radial-gradient(circle_at_50%_30%,rgba(215,186,137,0.16),transparent_70%)]" />
-                  <Image src={FOOTER_LOGO_SRC} alt="Kaimanawa Logo" fill className="object-contain p-3.5" />
+                  <Image src={FOOTER_LOGO_SRC} alt="Kaimanawa Logo" fill sizes="80px" className="object-contain p-3.5" />
                 </div>
                 <div>
                   <p className="font-display text-2xl font-bold uppercase tracking-[0.4em] leading-none text-white md:text-3xl">
