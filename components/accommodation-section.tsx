@@ -1,10 +1,17 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { MapPin, Wifi, Utensils, Users } from 'lucide-react';
+import { MapPin, Wifi, Utensils, Users, Home, Mountain, Bed } from 'lucide-react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 
 export default function AccommodationSection() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   const lodges = [
     {
       name: 'Ohakune Lodge Base',
@@ -12,43 +19,27 @@ export default function AccommodationSection() {
       description: 'A comfortable base for Central North Island hunting programs and the hosted rhythm of the trip.',
       features: [
         'Private bedrooms',
-        'Bathroom facilities for the group',
         'Heating and fireplace',
-        'Wi-Fi available',
         'Chef-prepared meals',
-        'Comfortable communal lounge',
+        'Communal lounge',
       ],
       image: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  house .jpg',
       capacity: '2-4 hunters',
+      type: 'Primary Base',
     },
     {
       name: 'Remote Alpine Camps',
       location: 'South Island alpine country',
       description: 'Simple field camps used when the hunt calls for more reach into serious mountain country.',
       features: [
-        'Camp living shaped by the hunt',
-        'No signal in many remote areas',
-        'Weather-dependent mountain access',
-        'Simple but comfortable field setup',
-        'Early starts and long alpine days',
-        'Remote backcountry atmosphere',
+        'Backcountry atmosphere',
+        'Full mountain immersion',
+        'Weather-led access',
+        'Hunt-focused living',
       ],
       image: '/media/hunting area  and deers/Hunting  area  near Rotorua 3 jpg.jpg',
-      capacity: '1-2 hunters per camp',
-    },
-    {
-      name: 'Hotel Add-Ons By Arrangement',
-      location: 'Regional centres and gateway cities',
-      description: 'Extra hotel nights can be added for clients combining hunting with sightseeing or flight connections.',
-      features: [
-        'Useful for arrival and departure nights',
-        'Can be added around North Island touring',
-        'Booked to suit the final itinerary',
-        'Flexible around species mix and travel route',
-        'A good option for non-hunting companions',
-      ],
-      image: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  living area.jpg',
-      capacity: 'As required',
+      capacity: '1-2 hunters',
+      type: 'Backcountry',
     },
   ];
 
@@ -56,103 +47,126 @@ export default function AccommodationSection() {
     {
       icon: Utensils,
       title: 'Hosted Dining',
-      description: 'Chef-prepared lodge meals tailored to the group, the hunting schedule, and any dietary preferences.',
+      description: 'Chef-prepared meals tailored to the group, the hunting schedule, and any dietary preferences.',
     },
     {
       icon: Wifi,
-      title: 'Modern Connectivity',
-      description: 'The lodge has Wi-Fi for international coordination, while remote camps often mean a full reset from signal.',
+      title: 'Connectivity',
+      description: 'Lodge Wi-Fi for international coordination, while camps offer a full reset from signal.',
     },
     {
       icon: MapPin,
-      title: 'Practical Basing',
-      description: 'Ohakune works well as a hosted North Island base, with alpine access planned separately when the hunt shifts south.',
+      title: 'Strategic Basing',
+      description: 'Ohakune works as a perfect North Island base, with alpine access planned separately.',
     },
     {
       icon: Users,
-      title: 'Intimate Groups',
+      title: 'Personal Hosting',
       description: 'Trips are usually run for 2-4 hunters so the program stays personal and flexible.',
     },
   ];
 
   return (
-    <section id="stay" className="relative bg-gray-950 py-20 md:py-32">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-16 text-center md:mb-24">
-          <p className="text-sm uppercase tracking-[0.2em] text-[#d9b167]">Where You Rest</p>
-          <h2 className="mt-4 font-display text-4xl font-bold uppercase text-white md:text-6xl">
-            Accommodation
+    <section id="stay" className="relative overflow-hidden bg-forest-950 py-24 md:py-40">
+      {/* Background radial glow */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[800px] w-[800px] rounded-full bg-gold-500/5 blur-[120px] pointer-events-none" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        {/* Section Header */}
+        <div className={`mb-20 text-center transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <p className="text-[13px] uppercase tracking-[0.3em] text-gold-300">Where You Rest</p>
+          <h2 className="mt-4 font-display text-5xl font-bold uppercase tracking-tight text-white md:text-7xl">
+            Lodge & Camps
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-400">
+          <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
+          <p className="mx-auto mt-8 max-w-2xl font-sans text-lg leading-relaxed text-gray-400 md:text-xl">
             Comfortable lodge hosting where it makes sense, with remote camps only when the hunt really needs extra reach.
           </p>
         </div>
 
-        <div className="mb-20 space-y-12">
-          {lodges.map((lodge) => (
+        {/* Lodges Display */}
+        <div className="mb-32 space-y-24">
+          {lodges.map((lodge, idx) => (
             <div
               key={lodge.name}
-              className="group grid gap-8 overflow-hidden rounded-lg border border-white/10 bg-gradient-to-r from-gray-900/40 to-gray-950 backdrop-blur md:grid-cols-2"
+              className={`group relative grid gap-12 items-center md:grid-cols-2 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'} transition-all duration-1000`}
+              style={{ transitionDelay: `${idx * 200}ms` }}
             >
-              <div className="relative h-64 w-full overflow-hidden bg-gray-800 md:h-auto">
+              <div className={`relative aspect-video w-full overflow-hidden rounded-3xl border border-white/10 shadow-panel transition-transform duration-700 group-hover:scale-[1.02] ${idx % 2 === 1 ? 'md:order-2' : ''}`}>
                 <Image
                   src={getBlobAssetUrl(lodge.image)}
                   alt={lodge.name}
                   fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-950 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/20 to-transparent" />
+                <div className="absolute top-6 left-6">
+                   <div className="rounded-full bg-forest-950/60 px-4 py-1.5 backdrop-blur-md border border-white/10">
+                      <p className="text-[10px] font-bold tracking-widest text-gold-300 uppercase">{lodge.type}</p>
+                   </div>
+                </div>
               </div>
 
-              <div className="flex flex-col justify-center p-8 md:p-12">
-                <h3 className="font-display text-2xl font-bold text-white md:text-3xl">{lodge.name}</h3>
-                <p className="mt-2 flex items-center gap-2 text-gray-400">
-                  <MapPin className="h-4 w-4 text-[#d9b167]" />
-                  {lodge.location}
-                </p>
-
-                <p className="mt-4 leading-relaxed text-gray-300">{lodge.description}</p>
-
-                <div className="mt-6 space-y-2 border-t border-white/10 pt-6">
-                  <p className="font-display text-sm font-semibold uppercase text-[#d9b167]">Features</p>
-                  <ul className="space-y-2">
-                    {lodge.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2 text-sm text-gray-400">
-                        <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#d9b167]" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+              <div className={`p-4 ${idx % 2 === 1 ? 'md:order-1 md:text-right' : ''}`}>
+                <div className={`flex items-center gap-2 text-gold-400 mb-4 ${idx % 2 === 1 ? 'justify-end' : ''}`}>
+                  <MapPin className="h-4 w-4" />
+                  <span className="text-xs font-semibold uppercase tracking-widest">{lodge.location}</span>
                 </div>
-
-                <p className="mt-6 text-sm font-semibold text-white">Group Size: {lodge.capacity}</p>
+                <h3 className="font-display text-4xl font-bold text-white md:text-5xl leading-tight mb-6">{lodge.name}</h3>
+                <p className="font-sans text-lg leading-relaxed text-gray-400 mb-8 max-w-xl mx-auto md:mx-0">
+                   {lodge.description}
+                </p>
+                
+                <div className={`flex flex-wrap gap-x-8 gap-y-4 border-t border-white/10 pt-8 ${idx % 2 === 1 ? 'justify-end text-right' : ''}`}>
+                   {lodge.features.map((feature) => (
+                     <div key={feature} className="flex items-center gap-3">
+                        <div className="h-1.5 w-1.5 rounded-full bg-gold-500/40" />
+                        <span className="text-sm font-medium text-gray-300 uppercase tracking-wide">{feature}</span>
+                     </div>
+                   ))}
+                </div>
+                
+                <div className={`mt-10 flex items-center gap-4 ${idx % 2 === 1 ? 'justify-end' : ''}`}>
+                   <div className="h-px w-12 bg-gold-500/20" />
+                   <p className="text-xs font-bold tracking-widest text-gold-200">SPACE: {lodge.capacity}</p>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="mb-20">
-          <h3 className="mb-12 text-center font-display text-3xl font-bold text-white">What The Stay Feels Like</h3>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {amenities.map((amenity) => {
-              const Icon = amenity.icon;
-              return (
-                <div key={amenity.title} className="rounded-lg border border-white/10 bg-white/5 p-6 backdrop-blur">
-                  <Icon className="h-8 w-8 text-[#d9b167]" />
-                  <h4 className="mt-4 font-display text-lg font-bold text-white">{amenity.title}</h4>
-                  <p className="mt-2 text-sm text-gray-400">{amenity.description}</p>
+        {/* Amenities Row */}
+        <div className="mb-32 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {amenities.map((amenity, idx) => {
+            const Icon = amenity.icon;
+            return (
+              <div 
+                key={amenity.title} 
+                className={`group relative rounded-2xl border border-white/5 bg-forest-900/10 p-8 transition-all duration-500 hover:border-gold-500/20 hover:bg-forest-900/20 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                style={{ transitionDelay: `${800 + idx * 100}ms` }}
+              >
+                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gold-500/5 text-gold-400 border border-gold-500/10 transition-transform duration-500 group-hover:scale-110">
+                  <Icon className="h-6 w-6" />
                 </div>
-              );
-            })}
-          </div>
+                <h4 className="font-display text-xl font-bold text-white mb-3 tracking-tight">{amenity.title}</h4>
+                <p className="text-sm leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">{amenity.description}</p>
+              </div>
+            );
+          })}
         </div>
 
-        <div className="rounded-lg border border-[#d9b167]/20 bg-gradient-to-r from-[#d9b167]/10 to-transparent p-8 md:p-12">
-          <h3 className="mb-4 font-display text-2xl font-bold text-white">Dining</h3>
-          <p className="leading-relaxed text-gray-300">
-            Meals at the lodge are prepared around the rhythm of the hunt, not the other way around. The goal is simple:
-            excellent food, reliable hospitality, and a stay that feels relaxed after long days in the bush or the hills.
-          </p>
+        {/* Dining Accent */}
+        <div className={`transition-all duration-1000 delay-1000 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-forest-900/40 p-1 font-sans shadow-panel">
+             <div className="absolute inset-0 bg-gradient-to-br from-gold-500/5 via-transparent to-forest-600/5" />
+             <div className="relative flex flex-col items-center justify-center p-12 md:p-20 text-center">
+                <Utensils className="h-12 w-12 text-gold-400 mb-8 opacity-40" />
+                <h3 className="mb-6 font-display text-3xl font-bold text-white md:text-4xl">Wilderness Dining</h3>
+                <p className="max-w-4xl text-lg italic leading-relaxed text-gray-300">
+                  "Meals at the lodge are prepared around the rhythm of the hunt, not the other way around. The goal is simple: excellent food, reliable hospitality, and a stay that feels relaxed after long days in the bush or the hills."
+                </p>
+             </div>
+          </div>
         </div>
       </div>
     </section>

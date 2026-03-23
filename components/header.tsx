@@ -23,7 +23,7 @@ export default function Header() {
     { label: 'Story', href: '#story' },
     { label: 'Territory', href: '#hunt' },
     { label: 'Species', href: '#animals' },
-    { label: 'Accommodation', href: '#stay' },
+    { label: 'Stay', href: '#stay' },
     { label: 'Gallery', href: '#gallery' },
     { label: 'Guide', href: '#guide' },
     { label: 'Contact', href: '#contact' },
@@ -31,50 +31,56 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'border-b border-white/10 bg-black/80 backdrop-blur-md'
-          : 'border-b border-white/5 bg-black/40 backdrop-blur-sm'
+          ? 'border-b border-white/10 bg-forest-950/90 backdrop-blur-md py-3'
+          : 'border-b border-transparent bg-transparent py-5'
       }`}
     >
       <div className="mx-auto max-w-7xl px-6">
-        <div className="flex min-h-[70px] items-center justify-between">
+        <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3 group">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#d9b167] bg-[#d9b167]/10 transition-all group-hover:border-[#d9b167] group-hover:bg-[#d9b167]/20 overflow-hidden">
-              <img src={HEADER_LOGO_SRC} alt="Kaimanawa Logo" className="h-full w-full object-contain p-1" />
+          <a href="/" className="flex items-center gap-4 group">
+            <div className={`relative flex h-14 w-14 items-center justify-center rounded-2xl border transition-all duration-500 overflow-hidden ${scrolled ? 'border-gold-500/30 bg-forest-900/40 shadow-glow' : 'border-white/20 bg-white/5'}`}>
+              <img src={HEADER_LOGO_SRC} alt="Kaimanawa Logo" className="h-full w-full object-contain p-2 transition-transform duration-500 group-hover:scale-110" />
             </div>
             <div className="hidden sm:block">
-              <p className="font-display text-sm font-bold uppercase tracking-[0.15em] text-white">KAIMANAWA</p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400">Trophy Safaris</p>
+              <p className="font-display text-base font-bold uppercase tracking-[0.2em] text-white">KAIMANAWA</p>
+              <div className="flex items-center gap-2">
+                 <div className="h-px w-3 bg-gold-400/50" />
+                 <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400">Trophy Safaris</p>
+              </div>
             </div>
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-2">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="px-4 py-2 text-sm font-semibold uppercase tracking-[0.1em] text-gray-300 transition-colors hover:text-[#d9b167]"
+                className="relative px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-300 transition-all hover:text-gold-400 group"
               >
                 {link.label}
+                <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-gold-400/50 transition-transform duration-300 group-hover:scale-x-100" />
               </a>
             ))}
           </nav>
 
           {/* CTA Button - Desktop */}
-          <a
-            href="#contact"
-            className="hidden md:inline-block rounded-full border border-[#d9b167] px-6 py-2 text-sm font-semibold text-[#d9b167] transition-all hover:bg-[#d9b167] hover:text-black"
-          >
-            Plan Your Hunt
-          </a>
+          <div className="hidden md:flex items-center gap-8">
+            <a
+              href="#contact"
+              className={`rounded-full border-2 border-gold-400 px-8 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] transition-all duration-300 hover:bg-gold-400 hover:text-black ${scrolled ? 'bg-gold-400/10 text-gold-400' : 'bg-transparent text-gold-400'}`}
+            >
+              Plan Your Hunt
+            </a>
+          </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-gray-400 hover:text-white transition-colors"
+            className="lg:hidden p-2 text-gold-400 hover:text-gold-300 transition-colors"
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -83,14 +89,15 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="border-t border-white/10 bg-black/95 backdrop-blur md:hidden">
-          <div className="mx-auto max-w-7xl px-6 py-4 space-y-2">
-            {navLinks.map((link) => (
+        <div className="fixed inset-x-0 top-[70px] h-screen border-t border-white/10 bg-forest-950/98 backdrop-blur-xl lg:hidden animate-fade-in">
+          <div className="flex flex-col items-center justify-center h-[70vh] gap-8 px-6">
+            {navLinks.map((link, idx) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="block px-4 py-3 text-sm font-semibold uppercase tracking-[0.1em] text-gray-300 hover:text-[#d9b167] transition-colors"
+                className="group text-2xl font-display font-bold uppercase tracking-widest text-white hover:text-gold-400 transition-all animate-fade-up"
+                style={{ animationDelay: `${idx * 100}ms` }}
               >
                 {link.label}
               </a>
@@ -98,9 +105,10 @@ export default function Header() {
             <a
               href="#contact"
               onClick={() => setIsOpen(false)}
-              className="block mt-4 rounded-full border border-[#d9b167] px-6 py-3 text-center text-sm font-semibold text-[#d9b167] hover:bg-[#d9b167] hover:text-black transition-all"
+              className="mt-8 w-full max-w-xs rounded-full border-2 border-gold-400 bg-gold-400 px-8 py-4 text-center text-sm font-bold uppercase tracking-widest text-black hover:bg-gold-300 transition-all animate-fade-up"
+              style={{ animationDelay: '800ms' }}
             >
-              Plan Your Hunt
+              Consult a Guide
             </a>
           </div>
         </div>
