@@ -15,7 +15,7 @@ import MagneticButton from "@/components/magnetic-button";
 
 const HERO_VIDEO_SRC = "/media/hero-wilderness-demo.mp4";
 const HERO_VIDEO_POSTER = "/media/hero-wilderness-poster.jpg";
-const BRAND_LOGO_SRC = "/brand-logo.png";
+const BRAND_LOGO_SRC = "/media/logo.png";
 
 const HERO_HIGHLIGHTS = [
   {

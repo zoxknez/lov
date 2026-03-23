@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
   color-scheme: dark;
@@ -32,11 +32,41 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
-  font-weight: 300;
+  font-weight: 400;
+  line-height: 1.5;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
   cursor: none;
+}
+
+.text-gray-400 {
+  color: rgb(209 213 219 / 0.94);
+}
+
+.text-gray-500 {
+  color: rgb(156 163 175 / 0.96);
+}
+
+[class*="tracking-[0.2em]"],
+[class*="tracking-[0.15em]"],
+[class*="tracking-[0.12em]"],
+.label {
+  font-weight: 600;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+}
+
+[class*="tracking-[0.2em]"] {
+  letter-spacing: 0.16em;
+}
+
+[class*="tracking-[0.15em]"] {
+  letter-spacing: 0.13em;
+}
+
+[class*="tracking-[0.12em]"] {
+  letter-spacing: 0.11em;
 }
 
 ::selection {

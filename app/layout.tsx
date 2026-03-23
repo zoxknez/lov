@@ -4,8 +4,11 @@ import SmoothScroll from "@/components/smooth-scroll";
 import AnalyticsBeacon from "@/components/analytics-beacon";
 import CustomCursor from "@/components/custom-cursor";
 import Preloader from "@/components/preloader";
+import { getAbsoluteBlobAssetUrl, getBlobAssetUrl } from "@/lib/blob-asset";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+const logoAssetUrl = getBlobAssetUrl("/media/logo.png");
+const absoluteLogoAssetUrl = getAbsoluteBlobAssetUrl("/media/logo.png", siteUrl);
 
 export const metadata: Metadata = {
   metadataBase: siteUrl ? new URL(siteUrl) : undefined,
@@ -14,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s | KAIMANAWA"
   },
   description:
-    "Guided New Zealand hunting programs across Central North Island bush country and South Island alpine terrain, with tailored planning for international hunters.",
+    "Guided New Zealand trophy hunts across Central North Island bush country and South Island alpine terrain, with tailored planning for international hunters.",
   applicationName: "Kaimanawa Trophy Safaris",
   alternates: siteUrl ? { canonical: "/" } : undefined,
   openGraph: {
@@ -22,11 +25,11 @@ export const metadata: Metadata = {
     ...(siteUrl ? { url: siteUrl } : {}),
     title: "Kaimanawa Trophy Safaris | Guided New Zealand Hunts",
     description:
-      "A cinematic, premium hunting platform for Kaimanawa Trophy Safaris with fact-checked New Zealand planning notes and guided hunt enquiries.",
+      "Guided New Zealand trophy hunts across Central North Island bush country and South Island alpine terrain.",
     siteName: "Kaimanawa Trophy Safaris",
     ...(siteUrl ? {
       images: [{
-        url: "/brand-logo.png",
+        url: absoluteLogoAssetUrl,
         width: 1200,
         height: 1200,
         alt: "KAIMANAWA premium hunts"
@@ -37,15 +40,15 @@ export const metadata: Metadata = {
     ? {
         card: "summary_large_image",
         title: "Kaimanawa Trophy Safaris | Guided New Zealand Hunts",
-        description: "Guided North and South Island New Zealand hunts with tailored planning for international hunters.",
-        images: ["/brand-logo.png"]
+        description: "Guided New Zealand trophy hunts with tailored planning for international hunters.",
+        images: [absoluteLogoAssetUrl]
       }
     : {
         card: "summary",
         title: "Kaimanawa Trophy Safaris | Guided New Zealand Hunts",
-        description: "Guided North and South Island New Zealand hunts with tailored planning for international hunters."
+        description: "Guided New Zealand trophy hunts with tailored planning for international hunters."
       },
-  icons: { icon: "/brand-logo.png", apple: "/brand-logo.png" },
+  icons: { icon: logoAssetUrl, apple: logoAssetUrl },
   manifest: "/manifest.webmanifest"
 };
 

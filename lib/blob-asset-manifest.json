@@ -1,0 +1,137 @@
+[
+  {
+    "localSrc": "/media/hero-wilderness-demo.mp4",
+    "blobPath": "site-media/media/hero-wilderness-demo.mp4",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hero-wilderness-demo.mp4"
+  },
+  {
+    "localSrc": "/media/hunting%20area%20%20and%20deers/Fellow%20%20deer.jpg",
+    "blobPath": "site-media/media/hunting-area-and-deers/fellow-deer.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-area-and-deers/fellow-deer.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20area%20%20and%20deers/Hunting%20%20area%20%20near%20Rotorua%202%20jpg.jpg",
+    "blobPath": "site-media/media/hunting-area-and-deers/hunting-area-near-rotorua-2-jpg.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-area-and-deers/hunting-area-near-rotorua-2-jpg.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20area%20%20and%20deers/Hunting%20%20area%20%20near%20Rotorua%203%20jpg.jpg",
+    "blobPath": "site-media/media/hunting-area-and-deers/hunting-area-near-rotorua-3-jpg.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-area-and-deers/hunting-area-near-rotorua-3-jpg.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20area%20%20and%20deers/Hunting%20%20area%20%20near%20Rotorua.jpg",
+    "blobPath": "site-media/media/hunting-area-and-deers/hunting-area-near-rotorua.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-area-and-deers/hunting-area-near-rotorua.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20area%20%20and%20deers/main%20%20photo.%20small%20size%20.png",
+    "blobPath": "site-media/media/hunting-area-and-deers/main-photo-small-size.png",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-area-and-deers/main-photo-small-size.png"
+  },
+  {
+    "localSrc": "/media/hunting%20area%20%20and%20deers/Red%20Deer%20Stag.jpg",
+    "blobPath": "site-media/media/hunting-area-and-deers/red-deer-stag.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-area-and-deers/red-deer-stag.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20area%20%20and%20deers/Sika%20%20deer%20Stag.jpg",
+    "blobPath": "site-media/media/hunting-area-and-deers/sika-deer-stag.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-area-and-deers/sika-deer-stag.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20bedroom%201%20.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-bedroom-1.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-bedroom-1.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20bedroom%202%20.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-bedroom-2.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-bedroom-2.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20bedroom%203%20.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-bedroom-3.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-bedroom-3.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20bedroom%203a%20.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-bedroom-3a.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-bedroom-3a.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20dinning%20area%20.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-dinning-area.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-dinning-area.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20house%20.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-house.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-house.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20kitchen.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-kitchen.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-kitchen.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20living%20area%20%20TV.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-living-area-tv.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-living-area-tv.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20living%20area.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-living-area.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-living-area.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20loundry%20jpg.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-loundry-jpg.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-loundry-jpg.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20pergola%201%20.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-pergola-1.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-pergola-1.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20pergola%202%20.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-pergola-2.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-pergola-2.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20pergola%20pizza%20owev%20.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-pergola-pizza-owev.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-pergola-pizza-owev.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20shower%20.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-shower.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-shower.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20toilet%20and%20loundry%20jpg.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-toilet-and-loundry-jpg.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-toilet-and-loundry-jpg.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20Lodge%20%20%20sky%20%20view.%202%20jpg.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-lodge-sky-view-2-jpg.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-lodge-sky-view-2-jpg.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20Lodge%20%20%20sky%20%20view.%203%20jpg.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-lodge-sky-view-3-jpg.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-lodge-sky-view-3-jpg.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20Lodge%20%20%20sky%20%20view.jpg",
+    "blobPath": "site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-lodge-sky-view.jpg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-lodge-accommodation/13-ruapehu-rd-ohakune-lodge-sky-view.jpg"
+  },
+  {
+    "localSrc": "/media/logo.png",
+    "blobPath": "site-media/media/logo.png",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/logo.png"
+  }
+]

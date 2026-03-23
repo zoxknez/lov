@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   cacheComponents: true,
   images: {
+    localPatterns: [
+      {
+        pathname: "/api/blob-image"
+      }
+    ],
     remotePatterns: [
       {
         protocol: "https",
