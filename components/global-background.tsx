@@ -43,9 +43,20 @@ interface ShootingStar {
 export default function GlobalBackground() {
   const prefersReducedMotion = useReducedMotion();
   const [stars, setStars] = useState<ShootingStar[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    const media = window.matchMedia('(max-width: 767px)');
+    const syncViewport = () => setIsMobile(media.matches);
+
+    syncViewport();
+    media.addEventListener('change', syncViewport);
+
+    return () => media.removeEventListener('change', syncViewport);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion || isMobile) return;
     let id = 0;
     const spawn = () => {
       const star: ShootingStar = {
@@ -60,7 +71,7 @@ export default function GlobalBackground() {
     const interval = setInterval(spawn, 4000 + Math.random() * 6000);
     setTimeout(spawn, 2000); // first star after 2s
     return () => clearInterval(interval);
-  }, [prefersReducedMotion]);
+  }, [isMobile, prefersReducedMotion]);
 
   const ambientPools = [
     {
@@ -120,7 +131,7 @@ export default function GlobalBackground() {
       <div className="absolute inset-0 bg-[linear-gradient(180deg,#03070a_0%,#061018_16%,#03070b_32%,#071219_50%,#04090d_68%,#020406_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_8%,rgba(213,172,106,0.1),transparent_20%),linear-gradient(135deg,rgba(255,255,255,0.028),transparent_40%)]" />
 
-      {ambientPools.map((pool) => (
+      {(isMobile ? ambientPools.slice(0, 3) : ambientPools).map((pool) => (
         <motion.div
           key={pool.className}
           className={`absolute rounded-full blur-[120px] ${pool.className}`}
@@ -131,7 +142,7 @@ export default function GlobalBackground() {
       ))}
 
       <motion.div
-        className="absolute inset-0 opacity-[0.075]"
+        className={`absolute inset-0 opacity-[0.075] ${isMobile ? 'hidden' : ''}`}
         animate={prefersReducedMotion ? undefined : { y: [0, -18, 0], x: [0, 8, 0] }}
         transition={{ duration: 30, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
       >
@@ -150,7 +161,7 @@ export default function GlobalBackground() {
         </svg>
       </motion.div>
 
-      {ridgeBands.map((band) => (
+      {(isMobile ? ridgeBands.slice(0, 2) : ridgeBands).map((band) => (
         <motion.div
           key={band.top}
           className="absolute inset-x-0 h-[18%]"
@@ -163,7 +174,7 @@ export default function GlobalBackground() {
       ))}
 
       <motion.div
-        className="absolute inset-x-[-14%] top-[18%] h-[18%] opacity-[0.28]"
+        className={`absolute inset-x-[-14%] top-[18%] h-[18%] opacity-[0.28] ${isMobile ? 'hidden' : ''}`}
         animate={prefersReducedMotion ? undefined : { x: [0, 24, 0], y: [0, -14, 0] }}
         transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
       >
@@ -171,7 +182,7 @@ export default function GlobalBackground() {
       </motion.div>
 
       <motion.div
-        className="absolute inset-x-[-18%] top-[48%] h-[22%] opacity-[0.34]"
+        className={`absolute inset-x-[-18%] top-[48%] h-[22%] opacity-[0.34] ${isMobile ? 'hidden' : ''}`}
         animate={prefersReducedMotion ? undefined : { x: [0, -20, 0], y: [0, 12, 0] }}
         transition={{ duration: 24, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
       >
@@ -179,16 +190,16 @@ export default function GlobalBackground() {
       </motion.div>
 
       <motion.div
-        className="absolute inset-x-[-10%] top-[76%] h-[16%] opacity-[0.3]"
+        className={`absolute inset-x-[-10%] top-[76%] h-[16%] opacity-[0.3] ${isMobile ? 'hidden' : ''}`}
         animate={prefersReducedMotion ? undefined : { x: [0, 18, 0], y: [0, -10, 0] }}
         transition={{ duration: 22, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
       >
         <div className="h-full w-full rounded-[50%] bg-[radial-gradient(circle_at_50%_42%,rgba(12,24,28,0.8),rgba(6,10,12,0.28)_52%,transparent_82%)] blur-[88px]" />
       </motion.div>
 
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(245,240,232,0.018)_1px,transparent_1px),linear-gradient(180deg,rgba(245,240,232,0.014)_1px,transparent_1px)] bg-[size:140px_140px] opacity-[0.02]" />
+      <div className={`absolute inset-0 bg-[linear-gradient(90deg,rgba(245,240,232,0.018)_1px,transparent_1px),linear-gradient(180deg,rgba(245,240,232,0.014)_1px,transparent_1px)] bg-[size:140px_140px] opacity-[0.02] ${isMobile ? 'hidden' : ''}`} />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(245,240,232,0.014)_12%,transparent_24%,rgba(245,240,232,0.01)_48%,transparent_66%,rgba(245,240,232,0.012)_88%,transparent_100%)]" />
-      <div className="scene-grain absolute inset-[-30%] opacity-[0.026] mix-blend-soft-light" />
+      <div className={`scene-grain absolute inset-[-30%] opacity-[0.026] mix-blend-soft-light ${isMobile ? 'hidden' : ''}`} />
       {/* Shooting Stars */}
       {stars.map((star) => (
         <motion.div

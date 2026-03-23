@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
@@ -9,20 +9,20 @@ import { getBlobAssetUrl } from '@/lib/blob-asset';
 
 const HEADER_LOGO_SRC = getBlobAssetUrl('/media/logo.png');
 
+const navLinks = [
+  { label: 'Story', href: '#story', id: 'story' },
+  { label: 'Territory', href: '#territory', id: 'territory' },
+  { label: 'Species', href: '#species', id: 'species' },
+  { label: 'Stay', href: '#stay', id: 'stay' },
+  { label: 'Gallery', href: '#gallery', id: 'gallery' },
+  { label: 'Guide', href: '#guide', id: 'guide' },
+  { label: 'Contact', href: '#contact', id: 'contact' },
+];
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-
-  const navLinks = [
-    { label: 'Story', href: '#story', id: 'story' },
-    { label: 'Territory', href: '#territory', id: 'territory' },
-    { label: 'Species', href: '#species', id: 'species' },
-    { label: 'Stay', href: '#stay', id: 'stay' },
-    { label: 'Gallery', href: '#gallery', id: 'gallery' },
-    { label: 'Guide', href: '#guide', id: 'guide' },
-    { label: 'Contact', href: '#contact', id: 'contact' },
-  ];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 56);
@@ -61,12 +61,12 @@ export default function Header() {
           scrolled ? 'opacity-0' : 'opacity-100'
         }`}
       />
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="group relative flex items-center gap-3">
+          <Link href="/" className="group relative flex items-center gap-2.5 sm:gap-3">
             <div
-              className={`relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border transition-all duration-500 ${
+              className={`relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border transition-all duration-500 sm:h-10 sm:w-10 ${
                 scrolled
                   ? 'border-gold-500/30 bg-forest-900/45 shadow-glow md:h-11 md:w-11'
                   : 'border-white/10 bg-black/20'
@@ -82,8 +82,8 @@ export default function Header() {
             </div>
             <div className="hidden sm:block">
               <p
-                className={`font-display font-bold uppercase leading-none tracking-[0.26em] text-white transition-all duration-500 ${
-                  scrolled ? 'text-[15px]' : 'text-[14px] text-white/88'
+                className={`font-display font-bold uppercase leading-none tracking-[0.22em] text-white transition-all duration-500 ${
+                  scrolled ? 'text-[14px]' : 'text-[13px] text-white/88'
                 }`}
               >
                 KAIMANAWA
@@ -155,7 +155,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden rounded-xl p-2 text-gold-400 transition-colors hover:text-gold-300"
+            className="rounded-xl border border-white/10 bg-black/25 p-2 text-gold-400 transition-colors hover:text-gold-300 lg:hidden"
             aria-label={isOpen ? 'Close navigation' : 'Open navigation'}
             aria-expanded={isOpen}
             aria-controls="mobile-navigation"
@@ -174,13 +174,13 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-0 top-[70px] h-screen border-t border-white/10 bg-forest-950/98 backdrop-blur-xl lg:hidden"
+            className="fixed inset-x-0 top-[64px] h-[calc(100svh-64px)] border-t border-white/10 bg-forest-950/98 backdrop-blur-xl lg:hidden sm:top-[72px] sm:h-[calc(100svh-72px)]"
           >
             {/* Mobile Decorative */}
             <div className="pointer-events-none absolute inset-0">
               <div className="absolute top-12 left-1/2 -translate-x-1/2 h-px w-24 bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
             </div>
-            <div className="flex flex-col items-center justify-center h-[70vh] gap-8 px-6">
+            <div className="flex h-full flex-col items-center justify-start gap-6 overflow-y-auto px-6 pb-12 pt-10">
               {navLinks.map((link, idx) => (
                 <motion.a
                   key={link.href}
@@ -189,7 +189,7 @@ export default function Header() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.06, duration: 0.4 }}
-                  className={`group relative text-2xl font-display font-bold uppercase tracking-widest transition-all hover:text-gold-400 ${
+                  className={`group relative text-xl font-display font-bold uppercase tracking-[0.18em] transition-all hover:text-gold-400 sm:text-2xl ${
                     activeSection === link.id ? 'text-gold-400' : 'text-white'
                   }`}
                 >
@@ -203,7 +203,7 @@ export default function Header() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.4 }}
-                className="mt-8 w-full max-w-xs rounded-full border-2 border-gold-400 bg-gold-400 px-8 py-4 text-center text-sm font-bold uppercase tracking-widest text-black hover:bg-gold-300 transition-all"
+                className="mt-4 w-full max-w-xs rounded-full border-2 border-gold-400 bg-gold-400 px-8 py-4 text-center text-sm font-bold uppercase tracking-[0.18em] text-black transition-all hover:bg-gold-300"
               >
                 Consult a Guide
               </motion.a>

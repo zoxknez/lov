@@ -93,7 +93,7 @@ export default function CustomCursor() {
   return (
     <div className="custom-cursor pointer-events-none fixed inset-0 z-[9999] hidden lg:block">
       {/* Trail Particles */}
-      {trail.map((t, i) => (
+      {trail.map((t) => (
         <motion.div
           key={t.id}
           className="absolute rounded-full bg-gold-400"
