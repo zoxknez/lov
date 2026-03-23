@@ -256,6 +256,51 @@ svg {
   animation: text-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 8s linear infinite;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+@keyframes fog-drift {
+  0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  50% { transform: translate(-45%, -55%) rotate(5deg) scale(1.1); }
+  100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+}
+
+@keyframes topo-pan {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-20px, -20px) scale(1.05); }
+}
+
+.animate-fog {
+  animation: fog-drift 40s ease-in-out infinite;
+}
+
+.animate-topo {
+  animation: topo-pan 60s ease-in-out alternate infinite;
+}
+
 /* Custom Cursor Helpers */
 .cursor-none * {
   cursor: none !important;

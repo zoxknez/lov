@@ -88,7 +88,9 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative overflow-hidden bg-forest-950 py-24 md:py-40 font-sans">
+    <section id="contact" className="relative overflow-hidden bg-transparent py-24 md:py-40 font-sans concierge-station">
+      {/* Concierge Atmospheric Layer */}
+      <div className="absolute inset-0 bg-forest-950/30 backdrop-blur-[3px] pointer-events-none" />
       {/* Background Accents */}
       <div className="absolute top-0 left-0 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 h-[600px] w-[600px] translate-x-1/2 translate-y-1/2 rounded-full bg-forest-600/10 blur-[100px] pointer-events-none" />
@@ -147,169 +149,209 @@ export default function ContactSection() {
         </motion.div>
 
         <div className="grid gap-20 lg:grid-cols-5">
-          {/* Form Column */}
+          {/* Form Column - High-Tech Operational Dispatch */}
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-3"
           >
-            <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-forest-900/30 p-12 backdrop-blur-xl shadow-premium">
-              <div className="flex items-center gap-6 mb-12">
-                 <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-gold-400/10 text-gold-400">
+            <div className="relative overflow-hidden rounded-[3rem] border border-white/5 bg-forest-900/10 p-12 backdrop-blur-2xl shadow-premium">
+              {/* Internal Accent */}
+              <div className="absolute top-0 left-0 h-1 w-20 bg-gold-400/30" />
+              
+              <div className="flex items-center gap-6 mb-16">
+                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold-400/5 text-gold-400 border border-gold-400/10 backdrop-blur-md">
                     <MessageSquare className="h-5 w-5" />
                  </div>
-                 <h3 className="font-display text-4xl font-bold text-white uppercase tracking-tighter">Direct Inquiry</h3>
+                 <div>
+                    <h3 className="font-display text-4xl font-bold text-white uppercase tracking-tighter leading-none">Inquiry Dispatch</h3>
+                    <p className="mt-2 text-[9px] font-bold uppercase tracking-[0.4em] text-gold-400/40">Secure Field Channel</p>
+                 </div>
               </div>
-
-              <form onSubmit={handleSubmit} className="space-y-10">
-                <div className="grid gap-10 sm:grid-cols-2">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/60 ml-1">Full Name</label>
+ 
+              <form onSubmit={handleSubmit} className="space-y-12">
+                <div className="grid gap-12 sm:grid-cols-2">
+                  {/* Floating Label Input: Name */}
+                  <div className="group relative">
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      placeholder="e.g. John Smith"
-                      className="w-full rounded-2xl border border-white/5 bg-white/[0.03] px-8 py-5 text-white placeholder-gray-600 transition-all focus:border-gold-400/40 focus:outline-none focus:ring-8 focus:ring-gold-400/5"
+                      placeholder=" "
+                      className="peer w-full border-b border-white/10 bg-transparent px-1 py-4 text-lg text-white placeholder-transparent transition-all focus:border-gold-400 focus:outline-none"
                     />
+                    <label className="absolute left-1 top-4 -translate-y-0 text-sm font-bold uppercase tracking-[0.3em] text-gray-500 transition-all peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-600 peer-focus:-translate-y-8 peer-focus:text-xs peer-focus:text-gold-400/60 peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gold-400/60">
+                      Full Name
+                    </label>
+                    <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-gold-500 to-gold-300 transition-all duration-700 group-hover:w-full peer-focus:w-full" />
                   </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/60 ml-1">Email Address</label>
+
+                  {/* Floating Label Input: Email */}
+                  <div className="group relative">
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      placeholder="john@example.com"
-                      className="w-full rounded-2xl border border-white/5 bg-white/[0.03] px-8 py-5 text-white placeholder-gray-600 transition-all focus:border-gold-400/40 focus:outline-none focus:ring-8 focus:ring-gold-400/5"
+                      placeholder=" "
+                      className="peer w-full border-b border-white/10 bg-transparent px-1 py-4 text-lg text-white placeholder-transparent transition-all focus:border-gold-400 focus:outline-none"
                     />
+                    <label className="absolute left-1 top-4 -translate-y-0 text-sm font-bold uppercase tracking-[0.3em] text-gray-500 transition-all peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-600 peer-focus:-translate-y-8 peer-focus:text-xs peer-focus:text-gold-400/60 peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gold-400/60">
+                      Email Address
+                    </label>
+                    <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-gold-500 to-gold-300 transition-all duration-700 group-hover:w-full peer-focus:w-full" />
                   </div>
                 </div>
-
-                <div className="grid gap-10 sm:grid-cols-2">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/60 ml-1">Phone (Optional)</label>
+ 
+                <div className="grid gap-12 sm:grid-cols-2">
+                  {/* Floating Label Input: Phone */}
+                  <div className="group relative">
                     <input
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      placeholder="+1..."
-                      className="w-full rounded-2xl border border-white/5 bg-white/[0.03] px-8 py-5 text-white placeholder-gray-600 transition-all focus:border-gold-400/40 focus:outline-none focus:ring-8 focus:ring-gold-400/5"
+                      placeholder=" "
+                      className="peer w-full border-b border-white/10 bg-transparent px-1 py-4 text-lg text-white placeholder-transparent transition-all focus:border-gold-400 focus:outline-none"
                     />
+                    <label className="absolute left-1 top-4 -translate-y-0 text-sm font-bold uppercase tracking-[0.3em] text-gray-500 transition-all peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-600 peer-focus:-translate-y-8 peer-focus:text-xs peer-focus:text-gold-400/60 peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gold-400/60">
+                      Phone (Optional)
+                    </label>
+                    <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-gold-500 to-gold-300 transition-all duration-700 group-hover:w-full peer-focus:w-full" />
                   </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/60 ml-1">Inquiry Type</label>
-                    <div className="relative">
-                      <select
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full appearance-none rounded-2xl border border-white/5 bg-white/[0.03] px-8 py-5 text-white transition-all focus:border-gold-400/40 focus:outline-none focus:ring-8 focus:ring-gold-400/5 cursor-pointer"
-                      >
-                        <option value="" disabled className="bg-forest-950">Select Subject</option>
-                        <option value="booking" className="bg-forest-950">Book a Hunt</option>
-                        <option value="species-pricing" className="bg-forest-950">Species & Pricing</option>
-                        <option value="travel" className="bg-forest-950">Travel Logistics</option>
-                        <option value="other" className="bg-forest-950">General Inquiry</option>
-                      </select>
-                      <div className="pointer-events-none absolute right-6 top-1/2 -translate-y-1/2">
-                        <div className="h-1.5 w-1.5 rounded-full bg-gold-400" />
-                      </div>
+
+                  {/* High-Tech Custom Select */}
+                  <div className="group relative">
+                    <select
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
+                      className="peer w-full appearance-none border-b border-white/10 bg-transparent px-1 py-4 text-lg text-white placeholder-transparent transition-all focus:border-gold-400 focus:outline-none cursor-pointer"
+                    >
+                      <option value="" disabled className="bg-forest-950">Select Inquiry Type</option>
+                      <option value="booking" className="bg-forest-950">Book a Hunt</option>
+                      <option value="species-pricing" className="bg-forest-950">Species & Pricing</option>
+                      <option value="travel" className="bg-forest-950">Travel Logistics</option>
+                      <option value="other" className="bg-forest-950">General Inquiry</option>
+                    </select>
+                    <label className={`absolute left-1 top-4 transition-all text-xs font-bold uppercase tracking-[0.3em] text-gold-400/60 -translate-y-8`}>
+                      Inquiry Type
+                    </label>
+                    <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-gold-500 to-gold-300 transition-all duration-700 group-hover:w-full peer-focus:w-full" />
+                    <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2">
+                      <div className="h-1.5 w-1.5 rounded-full bg-gold-400 animate-pulse" />
                     </div>
                   </div>
                 </div>
-
-                <div className="space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/60 ml-1">Message</label>
+ 
+                <div className="group relative">
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
                     required
-                    placeholder="Tell us about your trophy goals and preferred dates..."
-                    rows={6}
-                    className="w-full rounded-3xl border border-white/5 bg-white/[0.03] px-8 py-6 text-white placeholder-gray-600 transition-all focus:border-gold-400/40 focus:outline-none focus:ring-8 focus:ring-gold-400/5 resize-none"
+                    placeholder=" "
+                    rows={4}
+                    className="peer w-full border-b border-white/10 bg-transparent px-1 py-4 text-lg text-white placeholder-transparent transition-all focus:border-gold-400 focus:outline-none resize-none"
                   />
+                  <label className="absolute left-1 top-4 -translate-y-0 text-sm font-bold uppercase tracking-[0.3em] text-gray-500 transition-all peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-600 peer-focus:-translate-y-8 peer-focus:text-xs peer-focus:text-gold-400/60 peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-gold-400/60">
+                    Your Requirements & Trophy Goals
+                  </label>
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-gold-500 to-gold-300 transition-all duration-700 group-hover:w-full peer-focus:w-full" />
                 </div>
-
+ 
                 <MagneticButton
                   type="submit"
                   disabled={submitStatus === 'loading'}
-                  className="group relative flex w-full items-center justify-center gap-4 overflow-hidden rounded-2xl bg-gold-400 py-6 font-bold uppercase tracking-[0.3em] text-[11px] text-black transition-all hover:bg-gold-300 disabled:opacity-50 shadow-glow-gold"
+                  className="group relative flex w-full items-center justify-center gap-6 overflow-hidden rounded-[1.5rem] bg-gold-400 py-7 font-bold uppercase tracking-[0.4em] text-[11px] text-black transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 shadow-premium shadow-gold-500/20"
                 >
-                  <Send className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  {submitStatus === 'loading' ? 'Encrypting...' : 'Dispatch Inquiry'}
+                  <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0)_30%,rgba(255,255,255,0.2)_45%,rgba(255,255,255,0.3)_50%,rgba(255,255,255,0.2)_55%,rgba(255,255,255,0)_70%)] bg-[length:200%_100%] opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
+                  <Send className="relative z-10 h-5 w-5 transition-transform group-hover:translate-x-2 group-hover:-translate-y-2" />
+                  <span className="relative z-10">
+                    {submitStatus === 'loading' ? 'Establishing Field Link...' : 'Dispatch Inquiry'}
+                  </span>
                 </MagneticButton>
-
+ 
                 {submitStatus === 'success' && (
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-4 rounded-2xl bg-gold-400/10 p-5 border border-gold-400/20 shadow-glow-gold"
+                    className="flex items-center gap-6 rounded-3xl bg-gold-400/5 p-8 border border-gold-400/20 backdrop-blur-md shadow-glow-gold"
                   >
-                     <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-gold-400/20 text-gold-400">
-                        <ShieldCheck className="h-4 w-4" />
+                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold-400/20 text-gold-400">
+                        <ShieldCheck className="h-6 w-6" />
                      </div>
-                     <p className="text-xs font-bold text-gold-200 uppercase tracking-widest">Message dispatched. We&apos;ll be in touch within 24h.</p>
+                     <div>
+                        <p className="text-xs font-bold text-gold-200 uppercase tracking-widest leading-none">Transmission Successful</p>
+                        <p className="mt-2 text-[10px] text-gray-400 font-medium">Field operations will review your inquiry within 24 standard hours.</p>
+                     </div>
                   </motion.div>
                 )}
               </form>
             </div>
           </motion.div>
 
-          {/* Info Column */}
+          {/* Info Column - Operational Nodes */}
           <div className="lg:col-span-2 space-y-10">
             <motion.div 
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="rounded-[2.5rem] border border-white/5 bg-forest-900/10 p-12 transition-all hover:border-white/10 shadow-premium"
+              transition={{ duration: 1.2, delay: 0.2 }}
+              className="group relative rounded-[3rem] border border-white/5 bg-forest-900/10 p-12 transition-all hover:border-gold-400/30 shadow-premium overflow-hidden"
             >
-               <div className="flex items-center gap-6 mb-8">
-                  <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-gold-400/10 text-gold-400">
-                    <Clock className="h-6 w-6" />
-                  </div>
-                  <h4 className="font-display text-2xl font-bold text-white uppercase tracking-tight">Response Time</h4>
-               </div>
-               <p className="font-sans text-gray-400 leading-relaxed italic">
-                  &quot;Field operations are usually out of reach, but we keep the Ohakune base connected. Whether it&apos;s technical logistics or a simple arrival check, we&apos;re here to manage the details.&quot;
-               </p>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className="group relative rounded-[3rem] border border-gold-400/10 bg-gold-400/5 p-12 overflow-hidden shadow-glow-gold"
-            >
-               <div className="absolute top-0 right-0 p-10 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Globe className="h-32 w-32 text-gold-400" />
+               <div className="absolute -top-10 -right-10 p-10 opacity-0 group-hover:opacity-5 transition-all duration-1000 rotate-12">
+                  <Clock className="h-40 w-40 text-gold-400" />
                </div>
                
                <div className="relative">
-                  <div className="flex items-center gap-6 mb-8">
-                     <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-gold-400/20 text-gold-400">
+                  <div className="flex items-center gap-6 mb-10">
+                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold-400/5 text-gold-400 border border-gold-400/10 backdrop-blur-md">
+                        <Clock className="h-6 w-6" />
+                     </div>
+                     <h4 className="font-display text-2xl font-bold text-white uppercase tracking-tight">Response Time</h4>
+                  </div>
+                  <p className="font-sans text-gray-400 leading-relaxed italic text-lg border-l border-gold-400/20 pl-8">
+                     &quot;Field operations are usually out of reach, but we keep the Ohakune base connected. Whether it&apos;s technical logistics or a simple arrival check, we&apos;re here to manage the details.&quot;
+                  </p>
+               </div>
+            </motion.div>
+ 
+            <motion.div 
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, delay: 0.4 }}
+              className="group relative rounded-[3rem] border border-gold-400/10 bg-gold-400/5 p-12 overflow-hidden shadow-premium"
+            >
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(163,126,67,0.1),transparent)]" />
+               <div className="absolute top-0 right-0 p-10 opacity-5 group-hover:opacity-10 transition-all duration-1000">
+                  <Globe className="h-48 w-48 text-gold-400" />
+               </div>
+               
+               <div className="relative">
+                  <div className="flex items-center gap-6 mb-10">
+                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gold-400/10 text-gold-400 border border-gold-400/20 backdrop-blur-md">
                         <Globe className="h-6 w-6" />
                      </div>
                      <h4 className="font-display text-2xl font-bold text-white uppercase tracking-tight">International</h4>
                   </div>
-                  <p className="font-sans text-gray-400 leading-relaxed text-base mb-8 italic">
+                  <p className="font-sans text-gray-400 leading-relaxed text-base mb-10 italic border-l border-gold-400/20 pl-8">
                      Most guests arrive via Auckland (AKL). We coordinate all domestic travel, firearms paperwork, and trophy logistics from that point onward.
                   </p>
-                  <div className="h-px w-full bg-gold-400/20 mb-8" />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gold-400 mb-4">Note on Firearms</p>
-                  <p className="text-xs leading-relaxed text-gray-500 font-medium">
-                     Visitor firearms licenses require 4 months processing. Rifle hire is available for NZD 100/day.
-                  </p>
+                  <div className="h-px w-full bg-gold-400/10 mb-10" />
+                  <div className="bg-forest-950/50 rounded-2xl p-6 border border-white/5 backdrop-blur-sm">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gold-400 mb-4">Note on Firearms</p>
+                    <p className="text-sm leading-relaxed text-gray-500 font-medium">
+                       Visitor firearms licenses require 4 months processing. Rifle hire is available for NZD 100/day.
+                    </p>
+                  </div>
                </div>
             </motion.div>
           </div>

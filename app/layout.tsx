@@ -4,6 +4,7 @@ import SmoothScroll from "@/components/smooth-scroll";
 import AnalyticsBeacon from "@/components/analytics-beacon";
 import CustomCursor from "@/components/custom-cursor";
 import Preloader from "@/components/preloader";
+import GlobalBackground from "@/components/global-background";
 import { getAbsoluteBlobAssetUrl, getBlobAssetUrl } from "@/lib/blob-asset";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
@@ -55,7 +56,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className="bg-[#020403] text-white cursor-none selection:bg-gold-400/30">
+      <body className="bg-black text-white cursor-none selection:bg-gold-400/30 overflow-x-hidden">
+        <GlobalBackground />
         <a href="#top" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[200] focus:rounded-md focus:bg-white/95 focus:px-3 focus:py-2 focus:text-sm focus:text-black">
           Skip to content
         </a>

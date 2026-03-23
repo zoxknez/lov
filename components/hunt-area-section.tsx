@@ -52,7 +52,9 @@ export default function HuntAreaSection() {
   };
 
   return (
-    <section id="hunt" className="relative overflow-hidden bg-forest-950 py-24 md:py-40">
+    <section id="territory" className="relative h-screen bg-transparent overflow-hidden territory-contours">
+      {/* Atmospheric Reveal Backdrop */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] pointer-events-none" />
       {/* Background Decorative Accent */}
       <div className="absolute right-0 top-1/4 h-[600px] w-[600px] rounded-full bg-gold-500/5 blur-[120px] pointer-events-none" />
       
@@ -172,43 +174,99 @@ export default function HuntAreaSection() {
            ))}
         </motion.div>
 
-        {/* Season Windows */}
-        <div className="relative">
-          <div className="mb-16 flex flex-col items-center justify-between gap-8 md:flex-row">
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-gold-400">
-                 <TextReveal>Seasonal Rhythms</TextReveal>
+        {/* Season Windows - Interactive Slider */}
+        <div className="relative mt-20">
+          {/* Header */}
+          <div className="mb-20 flex flex-col items-start justify-between gap-10 lg:flex-row lg:items-end">
+            <div className="max-w-2xl">
+              <p className="text-[11px] font-bold uppercase tracking-[0.5em] text-gold-400 mb-6 flex items-center gap-4">
+                 <span className="h-px w-8 bg-gold-400/40" />
+                 <TextReveal>Operational Rhythm</TextReveal>
               </p>
-              <h3 className="mt-3 font-display text-5xl font-bold text-white md:text-6xl uppercase tracking-tighter">
+              <h3 className="font-display text-5xl font-bold text-white md:text-7xl uppercase tracking-tighter leading-tight">
                 <TextReveal delay={0.2}>Season Windows</TextReveal>
               </h3>
             </div>
-            <p className="max-w-md text-sm text-gray-500 text-right font-medium italic">
-              The main travel window runs from March through July, with dedicated rusa programs usually sitting later in winter.
-            </p>
+            <div className="relative p-6 rounded-2xl border border-white/5 bg-forest-900/30 backdrop-blur-sm max-w-sm">
+               <p className="text-sm text-gray-400 font-medium italic leading-relaxed">
+                 The main travel window runs from March through July, with dedicated rusa programs usually sitting later in winter.
+               </p>
+               <div className="absolute -left-1 top-1/2 -translate-y-1/2 h-8 w-1 bg-gold-500/40 rounded-full" />
+            </div>
           </div>
           
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {seasonWindows.map((item) => (
-              <motion.div 
-                key={item.title} 
-                variants={itemVariants}
-                className="group relative overflow-hidden rounded-2xl border border-white/5 bg-forest-900/20 p-10 transition-all duration-700 hover:border-gold-500/30 hover:bg-forest-900/40 shadow-premium"
-              >
-                <div className="flex justify-between items-start mb-8">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/80">{item.window}</p>
-                  <div className="h-px w-8 bg-gold-400/20 group-hover:w-full transition-all duration-700" />
-                </div>
-                <h4 className="font-display text-3xl font-bold text-white group-hover:text-gold-200 transition-colors uppercase tracking-tight">{item.title}</h4>
-                <p className="mt-5 text-sm leading-relaxed text-gray-400 group-hover:text-gray-200 transition-colors font-sans">{item.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          {/* Slider Container */}
+          <div className="relative -mx-6 px-6 overflow-visible group/slider">
+            {/* Background Parallax Glow */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-full bg-[radial-gradient(circle_at_50%_50%,rgba(163,126,67,0.05),transparent_70%)] blur-[100px] pointer-events-none" />
+            
+            <motion.div 
+              drag="x"
+              dragConstraints={{ left: -1200, right: 0 }}
+              className="flex gap-8 cursor-grab active:cursor-grabbing py-10"
+            >
+              {seasonWindows.map((item, i) => (
+                <motion.div 
+                  key={item.title} 
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: i * 0.1 }}
+                  whileHover={{ y: -10 }}
+                  className="relative min-w-[320px] md:min-w-[400px] overflow-hidden rounded-[2.5rem] border border-white/5 bg-forest-900/10 p-12 transition-all duration-700 hover:border-gold-500/30 hover:bg-forest-900/40 shadow-premium group/card"
+                >
+                  {/* Glassmorphic Background Layer */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-700" />
+                  
+                  {/* Month Index Indicator */}
+                  <div className="absolute top-12 right-12 opacity-10 group-hover/card:opacity-30 transition-opacity">
+                     <span className="font-display text-7xl font-bold text-gold-400 tracking-tighter">0{i+1}</span>
+                  </div>
+
+                  <div className="relative z-10">
+                    <div className="mb-12 flex items-center gap-4">
+                      <div className="h-px w-10 bg-gold-500/40 group-hover/card:w-16 transition-all duration-700" />
+                      <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-gold-400 leading-none">{item.window}</p>
+                    </div>
+
+                    <h4 className="font-display text-4xl font-bold text-white group-hover/card:text-gold-200 transition-colors uppercase tracking-tight leading-tight">
+                      {item.title}
+                    </h4>
+                    
+                    <div className="mt-8 mb-10 h-px w-full bg-gradient-to-r from-white/10 to-transparent" />
+                    
+                    <p className="text-base leading-relaxed text-gray-400 group-hover/card:text-gray-200 transition-colors font-sans italic">
+                      {item.description}
+                    </p>
+                    
+                    {/* Interactive "Discover" Hint */}
+                    <div className="mt-10 flex items-center gap-3 opacity-0 group-hover/card:opacity-100 transition-all duration-700 translate-y-2 group-hover/card:translate-y-0 text-gold-400">
+                       <span className="text-[10px] font-bold uppercase tracking-widest">Premium Season</span>
+                       <div className="h-1 w-1 rounded-full bg-gold-500" />
+                    </div>
+                  </div>
+                  
+                  {/* Card Corner Ornament */}
+                  <div className="absolute -bottom-6 -right-6 h-24 w-24 rounded-full bg-gold-500/5 blur-2xl group-hover/card:bg-gold-500/10 transition-colors" />
+                </motion.div>
+              ))}
+            </motion.div>
+            
+            {/* Scroll Progress Bar / Indicator */}
+            <div className="mt-12 mx-auto max-w-md h-0.5 bg-white/5 relative overflow-hidden rounded-full">
+               <motion.div 
+                 initial={{ scaleX: 0 }}
+                 whileInView={{ scaleX: 1 }}
+                 className="absolute inset-0 bg-gold-500/20 origin-left"
+               />
+               <div className="absolute left-[5%] top-0 h-full w-[20%] bg-gold-500/60 blur-[1px]" />
+            </div>
+            
+            {/* Navigation Cue */}
+            <div className="mt-8 text-center">
+               <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-gold-500/40 animate-pulse">Swipe to navigate rhythms</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

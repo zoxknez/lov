@@ -12,27 +12,27 @@ export default function StorySection() {
   const founders = [
     {
       name: 'Alex Sipka',
-      role: 'Co-founder',
+      role: 'Co-Founder',
       origin: 'Serbia',
-      experience: '40 years',
+      experience: '40 Years',
       description: 'Veteran hunter whose decades in the field shaped the standards and pace behind the Kaimanawa program.',
-      image: '/media/hunting%20area%20%20and%20deers/Sika%20%20deer%20Stag.jpg',
+      image: 'PERSON_DEMO',
     },
     {
       name: 'Artem Prikazov',
-      role: 'Co-founder',
+      role: 'Co-Founder',
       origin: 'Russia',
-      experience: '15 years',
+      experience: '15 Years',
       description: 'Internationally travelled hunter focused on the quality of New Zealand game and the experience around it.',
-      image: '/media/hunting%20area%20%20and%20deers/Red%20Deer%20Stag.jpg',
+      image: 'PERSON_DEMO',
     },
     {
       name: 'Vuk Mijatovic',
-      role: 'Guide',
-      origin: 'New Zealand field operations',
-      experience: '35+ years',
+      role: 'Lead Guide',
+      origin: 'New Zealand Field Ops',
+      experience: '35+ Years',
       description: 'Lead field guide with deep knowledge of New Zealand terrain, animal behaviour, and hunt execution.',
-      image: '/media/hunting%20area%20%20and%20deers/Fellow%20%20deer.jpg',
+      image: 'PERSON_DEMO',
     },
   ];
 
@@ -52,7 +52,9 @@ export default function StorySection() {
   };
 
   return (
-    <section id="story" className="relative overflow-hidden bg-forest-950 py-24 md:py-40">
+    <section id="story" className="relative overflow-hidden bg-transparent py-24 md:py-40 font-sans">
+      {/* Editorial Depth Layer */}
+      <div className="absolute inset-0 bg-forest-950/20 backdrop-blur-[2px] pointer-events-none" />
       {/* Background Decorative Elements */}
       <div className="absolute left-0 top-0 h-full w-full pointer-events-none overflow-hidden opacity-20">
         <div className="absolute -left-[10%] top-[10%] h-[500px] w-[500px] rounded-full bg-gold-400/5 blur-[120px]" />
@@ -83,35 +85,67 @@ export default function StorySection() {
 
         {/* Mission Statement / Feature Box */}
         <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="mb-40"
         >
-          <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-forest-900/40 p-1 font-sans shadow-premium backdrop-blur-xl">
-             <div className="absolute inset-0 bg-gradient-to-br from-gold-500/10 via-transparent to-forest-600/10" />
-             <div className="relative flex flex-col items-center justify-center p-10 md:p-20">
-                <motion.span 
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  className="mb-8 inline-block rounded-full bg-gold-500/10 px-6 py-2 text-[10px] font-bold uppercase tracking-widest text-gold-200 border border-gold-500/20"
-                >
-                  Established 2025
-                </motion.span>
-                <div className="max-w-4xl text-center text-xl font-light leading-relaxed text-gray-200 md:text-4xl">
-                  <TextReveal delay={0.2}>
-                    &quot;Kaimanawa Trophy Safaris was born from a shared passion for the New Zealand wilderness. Our aim is simple: to create a properly hosted hunting program that feels authentic in the field and meticulously polished in the planning.&quot;
-                  </TextReveal>
+          <div className="relative overflow-hidden rounded-[3rem] border border-white/10 bg-forest-900/20 p-px shadow-2xl backdrop-blur-xl group">
+             {/* Dynamic border glow */}
+             <div className="absolute inset-x-0 -top-px h-px w-full bg-gradient-to-r from-transparent via-gold-500/50 to-transparent opacity-0 transition-opacity duration-1000 group-hover:opacity-100" />
+             
+             <div className="relative overflow-hidden rounded-[3rem] bg-forest-950/40 px-10 py-20 md:px-20 md:py-32">
+                {/* Background Watermark */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] grayscale pointer-events-none w-[120%] h-[120%] flex items-center justify-center">
+                   <Image 
+                     src={getBlobAssetUrl('/media/logo.png')} 
+                     alt="" 
+                     width={1200} 
+                     height={1200}
+                     className="object-contain"
+                   />
                 </div>
-                
-                <div className="mt-14 flex flex-wrap justify-center gap-10 text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/40">
-                  {['Artem Prikazov', 'Alex Sipka', 'Vuk Mijatovic'].map((name) => (
-                    <div key={name} className="flex items-center gap-3">
-                      <div className="h-1.5 w-1.5 rounded-full bg-gold-400/50" />
-                      <span>{name}</span>
-                    </div>
-                  ))}
+
+                <div className="relative z-10 flex flex-col items-center justify-center">
+                   <motion.div 
+                     initial={{ opacity: 0, scale: 0.9 }}
+                     whileInView={{ opacity: 1, scale: 1 }}
+                     className="mb-12 flex h-16 w-16 items-center justify-center rounded-2xl border border-gold-500/30 bg-gold-500/10 text-gold-400 shadow-glow"
+                   >
+                      <Award className="h-8 w-8" />
+                   </motion.div>
+
+                   <div className="max-w-4xl text-center">
+                      <h3 className="mb-12 font-display text-2xl font-light italic leading-relaxed text-gray-100 md:text-5xl lg:text-6xl">
+                        <TextReveal delay={0.2}>
+                          &quot;Kaimanawa Trophy Safaris was born from a shared passion for the New Zealand wilderness. Our aim is simple: to create a properly hosted hunting program that feels authentic in the field and meticulously polished in the planning.&quot;
+                        </TextReveal>
+                      </h3>
+                      
+                      {/* Founders Signature Area */}
+                      <div className="mt-16 flex flex-col items-center">
+                         <div className="mb-6 h-px w-24 bg-gradient-to-r from-transparent via-gold-500 to-transparent" />
+                         <p className="text-[12px] font-bold uppercase tracking-[0.5em] text-gold-500/60 mb-8">The Founders</p>
+                         
+                         <div className="flex flex-wrap justify-center gap-x-12 gap-y-6">
+                            {['Artem Prikazov', 'Alex Sipka', 'Vuk Mijatovic'].map((name, i) => (
+                              <motion.div 
+                                key={name}
+                                initial={{ opacity: 0, y: 10 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5 + (i * 0.1) }}
+                                className="flex flex-col items-center"
+                              >
+                                <span className="text-lg font-display font-bold uppercase tracking-[0.2em] text-white md:text-2xl hover:text-gold-400 transition-colors duration-500">
+                                   {name}
+                                </span>
+                                <div className="mt-2 h-0.5 w-0 bg-gold-500 transition-all duration-500 group-hover:w-full" />
+                              </motion.div>
+                            ))}
+                         </div>
+                      </div>
+                   </div>
                 </div>
              </div>
           </div>
@@ -174,41 +208,67 @@ export default function StorySection() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            className="grid gap-10 md:grid-cols-3"
+            className="grid gap-12 md:grid-cols-3"
           >
             {founders.map((founder) => (
               <motion.div 
                 key={founder.name} 
                 variants={itemVariants}
-                className="group relative overflow-hidden rounded-[2rem] border border-white/5 bg-forest-900/20 transition-all duration-700 hover:border-gold-500/40 shadow-premium cursor-pointer"
+                className="group relative flex flex-col overflow-hidden rounded-[3.1rem] border border-white/5 bg-forest-900/10 transition-all duration-700 hover:border-gold-500/40 shadow-premium"
               >
                 <div className="relative aspect-[4/5] w-full overflow-hidden">
-                  <Image
-                    src={getBlobAssetUrl(founder.image)}
-                    alt={founder.name}
-                    fill
-                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                  />
-                  {/* Cinematic Overlays */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/20 to-transparent opacity-90" />
-                  <div className="absolute inset-0 bg-gold-900/10 opacity-0 transition-opacity duration-700 group-hover:opacity-40" />
+                   {/* Personal Demo Placeholder / Image Handler */}
+                   {founder.image === 'PERSON_DEMO' ? (
+                     <div className="flex h-full w-full items-center justify-center bg-forest-950">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(163,126,67,0.12),transparent)]" />
+                        <div className="relative flex flex-col items-center">
+                           <div className="mb-4 h-28 w-28 rounded-full border border-gold-400/20 bg-gold-400/5 flex items-center justify-center backdrop-blur-md group-hover:scale-110 group-hover:border-gold-400/40 transition-all duration-1000">
+                              <span className="font-display text-[10px] font-bold tracking-[0.5em] text-gold-400 opacity-60 group-hover:opacity-100 transition-opacity">PERSON</span>
+                           </div>
+                           <h4 className="font-display text-5xl font-bold tracking-[0.3em] text-white/5 uppercase select-none group-hover:text-gold-400/10 transition-colors duration-1000">DEMO</h4>
+                        </div>
+                     </div>
+                   ) : (
+                     <Image
+                       src={getBlobAssetUrl(founder.image)}
+                       alt={founder.name}
+                       fill
+                       className="object-cover transition-transform duration-[2s] ease-out group-hover:scale-110"
+                     />
+                   )}
                   
+                  {/* Cinematic Overlays */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/20 to-transparent opacity-95 transition-opacity duration-700 group-hover:opacity-70" />
+                  <div className="absolute inset-0 bg-gold-400/5 opacity-0 transition-opacity duration-1000 group-hover:opacity-100" />
+                  
+                  {/* Role Badge */}
+                  <div className="absolute top-10 left-10">
+                     <div className="rounded-full border border-white/10 bg-forest-950/40 backdrop-blur-2xl px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.5em] text-gold-400 shadow-premium">
+                        {founder.role}
+                     </div>
+                  </div>
+
                   {/* Content Overlay */}
-                  <div className="absolute bottom-0 left-0 w-full p-10 transition-transform duration-700 group-hover:-translate-y-4">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400 mb-2">
-                       {founder.role}
-                    </p>
-                    <h4 className="font-display text-4xl font-bold text-white tracking-tight">{founder.name}</h4>
-                    <p className="mt-2 text-xs font-bold text-gold-500/60 uppercase tracking-widest">{founder.experience} experience</p>
+                  <div className="absolute bottom-0 left-0 w-full p-12">
+                    <div className="transform transition-transform duration-700 group-hover:-translate-y-5">
+                       <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-gold-500/60 mb-3">{founder.origin}</p>
+                       <h4 className="font-display text-5xl font-bold text-white tracking-tight md:text-6xl uppercase leading-none drop-shadow-2xl">{founder.name}</h4>
+                       <div className="mt-10 flex items-center gap-5">
+                          <div className="h-px w-10 bg-gold-500/50 transition-all duration-700 group-hover:w-20" />
+                          <p className="text-[11px] font-bold text-gold-400 uppercase tracking-[0.5em] italic">{founder.experience} Mastery</p>
+                       </div>
+                    </div>
                   </div>
                 </div>
                 
-                <div className="relative p-10 pt-8">
-                  <div className="mb-6 h-px w-16 bg-gold-500/40 transition-all duration-700 group-hover:w-full" />
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-gold-400 opacity-50 mb-4">{founder.origin}</p>
-                  <p className="text-base leading-relaxed text-gray-400 transition-colors duration-500 group-hover:text-gray-200">
-                    {founder.description}
-                  </p>
+                {/* Character Detail Reveal (Elite Expansion) */}
+                <div className="relative h-0 overflow-hidden transition-all duration-700 ease-[0.16,1,0.3,1] group-hover:h-44">
+                   <div className="px-12 pb-12">
+                      <div className="mb-8 h-px w-full bg-white/5" />
+                      <p className="font-sans text-base leading-relaxed text-gray-400 transition-colors group-hover:text-gray-200">
+                        {founder.description}
+                      </p>
+                   </div>
                 </div>
               </motion.div>
             ))}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import gallerySlike from '@/lib/gallery-slike.json';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
@@ -107,8 +107,8 @@ export default function GallerySection() {
     ? { title: 'Highlights', description: 'A curated selection of the finest New Zealand hunting moments.', images: curatedAllImages }
     : galleries.find(g => g.category === selectedCategory)!;
 
-  const handleNext = () => setLightboxIndex(prev => (prev !== null ? (prev + 1) % activeGallery.images.length : null));
-  const handlePrev = () => setLightboxIndex(prev => (prev !== null ? (prev - 1 + activeGallery.images.length) % activeGallery.images.length : null));
+  const handleNext = useCallback(() => setLightboxIndex(prev => (prev !== null ? (prev + 1) % activeGallery.images.length : null)), [activeGallery.images.length]);
+  const handlePrev = useCallback(() => setLightboxIndex(prev => (prev !== null ? (prev - 1 + activeGallery.images.length) % activeGallery.images.length : null)), [activeGallery.images.length]);
 
   useEffect(() => {
     if (lightboxIndex !== null) {
@@ -128,10 +128,12 @@ export default function GallerySection() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxIndex, activeGallery.images.length]);
+  }, [lightboxIndex, activeGallery.images.length, handleNext, handlePrev]);
 
   return (
-    <section id="gallery" className="relative overflow-hidden bg-forest-950 py-24 md:py-40 font-sans">
+    <section id="gallery" className="relative overflow-hidden bg-transparent py-24 md:py-40 font-sans gallery-lighttable">
+      {/* Lighttable Reveal */}
+      <div className="absolute inset-0 bg-forest-950/20 backdrop-blur-[1px] pointer-events-none" />
       <div className="absolute left-[-10%] top-[-10%] h-[600px] w-[600px] rounded-full bg-gold-600/5 blur-[120px] pointer-events-none" />
       <div className="absolute right-[-10%] bottom-[-10%] h-[600px] w-[600px] rounded-full bg-forest-600/10 blur-[120px] pointer-events-none" />
 
@@ -153,19 +155,19 @@ export default function GallerySection() {
 
         {/* Filter Navigation */}
         <div className="mb-20 flex flex-wrap justify-center gap-4">
-          {categories.map((cat, idx) => (
-            <MagneticButton key={cat} strength={0.2}>
-              <button
-                onClick={() => setSelectedCategory(cat)}
-                className={`group relative overflow-hidden rounded-full px-8 py-3 text-[10px] font-bold uppercase tracking-[0.3em] transition-all duration-700 shadow-premium ${
-                  selectedCategory === cat ? 'text-black' : 'text-white/40 hover:text-white'
-                }`}
-              >
-                <div className={`absolute inset-0 transition-all duration-700 ${selectedCategory === cat ? 'bg-gold-400 scale-100 opacity-100' : 'bg-white/5 opacity-0 scale-50 group-hover:scale-100 group-hover:opacity-100'}`} />
-                <span className="relative z-10">
-                  {cat === 'all' ? 'All' : cat === 'landscape' ? 'Country' : cat === 'hunting' ? 'Experience' : cat === 'lodge' ? 'Lodge' : cat === 'recent' ? 'Recent' : 'Trophies'}
-                </span>
-              </button>
+          {categories.map((cat) => (
+            <MagneticButton
+              key={cat}
+              strength={0.2}
+              onClick={() => setSelectedCategory(cat)}
+              className={`group relative overflow-hidden rounded-full px-8 py-3 text-[10px] font-bold uppercase tracking-[0.3em] transition-all duration-700 shadow-premium ${
+                selectedCategory === cat ? 'text-black' : 'text-white/40 hover:text-white'
+              }`}
+            >
+              <div className={`absolute inset-0 transition-all duration-700 ${selectedCategory === cat ? 'bg-gold-400 scale-100 opacity-100' : 'bg-white/5 opacity-0 scale-50 group-hover:scale-100 group-hover:opacity-100'}`} />
+              <span className="relative z-10">
+                {cat === 'all' ? 'All' : cat === 'landscape' ? 'Country' : cat === 'hunting' ? 'Experience' : cat === 'lodge' ? 'Lodge' : cat === 'recent' ? 'Recent' : 'Trophies'}
+              </span>
             </MagneticButton>
           ))}
         </div>
@@ -247,21 +249,19 @@ export default function GallerySection() {
             </button>
             
             <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between px-6 md:px-12 pointer-events-none">
-              <MagneticButton strength={0.4}>
-                <button 
-                  onClick={(e) => { e.stopPropagation(); handlePrev(); }}
-                  className="pointer-events-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-gold-400/50 backdrop-blur-xl transition-all hover:bg-white/10 hover:text-gold-400 border border-gold-400/10"
-                >
-                  <ChevronLeft className="h-12 w-12" />
-                </button>
+              <MagneticButton
+                strength={0.4}
+                onClick={(e) => { e.stopPropagation(); handlePrev(); }}
+                className="pointer-events-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-gold-400/50 backdrop-blur-xl transition-all hover:bg-white/10 hover:text-gold-400 border border-gold-400/10"
+              >
+                <ChevronLeft className="h-12 w-12" />
               </MagneticButton>
-              <MagneticButton strength={0.4}>
-                <button 
-                  onClick={(e) => { e.stopPropagation(); handleNext(); }}
-                  className="pointer-events-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-gold-400/50 backdrop-blur-xl transition-all hover:bg-white/10 hover:text-gold-400 border border-gold-400/10"
-                >
-                  <ChevronRight className="h-12 w-12" />
-                </button>
+              <MagneticButton
+                strength={0.4}
+                onClick={(e) => { e.stopPropagation(); handleNext(); }}
+                className="pointer-events-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-gold-400/50 backdrop-blur-xl transition-all hover:bg-white/10 hover:text-gold-400 border border-gold-400/10"
+              >
+                <ChevronRight className="h-12 w-12" />
               </MagneticButton>
             </div>
 

@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 
@@ -40,9 +42,9 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-4 group">
+          <Link href="/" className="flex items-center gap-4 group">
             <div className={`relative flex h-14 w-14 items-center justify-center rounded-2xl border transition-all duration-500 overflow-hidden ${scrolled ? 'border-gold-500/30 bg-forest-900/40 shadow-glow' : 'border-white/20 bg-white/5'}`}>
-              <img src={HEADER_LOGO_SRC} alt="Kaimanawa Logo" className="h-full w-full object-contain p-2 transition-transform duration-500 group-hover:scale-110" />
+              <Image src={HEADER_LOGO_SRC} alt="Kaimanawa Logo" fill className="object-contain p-2 transition-transform duration-500 group-hover:scale-110" />
             </div>
             <div className="hidden sm:block">
               <p className="font-display text-base font-bold uppercase tracking-[0.2em] text-white">KAIMANAWA</p>
@@ -51,7 +53,7 @@ export default function Header() {
                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400">Trophy Safaris</p>
               </div>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-2">

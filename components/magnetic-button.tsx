@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, ReactNode, MouseEvent } from "react";
+import { useRef, ReactNode, MouseEvent, MouseEventHandler } from "react";
 
 interface MagneticButtonProps {
   children: ReactNode;
@@ -8,7 +8,7 @@ interface MagneticButtonProps {
   strength?: number;
   tag?: "button" | "a";
   href?: string;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLElement>;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   "aria-label"?: string;

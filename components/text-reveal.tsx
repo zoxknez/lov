@@ -10,7 +10,7 @@ interface TextRevealProps {
 
 export default function TextReveal({ children, className = '', delay = 0 }: TextRevealProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -30,7 +30,7 @@ export default function TextReveal({ children, className = '', delay = 0 }: Text
   const words = children.split(' ');
 
   return (
-    <div ref={ref} className={`inline-block ${className}`}>
+    <span ref={ref} className={`inline-block ${className}`}>
       {words.map((word, i) => (
         <span key={i} className="animate-reveal inline-block mr-[0.2em]">
           <span 
@@ -44,6 +44,6 @@ export default function TextReveal({ children, className = '', delay = 0 }: Text
           </span>
         </span>
       ))}
-    </div>
+    </span>
   );
 }

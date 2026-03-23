@@ -1,19 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
-import { Calendar, Clock, Trophy, Target } from 'lucide-react';
+import { Calendar, Trophy, Target } from 'lucide-react';
 import TextReveal from '@/components/text-reveal';
 
 export default function GameAnimalsSection() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
   const animals = [
     {
       name: 'Red Deer',
@@ -88,7 +81,9 @@ export default function GameAnimalsSection() {
   };
 
   return (
-    <section id="animals" className="relative overflow-hidden bg-forest-950 py-24 md:py-40">
+    <section id="species" className="relative overflow-hidden bg-transparent py-24 md:py-40 font-sans species-dossier">
+      {/* Dynamic Data-Grid Reveal */}
+      <div className="absolute inset-0 bg-forest-950/20 backdrop-blur-[2px] pointer-events-none" />
       {/* Decorative background element */}
       <div className="absolute left-0 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-forest-600/5 blur-[120px] pointer-events-none" />
 
