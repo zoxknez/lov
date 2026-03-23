@@ -1,7 +1,10 @@
 'use client';
 
-import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, MessageSquare, Clock, ShieldCheck, Globe } from 'lucide-react';
+import TextReveal from '@/components/text-reveal';
+import MagneticButton from '@/components/magnetic-button';
 
 interface FormData {
   name: string;
@@ -21,11 +24,6 @@ export default function ContactSection() {
   });
 
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -79,59 +77,96 @@ export default function ContactSection() {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.8 } }
+  };
+
   return (
-    <section id="contact" className="relative overflow-hidden bg-forest-950 py-24 md:py-40">
+    <section id="contact" className="relative overflow-hidden bg-forest-950 py-24 md:py-40 font-sans">
       {/* Background Accents */}
       <div className="absolute top-0 left-0 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 h-[600px] w-[600px] translate-x-1/2 translate-y-1/2 rounded-full bg-forest-600/10 blur-[100px] pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         {/* Section Header */}
-        <div className={`mb-20 text-center transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-          <p className="text-[13px] uppercase tracking-[0.3em] text-gold-300">Journey Start</p>
-          <h2 className="mt-4 font-display text-5xl font-bold uppercase tracking-tight text-white md:text-7xl">
-            Secure Your Dates
+        <div className="mb-20 text-center">
+          <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-gold-400 mb-4">
+             <TextReveal>Journey Start</TextReveal>
+          </p>
+          <h2 className="font-display text-5xl font-bold uppercase tracking-tight text-white md:text-7xl lg:text-9xl uppercase tracking-tighter">
+             <TextReveal delay={0.2}>Secure Your Dates</TextReveal>
           </h2>
-          <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
-          <p className="mx-auto mt-8 max-w-2xl font-sans text-lg leading-relaxed text-gray-400 md:text-xl">
-            Start planning your New Zealand hunting adventure today. We respond to all serious inquiries within 24 hours.
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: 140 }}
+            className="mx-auto mt-6 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent" 
+          />
+          <p className="mx-auto mt-10 max-w-2xl text-lg leading-relaxed text-gray-400 md:text-xl italic">
+             <TextReveal delay={0.4}>
+                Start planning your New Zealand hunting adventure today. We respond to all serious inquiries within 24 hours.
+             </TextReveal>
           </p>
         </div>
 
         {/* Info Cards Row */}
-        <div className="mb-24 grid gap-8 md:grid-cols-3">
-          {contactInfo.map((info, idx) => {
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="mb-32 grid gap-8 md:grid-cols-3"
+        >
+          {contactInfo.map((info) => {
             const Icon = info.icon;
             return (
-              <div 
+              <motion.div 
                 key={info.title} 
-                className={`group relative rounded-3xl border border-white/5 bg-forest-900/10 p-10 transition-all duration-700 hover:border-gold-500/20 hover:bg-forest-900/20 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-                style={{ transitionDelay: `${idx * 150}ms` }}
+                variants={itemVariants}
+                className="group relative rounded-[2rem] border border-white/5 bg-forest-900/10 p-12 transition-all duration-700 hover:border-gold-500/40 hover:bg-forest-900/20 shadow-premium"
               >
-                <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-gold-400/5 text-gold-400 border border-gold-400/10 group-hover:scale-110 transition-transform duration-500">
-                  <Icon className="h-6 w-6" />
+                <div className="mb-10 flex h-16 w-16 items-center justify-center rounded-2xl bg-forest-900 text-gold-400 border border-white/5 shadow-glow transition-transform group-hover:scale-110">
+                  <Icon className="h-7 w-7" />
                 </div>
-                <h3 className="font-display text-xl font-bold text-white mb-2 tracking-tight uppercase">{info.title}</h3>
-                <p className="text-lg font-medium text-gold-200/90 mb-2 truncate">{info.details}</p>
-                <p className="text-xs uppercase tracking-widest text-gray-500">{info.description}</p>
-              </div>
+                <h3 className="font-display text-2xl font-bold text-white mb-3 tracking-tight uppercase">{info.title}</h3>
+                <p className="text-xl font-medium text-gold-200/90 mb-3 truncate font-display">{info.details}</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">{info.description}</p>
+                
+                {/* Decoration */}
+                <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-5 transition-opacity pointer-events-none">
+                   <Icon className="h-20 w-20 text-gold-400" />
+                </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
-        <div className="grid gap-16 lg:grid-cols-5">
+        <div className="grid gap-20 lg:grid-cols-5">
           {/* Form Column */}
-          <div className={`lg:col-span-3 transition-all duration-1000 delay-500 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}>
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-forest-900/30 p-10 backdrop-blur-sm shadow-panel">
-              <div className="flex items-center gap-4 mb-10">
-                 <div className="h-px w-8 bg-gold-400" />
-                 <h3 className="font-display text-3xl font-bold text-white uppercase tracking-tight">Direct Inquiry</h3>
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="lg:col-span-3"
+          >
+            <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-forest-900/30 p-12 backdrop-blur-xl shadow-premium">
+              <div className="flex items-center gap-6 mb-12">
+                 <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-gold-400/10 text-gold-400">
+                    <MessageSquare className="h-5 w-5" />
+                 </div>
+                 <h3 className="font-display text-4xl font-bold text-white uppercase tracking-tighter">Direct Inquiry</h3>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="grid gap-8 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 ml-1">Full Name</label>
+              <form onSubmit={handleSubmit} className="space-y-10">
+                <div className="grid gap-10 sm:grid-cols-2">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/60 ml-1">Full Name</label>
                     <input
                       type="text"
                       name="name"
@@ -139,11 +174,11 @@ export default function ContactSection() {
                       onChange={handleInputChange}
                       required
                       placeholder="e.g. John Smith"
-                      className="w-full rounded-2xl border border-white/5 bg-white/5 px-6 py-4 text-white placeholder-gray-600 transition-all focus:border-gold-500/40 focus:outline-none focus:ring-4 focus:ring-gold-500/5"
+                      className="w-full rounded-2xl border border-white/5 bg-white/[0.03] px-8 py-5 text-white placeholder-gray-600 transition-all focus:border-gold-400/40 focus:outline-none focus:ring-8 focus:ring-gold-400/5"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 ml-1">Email Address</label>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/60 ml-1">Email Address</label>
                     <input
                       type="email"
                       name="email"
@@ -151,43 +186,48 @@ export default function ContactSection() {
                       onChange={handleInputChange}
                       required
                       placeholder="john@example.com"
-                      className="w-full rounded-2xl border border-white/5 bg-white/5 px-6 py-4 text-white placeholder-gray-600 transition-all focus:border-gold-500/40 focus:outline-none focus:ring-4 focus:ring-gold-500/5"
+                      className="w-full rounded-2xl border border-white/5 bg-white/[0.03] px-8 py-5 text-white placeholder-gray-600 transition-all focus:border-gold-400/40 focus:outline-none focus:ring-8 focus:ring-gold-400/5"
                     />
                   </div>
                 </div>
 
-                <div className="grid gap-8 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 ml-1">Phone (Optional)</label>
+                <div className="grid gap-10 sm:grid-cols-2">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/60 ml-1">Phone (Optional)</label>
                     <input
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
                       placeholder="+1..."
-                      className="w-full rounded-2xl border border-white/5 bg-white/5 px-6 py-4 text-white placeholder-gray-600 transition-all focus:border-gold-500/40 focus:outline-none focus:ring-4 focus:ring-gold-500/5"
+                      className="w-full rounded-2xl border border-white/5 bg-white/[0.03] px-8 py-5 text-white placeholder-gray-600 transition-all focus:border-gold-400/40 focus:outline-none focus:ring-8 focus:ring-gold-400/5"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 ml-1">Inquiry Type</label>
-                    <select
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full appearance-none rounded-2xl border border-white/5 bg-white/5 px-6 py-4 text-white transition-all focus:border-gold-500/40 focus:outline-none focus:ring-4 focus:ring-gold-500/5"
-                    >
-                      <option value="" disabled className="bg-forest-950">Select Subject</option>
-                      <option value="booking" className="bg-forest-950">Book a Hunt</option>
-                      <option value="species-pricing" className="bg-forest-950">Species & Pricing</option>
-                      <option value="travel" className="bg-forest-950">Travel Logistics</option>
-                      <option value="other" className="bg-forest-950">General Inquiry</option>
-                    </select>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/60 ml-1">Inquiry Type</label>
+                    <div className="relative">
+                      <select
+                        name="subject"
+                        value={formData.subject}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full appearance-none rounded-2xl border border-white/5 bg-white/[0.03] px-8 py-5 text-white transition-all focus:border-gold-400/40 focus:outline-none focus:ring-8 focus:ring-gold-400/5 cursor-pointer"
+                      >
+                        <option value="" disabled className="bg-forest-950">Select Subject</option>
+                        <option value="booking" className="bg-forest-950">Book a Hunt</option>
+                        <option value="species-pricing" className="bg-forest-950">Species & Pricing</option>
+                        <option value="travel" className="bg-forest-950">Travel Logistics</option>
+                        <option value="other" className="bg-forest-950">General Inquiry</option>
+                      </select>
+                      <div className="pointer-events-none absolute right-6 top-1/2 -translate-y-1/2">
+                        <div className="h-1.5 w-1.5 rounded-full bg-gold-400" />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 ml-1">Message</label>
+                <div className="space-y-3">
+                  <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/60 ml-1">Message</label>
                   <textarea
                     name="message"
                     value={formData.message}
@@ -195,55 +235,83 @@ export default function ContactSection() {
                     required
                     placeholder="Tell us about your trophy goals and preferred dates..."
                     rows={6}
-                    className="w-full rounded-2xl border border-white/5 bg-white/5 px-6 py-4 text-white placeholder-gray-600 transition-all focus:border-gold-500/40 focus:outline-none focus:ring-4 focus:ring-gold-500/5"
+                    className="w-full rounded-3xl border border-white/5 bg-white/[0.03] px-8 py-6 text-white placeholder-gray-600 transition-all focus:border-gold-400/40 focus:outline-none focus:ring-8 focus:ring-gold-400/5 resize-none"
                   />
                 </div>
 
-                <button
+                <MagneticButton
                   type="submit"
                   disabled={submitStatus === 'loading'}
-                  className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-2xl bg-gold-400 px-8 py-5 font-bold uppercase tracking-widest text-black transition-all hover:bg-gold-300 disabled:opacity-50"
+                  className="group relative flex w-full items-center justify-center gap-4 overflow-hidden rounded-2xl bg-gold-400 py-6 font-bold uppercase tracking-[0.3em] text-[11px] text-black transition-all hover:bg-gold-300 disabled:opacity-50 shadow-glow-gold"
                 >
                   <Send className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  {submitStatus === 'loading' ? 'Encrypting...' : 'Send Inquiry'}
-                </button>
+                  {submitStatus === 'loading' ? 'Encrypting...' : 'Dispatch Inquiry'}
+                </MagneticButton>
 
                 {submitStatus === 'success' && (
-                  <div className="animate-fade-up flex items-center gap-3 rounded-2xl bg-forest-800/50 p-4 border border-gold-500/20">
-                     <ShieldCheck className="h-5 w-5 text-gold-400" />
-                     <p className="text-sm font-medium text-gold-200">Message dispatched. We will be in touch shortly.</p>
-                  </div>
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-center gap-4 rounded-2xl bg-gold-400/10 p-5 border border-gold-400/20 shadow-glow-gold"
+                  >
+                     <div className="h-8 w-8 flex items-center justify-center rounded-lg bg-gold-400/20 text-gold-400">
+                        <ShieldCheck className="h-4 w-4" />
+                     </div>
+                     <p className="text-xs font-bold text-gold-200 uppercase tracking-widest">Message dispatched. We&apos;ll be in touch within 24h.</p>
+                  </motion.div>
                 )}
               </form>
             </div>
-          </div>
+          </motion.div>
 
           {/* Info Column */}
-          <div className={`lg:col-span-2 space-y-8 transition-all duration-1000 delay-700 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'}`}>
-            <div className="rounded-[2rem] border border-white/5 bg-forest-900/10 p-10">
-               <div className="flex items-center gap-4 mb-6">
-                  <Clock className="h-6 w-6 text-gold-400" />
-                  <h4 className="font-display text-xl font-bold text-white uppercase tracking-tight">Response Time</h4>
+          <div className="lg:col-span-2 space-y-10">
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="rounded-[2.5rem] border border-white/5 bg-forest-900/10 p-12 transition-all hover:border-white/10 shadow-premium"
+            >
+               <div className="flex items-center gap-6 mb-8">
+                  <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-gold-400/10 text-gold-400">
+                    <Clock className="h-6 w-6" />
+                  </div>
+                  <h4 className="font-display text-2xl font-bold text-white uppercase tracking-tight">Response Time</h4>
                </div>
-               <p className="font-sans text-gray-400 leading-relaxed">
-                  We operate personally. Every email and WhatsApp is handled by the lead guide or logistics coordinator. Expect a reply within 24 hours.
+               <p className="font-sans text-gray-400 leading-relaxed italic">
+                  &quot;Field operations are usually out of reach, but we keep the Ohakune base connected. Whether it&apos;s technical logistics or a simple arrival check, we&apos;re here to manage the details.&quot;
                </p>
-            </div>
+            </motion.div>
 
-            <div className="rounded-[3rem] border border-gold-400/10 bg-gold-400/5 p-10">
-               <div className="flex items-center gap-4 mb-6">
-                  <Globe className="h-6 w-6 text-gold-400" />
-                  <h4 className="font-display text-xl font-bold text-white uppercase tracking-tight">International Arrival</h4>
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.4 }}
+              className="group relative rounded-[3rem] border border-gold-400/10 bg-gold-400/5 p-12 overflow-hidden shadow-glow-gold"
+            >
+               <div className="absolute top-0 right-0 p-10 opacity-5 group-hover:opacity-10 transition-opacity">
+                  <Globe className="h-32 w-32 text-gold-400" />
                </div>
-               <p className="font-sans text-gray-400 leading-relaxed text-sm mb-6">
-                  Most guests arrive via Auckland (AKL). We coordinate all domestic travel, firearms paperwork, and trophy logistics from that point onward.
-               </p>
-               <div className="h-px w-full bg-gold-400/10 mb-6" />
-               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold-500">Note on Firearms</p>
-               <p className="mt-2 text-[11px] leading-relaxed text-gray-500">
-                  Visitor firearms licenses require 4 months processing. Rifle hire is available for NZD 100/day.
-               </p>
-            </div>
+               
+               <div className="relative">
+                  <div className="flex items-center gap-6 mb-8">
+                     <div className="h-12 w-12 flex items-center justify-center rounded-xl bg-gold-400/20 text-gold-400">
+                        <Globe className="h-6 w-6" />
+                     </div>
+                     <h4 className="font-display text-2xl font-bold text-white uppercase tracking-tight">International</h4>
+                  </div>
+                  <p className="font-sans text-gray-400 leading-relaxed text-base mb-8 italic">
+                     Most guests arrive via Auckland (AKL). We coordinate all domestic travel, firearms paperwork, and trophy logistics from that point onward.
+                  </p>
+                  <div className="h-px w-full bg-gold-400/20 mb-8" />
+                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gold-400 mb-4">Note on Firearms</p>
+                  <p className="text-xs leading-relaxed text-gray-500 font-medium">
+                     Visitor firearms licenses require 4 months processing. Rifle hire is available for NZD 100/day.
+                  </p>
+               </div>
+            </motion.div>
           </div>
         </div>
       </div>

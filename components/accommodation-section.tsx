@@ -1,16 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { MapPin, Wifi, Utensils, Users, Home, Mountain, Bed } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { MapPin, Wifi, Utensils, Users } from 'lucide-react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
+import TextReveal from '@/components/text-reveal';
 
 export default function AccommodationSection() {
-  const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
 
   const lodges = [
     {
@@ -66,6 +63,16 @@ export default function AccommodationSection() {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.8 } }
+  };
+
   return (
     <section id="stay" className="relative overflow-hidden bg-forest-950 py-24 md:py-40">
       {/* Background radial glow */}
@@ -73,101 +80,132 @@ export default function AccommodationSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         {/* Section Header */}
-        <div className={`mb-20 text-center transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-          <p className="text-[13px] uppercase tracking-[0.3em] text-gold-300">Where You Rest</p>
-          <h2 className="mt-4 font-display text-5xl font-bold uppercase tracking-tight text-white md:text-7xl">
-            Lodge & Camps
+        <div className="mb-20 text-center">
+          <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-gold-400 mb-4">
+             <TextReveal>Where You Rest</TextReveal>
+          </p>
+          <h2 className="font-display text-5xl font-bold uppercase tracking-tight text-white md:text-7xl lg:text-9xl uppercase tracking-tighter">
+             <TextReveal delay={0.2}>Lodge & Camps</TextReveal>
           </h2>
-          <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
-          <p className="mx-auto mt-8 max-w-2xl font-sans text-lg leading-relaxed text-gray-400 md:text-xl">
-            Comfortable lodge hosting where it makes sense, with remote camps only when the hunt really needs extra reach.
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: 140 }}
+            className="mx-auto mt-6 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent" 
+          />
+          <p className="mx-auto mt-10 max-w-2xl font-sans text-lg leading-relaxed text-gray-400 md:text-xl italic">
+             <TextReveal delay={0.4}>
+                Comfortable lodge hosting where it makes sense, with remote camps only when the hunt really needs extra reach.
+             </TextReveal>
           </p>
         </div>
 
         {/* Lodges Display */}
-        <div className="mb-32 space-y-24">
+        <div className="mb-40 space-y-32">
           {lodges.map((lodge, idx) => (
-            <div
+            <motion.div
               key={lodge.name}
-              className={`group relative grid gap-12 items-center md:grid-cols-2 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'} transition-all duration-1000`}
-              style={{ transitionDelay: `${idx * 200}ms` }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className={`group relative grid gap-16 items-center md:grid-cols-2`}
             >
-              <div className={`relative aspect-video w-full overflow-hidden rounded-3xl border border-white/10 shadow-panel transition-transform duration-700 group-hover:scale-[1.02] ${idx % 2 === 1 ? 'md:order-2' : ''}`}>
+              <div className={`relative aspect-video w-full overflow-hidden rounded-[2.5rem] border border-white/10 shadow-premium transition-all duration-700 group-hover:border-gold-500/40 ${idx % 2 === 1 ? 'md:order-2' : ''}`}>
                 <Image
                   src={getBlobAssetUrl(lodge.image)}
                   alt={lodge.name}
                   fill
                   className="object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/20 to-transparent" />
-                <div className="absolute top-6 left-6">
-                   <div className="rounded-full bg-forest-950/60 px-4 py-1.5 backdrop-blur-md border border-white/10">
-                      <p className="text-[10px] font-bold tracking-widest text-gold-300 uppercase">{lodge.type}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/20 to-transparent opacity-80" />
+                <div className="absolute top-8 left-8">
+                   <div className="rounded-full bg-forest-950/60 px-5 py-2 backdrop-blur-md border border-white/10 shadow-glow">
+                      <p className="text-[10px] font-bold tracking-[0.2em] text-gold-400 uppercase">{lodge.type}</p>
                    </div>
                 </div>
               </div>
 
               <div className={`p-4 ${idx % 2 === 1 ? 'md:order-1 md:text-right' : ''}`}>
-                <div className={`flex items-center gap-2 text-gold-400 mb-4 ${idx % 2 === 1 ? 'justify-end' : ''}`}>
+                <div className={`flex items-center gap-3 text-gold-400 mb-6 ${idx % 2 === 1 ? 'justify-end' : ''}`}>
                   <MapPin className="h-4 w-4" />
-                  <span className="text-xs font-semibold uppercase tracking-widest">{lodge.location}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em]">{lodge.location}</span>
                 </div>
-                <h3 className="font-display text-4xl font-bold text-white md:text-5xl leading-tight mb-6">{lodge.name}</h3>
-                <p className="font-sans text-lg leading-relaxed text-gray-400 mb-8 max-w-xl mx-auto md:mx-0">
+                <h3 className="font-display text-5xl font-bold text-white md:text-6xl leading-tight mb-8 uppercase tracking-tighter">
+                   <TextReveal delay={0.2}>{lodge.name}</TextReveal>
+                </h3>
+                <p className="font-sans text-lg leading-relaxed text-gray-400 mb-10 max-w-xl mx-auto md:mx-0 italic">
                    {lodge.description}
                 </p>
                 
-                <div className={`flex flex-wrap gap-x-8 gap-y-4 border-t border-white/10 pt-8 ${idx % 2 === 1 ? 'justify-end text-right' : ''}`}>
+                <div className={`flex flex-wrap gap-x-10 gap-y-5 border-t border-white/5 pt-10 ${idx % 2 === 1 ? 'justify-end' : ''}`}>
                    {lodge.features.map((feature) => (
-                     <div key={feature} className="flex items-center gap-3">
-                        <div className="h-1.5 w-1.5 rounded-full bg-gold-500/40" />
-                        <span className="text-sm font-medium text-gray-300 uppercase tracking-wide">{feature}</span>
+                     <div key={feature} className="flex items-center gap-4 transition-transform group-hover:translate-y-[-2px]">
+                        <div className="h-2 w-2 rounded-full bg-gold-400/30" />
+                        <span className="text-xs font-bold text-gray-300 uppercase tracking-widest">{feature}</span>
                      </div>
                    ))}
                 </div>
                 
-                <div className={`mt-10 flex items-center gap-4 ${idx % 2 === 1 ? 'justify-end' : ''}`}>
-                   <div className="h-px w-12 bg-gold-500/20" />
-                   <p className="text-xs font-bold tracking-widest text-gold-200">SPACE: {lodge.capacity}</p>
+                <div className={`mt-14 flex items-center gap-6 ${idx % 2 === 1 ? 'justify-end' : ''}`}>
+                   <div className="h-px w-20 bg-gold-400/20 group-hover:w-32 transition-all duration-700" />
+                   <div className="bg-gold-400/5 px-4 py-2 rounded-full border border-gold-400/10 transition-colors group-hover:bg-gold-400/10">
+                      <p className="text-[10px] font-bold tracking-[0.4em] text-gold-400 uppercase">SPACE: {lodge.capacity}</p>
+                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Amenities Row */}
-        <div className="mb-32 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {amenities.map((amenity, idx) => {
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="mb-40 grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {amenities.map((amenity) => {
             const Icon = amenity.icon;
             return (
-              <div 
+              <motion.div 
                 key={amenity.title} 
-                className={`group relative rounded-2xl border border-white/5 bg-forest-900/10 p-8 transition-all duration-500 hover:border-gold-500/20 hover:bg-forest-900/20 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-                style={{ transitionDelay: `${800 + idx * 100}ms` }}
+                variants={itemVariants}
+                className="group relative rounded-3xl border border-white/5 bg-forest-900/10 p-10 transition-all duration-700 hover:border-gold-500/30 hover:bg-forest-900/40 shadow-premium"
               >
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gold-500/5 text-gold-400 border border-gold-500/10 transition-transform duration-500 group-hover:scale-110">
-                  <Icon className="h-6 w-6" />
+                <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-forest-900 text-gold-400 border border-white/5 shadow-glow transition-transform group-hover:scale-110">
+                  <Icon className="h-7 w-7" />
                 </div>
-                <h4 className="font-display text-xl font-bold text-white mb-3 tracking-tight">{amenity.title}</h4>
-                <p className="text-sm leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">{amenity.description}</p>
-              </div>
+                <h4 className="font-display text-2xl font-bold text-white mb-4 uppercase tracking-tight">{amenity.title}</h4>
+                <p className="text-sm leading-relaxed text-gray-400 group-hover:text-gray-200 transition-colors font-sans">{amenity.description}</p>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Dining Accent */}
-        <div className={`transition-all duration-1000 delay-1000 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-forest-900/40 p-1 font-sans shadow-panel">
-             <div className="absolute inset-0 bg-gradient-to-br from-gold-500/5 via-transparent to-forest-600/5" />
-             <div className="relative flex flex-col items-center justify-center p-12 md:p-20 text-center">
-                <Utensils className="h-12 w-12 text-gold-400 mb-8 opacity-40" />
-                <h3 className="mb-6 font-display text-3xl font-bold text-white md:text-4xl">Wilderness Dining</h3>
-                <p className="max-w-4xl text-lg italic leading-relaxed text-gray-300">
-                  "Meals at the lodge are prepared around the rhythm of the hunt, not the other way around. The goal is simple: excellent food, reliable hospitality, and a stay that feels relaxed after long days in the bush or the hills."
-                </p>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2 }}
+          className="mt-32"
+        >
+          <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-forest-900/40 p-1 font-sans shadow-premium backdrop-blur-xl">
+             <div className="absolute inset-0 bg-gradient-to-br from-gold-500/10 via-transparent to-forest-600/10" />
+             <div className="relative flex flex-col items-center justify-center p-16 md:p-24 text-center">
+                <Utensils className="h-16 w-16 text-gold-400 mb-10 opacity-30 animate-pulse" />
+                <h3 className="mb-8 font-display text-4xl font-bold text-white md:text-5xl uppercase tracking-tighter">
+                   <TextReveal>Wilderness Dining</TextReveal>
+                </h3>
+                <div className="max-w-4xl text-xl font-light italic leading-relaxed text-gray-200">
+                  <TextReveal delay={0.4}>
+                    &quot;Meals at the lodge are prepared around the rhythm of the hunt, not the other way around. The goal is simple: excellent food, reliable hospitality, and a stay that feels relaxed after long days in the bush or the hills.&quot;
+                  </TextReveal>
+                </div>
              </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

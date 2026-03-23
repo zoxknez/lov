@@ -1,32 +1,12 @@
-﻿"use client";
+'use client';
 
-import Lenis from "lenis";
-import { useEffect } from "react";
+import { ReactLenis } from 'lenis/react';
+import type { ReactNode } from 'react';
 
-export default function SmoothScroll() {
-  useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
-    if (reduceMotion || coarsePointer) return;
-
-    const lenis = new Lenis({
-      duration: 1.15,
-      smoothWheel: true,
-      touchMultiplier: 1.25
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    const id = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(id);
-      lenis.destroy();
-    };
-  }, []);
-
-  return null;
+export default function SmoothScroll({ children }: { children: ReactNode }) {
+  return (
+    <ReactLenis root options={{ lerp: 0.08, duration: 1.2, smoothWheel: true }}>
+      {children}
+    </ReactLenis>
+  );
 }

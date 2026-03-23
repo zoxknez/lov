@@ -1,9 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import gallerySlike from '@/lib/gallery-slike.json';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 import { Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
+import TextReveal from '@/components/text-reveal';
+import MagneticButton from '@/components/magnetic-button';
 
 type GalleryImage = {
   src: string;
@@ -27,12 +31,8 @@ function buildBlobImageSrc(image: GalleryImage) {
 
 export default function GallerySection() {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [isVisible, setIsVisible] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
 
   const galleries = [
     {
@@ -94,14 +94,13 @@ export default function GallerySection() {
 
   const categories = ['all', 'trophies', 'landscape', 'hunting', 'lodge', 'recent'];
   
-  // Curated Images for the "All" view
   const curatedAllImages = [
-    galleries[0].images[0], // Trophy
-    galleries[1].images[0], // Landscape
-    galleries[2].images[1], // Experience
-    galleries[3].images[0], // Lodge
-    galleries[0].images[1], // Trophy 2
-    galleries[1].images[3], // Landscape 2
+    galleries[0].images[0],
+    galleries[1].images[0],
+    galleries[2].images[1],
+    galleries[3].images[0],
+    galleries[0].images[1],
+    galleries[1].images[3],
   ];
 
   const activeGallery = selectedCategory === 'all' 
@@ -111,19 +110,15 @@ export default function GallerySection() {
   const handleNext = () => setLightboxIndex(prev => (prev !== null ? (prev + 1) % activeGallery.images.length : null));
   const handlePrev = () => setLightboxIndex(prev => (prev !== null ? (prev - 1 + activeGallery.images.length) % activeGallery.images.length : null));
 
-  // Prevent body scroll when lightbox is open
   useEffect(() => {
     if (lightboxIndex !== null) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
+    return () => { document.body.style.overflow = 'unset'; };
   }, [lightboxIndex]);
 
-  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (lightboxIndex === null) return;
@@ -136,149 +131,169 @@ export default function GallerySection() {
   }, [lightboxIndex, activeGallery.images.length]);
 
   return (
-    <section id="gallery" className="relative overflow-hidden bg-forest-950 py-24 md:py-40">
-      {/* Decorative Blur */}
+    <section id="gallery" className="relative overflow-hidden bg-forest-950 py-24 md:py-40 font-sans">
       <div className="absolute left-[-10%] top-[-10%] h-[600px] w-[600px] rounded-full bg-gold-600/5 blur-[120px] pointer-events-none" />
       <div className="absolute right-[-10%] bottom-[-10%] h-[600px] w-[600px] rounded-full bg-forest-600/10 blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         {/* Section Header */}
-        <div className={`mb-16 text-center transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-          <p className="text-[13px] uppercase tracking-[0.3em] text-gold-300">The Visual Archive</p>
-          <h2 className="mt-4 font-display text-5xl font-bold uppercase tracking-tight text-white md:text-7xl">
-            Gallery
+        <div className="mb-20 text-center">
+          <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-gold-400 mb-4">
+             <TextReveal>The Visual Archive</TextReveal>
+          </p>
+          <h2 className="font-display text-5xl font-bold uppercase tracking-tight text-white md:text-7xl lg:text-9xl uppercase tracking-tighter">
+             <TextReveal delay={0.2}>Gallery</TextReveal>
           </h2>
-          <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: 140 }}
+            className="mx-auto mt-6 h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent" 
+          />
         </div>
 
         {/* Filter Navigation */}
-        <div className={`mb-16 flex flex-wrap justify-center gap-2 md:gap-4 transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`group relative overflow-hidden rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 ${
-                selectedCategory === cat ? 'text-black' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              <div className={`absolute inset-0 transition-transform duration-500 ${selectedCategory === cat ? 'bg-gold-400 scale-100' : 'bg-white/5 scale-0 group-hover:scale-100 opacity-20'}`} />
-              <span className="relative z-10">
-                {cat === 'all' ? 'All' : cat === 'landscape' ? 'Country' : cat === 'hunting' ? 'Experience' : cat === 'lodge' ? 'Lodge' : cat === 'recent' ? 'Recent' : 'Trophies'}
-              </span>
-            </button>
+        <div className="mb-20 flex flex-wrap justify-center gap-4">
+          {categories.map((cat, idx) => (
+            <MagneticButton key={cat} strength={0.2}>
+              <button
+                onClick={() => setSelectedCategory(cat)}
+                className={`group relative overflow-hidden rounded-full px-8 py-3 text-[10px] font-bold uppercase tracking-[0.3em] transition-all duration-700 shadow-premium ${
+                  selectedCategory === cat ? 'text-black' : 'text-white/40 hover:text-white'
+                }`}
+              >
+                <div className={`absolute inset-0 transition-all duration-700 ${selectedCategory === cat ? 'bg-gold-400 scale-100 opacity-100' : 'bg-white/5 opacity-0 scale-50 group-hover:scale-100 group-hover:opacity-100'}`} />
+                <span className="relative z-10">
+                  {cat === 'all' ? 'All' : cat === 'landscape' ? 'Country' : cat === 'hunting' ? 'Experience' : cat === 'lodge' ? 'Lodge' : cat === 'recent' ? 'Recent' : 'Trophies'}
+                </span>
+              </button>
+            </MagneticButton>
           ))}
         </div>
 
         {/* Active Content Meta */}
-        <div className="mb-12 text-center max-w-2xl mx-auto animate-fade-in key={selectedCategory}">
-           <h3 className="font-display text-2xl font-bold text-white uppercase tracking-tight mb-4">{activeGallery.title}</h3>
-           <p className="font-sans text-gray-500 italic text-sm md:text-base leading-relaxed">{activeGallery.description}</p>
-        </div>
+        <motion.div 
+          key={selectedCategory}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="mb-16 text-center max-w-2xl mx-auto"
+        >
+           <h3 className="font-display text-3xl font-bold text-white uppercase tracking-tighter mb-6 underline decoration-gold-400/30 decoration-offset-4">{activeGallery.title}</h3>
+           <p className="text-lg text-gray-400 italic leading-relaxed">{activeGallery.description}</p>
+        </motion.div>
 
         {/* Bento Grid Layout */}
-        <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-4 md:gap-6 h-[600px] md:h-[800px]">
+        <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-6 md:gap-8 h-[700px] md:h-[900px]">
           {activeGallery.images.slice(0, 6).map((image, idx) => {
             const resolvedSrc = buildBlobImageSrc(image);
-            // Dynamic Bento Spans
             const gridClasses = [
-              "md:col-span-2 md:row-span-2 col-span-2 row-span-1", // Large Feature
+              "md:col-span-2 md:row-span-2 col-span-2 row-span-1", 
               "md:col-span-1 md:row-span-1 col-span-1",
               "md:col-span-1 md:row-span-1 col-span-1",
               "md:col-span-1 md:row-span-1 col-span-1",
               "md:col-span-1 md:row-span-1 col-span-1",
-              "hidden md:block md:col-span-2 md:row-span-1", // Wide bottom
+              "hidden md:block md:col-span-2 md:row-span-1",
             ][idx] || "col-span-1";
 
             return (
-              <div
+              <motion.div
                 key={`${selectedCategory}-${idx}`}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: idx * 0.1 }}
                 onClick={() => setLightboxIndex(idx)}
-                className={`group relative overflow-hidden rounded-3xl border border-white/5 bg-forest-900/10 cursor-pointer transition-all duration-700 hover:border-gold-500/30 ${gridClasses} animate-fade-up`}
-                style={{ animationDelay: `${idx * 100}ms` }}
+                className={`group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-forest-900/10 cursor-none transition-all duration-700 hover:border-gold-500/40 shadow-premium ${gridClasses}`}
               >
-                <img
+                <Image
                   src={resolvedSrc}
                   alt={image.alt}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-forest-950/80 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 translate-y-4">
-                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white">{image.alt}</p>
-                   <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gold-400 text-black shadow-glow">
-                      <Maximize2 className="h-3.5 w-3.5" />
+                <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/10 to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-90" />
+                <div className="absolute bottom-10 left-10 right-10 flex items-center justify-between opacity-0 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0 translate-y-8">
+                   <div>
+                      <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-gold-400 mb-2">Perspective</p>
+                      <p className="text-xl font-display font-bold text-white uppercase tracking-widest">{image.alt}</p>
+                   </div>
+                   <div className="h-12 w-12 flex items-center justify-center rounded-full bg-gold-400 text-black shadow-glow-gold transition-transform group-hover:rotate-45">
+                      <Maximize2 className="h-5 w-5" />
                    </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
-
-        {/* View Full Gallery CTA (If needed) */}
-        {selectedCategory === 'all' && (
-          <div className="mt-16 text-center">
-             <button 
-               onClick={() => setSelectedCategory('recent')}
-               className="font-display text-sm font-bold uppercase tracking-widest text-gold-400 hover:text-gold-300 transition-colors border-b border-gold-400/20 pb-1"
-             >
-               Explore Full Archive
-             </button>
-          </div>
-        )}
       </div>
 
-      {/* Simple Lightbox */}
-      {lightboxIndex !== null && (
-        <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-forest-950/98 p-4 md:p-10 backdrop-blur-2xl animate-fade-in"
-          onClick={() => setLightboxIndex(null)}
-        >
-          {/* Close Area (Full Screen) */}
-          <div className="absolute inset-0 cursor-zoom-out" />
-
-          {/* Close Button */}
-          <button 
-            onClick={(e) => { e.stopPropagation(); setLightboxIndex(null); }}
-            className="absolute top-8 right-8 z-[110] text-white/50 hover:text-white transition-all hover:scale-110 p-2 bg-white/5 rounded-full hover:bg-white/10"
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-forest-950/98 p-4 md:p-12 backdrop-blur-3xl"
+            onClick={() => setLightboxIndex(null)}
           >
-            <X className="h-8 w-8" />
-          </button>
-          
-          {/* Controls */}
-          <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between px-4 md:px-10 pointer-events-none">
-            <button 
-              onClick={(e) => { e.stopPropagation(); handlePrev(); }}
-              className="pointer-events-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/5 text-white/50 backdrop-blur-md transition-all hover:bg-white/10 hover:text-white hover:scale-110"
-            >
-              <ChevronLeft className="h-10 w-10" />
-            </button>
-            <button 
-              onClick={(e) => { e.stopPropagation(); handleNext(); }}
-              className="pointer-events-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/5 text-white/50 backdrop-blur-md transition-all hover:bg-white/10 hover:text-white hover:scale-110"
-            >
-              <ChevronRight className="h-10 w-10" />
-            </button>
-          </div>
+            <div className="absolute inset-0 cursor-zoom-out" />
 
-          {/* Content */}
-          <div 
-            className="relative z-[105] max-w-6xl w-full h-[70vh] md:h-[80vh] flex items-center justify-center pointer-events-none"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img 
-              src={buildBlobImageSrc(activeGallery.images[lightboxIndex])} 
-              alt="Gallery Preview"
-              className="pointer-events-auto max-w-full max-h-full object-contain rounded-2xl shadow-panel animate-scale-in"
-            />
-            <div className="absolute bottom-[-80px] text-center w-full animate-fade-up">
-               <p className="font-display text-2xl font-bold text-white uppercase tracking-widest">{activeGallery.images[lightboxIndex].alt}</p>
-               <p className="text-xs text-gold-500 mt-2 uppercase tracking-[0.4em] font-bold">
-                 {lightboxIndex + 1} <span className="text-gray-700 mx-2">/</span> {activeGallery.images.length}
-               </p>
+            <button 
+              onClick={(e) => { e.stopPropagation(); setLightboxIndex(null); }}
+              className="absolute top-10 right-10 z-[110] text-gold-400/50 hover:text-gold-400 transition-all hover:scale-110 p-4 bg-white/5 rounded-full hover:bg-white/10 shadow-premium"
+            >
+              <X className="h-10 w-10" />
+            </button>
+            
+            <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between px-6 md:px-12 pointer-events-none">
+              <MagneticButton strength={0.4}>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); handlePrev(); }}
+                  className="pointer-events-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-gold-400/50 backdrop-blur-xl transition-all hover:bg-white/10 hover:text-gold-400 border border-gold-400/10"
+                >
+                  <ChevronLeft className="h-12 w-12" />
+                </button>
+              </MagneticButton>
+              <MagneticButton strength={0.4}>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); handleNext(); }}
+                  className="pointer-events-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-gold-400/50 backdrop-blur-xl transition-all hover:bg-white/10 hover:text-gold-400 border border-gold-400/10"
+                >
+                  <ChevronRight className="h-12 w-12" />
+                </button>
+              </MagneticButton>
             </div>
-          </div>
-        </div>
-      )}
+
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="relative z-[105] max-w-7xl w-full h-[70vh] md:h-[80vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image 
+                src={buildBlobImageSrc(activeGallery.images[lightboxIndex])} 
+                alt="Gallery Preview"
+                width={1920}
+                height={1080}
+                className="max-w-full max-h-full object-contain rounded-3xl shadow-glow-gold border border-white/10"
+              />
+              <div className="absolute bottom-[-100px] text-center w-full">
+                 <h4 className="font-display text-4xl font-bold text-white uppercase tracking-tighter mb-4">{activeGallery.images[lightboxIndex].alt}</h4>
+                 <div className="flex items-center justify-center gap-6">
+                    <div className="h-px w-10 bg-gold-400/30" />
+                    <p className="text-[10px] text-gold-400 uppercase tracking-[0.5em] font-bold">
+                      {lightboxIndex + 1} <span className="text-gray-700 mx-3">|</span> {activeGallery.images.length}
+                    </p>
+                    <div className="h-px w-10 bg-gold-400/30" />
+                 </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

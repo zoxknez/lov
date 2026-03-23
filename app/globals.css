@@ -233,24 +233,57 @@ svg {
     linear-gradient(135deg, rgba(72, 49, 28, 0.28), transparent 60%);
 }
 
+/* Premium 2026 Animations */
+@keyframes text-reveal {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-reveal {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.animate-reveal > span {
+  display: inline-block;
+  animation: text-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Custom Cursor Helpers */
+.cursor-none * {
+  cursor: none !important;
+}
+
+.hover-glow {
+  transition: filter 0.3s ease;
+}
+
+.hover-glow:hover {
+  filter: drop-shadow(0 0 8px rgba(200, 169, 110, 0.4));
+}
+
+/* Refined Shadows and Glows */
+.shadow-premium {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.shadow-glow-gold {
+  box-shadow: 0 0 40px rgba(201, 146, 42, 0.1);
+}
+
 @media (max-width: 768px) {
   html {
     scroll-padding-top: 4rem;
   }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  .grain,
-  .ticker {
-    animation: none !important;
-  }
-
-  * {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
+  /* Disable custom cursor on mobile */
+  .custom-cursor {
+    display: none !important;
   }
 }
