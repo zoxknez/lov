@@ -340,26 +340,35 @@ export default function AccommodationSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl flex items-center justify-center"
+            className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl flex flex-col"
             onClick={() => setLightboxIndex(null)}
           >
-            <div className="absolute inset-x-0 top-0 z-[1010] flex items-center justify-between p-6 md:p-12">
-               <div className="rounded-[2.5rem] border border-white/10 bg-black/60 px-8 py-5 backdrop-blur-2xl text-center md:text-left">
-                  <p className="text-[10px] font-black uppercase tracking-[0.5em] text-gold-400/50 mb-2 leading-none">{lodge.name}</p>
-                  <p className="text-white font-display text-xl font-bold uppercase tracking-tight sm:text-2xl leading-none">Field Archive // Frame {lightboxIndex + 1}</p>
+            {/* Header — shrink-0, X always visible top-right */}
+            <div className="relative shrink-0 z-[1010] px-4 pt-4 pb-3 sm:px-6 sm:pt-5" onClick={(e) => e.stopPropagation()}>
+               {/* X — absolute top-right, guaranteed visible */}
+               <div className="absolute right-4 top-4 sm:right-6 sm:top-5">
+                 <button
+                   onClick={() => setLightboxIndex(null)}
+                   className="h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-black/80 text-white/70 backdrop-blur-xl transition-all hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 shadow-lg sm:h-12 sm:w-12"
+                 >
+                   <X className="h-4 w-4 sm:h-5 sm:w-5" />
+                 </button>
                </div>
-               <button onClick={() => setLightboxIndex(null)} className="h-14 w-14 flex items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/50 backdrop-blur-3xl transition-all hover:bg-gold-500 hover:text-black hover:rotate-90 md:h-16 md:w-16">
-                  <X className="h-6 w-6 md:h-8 md:w-8" />
-               </button>
+               {/* Info card — right-padded so text can't reach X button area */}
+               <div className="rounded-xl border border-white/10 bg-black/70 px-4 py-3 backdrop-blur-2xl pr-16 sm:rounded-2xl sm:px-6 sm:py-4 sm:pr-20">
+                  <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gold-400/50 mb-1 leading-none whitespace-pre-line">{lodge.name}</p>
+                  <p className="text-white font-display text-base font-bold uppercase tracking-tight sm:text-xl leading-tight">Field Archive // Frame {lightboxIndex + 1}</p>
+               </div>
             </div>
-
-            <div className="relative z-[1005] h-full w-full flex items-center justify-center p-8 pt-32 pb-44 md:p-20 md:pt-40 md:pb-48" onClick={(e) => e.stopPropagation()}>
-               <div className="absolute left-8 right-8 z-[1020] flex items-center justify-between pointer-events-none md:left-20 md:right-20">
-                  <MagneticButton strength={0.2} onClick={prev} className="pointer-events-auto flex h-20 w-20 items-center justify-center rounded-full border border-white/5 bg-black/30 text-white/30 hover:border-gold-400/40 hover:text-gold-400 backdrop-blur-xl">
-                     <ChevronLeft className="h-10 w-10" />
+            {/* Image area — flex-1 fills all remaining space */}
+            <div className="relative flex-1 min-h-0 z-[1005] p-4 sm:p-6" onClick={(e) => e.stopPropagation()}>
+               {/* Side navigation arrows */}
+               <div className="absolute inset-y-0 left-4 right-4 z-[1020] flex items-center justify-between pointer-events-none sm:left-6 sm:right-6">
+                  <MagneticButton strength={0.2} onClick={prev} className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/5 bg-black/30 text-white/30 hover:border-gold-400/40 hover:text-gold-400 backdrop-blur-xl sm:h-16 sm:w-16">
+                     <ChevronLeft className="h-6 w-6 sm:h-8 sm:w-8" />
                   </MagneticButton>
-                  <MagneticButton strength={0.2} onClick={next} className="pointer-events-auto flex h-20 w-20 items-center justify-center rounded-full border border-white/5 bg-black/30 text-white/30 hover:border-gold-400/40 hover:text-gold-400 backdrop-blur-xl">
-                     <ChevronRight className="h-10 w-10" />
+                  <MagneticButton strength={0.2} onClick={next} className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/5 bg-black/30 text-white/30 hover:border-gold-400/40 hover:text-gold-400 backdrop-blur-xl sm:h-16 sm:w-16">
+                     <ChevronRight className="h-6 w-6 sm:h-8 sm:w-8" />
                   </MagneticButton>
                </div>
                <motion.div
@@ -367,9 +376,9 @@ export default function AccommodationSection() {
                  initial={{ opacity: 0, scale: 0.95 }}
                  animate={{ opacity: 1, scale: 1 }}
                  exit={{ opacity: 0, scale: 0.95 }}
-                 className="relative h-full w-full rounded-[4rem] overflow-hidden border border-white/10 bg-black/10"
+                 className="relative h-full w-full rounded-[2rem] overflow-hidden border border-white/10 bg-black/10 sm:rounded-[3rem]"
                >
-                  <Image src={getBlobAssetUrl(lodge.gallery[lightboxIndex])} alt="Lodge Frame" fill className="object-contain p-10" />
+                  <Image src={getBlobAssetUrl(lodge.gallery[lightboxIndex])} alt="Lodge Frame" fill className="object-contain p-8" />
                </motion.div>
             </div>
           </motion.div>

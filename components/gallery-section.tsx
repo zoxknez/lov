@@ -490,39 +490,39 @@ export default function GallerySection() {
           >
             {/* ── TOP HEADER (shrink-0) ── */}
             <div
-              className="shrink-0 z-[1110] flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:px-8 sm:py-6"
+              className="relative shrink-0 z-[1110] px-4 pt-4 pb-3 sm:px-6 sm:pt-5"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Left: Image info card */}
-              <div className="rounded-2xl border border-white/10 bg-black/60 px-5 py-4 backdrop-blur-2xl sm:rounded-[2rem] sm:px-8 sm:py-5 min-w-0">
-                <div className="flex flex-wrap items-center gap-3 mb-1.5">
-                  <ShieldCheck className="h-3 w-3 shrink-0 text-gold-400" />
-                  <p className="text-[9px] font-black uppercase tracking-[0.5em] text-gold-400/40">Verified Field Data</p>
-                  <div className="h-px w-6 bg-white/10" />
-                  <p className="text-[9px] font-bold text-gray-500 tracking-[0.3em] uppercase">Archive Rank: ALPHA</p>
-                </div>
-                <h2 className="font-display text-lg font-bold uppercase tracking-tight text-white sm:text-2xl md:text-3xl line-clamp-2">{lightboxImg.alt}</h2>
-                <div className="mt-2 flex flex-wrap gap-6">
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.3em]">Operational ID</span>
-                    <span className="text-[11px] font-bold text-gold-400 tabular-nums">{lightboxImg.meta?.fileId}</span>
-                  </div>
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.3em]">Access Status</span>
-                    <span className="text-[10px] font-bold text-green-500/60 uppercase tracking-widest font-mono">AUTHORIZED</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right: Close button */}
-              <div className="shrink-0 self-start sm:self-auto">
+              {/* Close button — always anchored top-right, never moves */}
+              <div className="absolute right-4 top-4 z-10 sm:right-6 sm:top-5">
                 <MagneticButton
                   strength={0.3}
                   onClick={() => handleLightboxOpen(null)}
-                  className="h-12 w-12 flex items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/50 hover:bg-gold-500 hover:text-black transition-all hover:rotate-90 sm:h-14 sm:w-14"
+                  className="h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-black/80 text-white/70 backdrop-blur-xl transition-all hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 shadow-lg sm:h-12 sm:w-12"
                 >
-                  <X className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <X className="h-4 w-4 sm:h-5 sm:w-5" />
                 </MagneticButton>
+              </div>
+
+              {/* Info card — compact, right padding ensures it never touches the X button */}
+              <div className="rounded-xl border border-white/10 bg-black/70 px-4 py-3 backdrop-blur-2xl pr-16 sm:rounded-2xl sm:px-6 sm:py-4 sm:pr-20">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <ShieldCheck className="h-2.5 w-2.5 shrink-0 text-gold-400" />
+                  <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gold-400/50">Verified Field Data</p>
+                  <span className="text-white/10">·</span>
+                  <p className="text-[8px] font-bold text-gray-500 tracking-[0.25em] uppercase">Archive Rank: ALPHA</p>
+                </div>
+                <h2 className="font-display text-base font-bold uppercase tracking-tight text-white sm:text-xl md:text-2xl line-clamp-1">{lightboxImg.alt}</h2>
+                <div className="mt-1.5 flex flex-wrap gap-4">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.25em]">ID:</span>
+                    <span className="text-[10px] font-bold text-gold-400 tabular-nums">{lightboxImg.meta?.fileId}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.25em]">STATUS:</span>
+                    <span className="text-[9px] font-bold text-green-500/70 uppercase tracking-widest font-mono">AUTH</span>
+                  </div>
+                </div>
               </div>
             </div>
 
