@@ -343,22 +343,20 @@ export default function AccommodationSection() {
             className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl flex flex-col"
             onClick={() => setLightboxIndex(null)}
           >
-            {/* Header — shrink-0, X always visible top-right */}
-            <div className="relative shrink-0 z-[1010] px-4 pt-4 pb-3 sm:px-6 sm:pt-5" onClick={(e) => e.stopPropagation()}>
-               {/* X — absolute top-right, guaranteed visible */}
-               <div className="absolute right-4 top-4 sm:right-6 sm:top-5">
-                 <button
-                   onClick={() => setLightboxIndex(null)}
-                   className="h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-black/80 text-white/70 backdrop-blur-xl transition-all hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 shadow-lg sm:h-12 sm:w-12"
-                 >
-                   <X className="h-4 w-4 sm:h-5 sm:w-5" />
-                 </button>
+            {/* Header — flex row, info shrinks, X never shrinks */}
+            <div className="shrink-0 z-[1010] flex items-start gap-3 p-4 sm:p-5" onClick={(e) => e.stopPropagation()}>
+               {/* Info card — flex-1 min-w-0 lets it shrink to make room for X */}
+               <div className="flex-1 min-w-0 rounded-xl border border-white/10 bg-black/70 px-4 py-3 backdrop-blur-2xl sm:rounded-2xl sm:px-6 sm:py-4">
+                  <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gold-400/50 mb-1 leading-none truncate">{lodge.name}</p>
+                  <p className="text-white font-display text-base font-bold uppercase tracking-tight sm:text-xl leading-tight truncate">Field Archive // Frame {lightboxIndex + 1}</p>
                </div>
-               {/* Info card — right-padded so text can't reach X button area */}
-               <div className="rounded-xl border border-white/10 bg-black/70 px-4 py-3 backdrop-blur-2xl pr-16 sm:rounded-2xl sm:px-6 sm:py-4 sm:pr-20">
-                  <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gold-400/50 mb-1 leading-none whitespace-pre-line">{lodge.name}</p>
-                  <p className="text-white font-display text-base font-bold uppercase tracking-tight sm:text-xl leading-tight">Field Archive // Frame {lightboxIndex + 1}</p>
-               </div>
+               {/* X — shrink-0, ALWAYS visible, can never be pushed off screen */}
+               <button
+                 onClick={() => setLightboxIndex(null)}
+                 className="shrink-0 h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-black/80 text-white/80 backdrop-blur-xl transition-all duration-300 hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 shadow-lg sm:h-12 sm:w-12"
+               >
+                 <X className="h-5 w-5" />
+               </button>
             </div>
             {/* Image area — flex-1 fills all remaining space */}
             <div className="relative flex-1 min-h-0 z-[1005] p-4 sm:p-6" onClick={(e) => e.stopPropagation()}>

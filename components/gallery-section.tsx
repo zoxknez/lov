@@ -490,40 +490,36 @@ export default function GallerySection() {
           >
             {/* ── TOP HEADER (shrink-0) ── */}
             <div
-              className="relative shrink-0 z-[1110] px-4 pt-4 pb-3 sm:px-6 sm:pt-5"
+              className="shrink-0 z-[1110] flex items-start gap-3 p-4 sm:p-5"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close button — always anchored top-right, never moves */}
-              <div className="absolute right-4 top-4 z-10 sm:right-6 sm:top-5">
-                <MagneticButton
-                  strength={0.3}
-                  onClick={() => handleLightboxOpen(null)}
-                  className="h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-black/80 text-white/70 backdrop-blur-xl transition-all hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 shadow-lg sm:h-12 sm:w-12"
-                >
-                  <X className="h-4 w-4 sm:h-5 sm:w-5" />
-                </MagneticButton>
-              </div>
-
-              {/* Info card — compact, right padding ensures it never touches the X button */}
-              <div className="rounded-xl border border-white/10 bg-black/70 px-4 py-3 backdrop-blur-2xl pr-16 sm:rounded-2xl sm:px-6 sm:py-4 sm:pr-20">
+              {/* Info card — flex-1 + min-w-0 lets it shrink to make room for the X */}
+              <div className="flex-1 min-w-0 rounded-xl border border-white/10 bg-black/70 px-4 py-3 backdrop-blur-2xl sm:rounded-2xl sm:px-6 sm:py-4">
                 <div className="flex flex-wrap items-center gap-2 mb-1">
                   <ShieldCheck className="h-2.5 w-2.5 shrink-0 text-gold-400" />
-                  <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gold-400/50">Verified Field Data</p>
-                  <span className="text-white/10">·</span>
-                  <p className="text-[8px] font-bold text-gray-500 tracking-[0.25em] uppercase">Archive Rank: ALPHA</p>
+                  <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gold-400/50 truncate">Verified Field Data · Archive: ALPHA</p>
                 </div>
-                <h2 className="font-display text-base font-bold uppercase tracking-tight text-white sm:text-xl md:text-2xl line-clamp-1">{lightboxImg.alt}</h2>
-                <div className="mt-1.5 flex flex-wrap gap-4">
+                <h2 className="font-display text-base font-bold uppercase tracking-tight text-white truncate sm:text-xl md:text-2xl">{lightboxImg.alt}</h2>
+                <div className="mt-1.5 flex gap-5">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.25em]">ID:</span>
+                    <span className="text-[7px] font-black text-white/20 uppercase">ID:</span>
                     <span className="text-[10px] font-bold text-gold-400 tabular-nums">{lightboxImg.meta?.fileId}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.25em]">STATUS:</span>
-                    <span className="text-[9px] font-bold text-green-500/70 uppercase tracking-widest font-mono">AUTH</span>
+                    <span className="text-[7px] font-black text-white/20 uppercase">STATUS:</span>
+                    <span className="text-[9px] font-bold text-green-500/70 font-mono">AUTH</span>
                   </div>
                 </div>
               </div>
+
+              {/* X button — shrink-0 guarantees it is ALWAYS fully visible */}
+              <MagneticButton
+                strength={0.3}
+                onClick={() => handleLightboxOpen(null)}
+                className="shrink-0 h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-black/80 text-white/80 backdrop-blur-xl transition-all duration-300 hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 shadow-lg sm:h-12 sm:w-12"
+              >
+                <X className="h-5 w-5" />
+              </MagneticButton>
             </div>
 
             {/* ── IMAGE AREA (flex-1, fills remaining height) ── */}
