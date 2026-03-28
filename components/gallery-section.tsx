@@ -195,7 +195,7 @@ export default function GallerySection() {
   }, [lightboxIndex]);
 
   return (
-    <section id="gallery" className="relative overflow-hidden bg-transparent py-20 font-sans md:py-32">
+    <section id="gallery" className={`relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${lightboxIndex !== null ? 'z-[10000]' : 'z-10'}`}>
       <div className="pointer-events-none absolute inset-0 bg-forest-950/10 backdrop-blur-[1px]" />
       <div className="pointer-events-none absolute -left-32 top-0 h-[500px] w-[500px] rounded-full bg-gold-600/4 blur-[140px]" />
 
@@ -499,7 +499,7 @@ export default function GallerySection() {
           >
             {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
             <div
-              className="shrink-0 z-[1110] px-4 pt-6 pb-2 sm:px-10 sm:pt-10 sm:pb-4"
+              className="shrink-0 z-[1110] px-4 pt-10 pb-4 sm:px-10 sm:pt-16 sm:pb-6"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="mx-auto max-w-7xl">

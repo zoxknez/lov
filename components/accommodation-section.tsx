@@ -97,7 +97,7 @@ export default function AccommodationSection() {
   const prev = () => setLightboxIndex((prev) => (prev !== null ? (prev - 1 + lodge.gallery.length) % lodge.gallery.length : null));
 
   return (
-    <section id="stay" className="relative overflow-hidden bg-transparent py-20 font-sans md:py-32">
+    <section id="stay" className={`relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${lightboxIndex !== null ? 'z-[10000]' : 'z-10'}`}>
       {/* Immersive Background Decor */}
       <div className="pointer-events-none absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-600/5 blur-[160px]" />
@@ -354,7 +354,7 @@ export default function AccommodationSection() {
           >
             {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
             <div
-              className="shrink-0 z-[1010] px-4 pt-6 pb-2 sm:px-10 sm:pt-10 sm:pb-4"
+              className="shrink-0 z-[1010] px-4 pt-10 pb-4 sm:px-10 sm:pt-16 sm:pb-6"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="mx-auto max-w-7xl">

@@ -60,8 +60,8 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
           className="relative h-full max-h-[90vh] w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-[#090e0d] p-1 shadow-2xl md:max-h-[85vh] md:rounded-[3rem]"
         >
           {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
-          <div className="shrink-0 z-50 p-4 sm:p-6 pb-2">
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/60 p-3 backdrop-blur-3xl shadow-premium sm:rounded-[2.5rem] sm:p-4">
+          <div className="shrink-0 z-50 p-6 pt-10 sm:p-10 sm:pt-14 pb-4">
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/60 p-4 backdrop-blur-3xl shadow-premium sm:rounded-[2.5rem] sm:p-6">
               {/* Left: Info card - unified inside the same bar */}
               <div className="flex-1 min-w-0 px-2 sm:px-4">
                 <div className="flex items-center gap-2 mb-0.5">

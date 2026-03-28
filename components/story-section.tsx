@@ -96,7 +96,7 @@ export default function StorySection() {
   const [selectedFounder, setSelectedFounder] = useState<typeof founders[0] | null>(null);
 
   return (
-    <section id="story" className="relative overflow-hidden bg-transparent py-20 font-sans md:py-32">
+    <section id="story" className={`relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${selectedFounder ? 'z-[10000]' : 'z-10'}`}>
       <div className="pointer-events-none absolute inset-0 bg-forest-950/10 backdrop-blur-[1px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
