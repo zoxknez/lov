@@ -343,17 +343,17 @@ export default function AccommodationSection() {
             className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl flex items-center justify-center"
             onClick={() => setLightboxIndex(null)}
           >
-            <div className="absolute inset-x-0 top-0 z-[1010] flex items-center justify-between p-8 md:p-12">
-               <div className="rounded-[2.5rem] border border-white/10 bg-black/40 px-10 py-5 backdrop-blur-2xl text-center md:text-left">
-                  <p className="text-[11px] font-black uppercase tracking-[0.4em] text-gold-400/60 mb-1">{lodge.name}</p>
-                  <p className="text-white font-display text-2xl font-bold uppercase tracking-tight">Field Archive // Frame {lightboxIndex + 1}</p>
+            <div className="absolute inset-x-0 top-0 z-[1010] flex items-center justify-between p-6 md:p-12">
+               <div className="rounded-[2.5rem] border border-white/10 bg-black/60 px-8 py-5 backdrop-blur-2xl text-center md:text-left">
+                  <p className="text-[10px] font-black uppercase tracking-[0.5em] text-gold-400/50 mb-2 leading-none">{lodge.name}</p>
+                  <p className="text-white font-display text-xl font-bold uppercase tracking-tight sm:text-2xl leading-none">Field Archive // Frame {lightboxIndex + 1}</p>
                </div>
-               <button onClick={() => setLightboxIndex(null)} className="h-16 w-16 flex items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/50 hover:bg-gold-500 hover:text-black transition-all hover:rotate-90">
-                  <X className="h-8 w-8" />
+               <button onClick={() => setLightboxIndex(null)} className="h-14 w-14 flex items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/50 backdrop-blur-3xl transition-all hover:bg-gold-500 hover:text-black hover:rotate-90 md:h-16 md:w-16">
+                  <X className="h-6 w-6 md:h-8 md:w-8" />
                </button>
             </div>
 
-            <div className="relative z-[1005] h-[80vh] w-[90vw] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <div className="relative z-[1005] h-full w-full flex items-center justify-center p-8 pt-32 pb-44 md:p-20 md:pt-40 md:pb-48" onClick={(e) => e.stopPropagation()}>
                <div className="absolute left-8 right-8 z-[1020] flex items-center justify-between pointer-events-none md:left-20 md:right-20">
                   <MagneticButton strength={0.2} onClick={prev} className="pointer-events-auto flex h-20 w-20 items-center justify-center rounded-full border border-white/5 bg-black/30 text-white/30 hover:border-gold-400/40 hover:text-gold-400 backdrop-blur-xl">
                      <ChevronLeft className="h-10 w-10" />

@@ -92,9 +92,9 @@ const animals: AnimalProfile[] = [
     season: 'Apr - May',
     trophy: '170-200 points',
     terrain: 'Open country, private-land blocks',
-    headline: 'Autumn\nPalmate Buck',
+    headline: 'Exceptional\nFallow Buck Trophies',
     description:
-      'Selective autumn hunting for palmate bucks on suitable private blocks. Arranged separately from the main roar window - focused on buck quality and rut timing rather than volume.',
+      'Exceptional Fallow buck trophies.',
     tags: ['Autumn rut focus', 'Selective trophy standard', 'Private-land access'],
     image: '/media/hunting%20area%20%20and%20deers/Fellow%20%20deer.jpg',
   },

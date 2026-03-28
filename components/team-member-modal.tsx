@@ -12,6 +12,7 @@ interface TeamMember {
   exp: string;
   initials: string;
   bio: string;
+  expertise: string;
   images: string[];
 }
 
@@ -117,29 +118,20 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
               </div>
 
               <div className="prose prose-invert max-w-none">
-                <div className="relative mb-8 pl-10">
+                <div className="relative pl-10">
                    <Quote className="absolute left-0 top-0 h-8 w-8 text-gold-500/20 rotate-180" />
                    <p className="font-display text-xl italic leading-relaxed text-gray-300 md:text-2xl">
                      {member.bio}
                    </p>
-                </div>
-                
-                <div className="space-y-6 text-base leading-relaxed text-gray-400 md:text-lg">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                  </p>
-                  <p>
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                  </p>
                 </div>
               </div>
 
               {/* Stats/Details Grid */}
               <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3">
                 {[
-                  { label: 'Specialization', value: 'High Alpine Hunst' },
-                  { label: 'Total Expeditions', value: '500+' },
-                  { label: 'Peak Seasons', value: 'Autumn/Winter' }
+                  { label: 'Specialization', value: member.expertise },
+                  { label: 'Archive Status', value: 'Active' },
+                  { label: 'Operational Level', value: 'Lead Tier' }
                 ].map((stat) => (
                   <div key={stat.label} className="rounded-2xl border border-white/5 bg-white/[0.02] p-4 transition-all hover:bg-white/[0.05] hover:border-gold-500/20">
                     <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.2em] text-gold-400/50">{stat.label}</p>

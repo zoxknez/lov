@@ -89,7 +89,7 @@ const seasons = [
     window: 'Apr - May',
     title: 'Fallow Rut',
     region: 'North Island',
-    detail: 'Deep frog-like "croak" and use of "rut pads" in mixed bush. Ideal for selective palmate-buck hunting.',
+    detail: 'Exceptional Fallow buck trophies. Deep frog-like "croak" and use of "rut pads" in mixed bush. Ideal for selective palmate-buck hunting.',
     specs: [
       { icon: Activity, label: 'Behavior', value: 'Deep Croak' },
       { icon: Zap, label: 'Tactics', value: 'Scrape Hunting' },
