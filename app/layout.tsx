@@ -3,6 +3,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/smooth-scroll";
 import AnalyticsBeacon from "@/components/analytics-beacon";
 import Preloader from "@/components/preloader";
+import CustomCursor from "@/components/custom-cursor";
 import { getAbsoluteBlobAssetUrl, getBlobAssetUrl } from "@/lib/blob-asset";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Skip to content
         </a>
         <Preloader />
+        <CustomCursor />
         <SmoothScroll>
           <AnalyticsBeacon />
           {children}
