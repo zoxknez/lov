@@ -38,7 +38,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: geometricPrecision;
-  cursor: none;
+  cursor: auto;
 }
 
 .text-gray-400 {

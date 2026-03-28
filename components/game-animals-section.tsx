@@ -7,7 +7,31 @@ import { Calendar, ChevronLeft, ChevronRight, MapPin, Target, Trophy } from 'luc
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 import TextReveal from '@/components/text-reveal';
 
-const animals = [
+type AnimalProfile = {
+  name: string;
+  scientific: string;
+  index: string;
+  grade: {
+    label: string;
+    color: string;
+  };
+  region: string;
+  season: string;
+  trophy: string;
+  terrain: string;
+  headline: string;
+  description: string;
+  tags: string[];
+  image: string;
+  imageCredit?: {
+    author: string;
+    sourceUrl: string;
+    licenseLabel: string;
+    licenseUrl: string;
+  };
+};
+
+const animals: AnimalProfile[] = [
   {
     name: 'Red Deer',
     scientific: 'Cervus elaphus',
@@ -51,7 +75,13 @@ const animals = [
     description:
       'Genuine mountain work in the Southern Alps. Winter coat quality and rut timing make May-July the premium window. Steep basins, remote access, and the most physically demanding hunt in the program.',
     tags: ['Winter coat quality', 'Remote alpine terrain', 'Rut-active bulls'],
-    image: '/media/hunting%20area%20%20and%20deers/Hunting%20%20area%20%20near%20Rotorua%202%20jpg.jpg',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Himalayan%20Tahr%20at%20Dawn.jpg',
+    imageCredit: {
+      author: 'Megaurab09',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Himalayan_Tahr_at_Dawn.jpg',
+      licenseLabel: 'CC BY-SA 4.0',
+      licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+    },
   },
   {
     name: 'Fallow Deer',
@@ -60,7 +90,7 @@ const animals = [
     grade: { label: 'Select', color: 'text-emerald-300 border-emerald-400/30 bg-emerald-400/8' },
     region: 'North Island private blocks',
     season: 'Apr - May',
-    trophy: 'Palmate maturity',
+    trophy: '170-200 points',
     terrain: 'Open country, private-land blocks',
     headline: 'Autumn\nPalmate Buck',
     description:
@@ -81,7 +111,13 @@ const animals = [
     description:
       'A wary, agile species that rewards patience and careful glassing from distance. The May-June rut is the favoured buck period - long days on the hill, demanding terrain, and a unique alpine trophy.',
     tags: ['Favoured rut period', 'Steep alpine faces', 'Long glassing sessions'],
-    image: '/media/hunting area  and deers/Hunting  area  near Rotorua 3 jpg.jpg',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Tatra%20Chamois.jpg',
+    imageCredit: {
+      author: 'Jakub Frys',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Tatra_Chamois.jpg',
+      licenseLabel: 'CC BY-SA 4.0',
+      licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+    },
   },
   {
     name: 'Rusa Deer',
@@ -96,13 +132,21 @@ const animals = [
     description:
       'A dedicated North Island program timed to the rusa rut in July-August. Usually planned as a stand-alone itinerary rather than mixed into autumn deer or alpine programs.',
     tags: ['Later-winter rut timing', 'Dense cover habitat', 'Standalone itinerary'],
-    image: '/media/hunting area  and deers/Hunting  area  near Rotorua.jpg',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Rusa%20%28Cervus%20timorensis%29.jpg',
+    imageCredit: {
+      author: 'Ron Knight',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Rusa_(Cervus_timorensis).jpg',
+      licenseLabel: 'CC BY 2.0',
+      licenseUrl: 'https://creativecommons.org/licenses/by/2.0/',
+    },
   },
 ];
 
 export default function GameAnimalsSection() {
   const [active, setActive] = useState(0);
   const animal = animals[active];
+  const animalImageSrc = animal.image.startsWith('https://') ? animal.image : getBlobAssetUrl(animal.image);
+  const isExternalImage = animal.image.startsWith('https://');
 
   return (
     <section id="species" className="relative overflow-hidden bg-transparent py-20 font-sans md:py-32">
@@ -161,10 +205,11 @@ export default function GameAnimalsSection() {
           >
             <div className="relative min-h-[340px] overflow-hidden rounded-[2rem] sm:min-h-[440px] md:rounded-[2.5rem] lg:col-span-2 lg:min-h-[560px]">
               <Image
-                src={getBlobAssetUrl(animal.image)}
+                src={animalImageSrc}
                 alt={animal.name}
                 fill
                 sizes="(max-width: 1023px) 100vw, 40vw"
+                unoptimized={isExternalImage}
                 className="object-cover transition-transform duration-[2000ms] scale-105 hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
@@ -196,6 +241,28 @@ export default function GameAnimalsSection() {
                 <h3 className="whitespace-pre-line font-display text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
                   {animal.headline}
                 </h3>
+                {animal.imageCredit && (
+                  <p className="mt-3 text-[10px] leading-relaxed text-white/55">
+                    Photo:{' '}
+                    <a
+                      href={animal.imageCredit.sourceUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline decoration-white/20 underline-offset-4 transition-colors hover:text-white"
+                    >
+                      {animal.imageCredit.author}
+                    </a>{' '}
+                    / Wikimedia Commons /{' '}
+                    <a
+                      href={animal.imageCredit.licenseUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline decoration-white/20 underline-offset-4 transition-colors hover:text-white"
+                    >
+                      {animal.imageCredit.licenseLabel}
+                    </a>
+                  </p>
+                )}
               </div>
             </div>
 
