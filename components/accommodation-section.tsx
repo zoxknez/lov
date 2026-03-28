@@ -83,13 +83,16 @@ export default function AccommodationSection() {
     if (lightboxIndex !== null) {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
+      document.body.classList.add('modal-active');
     } else {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
+      document.body.classList.remove('modal-active');
     }
     return () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
+      document.body.classList.remove('modal-active');
     };
   }, [lightboxIndex]);
 
@@ -351,10 +354,11 @@ export default function AccommodationSection() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl flex flex-col"
             onClick={() => setLightboxIndex(null)}
+            data-lenis-prevent
           >
             {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
             <div
-              className="shrink-0 z-[1010] px-4 pt-10 pb-4 sm:px-10 sm:pt-16 sm:pb-6"
+              className="shrink-0 z-[1010] px-4 pt-16 pb-6 sm:px-10 sm:pt-40 sm:pb-10"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="mx-auto max-w-7xl">

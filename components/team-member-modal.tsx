@@ -27,13 +27,16 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
     if (member) {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
+      document.body.classList.add('modal-active');
     } else {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
+      document.body.classList.remove('modal-active');
     }
     return () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
+      document.body.classList.remove('modal-active');
     };
   }, [member]);
 
@@ -41,27 +44,29 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-10">
-        {/* Backdrop */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="absolute inset-0 bg-black/80 backdrop-blur-md"
-        />
-
-        {/* Modal Content */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative h-full max-h-[90vh] w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-[#090e0d] p-1 shadow-2xl md:max-h-[85vh] md:rounded-[3rem]"
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
+          data-lenis-prevent
         >
-          {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
-          <div className="shrink-0 z-50 p-6 pt-10 sm:p-10 sm:pt-14 pb-4">
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/60 p-4 backdrop-blur-3xl shadow-premium sm:rounded-[2.5rem] sm:p-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+          />
+
+          {/* Modal Content */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="relative h-full max-h-[90vh] w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-[#090e0d] p-1 shadow-2xl md:max-h-[85vh] md:rounded-[3rem]"
+          >
+            {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
+            <div className="shrink-0 z-50 p-6 pt-16 sm:p-10 sm:pt-24 pb-4">
+              <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/60 p-4 backdrop-blur-3xl shadow-premium sm:rounded-[2.5rem] sm:p-6">
               {/* Left: Info card - unified inside the same bar */}
               <div className="flex-1 min-w-0 px-2 sm:px-4">
                 <div className="flex items-center gap-2 mb-0.5">
