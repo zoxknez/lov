@@ -258,7 +258,24 @@ export default function GallerySection() {
               ].map(stat => (
                  <div key={stat.label} className="flex flex-col gap-1.5">
                     <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">{stat.label}</span>
-                    <span className={`text-[11px] font-bold uppercase tracking-widest ${stat.color}`}>{stat.val}</span>
+                    {stat.label === 'Frames localized' ? (
+                      <div className="h-4 overflow-hidden">
+                        <AnimatePresence mode="wait" initial={false}>
+                          <motion.span
+                            key={stat.val}
+                            initial={{ y: 16, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -16, opacity: 0 }}
+                            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                            className={`block text-[11px] font-bold uppercase tracking-widest ${stat.color}`}
+                          >
+                            {stat.val}
+                          </motion.span>
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <span className={`text-[11px] font-bold uppercase tracking-widest ${stat.color}`}>{stat.val}</span>
+                    )}
                  </div>
               ))}
            </div>

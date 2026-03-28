@@ -401,3 +401,61 @@ svg {
   filter: drop-shadow(0 0 30px rgba(200, 169, 110, 0.15));
   transition: opacity 0.5s ease;
 }
+
+/* ─────────────────────────────────────────
+   BORDER BEAM SWEEP
+   Golden light sweeps across the top edge of a card on hover.
+   Requires overflow:hidden on the element (already set on most cards).
+───────────────────────────────────────── */
+@keyframes beam-sweep {
+  from { left: -40%; }
+  to   { left: 140%; }
+}
+
+.has-beam {
+  position: relative;
+}
+
+.has-beam::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -40%;
+  z-index: 2;
+  width: 35%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,169,110,0.9), rgba(230,200,140,0.5), transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.has-beam:hover::before {
+  opacity: 1;
+  animation: beam-sweep 1.8s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────
+   FORM FOCUS SCALE LINE
+   For group-focus-within inputs — animated
+   underline growing from left to right.
+   Add this span after each border-b input:
+   <span class="form-focus-line" />
+───────────────────────────────────────── */
+.form-focus-line {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, #c9922a, rgba(228,182,104,0.5));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.group:focus-within .form-focus-line {
+  transform: scaleX(1);
+}

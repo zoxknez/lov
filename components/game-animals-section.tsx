@@ -18,6 +18,7 @@ type AnimalProfile = {
   region: string;
   season: string;
   trophy: string;
+  trophyPct: number;
   terrain: string;
   headline: string;
   description: string;
@@ -40,6 +41,7 @@ const animals: AnimalProfile[] = [
     region: 'North + South Island',
     season: 'Mar - Apr',
     trophy: '350-400 SCI',
+    trophyPct: 92,
     terrain: 'Bush, hill country, alpine basins',
     headline: 'The Classic\nNZ Roar',
     description:
@@ -55,6 +57,7 @@ const animals: AnimalProfile[] = [
     region: 'Kaimanawa, Central Plateau',
     season: 'Mar - May',
     trophy: '160-200 Douglas',
+    trophyPct: 80,
     terrain: 'Dense beech and podocarp bush',
     headline: 'Kaimanawa\nSignature',
     description:
@@ -70,6 +73,7 @@ const animals: AnimalProfile[] = [
     region: 'Southern Alps',
     season: 'May - Jul',
     trophy: '10-13 inches',
+    trophyPct: 88,
     terrain: 'Alpine grasslands, remote basins, steep faces',
     headline: 'The Alpine\nTrophy',
     description:
@@ -91,6 +95,7 @@ const animals: AnimalProfile[] = [
     region: 'North Island private blocks',
     season: 'Apr - May',
     trophy: '170-200 points',
+    trophyPct: 68,
     terrain: 'Open country, private-land blocks',
     headline: 'Exceptional\nFallow Buck Trophies',
     description:
@@ -106,6 +111,7 @@ const animals: AnimalProfile[] = [
     region: 'South Island high country',
     season: 'May - Jun',
     trophy: '8-10 inches',
+    trophyPct: 72,
     terrain: 'Steep alpine faces, high country ridges',
     headline: 'High Country\nStalker',
     description:
@@ -127,6 +133,7 @@ const animals: AnimalProfile[] = [
     region: 'North Island',
     season: 'Jul - Aug',
     trophy: 'Late-winter trophy',
+    trophyPct: 60,
     terrain: 'Dense cover, river-valley habitat',
     headline: 'Late Winter\nAdd-On',
     description:
@@ -267,7 +274,7 @@ export default function GameAnimalsSection() {
             </div>
 
             <div className="flex flex-col gap-4 sm:gap-5 lg:col-span-3">
-              <div className="relative overflow-hidden rounded-[1.8rem] border border-white/8 bg-forest-900/20 p-6 shadow-premium sm:p-8 md:rounded-[2rem]">
+              <div className="relative overflow-hidden rounded-[1.8rem] border border-white/8 bg-forest-900/20 p-6 shadow-premium sm:p-8 md:rounded-[2rem] has-beam">
                 <div className="absolute left-0 top-0 h-px w-32 bg-gradient-to-r from-gold-400/50 to-transparent" />
                 <div className="absolute left-0 top-0 h-10 w-px bg-gradient-to-b from-gold-400/30 to-transparent" />
 
@@ -314,6 +321,18 @@ export default function GameAnimalsSection() {
                       </div>
                       <p className="mb-1 text-[8px] font-bold uppercase tracking-[0.24em] text-gold-400/50">{stat.label}</p>
                       <p className="text-sm font-bold leading-relaxed text-white">{stat.value}</p>
+                      {/* Animated trophy score bar */}
+                      {stat.label === 'Trophy Score' && (
+                        <div className="mt-3 h-px w-full overflow-hidden rounded-full bg-white/5">
+                          <motion.div
+                            key={animal.name}
+                            className="h-full rounded-full bg-gradient-to-r from-gold-400/70 to-gold-300/30"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${animal.trophyPct}%` }}
+                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+                          />
+                        </div>
+                      )}
                     </div>
                   );
                 })}

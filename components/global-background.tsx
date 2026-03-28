@@ -44,6 +44,7 @@ export default function GlobalBackground() {
   const prefersReducedMotion = useReducedMotion();
   const [stars, setStars] = useState<ShootingStar[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
     const media = window.matchMedia('(max-width: 767px)');
@@ -54,6 +55,26 @@ export default function GlobalBackground() {
 
     return () => media.removeEventListener('change', syncViewport);
   }, []);
+
+  // Spotlight: track mouse to create a premium ambient glow
+  useEffect(() => {
+    if (isMobile || prefersReducedMotion) return;
+    let rafId: number;
+    const handleMouseMove = (e: MouseEvent) => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        setMousePos({
+          x: (e.clientX / window.innerWidth) * 100,
+          y: (e.clientY / window.innerHeight) * 100,
+        });
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, [isMobile, prefersReducedMotion]);
 
   useEffect(() => {
     if (prefersReducedMotion || isMobile) return;
@@ -130,6 +151,16 @@ export default function GlobalBackground() {
       <div className="absolute inset-0 bg-[#020406]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,#03070a_0%,#061018_16%,#03070b_32%,#071219_50%,#04090d_68%,#020406_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_8%,rgba(213,172,106,0.1),transparent_20%),linear-gradient(135deg,rgba(255,255,255,0.028),transparent_40%)]" />
+
+      {/* Spotlight — follows the cursor, extremely subtle premium feel */}
+      {!isMobile && !prefersReducedMotion && (
+        <div
+          className="absolute inset-0 pointer-events-none transition-[background] duration-700 ease-out"
+          style={{
+            background: `radial-gradient(700px circle at ${mousePos.x}% ${mousePos.y}%, rgba(200,169,110,0.038) 0%, transparent 65%)`,
+          }}
+        />
+      )}
 
       {(isMobile ? ambientPools.slice(0, 3) : ambientPools).map((pool) => (
         <motion.div

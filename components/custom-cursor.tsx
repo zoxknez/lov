@@ -14,6 +14,12 @@ export default function CustomCursor() {
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
 
+  // Cursor trail — two lagging springs that follow the main cursor
+  const trail1X = useSpring(cursorX, { damping: 40, stiffness: 120, mass: 0.9 });
+  const trail1Y = useSpring(cursorY, { damping: 40, stiffness: 120, mass: 0.9 });
+  const trail2X = useSpring(cursorX, { damping: 60, stiffness: 70, mass: 1.4 });
+  const trail2Y = useSpring(cursorY, { damping: 60, stiffness: 70, mass: 1.4 });
+
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
@@ -70,6 +76,36 @@ export default function CustomCursor() {
 
   return (
     <div className="custom-cursor pointer-events-none fixed inset-0 z-[99999] hidden lg:block">
+
+      {/* Trail dot 1 — slightly lagging */}
+      <motion.div
+        className="absolute rounded-full bg-gold-400"
+        style={{
+          left: trail1X,
+          top: trail1Y,
+          translateX: '-50%',
+          translateY: '-50%',
+          width: 5,
+          height: 5,
+          opacity: 0.18,
+          filter: 'blur(1px)',
+        }}
+      />
+
+      {/* Trail dot 2 — more lagging */}
+      <motion.div
+        className="absolute rounded-full bg-gold-400"
+        style={{
+          left: trail2X,
+          top: trail2Y,
+          translateX: '-50%',
+          translateY: '-50%',
+          width: 3,
+          height: 3,
+          opacity: 0.09,
+          filter: 'blur(1.5px)',
+        }}
+      />
       
       {/* 1. Dynamic Corner Brackets (The Target Box) */}
       <motion.div

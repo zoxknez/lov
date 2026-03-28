@@ -4,14 +4,14 @@ import { motion } from 'framer-motion';
 import { Award, Crosshair, ShieldCheck, User, Zap, Activity, Info } from 'lucide-react';
 import TextReveal from '@/components/text-reveal';
 import TeamMemberModal from './team-member-modal';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const founders = [
   { 
     name: 'Alex Sipka', 
     role: 'Co-Founder', 
     origin: 'Serbia', 
-    exp: '40 Yrs', 
+    exp: '40 Yrs', expNum: 40, expSuffix: ' Yrs',
     initials: 'AS',
     expertise: 'International Heritage / Ethics',
     bio: 'With over 40 years of experience in the international hunting industry, Alex is a veteran who understands the importance of heritage and ethics. He has guided hundreds of successful hunts across the globe and brought his expertise to the pristine landscapes of New Zealand.',
@@ -21,7 +21,7 @@ const founders = [
     name: 'Artem Prikazov', 
     role: 'Co-Founder', 
     origin: 'Russia', 
-    exp: '15 Yrs', 
+    exp: '15 Yrs', expNum: 15, expSuffix: ' Yrs',
     initials: 'AP',
     expertise: 'Technical Precision / Logistics',
     bio: 'Artem brings 15 years of dedicated hunting experience, combining technical precision with a deep passion for the wild. As a co-founder, he ensures that every detail of the safari experience meets the highest standards of luxury and authenticity.',
@@ -31,13 +31,48 @@ const founders = [
     name: 'Vuk Mijatovic', 
     role: 'Lead Guide', 
     origin: 'NZ Field Ops', 
-    exp: '35+ Yrs', 
+    exp: '35+ Yrs', expNum: 35, expSuffix: '+ Yrs',
     initials: 'VM',
     expertise: 'High Alpine / Field Ops',
     bio: 'Our Lead Guide, Vuk, has spent 35+ years mastering the rugged terrain of New Zealand. His operational expertise and tactical knowledge of the field make him an invaluable asset for hunters seeking the ultimate fair chase challenge.',
     images: ['/media/founders/vuk-1.jpg', '/media/founders/vuk-2.jpg']
   },
 ];
+
+// Count-up component: triggers when the element enters the viewport
+function CountUp({ target, suffix = '' }: { target: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const triggered = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !triggered.current) {
+          triggered.current = true;
+          let startTs: number | null = null;
+          const duration = 900;
+          const step = (ts: number) => {
+            if (!startTs) startTs = ts;
+            const progress = Math.min((ts - startTs) / duration, 1);
+            // ease-out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.floor(eased * target));
+            if (progress < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        }
+      },
+      { rootMargin: '-10% 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+}
 
 const values = [
   {
@@ -130,7 +165,7 @@ export default function StorySection() {
                   transition={{ delay: index * 0.15, duration: 0.8 }}
                   whileHover={{ y: -8, transition: { duration: 0.4, ease: "easeOut" } }}
                   onClick={() => setSelectedFounder(founder)}
-                  className="group relative cursor-pointer overflow-hidden rounded-[2.2rem] border border-white/8 bg-forest-900/20 p-8 shadow-premium transition-all duration-500 hover:border-gold-500/40 hover:bg-forest-900/40"
+                  className="group relative cursor-pointer overflow-hidden rounded-[2.2rem] border border-white/8 bg-forest-900/20 p-8 shadow-premium transition-all duration-500 hover:border-gold-500/40 hover:bg-forest-900/40 has-beam"
                 >
                   {/* Card Background Decoration */}
                   <div className="absolute -right-8 -top-8 opacity-5">
@@ -145,7 +180,7 @@ export default function StorySection() {
                      </div>
                      <div className="flex flex-col items-end gap-1">
                         <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 transition-colors group-hover:text-gold-200">
-                           {founder.exp} Experience
+                           <CountUp target={founder.expNum} suffix={founder.expSuffix} /> Experience
                         </span>
                         <div className="flex items-center gap-1.5 opacity-40">
                            <Activity className="h-2.5 w-2.5" />

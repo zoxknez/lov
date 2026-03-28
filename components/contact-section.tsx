@@ -145,8 +145,9 @@ export default function ContactSection() {
                       onChange={handleInputChange}
                       placeholder="e.g. Alexander Knight"
                       required
-                      className="w-full border-b border-white/10 bg-transparent py-4 text-base font-medium text-white placeholder-white/10 transition-all focus:border-gold-400 focus:outline-none sm:text-lg"
+                      className="w-full border-b border-white/10 bg-transparent py-4 text-base font-medium text-white placeholder-white/10 transition-all focus:outline-none sm:text-lg"
                     />
+                    <span className="form-focus-line" />
                   </div>
                   <div className="group relative">
                     <label className="mb-3 block text-[9.5px] font-black uppercase tracking-[0.4em] text-gold-400/60 transition-colors group-focus-within:text-gold-400">
@@ -159,8 +160,9 @@ export default function ContactSection() {
                       onChange={handleInputChange}
                       placeholder="alex@knight-ops.com"
                       required
-                      className="w-full border-b border-white/10 bg-transparent py-4 text-base font-medium text-white placeholder-white/10 transition-all focus:border-gold-400 focus:outline-none sm:text-lg"
+                      className="w-full border-b border-white/10 bg-transparent py-4 text-base font-medium text-white placeholder-white/10 transition-all focus:outline-none sm:text-lg"
                     />
+                    <span className="form-focus-line" />
                   </div>
                 </div>
 
@@ -196,8 +198,9 @@ export default function ContactSection() {
                       value={formData.phone}
                       onChange={handleInputChange}
                       placeholder="+X XXX XXX XXXX"
-                      className="w-full border-b border-white/10 bg-transparent py-4 text-base font-medium text-white placeholder-white/10 transition-all focus:border-gold-400 focus:outline-none sm:text-lg"
+                      className="w-full border-b border-white/10 bg-transparent py-4 text-base font-medium text-white placeholder-white/10 transition-all focus:outline-none sm:text-lg"
                     />
+                    <span className="form-focus-line" />
                   </div>
                 </div>
 
