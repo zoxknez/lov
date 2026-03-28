@@ -156,12 +156,16 @@ export default function GallerySection() {
   const strip = images.slice(0, Math.min(images.length, 10));
 
   const next = () => {
+    if (lightboxIndex === null) return;
+    const currentIndex = lightboxIndex;
     handleLightboxOpen(null);
-    setTimeout(() => handleLightboxOpen((lightboxIndex !== null ? (lightboxIndex + 1) % images.length : null)), 50);
+    setTimeout(() => handleLightboxOpen((currentIndex + 1) % images.length), 50);
   };
   const prev = () => {
+    if (lightboxIndex === null) return;
+    const currentIndex = lightboxIndex;
     handleLightboxOpen(null);
-    setTimeout(() => handleLightboxOpen((lightboxIndex - 1 + images.length) % images.length), 50);
+    setTimeout(() => handleLightboxOpen((currentIndex - 1 + images.length) % images.length), 50);
   };
   
   const handleLightboxOpen = (index: number | null) => {
@@ -558,7 +562,7 @@ export default function GallerySection() {
                            { label: 'File Hash', value: lightboxImg.meta?.fileId, icon: Lock },
                            { label: 'Field Coords', value: lightboxImg.meta?.coords, icon: Locate },
                            { label: 'Capture Date', value: lightboxImg.meta?.date, icon: Calendar },
-                           { label: 'Archive Rank', value: i === 0 ? 'SIGNATURE' : 'OPERATIONAL', icon: Zap }
+                           { label: 'Archive Rank', value: lightboxIndex === 0 ? 'SIGNATURE' : 'OPERATIONAL', icon: Zap }
                         ].map((stat) => (
                            <div key={stat.label} className="flex flex-col gap-2">
                               <div className="flex items-center gap-3 opacity-30">
