@@ -47,11 +47,13 @@ export default function Footer() {
       <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
         <svg width="100%" height="100%" viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
           <motion.path 
+            initial={{ d: "M0,200 Q250,150 500,200 T1000,200 V400 H0 Z" }}
             animate={{ d: ["M0,200 Q250,150 500,200 T1000,200 V400 H0 Z", "M0,200 Q250,250 500,200 T1000,200 V400 H0 Z", "M0,200 Q250,150 500,200 T1000,200 V400 H0 Z"] }}
             transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
             fill="rgba(255,255,255,0.05)" 
           />
           <motion.path 
+            initial={{ d: "M0,100 C200,50 400,150 600,100 S1000,150 1000,100" }}
             animate={{ d: ["M0,100 C200,50 400,150 600,100 S1000,150 1000,100", "M0,100 C200,150 400,50 600,100 S1000,50 1000,100", "M0,100 C200,50 400,150 600,100 S1000,150 1000,100"] }}
             transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
             stroke="gold" strokeWidth="0.5" fill="none" opacity="0.1" 

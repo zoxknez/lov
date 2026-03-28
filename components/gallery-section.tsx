@@ -511,11 +511,13 @@ export default function GallerySection() {
                   <div className="absolute inset-0 opacity-[0.08] pointer-events-none overflow-hidden">
                      <svg width="100%" height="100%" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
                         <motion.path 
+                           initial={{ d: "M0,500 Q250,450 500,500 T1000,500" }}
                            animate={{ d: ["M0,500 Q250,450 500,500 T1000,500", "M0,500 Q250,550 500,500 T1000,500", "M0,500 Q250,450 500,500 T1000,500"] }}
                            transition={{ duration: 10, repeat: Infinity }}
                            stroke="gold" strokeWidth="0.5" fill="none" opacity="0.3" 
                         />
                         <motion.path 
+                           initial={{ d: "M0,300 C200,250 400,350 600,300 S1000,350 1000,300" }}
                            animate={{ d: ["M0,300 C200,250 400,350 600,300 S1000,350 1000,300", "M0,300 C200,350 400,250 600,300 S1000,250 1000,300", "M0,300 C200,250 400,350 600,300 S1000,350 1000,300"] }}
                            transition={{ duration: 15, repeat: Infinity }}
                            stroke="gold" strokeWidth="0.3" fill="none" opacity="0.2" 
