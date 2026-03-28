@@ -80,8 +80,17 @@ export default function AccommodationSection() {
 
   // Prevent scrolling when lightbox is open
   useEffect(() => {
-    document.body.style.overflow = lightboxIndex !== null ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    if (lightboxIndex !== null) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
   }, [lightboxIndex]);
 
   const next = () => setLightboxIndex((prev) => (prev !== null ? (prev + 1) % lodge.gallery.length : null));
@@ -343,20 +352,32 @@ export default function AccommodationSection() {
             className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl flex flex-col"
             onClick={() => setLightboxIndex(null)}
           >
-            {/* Header — flex row, info shrinks, X never shrinks */}
-            <div className="shrink-0 z-[1010] flex items-start gap-3 p-4 sm:p-5" onClick={(e) => e.stopPropagation()}>
-               {/* Info card — flex-1 min-w-0 lets it shrink to make room for X */}
-               <div className="flex-1 min-w-0 rounded-xl border border-white/10 bg-black/70 px-4 py-3 backdrop-blur-2xl sm:rounded-2xl sm:px-6 sm:py-4">
-                  <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gold-400/50 mb-1 leading-none truncate">{lodge.name}</p>
-                  <p className="text-white font-display text-base font-bold uppercase tracking-tight sm:text-xl leading-tight truncate">Field Archive // Frame {lightboxIndex + 1}</p>
-               </div>
-               {/* X — shrink-0, ALWAYS visible, can never be pushed off screen */}
-               <button
-                 onClick={() => setLightboxIndex(null)}
-                 className="shrink-0 h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-black/80 text-white/80 backdrop-blur-xl transition-all duration-300 hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 shadow-lg sm:h-12 sm:w-12"
-               >
-                 <X className="h-5 w-5" />
-               </button>
+            {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
+            <div
+              className="shrink-0 z-[1010] px-4 pt-6 pb-2 sm:px-10 sm:pt-10 sm:pb-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="mx-auto max-w-7xl">
+                <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/60 p-3 backdrop-blur-3xl shadow-premium sm:rounded-[2.5rem] sm:p-5">
+                  {/* Left: Info card - unified inside the same bar */}
+                  <div className="flex-1 min-w-0 px-2 sm:px-4">
+                    <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gold-400/50 mb-1 leading-none truncate">{lodge.name}</p>
+                    <h2 className="text-white font-display text-base font-bold uppercase tracking-tight truncate sm:text-2xl leading-tight">
+                      Field Archive // Frame {lightboxIndex + 1}
+                    </h2>
+                  </div>
+
+                  {/* Right: Close button - part of the unified HUD bar */}
+                  <div className="shrink-0 pl-2 border-l border-white/10 sm:pl-5">
+                    <button
+                      onClick={() => setLightboxIndex(null)}
+                      className="h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/50 transition-all duration-300 hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 sm:h-14 sm:w-14"
+                    >
+                      <X className="h-5 w-5 sm:h-6 sm:w-6" />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
             {/* Image area — flex-1 fills all remaining space */}
             <div className="relative flex-1 min-h-0 z-[1005] p-4 sm:p-6" onClick={(e) => e.stopPropagation()}>

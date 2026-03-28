@@ -26,11 +26,14 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
   useEffect(() => {
     if (member) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     };
   }, [member]);
 
@@ -56,13 +59,31 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           className="relative h-full max-h-[90vh] w-full max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-[#090e0d] p-1 shadow-2xl md:max-h-[85vh] md:rounded-[3rem]"
         >
-          {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="absolute right-6 top-6 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white backdrop-blur-md transition-all hover:bg-gold-500 hover:text-black md:h-12 md:w-12"
-          >
-            <X className="h-5 w-5 md:h-6 md:w-6" />
-          </button>
+          {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
+          <div className="shrink-0 z-50 p-4 sm:p-6 pb-2">
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/60 p-3 backdrop-blur-3xl shadow-premium sm:rounded-[2.5rem] sm:p-4">
+              {/* Left: Info card - unified inside the same bar */}
+              <div className="flex-1 min-w-0 px-2 sm:px-4">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <div className="h-1.5 w-1.5 rounded-full bg-gold-400 shadow-glow animate-pulse" />
+                  <p className="text-[9px] font-black uppercase tracking-[0.4em] text-gold-400/50 truncate">Personnel File // {member.role}</p>
+                </div>
+                <h2 className="font-display text-lg font-bold uppercase tracking-tight text-white truncate sm:text-2xl">
+                  {member.name}
+                </h2>
+              </div>
+
+              {/* Right: Close button - part of the unified HUD bar */}
+              <div className="shrink-0 pl-2 border-l border-white/10 sm:pl-4">
+                <button
+                  onClick={onClose}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/50 transition-all duration-300 hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 sm:h-12 sm:w-12"
+                >
+                  <X className="h-5 w-5 sm:h-6 sm:w-6" />
+                </button>
+              </div>
+            </div>
+          </div>
 
           <div className="flex h-full flex-col md:flex-row">
             {/* Left: Image / Gallery Section */}

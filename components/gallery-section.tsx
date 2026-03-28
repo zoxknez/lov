@@ -181,8 +181,17 @@ export default function GallerySection() {
   const lightboxImg = lightboxIndex !== null ? images[lightboxIndex] : null;
 
   useEffect(() => {
-    document.body.style.overflow = lightboxIndex !== null ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    if (lightboxIndex !== null) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
   }, [lightboxIndex]);
 
   return (
@@ -488,38 +497,38 @@ export default function GallerySection() {
             className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl flex flex-col"
             onClick={() => handleLightboxOpen(null)}
           >
-            {/* ── TOP HEADER (shrink-0) ── */}
+            {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
             <div
-              className="shrink-0 z-[1110] flex items-start gap-3 p-4 sm:p-5"
+              className="shrink-0 z-[1110] px-4 pt-6 pb-2 sm:px-10 sm:pt-10 sm:pb-4"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Info card — flex-1 + min-w-0 lets it shrink to make room for the X */}
-              <div className="flex-1 min-w-0 rounded-xl border border-white/10 bg-black/70 px-4 py-3 backdrop-blur-2xl sm:rounded-2xl sm:px-6 sm:py-4">
-                <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <ShieldCheck className="h-2.5 w-2.5 shrink-0 text-gold-400" />
-                  <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gold-400/50 truncate">Verified Field Data · Archive: ALPHA</p>
-                </div>
-                <h2 className="font-display text-base font-bold uppercase tracking-tight text-white truncate sm:text-xl md:text-2xl">{lightboxImg.alt}</h2>
-                <div className="mt-1.5 flex gap-5">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[7px] font-black text-white/20 uppercase">ID:</span>
-                    <span className="text-[10px] font-bold text-gold-400 tabular-nums">{lightboxImg.meta?.fileId}</span>
+              <div className="mx-auto max-w-7xl">
+                <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/60 p-3 backdrop-blur-3xl shadow-premium sm:rounded-[2.5rem] sm:p-5">
+                  {/* Left: Image info card - unified inside the same bar */}
+                  <div className="flex-1 min-w-0 px-2 sm:px-4">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <ShieldCheck className="h-3 w-3 shrink-0 text-gold-400" />
+                      <p className="text-[9px] font-black uppercase tracking-[0.4em] text-gold-400/50 truncate">Verified Field Data · Archive: ALPHA</p>
+                      <div className="hidden sm:block h-px w-6 bg-white/10" />
+                      <p className="hidden sm:block text-[9px] font-bold text-gray-500 tracking-[0.2em] uppercase">ID: {lightboxImg.meta?.fileId}</p>
+                    </div>
+                    <h2 className="font-display text-base font-bold uppercase tracking-tight text-white truncate sm:text-2xl md:text-3xl">
+                      {lightboxImg.alt}
+                    </h2>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[7px] font-black text-white/20 uppercase">STATUS:</span>
-                    <span className="text-[9px] font-bold text-green-500/70 font-mono">AUTH</span>
+
+                  {/* Right: Close button - now part of the same visual bar */}
+                  <div className="shrink-0 pl-2 border-l border-white/10 sm:pl-5">
+                    <MagneticButton
+                      strength={0.3}
+                      onClick={() => handleLightboxOpen(null)}
+                      className="h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/50 transition-all hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 sm:h-14 sm:w-14"
+                    >
+                      <X className="h-5 w-5 sm:h-6 sm:w-6" />
+                    </MagneticButton>
                   </div>
                 </div>
               </div>
-
-              {/* X button — shrink-0 guarantees it is ALWAYS fully visible */}
-              <MagneticButton
-                strength={0.3}
-                onClick={() => handleLightboxOpen(null)}
-                className="shrink-0 h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-black/80 text-white/80 backdrop-blur-xl transition-all duration-300 hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 shadow-lg sm:h-12 sm:w-12"
-              >
-                <X className="h-5 w-5" />
-              </MagneticButton>
             </div>
 
             {/* ── IMAGE AREA (flex-1, fills remaining height) ── */}
