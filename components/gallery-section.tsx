@@ -485,134 +485,157 @@ export default function GallerySection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl"
+            className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl flex flex-col"
             onClick={() => handleLightboxOpen(null)}
           >
-            {/* Top Tactical Header */}
-            <div className="absolute inset-x-0 top-0 z-[1110] flex flex-col gap-6 px-10 py-10 md:flex-row md:items-center md:justify-between">
-              <div className="rounded-[2.8rem] border border-white/10 bg-black/60 px-10 py-6 backdrop-blur-2xl">
-                 <div className="flex items-center gap-4 mb-2">
-                    <ShieldCheck className="h-3 w-3 text-gold-400" />
-                    <p className="text-[11px] font-black uppercase tracking-[0.5em] text-gold-400/40">Verified Field Data</p>
-                    <div className="h-px w-8 bg-white/10" />
-                    <p className="text-[10px] font-bold text-gray-500 tracking-[0.3em] uppercase">Archive Rank: ALPHA</p>
-                 </div>
-                 <h2 className="font-display text-2xl font-bold uppercase tracking-tight text-white sm:text-4xl">{lightboxImg.alt}</h2>
-                 <div className="mt-4 flex gap-8">
-                    <div className="flex flex-col gap-1">
-                       <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">Operational ID</span>
-                       <span className="text-[12px] font-bold text-gold-400 tabular-nums">{lightboxImg.meta?.fileId}</span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                       <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">Access Status</span>
-                       <span className="text-[11px] font-bold text-green-500/60 uppercase tracking-widest font-mono">AUTHORIZED_VIEW</span>
-                    </div>
-                 </div>
+            {/* ── TOP HEADER (shrink-0) ── */}
+            <div
+              className="shrink-0 z-[1110] flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:px-8 sm:py-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Left: Image info card */}
+              <div className="rounded-2xl border border-white/10 bg-black/60 px-5 py-4 backdrop-blur-2xl sm:rounded-[2rem] sm:px-8 sm:py-5 min-w-0">
+                <div className="flex flex-wrap items-center gap-3 mb-1.5">
+                  <ShieldCheck className="h-3 w-3 shrink-0 text-gold-400" />
+                  <p className="text-[9px] font-black uppercase tracking-[0.5em] text-gold-400/40">Verified Field Data</p>
+                  <div className="h-px w-6 bg-white/10" />
+                  <p className="text-[9px] font-bold text-gray-500 tracking-[0.3em] uppercase">Archive Rank: ALPHA</p>
+                </div>
+                <h2 className="font-display text-lg font-bold uppercase tracking-tight text-white sm:text-2xl md:text-3xl line-clamp-2">{lightboxImg.alt}</h2>
+                <div className="mt-2 flex flex-wrap gap-6">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.3em]">Operational ID</span>
+                    <span className="text-[11px] font-bold text-gold-400 tabular-nums">{lightboxImg.meta?.fileId}</span>
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.3em]">Access Status</span>
+                    <span className="text-[10px] font-bold text-green-500/60 uppercase tracking-widest font-mono">AUTHORIZED</span>
+                  </div>
+                </div>
               </div>
 
-              <div className="flex gap-4">
-                 <MagneticButton strength={0.3} onClick={() => handleLightboxOpen(null)} className="h-16 w-16 flex items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/50 hover:bg-gold-500 hover:text-black transition-all hover:rotate-90">
-                    <X className="h-8 w-8" />
-                 </MagneticButton>
+              {/* Right: Close button */}
+              <div className="shrink-0 self-start sm:self-auto">
+                <MagneticButton
+                  strength={0.3}
+                  onClick={() => handleLightboxOpen(null)}
+                  className="h-12 w-12 flex items-center justify-center rounded-full border border-white/10 bg-black/60 text-white/50 hover:bg-gold-500 hover:text-black transition-all hover:rotate-90 sm:h-14 sm:w-14"
+                >
+                  <X className="h-5 w-5 sm:h-6 sm:w-6" />
+                </MagneticButton>
               </div>
             </div>
 
-            {/* Central Viewport with Scan Effect */}
+            {/* ── IMAGE AREA (flex-1, fills remaining height) ── */}
             <motion.div
               key={lightboxIndex}
-              className="relative z-[1100] mx-auto flex h-full max-w-7xl items-center justify-center px-10 pb-44 pt-40"
+              className="relative flex-1 min-h-0 z-[1100] px-4 sm:px-8"
               onClick={(e) => e.stopPropagation()}
             >
-               <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[4rem] border border-white/10 bg-black/40 shadow-premium">
-                  {/* Background Topographic Accents */}
-                  <div className="absolute inset-0 opacity-[0.08] pointer-events-none overflow-hidden">
-                     <svg width="100%" height="100%" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
-                        <motion.path 
-                           initial={{ d: "M0,500 Q250,450 500,500 T1000,500" }}
-                           animate={{ d: ["M0,500 Q250,450 500,500 T1000,500", "M0,500 Q250,550 500,500 T1000,500", "M0,500 Q250,450 500,500 T1000,500"] }}
-                           transition={{ duration: 10, repeat: Infinity }}
-                           stroke="gold" strokeWidth="0.5" fill="none" opacity="0.3" 
-                        />
-                        <motion.path 
-                           initial={{ d: "M0,300 C200,250 400,350 600,300 S1000,350 1000,300" }}
-                           animate={{ d: ["M0,300 C200,250 400,350 600,300 S1000,350 1000,300", "M0,300 C200,350 400,250 600,300 S1000,250 1000,300", "M0,300 C200,250 400,350 600,300 S1000,350 1000,300"] }}
-                           transition={{ duration: 15, repeat: Infinity }}
-                           stroke="gold" strokeWidth="0.3" fill="none" opacity="0.2" 
-                        />
-                     </svg>
-                  </div>
+              <div className="relative h-full w-full overflow-hidden rounded-[2rem] border border-white/10 bg-black/40 shadow-premium sm:rounded-[3rem]">
+                {/* Background topographic accent */}
+                <div className="absolute inset-0 opacity-[0.06] pointer-events-none overflow-hidden">
+                  <svg width="100%" height="100%" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+                    <motion.path
+                      animate={{ d: ['M0,300 Q250,260 500,300 T1000,300', 'M0,300 Q250,340 500,300 T1000,300', 'M0,300 Q250,260 500,300 T1000,300'] }}
+                      transition={{ duration: 10, repeat: Infinity }}
+                      stroke="gold" strokeWidth="0.5" fill="none" opacity="0.3"
+                    />
+                  </svg>
+                </div>
 
-                  <AnimatePresence>
-                    {isAuthenticating ? (
-                       <motion.div 
-                         initial={{ opacity: 0 }} 
-                         animate={{ opacity: 1 }} 
-                         exit={{ opacity: 0 }}
-                         className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-forest-950/80 backdrop-blur-lg"
-                       >
-                          <Cpu className="h-12 w-12 text-gold-400 mb-6 animate-spin-slow" />
-                          <p className="text-[12px] font-black uppercase tracking-[0.8em] text-gold-400 animate-pulse">Authenticating Frame...</p>
-                          <div className="mt-8 h-px w-48 bg-white/5 relative overflow-hidden">
-                             <motion.div 
-                               initial={{ left: "-100%" }} 
-                               animate={{ left: "100%" }} 
-                               transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                               className="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-gold-400/40 to-transparent" 
-                             />
-                          </div>
-                       </motion.div>
-                    ) : (
-                       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="h-full w-full flex items-center justify-center p-12">
-                          <Image src={buildBlobImageSrc(lightboxImg)} alt={lightboxImg.alt} width={2560} height={1440} className="max-h-full max-w-full object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]" />
-                       </motion.div>
-                    )}
-                  </AnimatePresence>
-               </div>
+                <AnimatePresence>
+                  {isAuthenticating ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-forest-950/80 backdrop-blur-lg"
+                    >
+                      <Cpu className="h-10 w-10 text-gold-400 mb-5 animate-spin-slow" />
+                      <p className="text-[11px] font-black uppercase tracking-[0.8em] text-gold-400 animate-pulse">Authenticating Frame...</p>
+                      <div className="mt-6 h-px w-40 bg-white/5 relative overflow-hidden">
+                        <motion.div
+                          initial={{ left: '-100%' }}
+                          animate={{ left: '100%' }}
+                          transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+                          className="absolute inset-y-0 w-20 bg-gradient-to-r from-transparent via-gold-400/40 to-transparent"
+                        />
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.96 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="h-full w-full flex items-center justify-center p-6 sm:p-10"
+                    >
+                      <Image
+                        src={buildBlobImageSrc(lightboxImg)}
+                        alt={lightboxImg.alt}
+                        width={2560}
+                        height={1440}
+                        className="max-h-full max-w-full object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </motion.div>
 
-            {/* Bottom Metadata Dashboard */}
-            <div className="absolute inset-x-0 bottom-0 z-[1110] px-10 pb-12">
-               <div className="mx-auto max-w-6xl rounded-[3.5rem] border border-white/10 bg-black/60 p-8 backdrop-blur-3xl shadow-premium">
-                  <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
-                     
-                     {/* Analytical Logs */}
-                     <div className="grid grid-cols-2 gap-x-12 gap-y-6 md:grid-cols-4 lg:flex-1 lg:max-w-4xl">
-                        {[
-                           { label: 'File Hash', value: lightboxImg.meta?.fileId, icon: Lock },
-                           { label: 'Field Coords', value: lightboxImg.meta?.coords, icon: Locate },
-                           { label: 'Capture Date', value: lightboxImg.meta?.date, icon: Calendar },
-                           { label: 'Archive Rank', value: lightboxIndex === 0 ? 'SIGNATURE' : 'OPERATIONAL', icon: Zap }
-                        ].map((stat) => (
-                           <div key={stat.label} className="flex flex-col gap-2">
-                              <div className="flex items-center gap-3 opacity-30">
-                                 <stat.icon className="h-3 w-3" />
-                                 <span className="text-[8px] font-black uppercase tracking-[0.3em]">{stat.label}</span>
-                              </div>
-                              <span className="text-[11px] font-bold text-white uppercase tracking-widest">{stat.value}</span>
-                           </div>
-                        ))}
-                     </div>
+            {/* ── BOTTOM METADATA BAR (shrink-0) ── */}
+            <div
+              className="shrink-0 z-[1110] px-4 py-4 sm:px-8 sm:py-5"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="mx-auto max-w-6xl rounded-2xl border border-white/10 bg-black/60 px-5 py-4 backdrop-blur-3xl shadow-premium sm:rounded-[2.5rem] sm:px-8 sm:py-5">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-                     {/* Navigation System */}
-                     <div className="flex items-center gap-4 lg:pl-12 lg:border-l lg:border-white/5">
-                        <MagneticButton strength={0.4} onClick={(e) => { e.stopPropagation(); prev(); }} className="flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/5 hover:bg-gold-500/10 hover:border-gold-400">
-                           <ChevronLeft className="h-6 w-6 text-white/40 group-hover:text-gold-400" />
-                        </MagneticButton>
-                        <MagneticButton strength={0.4} onClick={(e) => { e.stopPropagation(); next(); }} className="flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/5 hover:bg-gold-500/10 hover:border-gold-400">
-                           <ChevronRight className="h-6 w-6 text-white/40 group-hover:text-gold-400" />
-                        </MagneticButton>
-                     </div>
+                  {/* Analytical Logs */}
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-3 sm:flex sm:flex-wrap sm:gap-x-10 sm:gap-y-0">
+                    {[
+                      { label: 'File Hash', value: lightboxImg.meta?.fileId, icon: Lock },
+                      { label: 'Field Coords', value: lightboxImg.meta?.coords, icon: Locate },
+                      { label: 'Capture Date', value: lightboxImg.meta?.date, icon: Calendar },
+                      { label: 'Archive Rank', value: lightboxIndex === 0 ? 'SIGNATURE' : 'OPERATIONAL', icon: Zap },
+                    ].map((stat) => (
+                      <div key={stat.label} className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2 opacity-30">
+                          <stat.icon className="h-2.5 w-2.5" />
+                          <span className="text-[7px] font-black uppercase tracking-[0.3em]">{stat.label}</span>
+                        </div>
+                        <span className="text-[10px] font-bold text-white uppercase tracking-widest">{stat.value}</span>
+                      </div>
+                    ))}
                   </div>
-                  
-                  {/* Data Flow Bar */}
-                  <div className="mt-8 flex items-center justify-between border-t border-white/5 pt-6">
-                     <span className="text-[9px] font-black uppercase text-gold-400/20 tracking-[0.5em]">SYSTEM_STABLE: OK</span>
-                     <div className="flex items-center gap-2">
-                        <div className="h-1 w-1 rounded-full bg-gold-400 animate-pulse" />
-                        <span className="text-[9px] font-bold text-white/20 uppercase tracking-widest font-mono">STREAMING_ENCRYPTED_DATA_PACKET_99%</span>
-                     </div>
+
+                  {/* Navigation */}
+                  <div className="flex items-center gap-3 sm:pl-8 sm:border-l sm:border-white/5">
+                    <MagneticButton
+                      strength={0.4}
+                      onClick={(e) => { e.stopPropagation(); prev(); }}
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 hover:bg-gold-500/10 hover:border-gold-400 transition-all sm:h-14 sm:w-14"
+                    >
+                      <ChevronLeft className="h-5 w-5 text-white/40" />
+                    </MagneticButton>
+                    <MagneticButton
+                      strength={0.4}
+                      onClick={(e) => { e.stopPropagation(); next(); }}
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 hover:bg-gold-500/10 hover:border-gold-400 transition-all sm:h-14 sm:w-14"
+                    >
+                      <ChevronRight className="h-5 w-5 text-white/40" />
+                    </MagneticButton>
                   </div>
-               </div>
+                </div>
+
+                {/* Status bar */}
+                <div className="mt-3 hidden items-center justify-between border-t border-white/5 pt-3 sm:flex">
+                  <span className="text-[8px] font-black uppercase text-gold-400/20 tracking-[0.5em]">SYSTEM_STABLE: OK</span>
+                  <div className="flex items-center gap-2">
+                    <div className="h-1 w-1 rounded-full bg-gold-400 animate-pulse" />
+                    <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest font-mono">STREAMING_ENCRYPTED_DATA_PACKET_99%</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
