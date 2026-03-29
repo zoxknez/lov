@@ -28,12 +28,6 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  html, body, a, button, [role="button"], .clickable {
-    cursor: none !important;
-  }
-}
-
 body {
   background: var(--bg);
   color: var(--ink);
@@ -268,10 +262,6 @@ svg {
 }
 
 /* Custom Cursor Helpers */
-.cursor-none * {
-  cursor: none !important;
-}
-
 .hover-glow {
   transition: filter 0.3s ease;
 }
@@ -306,10 +296,6 @@ svg {
 @media (max-width: 768px) {
   html {
     scroll-padding-top: 4rem;
-  }
-  /* Disable custom cursor on mobile */
-  .custom-cursor {
-    display: none !important;
   }
 
   .season-track-fade {

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useReducedMotion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Clock, Globe, Radio, Wind, Zap, Share2, Shield, Crosshair, Activity } from 'lucide-react';
+import { ArrowUpRight, Clock, Globe, Radio, Wind, Zap, Share2, Shield, Activity } from 'lucide-react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 
 const HERO_POSTER_SRC = getBlobAssetUrl('/media/hunting area  and deers/Hunting  area  near Rotorua.jpg');
@@ -24,31 +24,8 @@ export default function HeroSection() {
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
   const prefersReducedMotion = useReducedMotion();
 
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [nzTime, setNzTime] = useState('');
-  const [canTrackPointer, setCanTrackPointer] = useState(false);
   const [reportIndex, setReportIndex] = useState(0);
-
-  useEffect(() => {
-    const media = window.matchMedia('(min-width: 1024px) and (pointer: fine)');
-    const syncPointerMode = () => setCanTrackPointer(media.matches);
-
-    syncPointerMode();
-    media.addEventListener('change', syncPointerMode);
-
-    return () => media.removeEventListener('change', syncPointerMode);
-  }, []);
-
-  useEffect(() => {
-    if (!canTrackPointer) return undefined;
-
-    const handleMouseMove = (event: MouseEvent) => {
-      setMousePos({ x: event.clientX, y: event.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [canTrackPointer]);
 
   useEffect(() => {
     const updateTime = () => {
@@ -324,32 +301,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Enhanced Mouse Crosshair */}
-      {canTrackPointer && (
-        <motion.div
-          className="pointer-events-none fixed z-[100] hidden h-20 w-20 rounded-full border border-gold-400/30 mix-blend-difference lg:block"
-          animate={{ 
-            x: mousePos.x - 40, 
-            y: mousePos.y - 40,
-            scale: [1, 1.1, 1],
-            rotate: [0, 90, 0]
-          }}
-          transition={{ 
-            x: { type: 'spring', damping: 30, stiffness: 150, mass: 0.4 },
-            y: { type: 'spring', damping: 30, stiffness: 150, mass: 0.4 },
-            scale: { duration: 2, repeat: Infinity },
-            rotate: { duration: 10, repeat: Infinity, ease: "linear" }
-          }}
-        >
-          <div className="absolute inset-0 flex items-center justify-center opacity-60">
-            <div className="h-px w-6 bg-gold-400" />
-            <div className="absolute h-6 w-px bg-gold-400" />
-            <div className="absolute inset-2 border-[0.5px] border-gold-400/20 rounded-full" />
-          </div>
-          <Crosshair className="absolute -right-1 -top-1 h-3 w-3 text-gold-400/40" />
-        </motion.div>
-      )}
-
       {/* Bottom Ticker */}
       <div className="pointer-events-none absolute bottom-6 left-0 hidden w-full overflow-hidden opacity-20 md:block">
         <motion.div
@@ -374,5 +325,3 @@ export default function HeroSection() {
     </section>
   );
 }
-
-// Add these Lucide icons to the import list: Activity, Share2, Shield, Crosshair
