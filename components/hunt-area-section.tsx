@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Compass, Mountain, ShieldCheck, Trees, Wind, ChevronRight, Calendar, Activity, Zap, Award, Target, Crosshair } from 'lucide-react';
+import { Compass, Mountain, ShieldCheck, Trees, Wind, Calendar, Activity, Zap, Award, Target, Crosshair } from 'lucide-react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 import TextReveal from '@/components/text-reveal';
+import { backcountryMedia, countyMedia } from '@/lib/media-collections';
 
 const regions = [
   {
@@ -13,7 +14,7 @@ const regions = [
     tag: 'North Island',
     name: 'Kaimanawa\nCentral Plateau',
     location: 'Taupo - Turangi - Ohakune',
-    image: '/media/hunting%20area%20%20and%20deers/Hunting%20%20area%20%20near%20Rotorua.jpg',
+    image: countyMedia[2]?.src ?? countyMedia[0].src,
     icon: Trees,
     accent: 'text-emerald-300 border-emerald-400/30 bg-emerald-400/8',
     species: ['Sika Deer', 'Red Deer', 'Fallow Deer', 'Rusa Deer'],
@@ -37,7 +38,7 @@ const regions = [
     tag: 'South Island',
     name: 'Southern Alps\nAlpine Country',
     location: 'West Coast - Canterbury - High Country',
-    image: '/media/hunting area  and deers/Hunting  area  near Rotorua 3 jpg.jpg',
+    image: backcountryMedia[1]?.src ?? backcountryMedia[0].src,
     icon: Mountain,
     accent: 'text-sky-300 border-sky-400/30 bg-sky-400/8',
     species: ['Himalayan Tahr', 'Chamois', 'Mountain Red Deer'],

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Image as ImageIcon, MapPin, Calendar, Quote } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect } from 'react';
+import { getBlobAssetUrl } from '@/lib/blob-asset';
 
 interface TeamMember {
   name: string;
@@ -41,6 +42,8 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
   }, [member]);
 
   if (!member) return null;
+
+  const selectedImage = member.images[0] ?? null;
 
   return (
     <AnimatePresence>
@@ -97,31 +100,50 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
               <div className="h-full w-full bg-forest-900/40 relative group overflow-hidden">
                 {/* Fallback pattern if no image */}
                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold-500/30 via-transparent to-transparent" />
-                
-                {/* Demo Gallery (Showing first image for now) */}
-                <div className="relative h-full w-full flex items-center justify-center">
-                  <div className="text-center p-8">
-                     <div className="mb-4 flex justify-center">
-                        <div className="relative flex h-24 w-24 items-center justify-center rounded-[2rem] border-2 border-gold-400/30 bg-gold-400/5 font-display text-3xl font-bold uppercase tracking-widest text-gold-300 shadow-glow md:h-32 md:w-32 md:text-4xl">
-                           {member.initials}
-                           <div className="absolute -right-2 -top-2 h-4 w-4 rounded-full bg-gold-400 animate-pulse" />
+
+                {selectedImage ? (
+                  <>
+                    <Image
+                      src={getBlobAssetUrl(selectedImage)}
+                      alt={member.name}
+                      fill
+                      sizes="(max-width: 767px) 100vw, 45vw"
+                      className="object-cover transition-transform duration-[2000ms] group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#090e0d] via-transparent to-black/10" />
+                    <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+                      <div className="rounded-[1.6rem] border border-white/10 bg-black/45 p-4 backdrop-blur-2xl">
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <p className="text-[9px] font-black uppercase tracking-[0.35em] text-gold-400/55">Field Portrait</p>
+                            <p className="mt-1 font-display text-xl font-bold uppercase tracking-tight text-white">{member.name}</p>
+                          </div>
+                          <span className="rounded-full border border-gold-400/20 bg-gold-400/10 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.25em] text-gold-300">
+                            {member.images.length} Photo
+                          </span>
                         </div>
-                     </div>
-                     <h3 className="font-display text-2xl font-bold uppercase tracking-tight text-white mb-1">{member.name}</h3>
-                     <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gold-400/60">{member.role}</p>
-                     
-                     <div className="mt-8 grid grid-cols-2 gap-3 opacity-60">
-                        <div className="rounded-xl border border-white/5 bg-white/5 p-3 text-center transition-all hover:bg-white/10 hover:border-gold-500/30">
-                           <ImageIcon className="mx-auto mb-1 h-4 w-4 text-gold-400" />
-                           <p className="text-[8px] uppercase tracking-widest text-gray-400">Demo Image 1</p>
-                        </div>
-                        <div className="rounded-xl border border-white/5 bg-white/5 p-3 text-center transition-all hover:bg-white/10 hover:border-gold-500/30">
-                           <ImageIcon className="mx-auto mb-1 h-4 w-4 text-gold-400" />
-                           <p className="text-[8px] uppercase tracking-widest text-gray-400">Demo Image 2</p>
-                        </div>
-                     </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="relative h-full w-full flex items-center justify-center">
+                    <div className="text-center p-8">
+                       <div className="mb-4 flex justify-center">
+                          <div className="relative flex h-24 w-24 items-center justify-center rounded-[2rem] border-2 border-gold-400/30 bg-gold-400/5 font-display text-3xl font-bold uppercase tracking-widest text-gold-300 shadow-glow md:h-32 md:w-32 md:text-4xl">
+                             {member.initials}
+                             <div className="absolute -right-2 -top-2 h-4 w-4 rounded-full bg-gold-400 animate-pulse" />
+                          </div>
+                       </div>
+                       <h3 className="mb-1 font-display text-2xl font-bold uppercase tracking-tight text-white">{member.name}</h3>
+                       <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gold-400/60">{member.role}</p>
+
+                       <div className="mt-8 rounded-xl border border-white/5 bg-white/5 p-4 text-center opacity-60">
+                          <ImageIcon className="mx-auto mb-2 h-4 w-4 text-gold-400" />
+                          <p className="text-[8px] uppercase tracking-widest text-gray-400">Portrait Archive Pending</p>
+                       </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 

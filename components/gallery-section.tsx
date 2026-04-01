@@ -3,182 +3,178 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, Maximize2, X, Play, Activity, Locate, Calendar, ShieldCheck, Zap, Radar, Cpu, Lock, Globe } from 'lucide-react';
-import MagneticButton from '@/components/magnetic-button';
+import { Calendar, ChevronLeft, ChevronRight, Locate, Maximize2, Play, ShieldCheck, Video, X } from 'lucide-react';
 import TextReveal from '@/components/text-reveal';
 import gallerySlike from '@/lib/gallery-slike.json';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
+import { backcountryMedia, countyMedia, lodgeAccommodationMedia, stayMedia, stayVideoMedia, type VideoMediaItem } from '@/lib/media-collections';
 
-type GalleryImage = {
+type AssetMeta = {
+  fileId: string;
+  coords: string;
+  date: string;
+  status: string;
+  medium: 'PHOTO' | 'VIDEO';
+  runtime?: string;
+};
+
+type GalleryImageAsset = {
+  kind: 'image';
   src: string;
   alt: string;
   blobPath?: string;
   fallbackSrc?: string;
-  meta?: {
-    fileId: string;
-    coords: string;
-    date: string;
-    status: string;
-  };
+  meta: AssetMeta;
 };
 
-function buildBlobImageSrc(image: GalleryImage) {
-  if (!image.blobPath) return getBlobAssetUrl(image.src);
-  const params = new URLSearchParams({ pathname: image.blobPath, fallback: image.fallbackSrc ?? image.src });
+type GalleryVideoAsset = {
+  kind: 'video';
+  src: string;
+  poster: string;
+  alt: string;
+  orientation: 'landscape' | 'portrait';
+  meta: AssetMeta;
+};
+
+type GalleryAsset = GalleryImageAsset | GalleryVideoAsset;
+
+function isVideoAsset(asset: GalleryAsset): asset is GalleryVideoAsset {
+  return asset.kind === 'video';
+}
+
+function buildImageSrc(asset: GalleryImageAsset) {
+  if (!asset.blobPath) return getBlobAssetUrl(asset.src);
+  const params = new URLSearchParams({ pathname: asset.blobPath, fallback: asset.fallbackSrc ?? asset.src });
   return `/api/blob-image?${params.toString()}`;
 }
 
-const galleries = [
+function buildVideoSrc(asset: GalleryVideoAsset) {
+  return getBlobAssetUrl(asset.src);
+}
+
+function buildPosterSrc(asset: GalleryVideoAsset) {
+  return getBlobAssetUrl(asset.poster);
+}
+
+function buildImageSet(
+  prefix: string,
+  media: { src: string; alt: string }[],
+  coords: string,
+  date: string,
+  status: string,
+) {
+  return media.map((image, index) => ({
+    kind: 'image' as const,
+    src: image.src,
+    alt: image.alt,
+    meta: {
+      fileId: `${prefix}-${String(index + 1).padStart(2, '0')}`,
+      coords,
+      date,
+      status,
+      medium: 'PHOTO' as const,
+    },
+  })) satisfies GalleryImageAsset[];
+}
+
+function buildVideoSet(
+  prefix: string,
+  media: VideoMediaItem[],
+  coords: string,
+  date: string,
+  status: string,
+) {
+  return media.map((video, index) => ({
+    kind: 'video' as const,
+    src: video.src,
+    poster: video.poster,
+    alt: video.alt,
+    orientation: video.orientation,
+    meta: {
+      fileId: `${prefix}-${String(index + 1).padStart(2, '0')}`,
+      coords,
+      date,
+      status,
+      medium: 'VIDEO' as const,
+      runtime: video.durationLabel,
+    },
+  })) satisfies GalleryVideoAsset[];
+}
+
+const trophyAssets: GalleryAsset[] = [
   {
-    key: 'all',
-    label: 'All',
-    title: 'Visual Archive',
-    sub: 'Full-spectrum field operations log',
-    images: null as null | GalleryImage[],
+    kind: 'image',
+    src: '/media/hunting area  and deers/Red Deer Stag.jpg',
+    alt: 'Red stag trophy portrait',
+    meta: { fileId: 'TG-RD-01', coords: '39.12S 175.40E', date: 'April 2025', status: 'ARCHIVED', medium: 'PHOTO' },
   },
   {
-    key: 'video',
-    label: 'Field Tapes',
-    title: 'Operational Footage',
-    sub: 'Encrypted field recordings and cinematic teasers',
-    isVideo: true,
-    images: [] as GalleryImage[],
+    kind: 'image',
+    src: '/media/hunting area  and deers/Sika  deer Stag.jpg',
+    alt: 'Sika stag trophy portrait',
+    meta: { fileId: 'TG-SK-02', coords: '39.05S 175.45E', date: 'March 2025', status: 'ARCHIVED', medium: 'PHOTO' },
   },
   {
-    key: 'trophies',
-    label: 'Trophies',
-    title: 'Trophy Archive',
-    sub: 'Red stag · Sika · Fallow',
-    images: [
-      { 
-        src: '/media/hunting area  and deers/Red Deer Stag.jpg', 
-        alt: 'Red stag trophy portrait',
-        meta: { fileId: 'TG-RD-01', coords: '39.12S 175.40E', date: 'April 2025', status: 'ARCHIVED' }
-      },
-      { 
-        src: '/media/hunting area  and deers/Sika  deer Stag.jpg', 
-        alt: 'Sika stag trophy portrait',
-        meta: { fileId: 'TG-SK-02', coords: '39.05S 175.45E', date: 'March 2025', status: 'ARCHIVED' }
-      },
-      { 
-        src: '/media/hunting area  and deers/Fellow  deer.jpg', 
-        alt: 'Fallow buck trophy portrait',
-        meta: { fileId: 'TG-FL-03', coords: '39.18S 175.52E', date: 'May 2025', status: 'ARCHIVED' }
-      },
-      { 
-        src: '/media/hunting area  and deers/Hunting  area  near Rotorua.jpg', 
-        alt: 'Country and trophy moment',
-        meta: { fileId: 'FL-OP-04', coords: '38.15S 176.10E', date: 'April 2025', status: 'ARCHIVED' }
-      },
-    ] as GalleryImage[],
+    kind: 'image',
+    src: '/media/hunting area  and deers/Fellow  deer.jpg',
+    alt: 'Fallow buck trophy portrait',
+    meta: { fileId: 'TG-FL-03', coords: '39.18S 175.52E', date: 'May 2025', status: 'ARCHIVED', medium: 'PHOTO' },
   },
   {
-    key: 'country',
-    label: 'Country',
-    title: 'The Territory',
-    sub: 'North Island bush · Alpine reach',
-    images: [
-      { 
-        src: '/media/hunting area  and deers/Hunting  area  near Rotorua.jpg', 
-        alt: 'North Island hill country',
-        meta: { fileId: 'TR-NI-01', coords: '38.10S 176.05E', date: '2025', status: 'FIELD-READY' }
-      },
-      { 
-        src: '/media/hunting area  and deers/Hunting  area  near Rotorua 2 jpg.jpg', 
-        alt: 'Native bush and ridgelines',
-        meta: { fileId: 'TR-BS-02', coords: '39.20S 175.60E', date: '2025', status: 'FIELD-READY' }
-      },
-      { 
-        src: '/media/hunting area  and deers/Hunting  area  near Rotorua 3 jpg.jpg', 
-        alt: 'Remote backcountry cover',
-        meta: { fileId: 'TR-AC-03', coords: '39.30S 175.70E', date: '2025', status: 'FIELD-READY' }
-      },
-    ] as GalleryImage[],
+    kind: 'image',
+    src: '/media/hunting area  and deers/Hunting  area  near Rotorua.jpg',
+    alt: 'Country and trophy moment',
+    meta: { fileId: 'TG-CT-04', coords: '38.15S 176.10E', date: 'April 2025', status: 'ARCHIVED', medium: 'PHOTO' },
   },
-  {
-    key: 'lodge',
-    label: 'Lodge',
-    title: 'Hosted Base',
-    sub: 'Ohakune lodge life',
-    images: [
-      { 
-        src: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  house .jpg', 
-        alt: 'Ohakune lodge exterior',
-        meta: { fileId: 'BS-OH-01', coords: '39.27S 175.58E', date: 'Base Log', status: 'OPERATIONAL' }
-      },
-    ] as GalleryImage[],
+];
+
+const countyAssets = buildImageSet('CTY', countyMedia, 'North Island county', 'March 2026', 'FIELD-READY');
+const backcountryAssets = buildImageSet('BKC', backcountryMedia, 'High-country basin', 'March 2026', 'ACTIVE');
+const lodgeAssets = buildImageSet('LDG', lodgeAccommodationMedia, '39.27S 175.58E', 'Base Log', 'OPERATIONAL');
+const stayAssets = buildImageSet('STY', stayMedia, 'Hosted hillside stay', 'March 2026', 'READY');
+const videoAssets = buildVideoSet('VID', stayVideoMedia, 'Hosted hillside stay', 'March 2026', 'ACTIVE');
+const recentAssets = gallerySlike.map((img, index) => ({
+  kind: 'image' as const,
+  src: img.localSrc,
+  fallbackSrc: img.localSrc,
+  blobPath: img.blobPath,
+  alt: img.alt,
+  meta: {
+    fileId: `RF-${String(index + 1).padStart(2, '0')}`,
+    coords: '39.25S 175.50E',
+    date: 'Recent',
+    status: 'NEW',
+    medium: 'PHOTO' as const,
   },
-  {
-    key: 'recent',
-    label: 'Recent',
-    title: 'Recent Frames',
-    sub: 'Current-season archive',
-    images: gallerySlike.map((img, i) => ({
-      src: img.localSrc,
-      fallbackSrc: img.localSrc,
-      blobPath: img.blobPath,
-      alt: img.alt,
-      meta: { fileId: `RF-${String(i+1).padStart(2,'0')}`, coords: '39.25S 175.50E', date: 'Recent', status: 'NEW' }
-    })) as GalleryImage[],
-  },
+})) satisfies GalleryImageAsset[];
+
+const allAssets: GalleryAsset[] = [
+  trophyAssets[0],
+  countyAssets[0],
+  videoAssets[0],
+  backcountryAssets[0],
+  lodgeAssets[0],
+  stayAssets[0],
+];
+
+const galleryGroups: Array<{ key: string; label: string; title: string; sub: string; assets: GalleryAsset[] }> = [
+  { key: 'all', label: 'All', title: 'Visual Archive', sub: 'Full-spectrum field operations log', assets: allAssets },
+  { key: 'video', label: 'Field Tapes', title: 'Motion Archive', sub: 'Premium hosted-stay video clips with cinematic field atmosphere', assets: videoAssets },
+  { key: 'trophies', label: 'Trophies', title: 'Trophy Archive', sub: 'Red stag | Sika | Fallow', assets: trophyAssets },
+  { key: 'county', label: 'County', title: 'County Country', sub: 'Bush edges, lower country, and hosted access terrain', assets: countyAssets },
+  { key: 'backcountry', label: 'Backcountry', title: 'Backcountry Lines', sub: 'Open basins, higher ridges, and deeper terrain', assets: backcountryAssets },
+  { key: 'lodge', label: 'Lodge', title: 'Hosted Base', sub: 'Ohakune lodge life', assets: lodgeAssets },
+  { key: 'stay', label: 'Stay', title: 'Hosted Stay', sub: 'Smestaj archive and additional accommodation frames', assets: stayAssets },
+  { key: 'recent', label: 'Recent', title: 'Recent Frames', sub: 'Current-season archive', assets: recentAssets },
 ];
 
 export default function GallerySection() {
   const [activeKey, setActiveKey] = useState('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const [timecode, setTimecode] = useState("00:00:00:00");
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      setTimecode(`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}:${String(Math.floor(now.getMilliseconds()/10)).padStart(2,'0')}`);
-    }, 100);
-    return () => clearInterval(interval);
-  }, []);
-
-  const allImages: GalleryImage[] = [
-    galleries[2].images![0],
-    galleries[3].images![1],
-    galleries[2].images![1],
-    galleries[4].images![0],
-    galleries[3].images![2],
-    galleries[3].images![0],
-  ];
-  
-  const galleryCollections = galleries.map((gallery) =>
-    gallery.key === 'all' ? { ...gallery, images: allImages } : gallery
-  );
-
-  const active = galleryCollections.find((g) => g.key === activeKey)!;
-  const images = active.images ?? allImages;
-  const featured = images.slice(0, 6);
-  const strip = images.slice(0, Math.min(images.length, 10));
-
-  const next = () => {
-    if (lightboxIndex === null) return;
-    const currentIndex = lightboxIndex;
-    handleLightboxOpen(null);
-    setTimeout(() => handleLightboxOpen((currentIndex + 1) % images.length), 50);
-  };
-  const prev = () => {
-    if (lightboxIndex === null) return;
-    const currentIndex = lightboxIndex;
-    handleLightboxOpen(null);
-    setTimeout(() => handleLightboxOpen((currentIndex - 1 + images.length) % images.length), 50);
-  };
-  
-  const handleLightboxOpen = (index: number | null) => {
-    if (index !== null) {
-      setIsAuthenticating(true);
-      setLightboxIndex(index);
-      setTimeout(() => setIsAuthenticating(false), 600);
-    } else {
-      setLightboxIndex(null);
-    }
-  };
-
-  const lightboxImg = lightboxIndex !== null ? images[lightboxIndex] : null;
+  const active = galleryGroups.find((group) => group.key === activeKey) ?? galleryGroups[0];
+  const assets = active.assets;
+  const lightboxAsset = lightboxIndex !== null ? assets[lightboxIndex] : null;
 
   useEffect(() => {
     if (lightboxIndex !== null) {
@@ -190,6 +186,7 @@ export default function GallerySection() {
       document.documentElement.style.overflow = '';
       document.body.classList.remove('modal-active');
     }
+
     return () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
@@ -197,451 +194,293 @@ export default function GallerySection() {
     };
   }, [lightboxIndex]);
 
+  const closeLightbox = () => setLightboxIndex(null);
+  const openLightbox = (index: number) => setLightboxIndex(index);
+  const showNext = () => setLightboxIndex((current) => (current === null ? null : (current + 1) % assets.length));
+  const showPrev = () => setLightboxIndex((current) => (current === null ? null : (current - 1 + assets.length) % assets.length));
+
   return (
     <section id="gallery" className={`relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${lightboxIndex !== null ? 'z-[10000]' : 'z-10'}`}>
       <div className="pointer-events-none absolute inset-0 bg-forest-950/10 backdrop-blur-[1px]" />
       <div className="pointer-events-none absolute -left-32 top-0 h-[500px] w-[500px] rounded-full bg-gold-600/4 blur-[140px]" />
-
-      {/* Subtle Static Background Grid */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[radial-gradient(circle,white_1px,transparent_1px)] bg-[size:40px_40px]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,white_1px,transparent_1px)] bg-[size:40px_40px] opacity-[0.02]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-        {/* -- Cinematic Header -- */}
         <div className="mb-14 flex flex-col items-center text-center">
-          <p className="mb-4 text-[10px] font-black uppercase tracking-[0.6em] text-gold-400 opacity-60">
-             Operational Visual Archive // Log.2026
-          </p>
+          <p className="mb-4 text-[10px] font-black uppercase tracking-[0.6em] text-gold-400/60">Operational Visual Archive // Log.2026</p>
           <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8.5rem]">
             <TextReveal delay={0.1}>Gallery</TextReveal>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
             whileInView={{ width: 140, opacity: 1 }}
-            transition={{ duration: 1.5, delay: 0.4 }}
+            transition={{ duration: 1.2, delay: 0.35 }}
             className="mt-8 flex items-center gap-4"
           >
             <div className="h-px w-full bg-gradient-to-r from-transparent via-gold-400/40 to-transparent" />
             <div className="h-2 w-2 shrink-0 rotate-45 border border-gold-400/60 bg-gold-400/20 shadow-glow" />
             <div className="h-px w-full bg-gradient-to-l from-transparent via-gold-400/40 to-transparent" />
           </motion.div>
-          <p className="mx-auto mt-10 max-w-xl text-sm italic leading-relaxed text-white/40 sm:text-lg">
-            &ldquo;Trophy portraits, country texture, field rhythm, and lodge atmosphere.&rdquo;
+          <p className="mx-auto mt-8 max-w-2xl text-sm italic leading-relaxed text-white/40 sm:text-lg">
+            &ldquo;Trophy portraits, county lines, backcountry texture, lodge comfort, and the new motion archive from the smestaj collection.&rdquo;
           </p>
         </div>
 
-        {/* -- Tactical Tabs -- */}
-        <div className="-mx-4 mb-14 overflow-x-auto px-4 no-scrollbar">
+        <div className="-mx-4 mb-10 overflow-x-auto px-4 no-scrollbar">
           <div className="flex w-max min-w-full gap-3 md:flex-wrap md:justify-center">
-            {galleryCollections.map((g) => (
+            {galleryGroups.map((group) => (
               <button
-                key={g.key}
-                onClick={() => { setActiveKey(g.key); handleLightboxOpen(null); }}
-                className={`group relative flex items-center gap-4 whitespace-nowrap rounded-full border px-8 py-5 text-[10px] font-black uppercase tracking-[0.35em] transition-all duration-500 ${
-                  activeKey === g.key
-                    ? 'border-gold-400/50 bg-gold-400/15 text-gold-300 shadow-glow ring-1 ring-gold-400/20'
+                key={group.key}
+                onClick={() => {
+                  setActiveKey(group.key);
+                  closeLightbox();
+                }}
+                className={`rounded-full border px-6 py-4 text-[10px] font-black uppercase tracking-[0.32em] transition-all ${
+                  activeKey === group.key
+                    ? 'border-gold-400/50 bg-gold-400/15 text-gold-300 shadow-glow'
                     : 'border-white/10 bg-white/[0.04] text-gray-500 hover:border-gold-400/20 hover:text-white'
                 }`}
               >
-                {activeKey === g.key && <motion.span layoutId="gallery-cat-v2" className="h-1.5 w-1.5 rounded-full bg-gold-400 shadow-glow" />}
-                {g.label}
-                <span className={`text-[8px] tabular-nums ${activeKey === g.key ? 'text-gold-400/60' : 'text-white/10'}`}>
-                  {g.key === 'video' ? 'LIVE' : (g.images?.length ?? images.length)}
-                </span>
+                {group.label}
+                <span className={`ml-3 text-[8px] ${activeKey === group.key ? 'text-gold-400/60' : 'text-white/15'}`}>{group.assets.length}</span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* -- Header Stats -- */}
-        <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between border-b border-white/5 pb-10">
-           <div>
-              <div className="flex items-center gap-3 mb-2">
-                 <div className="h-1 w-1 bg-gold-400 rounded-full" />
-                 <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gold-400/40">Active Category</span>
-              </div>
-              <h3 className="font-display text-4xl font-bold uppercase tracking-tight text-white md:text-6xl">{active.title}</h3>
-           </div>
-           
-           <div className="flex flex-wrap gap-8">
-              {[
-                 { label: 'Archive Sync', val: '100%', color: 'text-green-500/60' },
-                 { label: 'Frames localized', val: `${images.length}`, color: 'text-white/40' },
-                 { label: 'Signal Quality', val: 'A-LEVEL', color: 'text-gold-400/40' }
-              ].map(stat => (
-                 <div key={stat.label} className="flex flex-col gap-1.5">
-                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">{stat.label}</span>
-                    {stat.label === 'Frames localized' ? (
-                      <div className="h-4 overflow-hidden">
-                        <AnimatePresence mode="wait" initial={false}>
-                          <motion.span
-                            key={stat.val}
-                            initial={{ y: 16, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: -16, opacity: 0 }}
-                            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                            className={`block text-[11px] font-bold uppercase tracking-widest ${stat.color}`}
-                          >
-                            {stat.val}
-                          </motion.span>
-                        </AnimatePresence>
-                      </div>
-                    ) : (
-                      <span className={`text-[11px] font-bold uppercase tracking-widest ${stat.color}`}>{stat.val}</span>
-                    )}
-                 </div>
-              ))}
-           </div>
+        <div className="mb-10 flex flex-col gap-6 border-b border-white/5 pb-10 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="mb-2 text-[10px] font-black uppercase tracking-[0.4em] text-gold-400/40">Active Category</p>
+            <h3 className="font-display text-4xl font-bold uppercase tracking-tight text-white md:text-6xl">{active.title}</h3>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-gray-400">{active.sub}</p>
+          </div>
+          <div className="flex gap-8">
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Archive Sync</p>
+              <p className="mt-1 text-[11px] font-bold uppercase tracking-widest text-green-500/60">100%</p>
+            </div>
+            <div>
+              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Assets Localized</p>
+              <p className="mt-1 text-[11px] font-bold uppercase tracking-widest text-white/40">{assets.length}</p>
+            </div>
+          </div>
         </div>
 
-        {/* -- Media Content -- */}
-        <AnimatePresence mode="wait">
-          {activeKey === 'video' ? (
-             <motion.div
-               key="field-tapes"
-               initial={{ opacity: 0, scale: 0.98 }}
-               animate={{ opacity: 1, scale: 1 }}
-               exit={{ opacity: 0, scale: 0.98 }}
-               className="relative overflow-hidden rounded-[3.5rem] border border-white/10 bg-forest-950 aspect-video shadow-premium"
-             >
-                <Image
-                  src={getBlobAssetUrl('/media/hunting area  and deers/Hunting  area  near Rotorua.jpg')}
-                  alt="Field Tapes HUD"
-                  fill
-                  className="object-cover opacity-60 contrast-[1.2] grayscale-[30%]"
-                />
-                
-                {/* ADVANCED HUD */}
-                <div className="absolute inset-0 px-10 py-10 flex flex-col justify-between z-20">
-                   <div className="flex items-start justify-between">
-                      <div className="flex flex-col gap-2">
-                         <div className="flex items-center gap-4">
-                            <div className="h-3 w-3 rounded-full bg-red-600 animate-pulse shadow-[0_0_12px_rgba(220,38,38,0.8)]" />
-                            <span className="text-[11px] font-black uppercase text-white tracking-[0.5em]">REC // STAG_RUT_TEASER_V1</span>
-                         </div>
-                         <div className="flex items-center gap-4 ml-7">
-                            <Activity className="h-3 w-3 text-gold-400/40" />
-                            <span className="text-[9px] font-bold text-gray-500 tracking-widest uppercase">Signal: -74dBm // Secure</span>
-                         </div>
-                      </div>
-                      <div className="text-right flex flex-col gap-1">
-                         <p className="text-2xl font-mono font-black text-gold-400 tabular-nums">{timecode}</p>
-                         <div className="flex items-center justify-end gap-3 opacity-30">
-                            <Globe className="h-3 w-3" />
-                            <span className="text-[8px] font-bold uppercase tracking-widest">Master Link: ACTIVE</span>
-                         </div>
-                      </div>
-                   </div>
+        <div className="grid auto-rows-[14rem] grid-cols-2 gap-4 md:auto-rows-[18rem] md:grid-cols-12 md:gap-6">
+          {assets.slice(0, Math.min(assets.length, 8)).map((asset, index) => {
+            const gridClass = [
+              'col-span-2 row-span-2 md:col-span-7 md:row-span-2',
+              'col-span-1 row-span-1 md:col-span-5 md:row-span-1',
+              'col-span-1 row-span-1 md:col-span-5 md:row-span-1',
+              'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
+              'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
+              'col-span-2 row-span-1 md:col-span-4 md:row-span-1',
+              'col-span-1 row-span-1 md:col-span-6 md:row-span-1',
+              'col-span-1 row-span-1 md:col-span-6 md:row-span-1',
+            ][index] ?? 'col-span-1 row-span-1 md:col-span-4 md:row-span-1';
 
-                   <div className="flex flex-col items-center gap-4">
-                      <div className="group relative flex h-20 w-20 cursor-pointer items-center justify-center rounded-full border border-gold-400/40 bg-gold-400/10 backdrop-blur-3xl transition-all hover:scale-115 hover:bg-gold-500 hover:text-black">
-                         <Play className="h-6 w-6 ml-1 transition-transform group-hover:scale-110" />
-                         <div className="absolute -inset-4 animate-ping rounded-full border border-gold-400/10" />
-                      </div>
-                      <p className="text-[10px] font-black uppercase tracking-[0.6em] text-white/40">Unlock Field Archive</p>
-                   </div>
-
-                   <div className="flex items-end justify-between border-t border-white/10 pt-8">
-                      <div className="max-w-md">
-                         <div className="flex items-center gap-3 mb-2">
-                            <Radar className="h-4 w-4 text-gold-400/60" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-gold-300">Observation Report</span>
-                         </div>
-                         <p className="text-xs text-white/50 leading-relaxed font-medium">Sub-alpine scrub observation, North Island tops. High-resolution stag behavior tracking collected during season 2025.</p>
-                      </div>
-                      <div className="text-right flex flex-col gap-2">
-                         <span className="text-[11px] font-bold text-white/20 uppercase tracking-[0.3em]">Encryption: LEVEL_8</span>
-                         <span className="text-[10px] font-black text-gold-400/50 uppercase tracking-widest">SAT_LINK_ENABLED</span>
-                      </div>
-                   </div>
-                </div>
-             </motion.div>
-          ) : (
-             <motion.div
-               key={activeKey + '-grid'}
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               exit={{ opacity: 0 }}
-               className="grid auto-rows-[12rem] grid-cols-2 gap-4 sm:auto-rows-[15rem] md:auto-rows-[18rem] md:grid-cols-12 md:gap-8"
-             >
-                {featured.map((img, i) => {
-                  const src = buildBlobImageSrc(img);
-                  const gridClass = [
-                    'col-span-2 row-span-2 md:col-span-8 md:row-span-2',
-                    'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
-                    'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
-                    'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
-                    'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
-                    'col-span-2 row-span-1 md:col-span-4 md:row-span-1',
-                  ][i];
-
-                  return (
-                    <motion.button
-                      key={`${activeKey}-${i}`}
-                      type="button"
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.6, delay: i * 0.08 }}
-                      onClick={() => handleLightboxOpen(i)}
-                      className={`group relative overflow-hidden rounded-[2.5rem] border border-white/10 shadow-premium transition-all duration-700 hover:-translate-y-2 hover:border-gold-400/40 ${gridClass}`}
-                    >
-                      <Image
-                        src={src}
-                        alt={img.alt}
-                        fill
-                        sizes="(max-width:768px) 100vw, 40vw"
-                        className="object-cover transition-transform duration-[6000ms] group-hover:scale-120 grayscale-[20%] group-hover:grayscale-0"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-80" />
-                      
-                      {/* -- ANALYTICAL OVERLAYS -- */}
-                      {/* Corner Brackets */}
-                      <div className="absolute inset-4 pointer-events-none border border-white/5 opacity-40 group-hover:opacity-100 transition-opacity">
-                         <div className="absolute left-0 top-0 h-3 w-3 border-l-2 border-t-2 border-gold-400/40" />
-                         <div className="absolute right-0 top-0 h-3 w-3 border-r-2 border-t-2 border-gold-400/40" />
-                         <div className="absolute left-0 bottom-0 h-3 w-3 border-l-2 border-b-2 border-gold-400/40" />
-                         <div className="absolute right-0 bottom-0 h-3 w-3 border-r-2 border-b-2 border-gold-400/40" />
-                      </div>
-
-                      {/* Vertical Scanning Line */}
-                      <motion.div 
-                        initial={{ top: "-100%" }}
-                        animate={{ top: "200%" }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-x-0 h-20 bg-gradient-to-b from-transparent via-gold-400/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100"
-                      />
-
-                      {/* TACTICAL METADATA (HOVER) */}
-                      <div className="absolute inset-0 bg-forest-950/40 opacity-0 transition-opacity duration-500 group-hover:opacity-100 backdrop-blur-[3px]">
-                         <div className="absolute inset-0 p-10 flex flex-col justify-between">
-                            <div className="flex items-start justify-between">
-                               <div className="flex flex-col gap-1">
-                                  <span className="text-[9px] font-black uppercase text-gold-400/40 tracking-[0.4em]">Archive Index</span>
-                                  <span className="text-sm font-bold text-white tracking-widest">{img.meta?.fileId}</span>
-                               </div>
-                               <Locate className="h-5 w-5 text-gold-400/30" />
-                            </div>
-
-                            <div className="space-y-6">
-                               <div className="flex items-center gap-4">
-                                  <Calendar className="h-4 w-4 text-gold-400/60" />
-                                  <span className="text-[10px] font-bold text-gray-200 tracking-[0.4em] uppercase">{img.meta?.date}</span>
-                               </div>
-                               <div className="flex items-center gap-4">
-                                  <Locate className="h-4 w-4 text-gold-400/60" />
-                                  <span className="text-[10px] font-bold text-gray-200 tracking-[0.4em] uppercase">{img.meta?.coords}</span>
-                               </div>
-                            </div>
-
-                            <div className="flex items-center justify-between border-t border-white/10 pt-6">
-                               <div className="flex items-center gap-2">
-                                  <div className="h-2 w-2 rounded-full bg-gold-400 shadow-glow" />
-                                  <span className="text-[10px] font-black text-gold-300 uppercase tracking-widest">{img.meta?.status}</span>
-                               </div>
-                               <div className="h-10 w-10 flex items-center justify-center rounded-full border border-white/10 bg-black/40">
-                                  <Maximize2 className="h-5 w-5 text-white/20" />
-                                </div>
-                            </div>
-                         </div>
-                      </div>
-
-                      {/* Static ID Badge */}
-                      <div className="absolute left-8 top-8 opacity-100 group-hover:opacity-0 transition-all">
-                         <span className="rounded-lg border border-white/10 bg-black/60 px-4 py-2 text-[10px] font-bold text-gold-400 tracking-widest">
-                           {String(i + 1).padStart(2, '0')}
-                         </span>
-                      </div>
-                    </motion.button>
-                  );
-                })}
-             </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* -- Cinematic Filmstrip (Raw Negative) -- */}
-        {activeKey !== 'video' && (
-           <div className="mt-12 rounded-[2.5rem] border border-white/5 bg-black/40 p-6 shadow-premium backdrop-blur-3xl sm:p-8">
-              <p className="mb-6 text-[9px] font-black uppercase tracking-[0.6em] text-white/10 text-center">Reference Filmstrip // RAW_CAPTURE_STREAM</p>
-              <div className="no-scrollbar flex gap-5 overflow-x-auto pb-2">
-                {strip.map((img, i) => (
-                  <button
-                    key={`strip-${activeKey}-${i}`}
-                    type="button"
-                    onClick={() => handleLightboxOpen(i)}
-                    className={`group relative h-24 w-40 shrink-0 overflow-hidden rounded-[1.2rem] border transition-all duration-500 sm:h-28 sm:w-48 ${
-                       i === lightboxIndex ? 'border-gold-400 scale-[1.02] shadow-glow' : 'border-white/5 opacity-40 hover:opacity-100'
-                    }`}
+            return (
+              <motion.button
+                key={`${active.key}-${asset.meta.fileId}`}
+                type="button"
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.06, duration: 0.55 }}
+                onClick={() => openLightbox(index)}
+                className={`group relative overflow-hidden rounded-[2.2rem] border border-white/10 shadow-premium transition-all duration-500 hover:-translate-y-2 hover:border-gold-400/35 ${gridClass}`}
+              >
+                {isVideoAsset(asset) ? (
+                  <video
+                    muted
+                    loop
+                    playsInline
+                    autoPlay
+                    preload="metadata"
+                    poster={buildPosterSrc(asset)}
+                    className="h-full w-full object-cover transition-transform duration-[5000ms] group-hover:scale-110"
                   >
-                    <Image src={buildBlobImageSrc(img)} alt={img.alt} fill className="object-cover" />
-                    
-                    {/* Sprocket Holes Effect */}
-                    <div className="absolute inset-y-0 left-1 w-2 flex flex-col justify-around opacity-20 group-hover:opacity-40 transition-opacity">
-                       {[1,2,3,4].map(x => <div key={x} className="h-1.5 w-1.5 rounded-sm bg-white" />)}
-                    </div>
-                    <div className="absolute inset-y-0 right-1 w-2 flex flex-col justify-around opacity-20 group-hover:opacity-40 transition-opacity">
-                       {[1,2,3,4].map(x => <div key={x} className="h-1.5 w-1.5 rounded-sm bg-white" />)}
-                    </div>
+                    <source src={buildVideoSrc(asset)} type="video/mp4" />
+                  </video>
+                ) : (
+                  <Image
+                    src={buildImageSrc(asset)}
+                    alt={asset.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 40vw"
+                    className="object-cover transition-transform duration-[5000ms] group-hover:scale-110"
+                  />
+                )}
 
-                    <div className={`absolute inset-0 ${i === lightboxIndex ? 'bg-transparent' : 'bg-black/30 group-hover:bg-transparent transition-colors'}`} />
-                    <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[7px] font-black text-gold-400/40 uppercase tracking-widest">FRM_{String(i + 1).padStart(2, '0')}</span>
-                  </button>
-                ))}
-              </div>
-           </div>
-        )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
+                <div className="absolute inset-5 border border-white/5 opacity-40 transition-opacity group-hover:opacity-100" />
+
+                <div className="absolute left-6 top-6 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[9px] font-black uppercase tracking-[0.22em] text-gold-300">
+                  {asset.meta.fileId}
+                </div>
+
+                {isVideoAsset(asset) && (
+                  <>
+                    <div className="absolute right-6 top-6 rounded-full border border-gold-400/20 bg-black/50 px-3 py-1 text-[8px] font-bold uppercase tracking-[0.18em] text-white/70">
+                      {asset.meta.runtime}
+                    </div>
+                    <div className="absolute right-6 bottom-6 flex h-14 w-14 items-center justify-center rounded-full border border-gold-400/30 bg-gold-400/10 text-gold-300 shadow-glow">
+                      <Play className="ml-1 h-5 w-5" />
+                    </div>
+                  </>
+                )}
+
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-left">
+                  <div className="mb-3 flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.24em] text-gold-400/60">
+                    {isVideoAsset(asset) ? <Video className="h-3 w-3" /> : <ShieldCheck className="h-3 w-3" />}
+                    {isVideoAsset(asset) ? 'Motion Asset' : asset.meta.status}
+                  </div>
+                  <p className="font-display text-xl font-bold uppercase leading-tight text-white sm:text-2xl">{asset.alt}</p>
+                  <div className="mt-4 flex flex-wrap gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white/55">
+                    <span className="flex items-center gap-2">
+                      <Calendar className="h-3 w-3 text-gold-400/60" />
+                      {asset.meta.date}
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <Locate className="h-3 w-3 text-gold-400/60" />
+                      {asset.meta.coords}
+                    </span>
+                  </div>
+                </div>
+
+                {!isVideoAsset(asset) && (
+                  <div className="absolute bottom-6 right-6 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/50 text-white/40 transition-all group-hover:border-gold-400/40 group-hover:text-gold-300">
+                    <Maximize2 className="h-5 w-5" />
+                  </div>
+                )}
+              </motion.button>
+            );
+          })}
+        </div>
+
+        <div className="mt-12 rounded-[2.5rem] border border-white/5 bg-black/40 p-6 shadow-premium backdrop-blur-3xl sm:p-8">
+          <p className="mb-6 text-center text-[9px] font-black uppercase tracking-[0.6em] text-white/10">Reference Filmstrip // RAW_CAPTURE_STREAM</p>
+          <div className="no-scrollbar flex gap-4 overflow-x-auto pb-1">
+            {assets.map((asset, index) => (
+              <button
+                key={`strip-${asset.meta.fileId}`}
+                type="button"
+                onClick={() => openLightbox(index)}
+                className={`relative h-24 w-40 shrink-0 overflow-hidden rounded-[1.2rem] border transition-all sm:h-28 sm:w-48 ${
+                  index === lightboxIndex ? 'scale-[1.02] border-gold-400 shadow-glow' : 'border-white/5 opacity-50 hover:opacity-100'
+                }`}
+              >
+                {isVideoAsset(asset) ? (
+                  <video muted playsInline preload="metadata" poster={buildPosterSrc(asset)} className="h-full w-full object-cover">
+                    <source src={buildVideoSrc(asset)} type="video/mp4" />
+                  </video>
+                ) : (
+                  <Image src={buildImageSrc(asset)} alt={asset.alt} fill className="object-cover" />
+                )}
+                <div className={`absolute inset-0 ${index === lightboxIndex ? 'bg-transparent' : 'bg-black/30'}`} />
+                {isVideoAsset(asset) && (
+                  <div className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border border-gold-400/20 bg-black/55 text-gold-300">
+                    <Play className="ml-0.5 h-3 w-3" />
+                  </div>
+                )}
+                <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[7px] font-black uppercase tracking-widest text-gold-400/40">
+                  FRM_{String(index + 1).padStart(2, '0')}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* -- Tactical Lightbox 3.0 -- */}
       <AnimatePresence>
-        {lightboxIndex !== null && lightboxImg && (
+        {lightboxAsset && lightboxIndex !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl flex flex-col"
-            onClick={() => handleLightboxOpen(null)}
+            className="fixed inset-0 z-[1000] flex flex-col bg-forest-950/98 backdrop-blur-3xl"
+            onClick={closeLightbox}
             data-lenis-prevent
           >
-            {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
-            <div
-              className="shrink-0 z-[1110] px-4 pt-16 pb-6 sm:px-10 sm:pt-40 sm:pb-10"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="mx-auto max-w-7xl">
-                <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/60 p-3 backdrop-blur-3xl shadow-premium sm:rounded-[2.5rem] sm:p-5">
-                  {/* Left: Image info card - unified inside the same bar */}
-                  <div className="flex-1 min-w-0 px-2 sm:px-4">
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <ShieldCheck className="h-3 w-3 shrink-0 text-gold-400" />
-                      <p className="text-[9px] font-black uppercase tracking-[0.4em] text-gold-400/50 truncate">Verified Field Data · Archive: ALPHA</p>
-                      <div className="hidden sm:block h-px w-6 bg-white/10" />
-                      <p className="hidden sm:block text-[9px] font-bold text-gray-500 tracking-[0.2em] uppercase">ID: {lightboxImg.meta?.fileId}</p>
+            <div className="shrink-0 px-4 pb-6 pt-16 sm:px-10 sm:pb-10 sm:pt-32" onClick={(event) => event.stopPropagation()}>
+              <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-black/60 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
+                <div className="flex items-center gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-1 flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.35em] text-gold-400/50">
+                      {isVideoAsset(lightboxAsset) ? <Video className="h-3 w-3 shrink-0" /> : <ShieldCheck className="h-3 w-3 shrink-0" />}
+                      {isVideoAsset(lightboxAsset) ? 'Field Tape' : 'Verified Field Data'}
                     </div>
-                    <h2 className="font-display text-base font-bold uppercase tracking-tight text-white truncate sm:text-2xl md:text-3xl">
-                      {lightboxImg.alt}
-                    </h2>
+                    <h2 className="truncate font-display text-lg font-bold uppercase tracking-tight text-white sm:text-3xl">{lightboxAsset.alt}</h2>
                   </div>
-
-                  {/* Right: Close button - now part of the same visual bar */}
-                  <div className="shrink-0 pl-2 border-l border-white/10 sm:pl-5">
-                    <MagneticButton
-                      strength={0.3}
-                      onClick={() => handleLightboxOpen(null)}
-                      className="h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/50 transition-all hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 sm:h-14 sm:w-14"
-                    >
-                      <X className="h-5 w-5 sm:h-6 sm:w-6" />
-                    </MagneticButton>
-                  </div>
+                  <button
+                    onClick={closeLightbox}
+                    className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/50 transition-all hover:rotate-90 hover:border-gold-400 hover:bg-gold-500 hover:text-black"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* ── IMAGE AREA (flex-1, fills remaining height) ── */}
-            <motion.div
-              key={lightboxIndex}
-              className="relative flex-1 min-h-0 z-[1100] px-4 sm:px-8"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="relative flex-1 px-4 sm:px-8" onClick={(event) => event.stopPropagation()}>
               <div className="relative h-full w-full overflow-hidden rounded-[2rem] border border-white/10 bg-black/40 shadow-premium sm:rounded-[3rem]">
-                {/* Background topographic accent */}
-                <div className="absolute inset-0 opacity-[0.06] pointer-events-none overflow-hidden">
-                  <svg width="100%" height="100%" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
-                    <motion.path
-                      animate={{ d: ['M0,300 Q250,260 500,300 T1000,300', 'M0,300 Q250,340 500,300 T1000,300', 'M0,300 Q250,260 500,300 T1000,300'] }}
-                      transition={{ duration: 10, repeat: Infinity }}
-                      stroke="gold" strokeWidth="0.5" fill="none" opacity="0.3"
-                    />
-                  </svg>
-                </div>
+                <button
+                  onClick={showPrev}
+                  className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/50 text-white/40 transition-all hover:border-gold-400 hover:text-gold-300 sm:left-6 sm:h-14 sm:w-14"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                <button
+                  onClick={showNext}
+                  className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/50 text-white/40 transition-all hover:border-gold-400 hover:text-gold-300 sm:right-6 sm:h-14 sm:w-14"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
 
-                <AnimatePresence>
-                  {isAuthenticating ? (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-forest-950/80 backdrop-blur-lg"
+                <div className="flex h-full w-full items-center justify-center p-6 sm:p-10">
+                  {isVideoAsset(lightboxAsset) ? (
+                    <video
+                      controls
+                      autoPlay
+                      playsInline
+                      preload="metadata"
+                      poster={buildPosterSrc(lightboxAsset)}
+                      className="max-h-full max-w-full rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
                     >
-                      <Cpu className="h-10 w-10 text-gold-400 mb-5 animate-spin-slow" />
-                      <p className="text-[11px] font-black uppercase tracking-[0.8em] text-gold-400 animate-pulse">Authenticating Frame...</p>
-                      <div className="mt-6 h-px w-40 bg-white/5 relative overflow-hidden">
-                        <motion.div
-                          initial={{ left: '-100%' }}
-                          animate={{ left: '100%' }}
-                          transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
-                          className="absolute inset-y-0 w-20 bg-gradient-to-r from-transparent via-gold-400/40 to-transparent"
-                        />
-                      </div>
-                    </motion.div>
+                      <source src={buildVideoSrc(lightboxAsset)} type="video/mp4" />
+                    </video>
                   ) : (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.96 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="h-full w-full flex items-center justify-center p-6 sm:p-10"
-                    >
-                      <Image
-                        src={buildBlobImageSrc(lightboxImg)}
-                        alt={lightboxImg.alt}
-                        width={2560}
-                        height={1440}
-                        className="max-h-full max-w-full object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
-                      />
-                    </motion.div>
+                    <Image
+                      src={buildImageSrc(lightboxAsset)}
+                      alt={lightboxAsset.alt}
+                      width={2560}
+                      height={1440}
+                      className="max-h-full max-w-full object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+                    />
                   )}
-                </AnimatePresence>
+                </div>
               </div>
-            </motion.div>
+            </div>
 
-            {/* ── BOTTOM METADATA BAR (shrink-0) ── */}
-            <div
-              className="shrink-0 z-[1110] px-4 py-4 sm:px-8 sm:py-5"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="mx-auto max-w-6xl rounded-2xl border border-white/10 bg-black/60 px-5 py-4 backdrop-blur-3xl shadow-premium sm:rounded-[2.5rem] sm:px-8 sm:py-5">
+            <div className="shrink-0 px-4 py-4 sm:px-8 sm:py-5" onClick={(event) => event.stopPropagation()}>
+              <div className="mx-auto max-w-6xl rounded-[2rem] border border-white/10 bg-black/60 px-5 py-4 shadow-premium backdrop-blur-3xl sm:px-8 sm:py-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
-                  {/* Analytical Logs */}
                   <div className="grid grid-cols-2 gap-x-8 gap-y-3 sm:flex sm:flex-wrap sm:gap-x-10 sm:gap-y-0">
                     {[
-                      { label: 'File Hash', value: lightboxImg.meta?.fileId, icon: Lock },
-                      { label: 'Field Coords', value: lightboxImg.meta?.coords, icon: Locate },
-                      { label: 'Capture Date', value: lightboxImg.meta?.date, icon: Calendar },
-                      { label: 'Archive Rank', value: lightboxIndex === 0 ? 'SIGNATURE' : 'OPERATIONAL', icon: Zap },
-                    ].map((stat) => (
-                      <div key={stat.label} className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2 opacity-30">
-                          <stat.icon className="h-2.5 w-2.5" />
-                          <span className="text-[7px] font-black uppercase tracking-[0.3em]">{stat.label}</span>
-                        </div>
-                        <span className="text-[10px] font-bold text-white uppercase tracking-widest">{stat.value}</span>
+                      { label: 'File Hash', value: lightboxAsset.meta.fileId },
+                      { label: 'Field Coords', value: lightboxAsset.meta.coords },
+                      { label: 'Capture Date', value: lightboxAsset.meta.date },
+                      { label: 'Medium', value: lightboxAsset.meta.medium },
+                      { label: 'Runtime', value: lightboxAsset.meta.runtime ?? 'PHOTO' },
+                    ].map((item) => (
+                      <div key={item.label} className="flex flex-col gap-1">
+                        <span className="text-[7px] font-black uppercase tracking-[0.3em] text-white/30">{item.label}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-white">{item.value}</span>
                       </div>
                     ))}
                   </div>
-
-                  {/* Navigation */}
-                  <div className="flex items-center gap-3 sm:pl-8 sm:border-l sm:border-white/5">
-                    <MagneticButton
-                      strength={0.4}
-                      onClick={(e) => { e.stopPropagation(); prev(); }}
-                      className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 hover:bg-gold-500/10 hover:border-gold-400 transition-all sm:h-14 sm:w-14"
-                    >
-                      <ChevronLeft className="h-5 w-5 text-white/40" />
-                    </MagneticButton>
-                    <MagneticButton
-                      strength={0.4}
-                      onClick={(e) => { e.stopPropagation(); next(); }}
-                      className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 hover:bg-gold-500/10 hover:border-gold-400 transition-all sm:h-14 sm:w-14"
-                    >
-                      <ChevronRight className="h-5 w-5 text-white/40" />
-                    </MagneticButton>
-                  </div>
-                </div>
-
-                {/* Status bar */}
-                <div className="mt-3 hidden items-center justify-between border-t border-white/5 pt-3 sm:flex">
-                  <span className="text-[8px] font-black uppercase text-gold-400/20 tracking-[0.5em]">SYSTEM_STABLE: OK</span>
-                  <div className="flex items-center gap-2">
-                    <div className="h-1 w-1 rounded-full bg-gold-400 animate-pulse" />
-                    <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest font-mono">STREAMING_ENCRYPTED_DATA_PACKET_99%</span>
+                  <div className="text-[9px] font-black uppercase tracking-[0.4em] text-gold-400/30">
+                    Asset {String(lightboxIndex + 1).padStart(2, '0')} / {String(assets.length).padStart(2, '0')}
                   </div>
                 </div>
               </div>

@@ -1,10 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Award, Crosshair, ShieldCheck, User, Zap, Activity, Info } from 'lucide-react';
+import { Award, Crosshair, ShieldCheck, User, Zap, Activity } from 'lucide-react';
+import Image from 'next/image';
 import TextReveal from '@/components/text-reveal';
 import TeamMemberModal from './team-member-modal';
 import { useState, useEffect, useRef } from 'react';
+import { getBlobAssetUrl } from '@/lib/blob-asset';
+import { alexFounderMedia } from '@/lib/media-collections';
 
 const founders = [
   { 
@@ -15,7 +18,8 @@ const founders = [
     initials: 'AS',
     expertise: 'International Heritage / Ethics',
     bio: 'With over 40 years of experience in the international hunting industry, Alex is a veteran who understands the importance of heritage and ethics. He has guided hundreds of successful hunts across the globe and brought his expertise to the pristine landscapes of New Zealand.',
-    images: ['/media/founders/alex-1.jpg', '/media/founders/alex-2.jpg']
+    portrait: alexFounderMedia[0]?.src ?? null,
+    images: alexFounderMedia.map((image) => image.src),
   },
   { 
     name: 'Artem Prikazov', 
@@ -25,7 +29,8 @@ const founders = [
     initials: 'AP',
     expertise: 'Technical Precision / Logistics',
     bio: 'Artem brings 15 years of dedicated hunting experience, combining technical precision with a deep passion for the wild. As a co-founder, he ensures that every detail of the safari experience meets the highest standards of luxury and authenticity.',
-    images: ['/media/founders/artem-1.jpg', '/media/founders/artem-2.jpg']
+    portrait: null,
+    images: [],
   },
   { 
     name: 'Vuk Mijatovic', 
@@ -35,7 +40,8 @@ const founders = [
     initials: 'VM',
     expertise: 'High Alpine / Field Ops',
     bio: 'Our Lead Guide, Vuk, has spent 35+ years mastering the rugged terrain of New Zealand. His operational expertise and tactical knowledge of the field make him an invaluable asset for hunters seeking the ultimate fair chase challenge.',
-    images: ['/media/founders/vuk-1.jpg', '/media/founders/vuk-2.jpg']
+    portrait: null,
+    images: [],
   },
 ];
 
@@ -174,10 +180,24 @@ export default function StorySection() {
                   
                   {/* Header: Initial & Badge */}
                   <div className="mb-8 flex items-start justify-between">
-                     <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-gold-400/20 bg-gold-400/5 font-display text-2xl font-bold uppercase tracking-widest text-gold-300 shadow-glow transition-all group-hover:border-gold-400/50 group-hover:bg-gold-400/15">
-                        {founder.initials}
-                        <div className="absolute -right-1.5 -top-1.5 h-3 w-3 rounded-full bg-gold-400/60 animate-pulse" />
-                     </div>
+                     {founder.portrait ? (
+                       <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-gold-400/30 bg-gold-400/5 shadow-glow transition-all group-hover:border-gold-400/50">
+                          <Image
+                            src={getBlobAssetUrl(founder.portrait)}
+                            alt={founder.name}
+                            fill
+                            sizes="64px"
+                            className="object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                          <div className="absolute -right-1.5 -top-1.5 h-3 w-3 rounded-full bg-gold-400/60 animate-pulse" />
+                       </div>
+                     ) : (
+                       <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-gold-400/20 bg-gold-400/5 font-display text-2xl font-bold uppercase tracking-widest text-gold-300 shadow-glow transition-all group-hover:border-gold-400/50 group-hover:bg-gold-400/15">
+                          {founder.initials}
+                          <div className="absolute -right-1.5 -top-1.5 h-3 w-3 rounded-full bg-gold-400/60 animate-pulse" />
+                       </div>
+                     )}
                      <div className="flex flex-col items-end gap-1">
                         <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 transition-colors group-hover:text-gold-200">
                            <CountUp target={founder.expNum} suffix={founder.expSuffix} /> Experience
@@ -195,7 +215,7 @@ export default function StorySection() {
                         {founder.name}
                      </h3>
                      <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.25em] text-gold-400/60">
-                        {founder.role} // {founder.origin}
+                        {`${founder.role} / ${founder.origin}`}
                      </p>
                      <div className="mt-4 h-0.5 w-12 bg-gold-500/20 transition-all group-hover:w-20 group-hover:bg-gold-500/40" />
                   </div>

@@ -1,6 +1,7 @@
 import { put } from '@vercel/blob';
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -8,6 +9,8 @@ const projectRoot = path.resolve(__dirname, '..');
 const publicRoot = path.join(projectRoot, 'public');
 const inputDir = path.join(publicRoot, 'media');
 const outputFile = path.join(projectRoot, 'lib', 'blob-asset-manifest.json');
+
+process.loadEnvFile(path.join(projectRoot, '.env'));
 
 const token = process.env.BLOB_READ_WRITE_TOKEN;
 

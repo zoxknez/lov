@@ -3,12 +3,34 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Bed, Coffee, Flame, MapPin, Users, Utensils, Wifi, Wind, Play, Compass, ExternalLink, Activity, X, ChevronLeft, ChevronRight, Maximize2, ShieldCheck, Zap, Locate } from 'lucide-react';
+import { Bed, Coffee, Flame, MapPin, Users, Utensils, Wifi, Play, Compass, ExternalLink, Activity, X, ChevronLeft, ChevronRight, Maximize2, ShieldCheck, Locate } from 'lucide-react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 import TextReveal from '@/components/text-reveal';
 import MagneticButton from '@/components/magnetic-button';
+import { lodgeAccommodationMedia, stayMedia, stayVideoMedia, type VideoMediaItem } from '@/lib/media-collections';
 
-const lodges = [
+type Lodge = {
+  id: string;
+  type: string;
+  typeColor: string;
+  name: string;
+  location: string;
+  tagline: string;
+  description: string;
+  image: string;
+  gallery: string[];
+  videos: VideoMediaItem[];
+  capacity: string;
+  specs: { label: string; value: string }[];
+  features: { icon: typeof Bed; label: string }[];
+  highlight: string;
+};
+
+type ViewerState =
+  | { kind: 'photo'; index: number }
+  | { kind: 'video'; index: number };
+
+const lodges: Lodge[] = [
   {
     id: 'ohakune',
     type: 'Primary Base',
@@ -18,13 +40,9 @@ const lodges = [
     tagline: 'Central North Island hunting base',
     description:
       'A comfortable, properly hosted lodge sitting at the heart of the North Island program. Everything runs from here - meals, briefings, debrief evenings, and early starts into the Kaimanawa.',
-    image: '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  house .jpg',
-    gallery: [
-      '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  house .jpg',
-      '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  dinning area .jpg',
-      '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  living area.jpg',
-      '/media/hunting lodge  accommodation/13 Ruapehu Rd Ohakune  bedroom 1 .jpg',
-    ],
+    image: lodgeAccommodationMedia[5]?.src ?? lodgeAccommodationMedia[0].src,
+    gallery: lodgeAccommodationMedia.map((image) => image.src),
+    videos: [],
     capacity: '2-4 hunters',
     specs: [
       { label: 'Elevation', value: '590m MSL' },
@@ -42,45 +60,47 @@ const lodges = [
     highlight: 'Strategic nexus for Kaimanawa and Kaweka operations.',
   },
   {
-    id: 'alpine',
-    type: 'Backcountry',
-    typeColor: 'text-sky-300 border-sky-400/30 bg-sky-400/8',
-    name: 'Remote Alpine\nField Camps',
-    location: 'Southern Alps - South Island',
-    tagline: 'Deep mountain access when terrain demands it',
+    id: 'stay',
+    type: 'Hosted Stay',
+    typeColor: 'text-emerald-300 border-emerald-400/30 bg-emerald-400/8',
+    name: 'Hillside\nHunter Stay',
+    location: 'North Island - Panorama Base',
+    tagline: 'Compact hosted stay with elevated views',
     description:
-      'Simple, functional field camps used when the hunt calls for more reach into serious mountain country. No unnecessary comfort - but everything needed for a successful alpine mission.',
-    image: '/media/hunting area  and deers/Hunting  area  near Rotorua 3 jpg.jpg',
-    gallery: [
-      '/media/hunting area  and deers/Hunting  area  near Rotorua 3 jpg.jpg',
-      '/media/hunting area  and deers/Hunting  area  near Rotorua 2 jpg.jpg',
-    ],
+      'An additional stay option built for small groups or quieter overnights, with a covered outdoor lounge, a self-contained interior, and open views across the surrounding hill country.',
+    image: stayMedia[0].src,
+    gallery: stayMedia.map((image) => image.src),
+    videos: stayVideoMedia,
     capacity: '1-2 hunters',
     specs: [
-      { label: 'Elevation', value: '1800m+' },
-      { label: 'Coordination', value: 'Field-Ops' },
-      { label: 'Field Sync', value: 'Sat-Link' },
+      { label: 'Format', value: 'Private Stay' },
+      { label: 'View', value: 'Valley Outlook' },
+      { label: 'Field Sync', value: 'Hosted' },
     ],
     features: [
-      { icon: Wind, label: 'Alpine Immersion' },
-      { icon: Utensils, label: 'Field Catering' },
-      { icon: MapPin, label: 'Weather Access' },
-      { icon: Flame, label: 'Portable Heat' },
-      { icon: Compass, label: 'Navigation Kit' },
-      { icon: Activity, label: 'Survival Logistics' },
+      { icon: Bed, label: 'Private Bedroom' },
+      { icon: Coffee, label: 'Outdoor Lounge' },
+      { icon: Utensils, label: 'Kitchenette' },
+      { icon: MapPin, label: 'Wide Views' },
+      { icon: Flame, label: 'Covered Deck' },
+      { icon: Users, label: 'Small Group Fit' },
     ],
-    highlight: 'Advanced reach into high alpine trophy country.',
+    highlight: 'Relaxed hosted stay with strong views and practical comfort.',
   },
 ];
 
 export default function AccommodationSection() {
   const [active, setActive] = useState(0);
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [viewer, setViewer] = useState<ViewerState | null>(null);
   const lodge = lodges[active];
+  const hasVideos = lodge.videos.length > 0;
+  const lightboxCount = viewer ? (viewer.kind === 'photo' ? lodge.gallery.length : lodge.videos.length) : 0;
+  const activeVideo = viewer?.kind === 'video' ? lodge.videos[viewer.index] : null;
+  const activePhoto = viewer?.kind === 'photo' ? lodge.gallery[viewer.index] : null;
 
   // Prevent scrolling when lightbox is open
   useEffect(() => {
-    if (lightboxIndex !== null) {
+    if (viewer !== null) {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
       document.body.classList.add('modal-active');
@@ -94,13 +114,24 @@ export default function AccommodationSection() {
       document.documentElement.style.overflow = '';
       document.body.classList.remove('modal-active');
     };
-  }, [lightboxIndex]);
+  }, [viewer]);
 
-  const next = () => setLightboxIndex((prev) => (prev !== null ? (prev + 1) % lodge.gallery.length : null));
-  const prev = () => setLightboxIndex((prev) => (prev !== null ? (prev - 1 + lodge.gallery.length) % lodge.gallery.length : null));
+  const next = () =>
+    setViewer((prev) => {
+      if (!prev) return null;
+      const total = prev.kind === 'photo' ? lodge.gallery.length : lodge.videos.length;
+      return { ...prev, index: (prev.index + 1) % total };
+    });
+
+  const prev = () =>
+    setViewer((prevState) => {
+      if (!prevState) return null;
+      const total = prevState.kind === 'photo' ? lodge.gallery.length : lodge.videos.length;
+      return { ...prevState, index: (prevState.index - 1 + total) % total };
+    });
 
   return (
-    <section id="stay" className={`relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${lightboxIndex !== null ? 'z-[10000]' : 'z-10'}`}>
+    <section id="stay" className={`relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${viewer !== null ? 'z-[10000]' : 'z-10'}`}>
       {/* Immersive Background Decor */}
       <div className="pointer-events-none absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-600/5 blur-[160px]" />
@@ -115,7 +146,7 @@ export default function AccommodationSection() {
             <TextReveal>Operational Bases</TextReveal>
           </p>
           <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8.5rem]">
-            <TextReveal delay={0.1}>Lodge & Camps</TextReveal>
+            <TextReveal delay={0.1}>Lodge & Stay</TextReveal>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
@@ -135,7 +166,10 @@ export default function AccommodationSection() {
             {lodges.map((item, index) => (
               <button
                 key={item.id}
-                onClick={() => setActive(index)}
+                onClick={() => {
+                  setActive(index);
+                  setViewer(null);
+                }}
                 className={`group relative flex items-center gap-4 whitespace-nowrap rounded-full border px-8 py-5 text-[11px] font-black uppercase tracking-[0.4em] transition-all duration-500 ${
                   active === index
                     ? 'border-gold-400/50 bg-gold-400/15 text-gold-300 shadow-glow ring-1 ring-gold-400/20'
@@ -143,7 +177,7 @@ export default function AccommodationSection() {
                 }`}
               >
                 {active === index && <motion.span layoutId="lodge-dot-v4" className="h-2 w-2 rounded-full bg-gold-400 shadow-glow" />}
-                {item.id === 'ohakune' ? 'North Island Hub' : 'Alpine Outposts'}
+                {item.id === 'ohakune' ? 'North Island Hub' : 'Hunter Stay'}
               </button>
             ))}
           </div>
@@ -163,7 +197,7 @@ export default function AccommodationSection() {
               {/* STUB 1: VISUAL FOUNDATION (LEFT) */}
               <div className="lg:col-span-4 flex flex-col h-full">
                 <div 
-                  onClick={() => setLightboxIndex(0)}
+                  onClick={() => setViewer({ kind: 'photo', index: 0 })}
                   className="group relative flex-1 cursor-pointer overflow-hidden rounded-[3rem] border border-white/15 min-h-[500px] lg:min-h-[680px] shadow-premium"
                 >
                   <Image
@@ -214,22 +248,65 @@ export default function AccommodationSection() {
                 </div>
 
                 {/* Secondary Archive Media */}
-                <div 
-                  onClick={() => setLightboxIndex(1 % lodge.gallery.length)}
-                  className="group relative flex-1 min-h-[240px] cursor-pointer overflow-hidden rounded-[2.5rem] border border-white/10 bg-black/40 shadow-premium"
-                >
-                  <Image
-                    src={getBlobAssetUrl(lodge.gallery[1 % lodge.gallery.length])}
-                    alt="Archive Detail"
-                    fill
-                    className="object-cover opacity-60 contrast-[1.1] transition-transform duration-1000 group-hover:scale-115"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-transparent to-transparent" />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-8 text-center bg-black/20 group-hover:bg-black/10 transition-colors">
-                     <Play className="h-6 w-6 text-gold-400/30 group-hover:text-gold-400 transition-colors" />
-                     <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gold-400/50 group-hover:text-gold-300">Operational Log</p>
+                {hasVideos ? (
+                  <div
+                    onClick={() => setViewer({ kind: 'video', index: 0 })}
+                    className="group relative flex-1 min-h-[240px] cursor-pointer overflow-hidden rounded-[2.5rem] border border-white/10 bg-black/40 shadow-premium"
+                  >
+                    <video
+                      muted
+                      loop
+                      playsInline
+                      autoPlay
+                      preload="metadata"
+                      poster={getBlobAssetUrl(lodge.videos[0].poster)}
+                      className="h-full w-full object-cover opacity-70 contrast-[1.05] transition-transform duration-1000 group-hover:scale-110"
+                    >
+                      <source src={getBlobAssetUrl(lodge.videos[0].src)} type="video/mp4" />
+                    </video>
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-black/25 to-transparent" />
+                    <div className="absolute left-6 top-6 rounded-full border border-gold-400/20 bg-black/50 px-4 py-2 text-[9px] font-black uppercase tracking-[0.3em] text-gold-300">
+                      Motion Archive
+                    </div>
+                    <div className="absolute right-6 top-6 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[8px] font-bold uppercase tracking-[0.2em] text-white/60">
+                      {lodge.videos[0].durationLabel}
+                    </div>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/20 p-8 text-center transition-colors group-hover:bg-black/5">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full border border-gold-400/30 bg-gold-400/10 text-gold-300 shadow-glow">
+                        <Play className="ml-1 h-6 w-6" />
+                      </div>
+                      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gold-300">Launch Field Tape</p>
+                    </div>
+                    <div className="absolute inset-x-0 bottom-0 p-6">
+                      <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-5">
+                        <div>
+                          <p className="text-[8px] font-black uppercase tracking-[0.3em] text-white/25">Featured Clip</p>
+                          <p className="mt-1 text-xs font-bold uppercase tracking-[0.16em] text-white">{lodge.videos[0].alt}</p>
+                        </div>
+                        <span className="text-[8px] font-black uppercase tracking-[0.2em] text-emerald-300/80">
+                          {lodge.videos.length} Clips
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div 
+                    onClick={() => setViewer({ kind: 'photo', index: 1 % lodge.gallery.length })}
+                    className="group relative flex-1 min-h-[240px] cursor-pointer overflow-hidden rounded-[2.5rem] border border-white/10 bg-black/40 shadow-premium"
+                  >
+                    <Image
+                      src={getBlobAssetUrl(lodge.gallery[1 % lodge.gallery.length])}
+                      alt="Archive Detail"
+                      fill
+                      className="object-cover opacity-60 contrast-[1.1] transition-transform duration-1000 group-hover:scale-115"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-transparent to-transparent" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-8 text-center bg-black/20 group-hover:bg-black/10 transition-colors">
+                       <Play className="h-6 w-6 text-gold-400/30 group-hover:text-gold-400 transition-colors" />
+                       <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gold-400/50 group-hover:text-gold-300">Operational Log</p>
+                    </div>
+                  </div>
+                )}
 
                 {/* Grid System / Status Hub */}
                 <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-forest-900/30 p-8 shadow-premium">
@@ -283,13 +360,27 @@ export default function AccommodationSection() {
 
                 {/* Base Logistics (Amenities Dashboard) */}
                 <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-forest-900/30 p-10 shadow-premium">
-                   <div className="mb-8 flex items-center justify-between">
+                  <div className="mb-8 flex items-center justify-between">
                       <p className="text-[11px] font-black uppercase tracking-[0.5em] text-gold-400/60">Base Logistics</p>
                       <div className="flex items-center gap-2 rounded-full border border-white/5 bg-black/40 px-4 py-2">
                          <Users className="h-4 w-4 text-gold-400/40" />
                          <span className="text-[9px] font-bold uppercase tracking-widest text-white/40">{lodge.capacity} Personnel</span>
                       </div>
                    </div>
+                   {hasVideos && (
+                     <div className="mb-6 flex items-center justify-between rounded-2xl border border-emerald-400/15 bg-emerald-400/5 px-5 py-4">
+                        <div className="flex items-center gap-3">
+                           <div className="h-2 w-2 animate-pulse rounded-full bg-emerald-300" />
+                           <span className="text-[9px] font-black uppercase tracking-[0.3em] text-emerald-300">Motion Log Ready</span>
+                        </div>
+                        <button
+                          onClick={() => setViewer({ kind: 'video', index: 0 })}
+                          className="rounded-full border border-white/10 bg-black/40 px-4 py-2 text-[8px] font-bold uppercase tracking-[0.2em] text-white/70 transition-colors hover:border-gold-400/30 hover:text-gold-200"
+                        >
+                          Open Videos
+                        </button>
+                     </div>
+                   )}
                    <div className="grid grid-cols-2 gap-4">
                      {lodge.features.map((feature) => {
                        const Icon = feature.icon;
@@ -347,13 +438,13 @@ export default function AccommodationSection() {
 
       {/* -- Immersive Lightbox -- */}
       <AnimatePresence>
-        {lightboxIndex !== null && (
+        {viewer !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl flex flex-col"
-            onClick={() => setLightboxIndex(null)}
+            onClick={() => setViewer(null)}
             data-lenis-prevent
           >
             {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
@@ -367,14 +458,14 @@ export default function AccommodationSection() {
                   <div className="flex-1 min-w-0 px-2 sm:px-4">
                     <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gold-400/50 mb-1 leading-none truncate">{lodge.name}</p>
                     <h2 className="text-white font-display text-base font-bold uppercase tracking-tight truncate sm:text-2xl leading-tight">
-                      Field Archive // Frame {lightboxIndex + 1}
+                      {`${viewer.kind === 'video' ? 'Motion Archive' : 'Field Archive'} / ${viewer.kind === 'video' ? `Tape ${viewer.index + 1}` : `Frame ${viewer.index + 1}`}`}
                     </h2>
                   </div>
 
                   {/* Right: Close button - part of the unified HUD bar */}
                   <div className="shrink-0 pl-2 border-l border-white/10 sm:pl-5">
                     <button
-                      onClick={() => setLightboxIndex(null)}
+                      onClick={() => setViewer(null)}
                       className="h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/50 transition-all duration-300 hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 sm:h-14 sm:w-14"
                     >
                       <X className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -395,13 +486,33 @@ export default function AccommodationSection() {
                   </MagneticButton>
                </div>
                <motion.div
-                 key={lightboxIndex}
+                 key={`${viewer.kind}-${viewer.index}`}
                  initial={{ opacity: 0, scale: 0.95 }}
                  animate={{ opacity: 1, scale: 1 }}
                  exit={{ opacity: 0, scale: 0.95 }}
                  className="relative h-full w-full rounded-[2rem] overflow-hidden border border-white/10 bg-black/10 sm:rounded-[3rem]"
                >
-                  <Image src={getBlobAssetUrl(lodge.gallery[lightboxIndex])} alt="Lodge Frame" fill className="object-contain p-8" />
+                  {activeVideo ? (
+                    <div className="flex h-full w-full items-center justify-center p-4 sm:p-8">
+                      <video
+                        controls
+                        autoPlay
+                        playsInline
+                        preload="metadata"
+                        poster={getBlobAssetUrl(activeVideo.poster)}
+                        className="max-h-full max-w-full rounded-[1.6rem] object-contain shadow-[0_0_80px_rgba(0,0,0,0.75)]"
+                      >
+                        <source src={getBlobAssetUrl(activeVideo.src)} type="video/mp4" />
+                      </video>
+                    </div>
+                  ) : activePhoto ? (
+                    <Image src={getBlobAssetUrl(activePhoto)} alt="Lodge Frame" fill className="object-contain p-8" />
+                  ) : null}
+                  <div className="absolute bottom-5 left-5 rounded-full border border-white/10 bg-black/55 px-4 py-2 text-[8px] font-black uppercase tracking-[0.2em] text-white/60 sm:bottom-8 sm:left-8">
+                    {viewer.kind === 'video'
+                      ? `${activeVideo?.durationLabel ?? '--:--'} Runtime`
+                      : `${String(viewer.index + 1).padStart(2, '0')} / ${String(lightboxCount).padStart(2, '0')} Photos`}
+                  </div>
                </motion.div>
             </div>
           </motion.div>
