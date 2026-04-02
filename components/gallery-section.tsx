@@ -546,8 +546,8 @@ export default function GallerySection() {
                   </div>
                 </div>
 
-                <div className="grid flex-1 min-h-0 gap-4 xl:grid-cols-[minmax(0,1fr)_19rem]">
-                  <div className="relative min-h-[52vh] overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_42%),linear-gradient(180deg,rgba(14,20,19,0.94),rgba(6,10,10,0.98))] shadow-premium">
+                <div className="flex flex-1 min-h-0 flex-col gap-4">
+                  <div className="relative min-h-[56vh] overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_42%),linear-gradient(180deg,rgba(14,20,19,0.94),rgba(6,10,10,0.98))] shadow-premium">
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.04] via-transparent to-black/40" />
 
                     {hasMultipleAssets && (
@@ -577,7 +577,7 @@ export default function GallerySection() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.98 }}
                       transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                      className="relative flex h-full min-h-[52vh] w-full items-center justify-center p-3 sm:p-6 lg:p-8"
+                      className="relative flex min-h-[56vh] w-full items-center justify-center p-4 sm:p-6 lg:p-8"
                     >
                       {isVideoAsset(lightboxAsset) ? (
                         <video
@@ -586,21 +586,20 @@ export default function GallerySection() {
                           playsInline
                           preload="metadata"
                           poster={buildPosterSrc(lightboxAsset)}
-                          className="max-h-full max-w-full rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+                          className="h-auto max-h-[72vh] w-auto max-w-full rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
                         >
                           <source src={buildVideoSrc(lightboxAsset)} type="video/mp4" />
                         </video>
                       ) : (
-                        <div className="relative h-full min-h-[44vh] w-full">
-                          <Image
-                            src={buildImageSrc(lightboxAsset)}
-                            alt={lightboxAsset.alt}
-                            fill
-                            priority
-                            sizes="(max-width: 1280px) 100vw, 72vw"
-                            className="select-none object-contain"
-                          />
-                        </div>
+                        <Image
+                          src={buildImageSrc(lightboxAsset)}
+                          alt={lightboxAsset.alt}
+                          width={2400}
+                          height={1600}
+                          priority
+                          sizes="100vw"
+                          className="h-auto max-h-[72vh] w-auto max-w-full select-none rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+                        />
                       )}
                     </motion.div>
 
@@ -614,10 +613,10 @@ export default function GallerySection() {
                     </div>
                   </div>
 
-                  <aside className="flex min-h-0 flex-col gap-4 rounded-[2rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
-                    <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.02] p-4">
+                  <div className="grid gap-4 lg:grid-cols-[minmax(16rem,0.9fr)_minmax(0,1.8fr)]">
+                    <div className="rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
                       <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Asset Metadata</p>
-                      <div className="mt-4 grid grid-cols-2 gap-4">
+                      <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2">
                         {[
                           { label: 'Capture Date', value: lightboxAsset.meta.date },
                           { label: 'Field Coords', value: lightboxAsset.meta.coords },
@@ -632,7 +631,7 @@ export default function GallerySection() {
                       </div>
                     </div>
 
-                    <div className="flex min-h-0 flex-1 flex-col rounded-[1.6rem] border border-white/10 bg-white/[0.02] p-4">
+                    <div className="rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
                       <div className="mb-4 flex items-start justify-between gap-3">
                         <div>
                           <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Quick Browse</p>
@@ -643,7 +642,7 @@ export default function GallerySection() {
                         </div>
                       </div>
 
-                      <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1 xl:flex-1 xl:flex-col xl:overflow-x-hidden xl:overflow-y-auto xl:pr-1">
+                      <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
                         {assets.map((asset, index) => (
                           <button
                             key={`lightbox-strip-${asset.meta.fileId}`}
@@ -654,7 +653,7 @@ export default function GallerySection() {
                             data-cursor="gallery"
                             aria-label={`Open asset ${index + 1}: ${asset.alt}`}
                             onClick={() => openLightbox(index)}
-                            className={`group relative h-24 w-36 shrink-0 overflow-hidden rounded-[1.25rem] border text-left transition-all xl:h-24 xl:w-full ${
+                            className={`group relative h-24 w-36 shrink-0 overflow-hidden rounded-[1.25rem] border text-left transition-all sm:h-28 sm:w-44 ${
                               index === lightboxIndex
                                 ? 'border-gold-400 bg-gold-400/10 shadow-glow'
                                 : 'border-white/10 bg-white/[0.02] hover:border-white/30'
@@ -696,7 +695,7 @@ export default function GallerySection() {
                         Use arrows, keyboard, or the internal strip to move through the category.
                       </p>
                     </div>
-                  </aside>
+                  </div>
                 </div>
               </div>
             </div>
