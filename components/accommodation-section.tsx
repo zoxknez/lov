@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, type PointerEvent as ReactPointerEvent, type WheelEvent as ReactWheelEvent } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bed, Coffee, Flame, MapPin, Users, Utensils, Wifi, Play, Compass, ExternalLink, Activity, X, ChevronLeft, ChevronRight, Maximize2, ShieldCheck, Locate } from 'lucide-react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 import TextReveal from '@/components/text-reveal';
-import MagneticButton from '@/components/magnetic-button';
 import { lodgeAccommodationMedia, stayMedia, stayVideoMedia, type VideoMediaItem } from '@/lib/media-collections';
 
 type Lodge = {
@@ -92,11 +91,41 @@ const lodges: Lodge[] = [
 export default function AccommodationSection() {
   const [active, setActive] = useState(0);
   const [viewer, setViewer] = useState<ViewerState | null>(null);
+  const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const quickBrowseRef = useRef<HTMLDivElement | null>(null);
+  const quickBrowseDragRef = useRef({
+    isDragging: false,
+    pointerId: -1,
+    startX: 0,
+    startScrollLeft: 0,
+  });
+  const suppressThumbnailClickRef = useRef(false);
+  const [isDraggingQuickBrowse, setIsDraggingQuickBrowse] = useState(false);
   const lodge = lodges[active];
   const hasVideos = lodge.videos.length > 0;
   const lightboxCount = viewer ? (viewer.kind === 'photo' ? lodge.gallery.length : lodge.videos.length) : 0;
   const activeVideo = viewer?.kind === 'video' ? lodge.videos[viewer.index] : null;
   const activePhoto = viewer?.kind === 'photo' ? lodge.gallery[viewer.index] : null;
+  const lodgeNamePlain = lodge.name.replace(/\n/g, ' ');
+  const viewerItems =
+    viewer?.kind === 'video'
+      ? lodge.videos.map((video, index) => ({
+          key: `video-${index}`,
+          thumbSrc: getBlobAssetUrl(video.poster),
+          title: video.alt,
+          badge: `Tape ${String(index + 1).padStart(2, '0')}`,
+          runtime: video.durationLabel,
+          mediaType: 'video' as const,
+        }))
+      : lodge.gallery.map((photo, index) => ({
+          key: `photo-${index}`,
+          thumbSrc: getBlobAssetUrl(photo),
+          title: `${lodgeNamePlain} Frame ${String(index + 1).padStart(2, '0')}`,
+          badge: `Frame ${String(index + 1).padStart(2, '0')}`,
+          runtime: 'PHOTO',
+          mediaType: 'photo' as const,
+        }));
+  const activeViewerItem = viewer ? viewerItems[viewer.index] : null;
 
   // Prevent scrolling when lightbox is open
   useEffect(() => {
@@ -129,6 +158,134 @@ export default function AccommodationSection() {
       const total = prevState.kind === 'photo' ? lodge.gallery.length : lodge.videos.length;
       return { ...prevState, index: (prevState.index - 1 + total) % total };
     });
+
+  useEffect(() => {
+    if (!viewer) return;
+
+    const moveViewer = (direction: 1 | -1) => {
+      setViewer((prevState) => {
+        if (!prevState) return null;
+
+        const total = prevState.kind === 'photo' ? lodge.gallery.length : lodge.videos.length;
+        const nextIndex = (prevState.index + direction + total) % total;
+
+        return { ...prevState, index: nextIndex };
+      });
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setViewer(null);
+        return;
+      }
+
+      if (event.key === 'ArrowRight' && lightboxCount > 1) {
+        event.preventDefault();
+        moveViewer(1);
+      }
+
+      if (event.key === 'ArrowLeft' && lightboxCount > 1) {
+        event.preventDefault();
+        moveViewer(-1);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [viewer, lightboxCount, lodge.gallery.length, lodge.videos.length]);
+
+  useEffect(() => {
+    if (!viewer) return;
+
+    thumbnailRefs.current[viewer.index]?.scrollIntoView({
+      block: 'nearest',
+      inline: 'center',
+      behavior: 'smooth',
+    });
+  }, [viewer, active]);
+
+  const stopQuickBrowseDrag = () => {
+    quickBrowseDragRef.current.isDragging = false;
+    quickBrowseDragRef.current.pointerId = -1;
+    setIsDraggingQuickBrowse(false);
+  };
+
+  const handleQuickBrowsePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+
+    const viewport = quickBrowseRef.current;
+
+    if (!viewport) return;
+
+    quickBrowseDragRef.current = {
+      isDragging: true,
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startScrollLeft: viewport.scrollLeft,
+    };
+    suppressThumbnailClickRef.current = false;
+    setIsDraggingQuickBrowse(true);
+    viewport.setPointerCapture(event.pointerId);
+  };
+
+  const handleQuickBrowsePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const viewport = quickBrowseRef.current;
+    const drag = quickBrowseDragRef.current;
+
+    if (!viewport || !drag.isDragging || drag.pointerId !== event.pointerId) return;
+
+    const deltaX = event.clientX - drag.startX;
+
+    if (Math.abs(deltaX) > 6) {
+      suppressThumbnailClickRef.current = true;
+    }
+
+    viewport.scrollLeft = drag.startScrollLeft - deltaX;
+  };
+
+  const handleQuickBrowsePointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const viewport = quickBrowseRef.current;
+
+    if (viewport?.hasPointerCapture(event.pointerId)) {
+      viewport.releasePointerCapture(event.pointerId);
+    }
+
+    stopQuickBrowseDrag();
+  };
+
+  const handleQuickBrowseWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
+    const viewport = quickBrowseRef.current;
+
+    if (!viewport) return;
+
+    if (Math.abs(event.deltaY) > Math.abs(event.deltaX) && viewport.scrollWidth > viewport.clientWidth) {
+      viewport.scrollLeft += event.deltaY;
+      event.preventDefault();
+    }
+  };
+
+  const handleQuickBrowseSelect = (index: number) => {
+    if (suppressThumbnailClickRef.current) {
+      suppressThumbnailClickRef.current = false;
+      return;
+    }
+
+    setViewer((prevState) => (prevState ? { ...prevState, index } : prevState));
+  };
+
+  const scrollQuickBrowseBy = (direction: 'left' | 'right') => {
+    const viewport = quickBrowseRef.current;
+
+    if (!viewport) return;
+
+    const amount = Math.max(220, Math.round(viewport.clientWidth * 0.45));
+
+    viewport.scrollBy({
+      left: direction === 'left' ? -amount : amount,
+      behavior: 'smooth',
+    });
+  };
 
   return (
     <section id="stay" className={`relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${viewer !== null ? 'z-[10000]' : 'z-10'}`}>
@@ -438,82 +595,229 @@ export default function AccommodationSection() {
 
       {/* -- Immersive Lightbox -- */}
       <AnimatePresence>
-        {viewer !== null && (
+        {viewer !== null && activeViewerItem && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] bg-forest-950/98 backdrop-blur-3xl flex flex-col"
+            className="fixed inset-0 z-[1000] flex flex-col overflow-hidden bg-forest-950/98 backdrop-blur-3xl"
             onClick={() => setViewer(null)}
             data-lenis-prevent
           >
-            {/* ── TACTICAL HUD HEADER (shrink-0) ── */}
-            <div
-              className="shrink-0 z-[1010] px-4 pt-16 pb-6 sm:px-10 sm:pt-40 sm:pb-10"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="mx-auto max-w-7xl">
-                <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/60 p-3 backdrop-blur-3xl shadow-premium sm:rounded-[2.5rem] sm:p-5">
-                  {/* Left: Info card - unified inside the same bar */}
-                  <div className="flex-1 min-w-0 px-2 sm:px-4">
-                    <p className="text-[8px] font-black uppercase tracking-[0.4em] text-gold-400/50 mb-1 leading-none truncate">{lodge.name}</p>
-                    <h2 className="text-white font-display text-base font-bold uppercase tracking-tight truncate sm:text-2xl leading-tight">
-                      {`${viewer.kind === 'video' ? 'Motion Archive' : 'Field Archive'} / ${viewer.kind === 'video' ? `Tape ${viewer.index + 1}` : `Frame ${viewer.index + 1}`}`}
-                    </h2>
-                  </div>
-
-                  {/* Right: Close button - part of the unified HUD bar */}
-                  <div className="shrink-0 pl-2 border-l border-white/10 sm:pl-5">
+            {/* Lightbox Layout */}
+            <div className="flex-1 min-h-0 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+              <div className="mx-auto flex h-full max-w-7xl flex-col gap-4" onClick={(event) => event.stopPropagation()}>
+                <div className="rounded-[2rem] border border-white/10 bg-black/60 px-4 py-4 shadow-premium backdrop-blur-3xl sm:px-6 sm:py-5">
+                  <div className="flex items-start gap-4 sm:items-center">
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-2 flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.35em] text-gold-400/50">
+                        {viewer.kind === 'video' ? <Play className="h-3 w-3 shrink-0" /> : <Maximize2 className="h-3 w-3 shrink-0" />}
+                        {viewer.kind === 'video' ? 'Motion Archive' : 'Lodge Archive'}
+                      </div>
+                      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                        <div className="min-w-0">
+                          <h2 className="truncate font-display text-xl font-bold uppercase tracking-tight text-white sm:text-3xl">
+                            {activeViewerItem.title}
+                          </h2>
+                          <p className="mt-1 text-[10px] font-black uppercase tracking-[0.24em] text-white/28">
+                            {lodgeNamePlain} | {lodge.location}
+                          </p>
+                        </div>
+                        <div className="inline-flex items-center gap-3 self-start rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-gold-200">
+                          <span>{viewer.kind === 'video' ? 'Tape' : 'Frame'}</span>
+                          <span className="stat-number text-base font-display tracking-tight">
+                            {String(viewer.index + 1).padStart(2, '0')} / {String(lightboxCount).padStart(2, '0')}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                     <button
+                      type="button"
+                      aria-label="Close expanded lodge gallery"
                       onClick={() => setViewer(null)}
-                      className="h-11 w-11 flex items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/50 transition-all duration-300 hover:bg-gold-500 hover:text-black hover:rotate-90 hover:border-gold-400 sm:h-14 sm:w-14"
+                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/50 transition-all hover:rotate-90 hover:border-gold-400 hover:bg-gold-500 hover:text-black"
                     >
-                      <X className="h-5 w-5 sm:h-6 sm:w-6" />
+                      <X className="h-5 w-5" />
                     </button>
                   </div>
                 </div>
-              </div>
-            </div>
-            {/* Image area — flex-1 fills all remaining space */}
-            <div className="relative flex-1 min-h-0 z-[1005] p-4 sm:p-6" onClick={(e) => e.stopPropagation()}>
-               {/* Side navigation arrows */}
-               <div className="absolute inset-y-0 left-4 right-4 z-[1020] flex items-center justify-between pointer-events-none sm:left-6 sm:right-6">
-                  <MagneticButton strength={0.2} onClick={prev} className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/5 bg-black/30 text-white/30 hover:border-gold-400/40 hover:text-gold-400 backdrop-blur-xl sm:h-16 sm:w-16">
-                     <ChevronLeft className="h-6 w-6 sm:h-8 sm:w-8" />
-                  </MagneticButton>
-                  <MagneticButton strength={0.2} onClick={next} className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/5 bg-black/30 text-white/30 hover:border-gold-400/40 hover:text-gold-400 backdrop-blur-xl sm:h-16 sm:w-16">
-                     <ChevronRight className="h-6 w-6 sm:h-8 sm:w-8" />
-                  </MagneticButton>
-               </div>
-               <motion.div
-                 key={`${viewer.kind}-${viewer.index}`}
-                 initial={{ opacity: 0, scale: 0.95 }}
-                 animate={{ opacity: 1, scale: 1 }}
-                 exit={{ opacity: 0, scale: 0.95 }}
-                 className="relative h-full w-full rounded-[2rem] overflow-hidden border border-white/10 bg-black/10 sm:rounded-[3rem]"
-               >
-                  {activeVideo ? (
-                    <div className="flex h-full w-full items-center justify-center p-4 sm:p-8">
-                      <video
-                        controls
-                        autoPlay
-                        playsInline
-                        preload="metadata"
-                        poster={getBlobAssetUrl(activeVideo.poster)}
-                        className="max-h-full max-w-full rounded-[1.6rem] object-contain shadow-[0_0_80px_rgba(0,0,0,0.75)]"
-                      >
-                        <source src={getBlobAssetUrl(activeVideo.src)} type="video/mp4" />
-                      </video>
+                {/* Media Stage */}
+                <div className="flex flex-1 min-h-0 flex-col gap-4">
+                  <div className="relative flex-1 min-h-0 overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_42%),linear-gradient(180deg,rgba(14,20,19,0.94),rgba(6,10,10,0.98))] shadow-premium">
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.04] via-transparent to-black/40" />
+
+                    {lightboxCount > 1 && (
+                      <>
+                        <button
+                          type="button"
+                          aria-label="Show previous asset"
+                          onClick={prev}
+                          className="absolute left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/55 text-white/40 transition-all hover:border-gold-400 hover:text-gold-300 sm:left-5 sm:h-14 sm:w-14"
+                        >
+                          <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+                        </button>
+                        <button
+                          type="button"
+                          aria-label="Show next asset"
+                          onClick={next}
+                          className="absolute right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/55 text-white/40 transition-all hover:border-gold-400 hover:text-gold-300 sm:right-5 sm:h-14 sm:w-14"
+                        >
+                          <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+                        </button>
+                      </>
+                    )}
+
+                    <motion.div
+                      key={`${viewer.kind}-${viewer.index}`}
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                      className="relative flex h-full min-h-0 w-full items-center justify-center p-4 sm:p-6 lg:p-8"
+                    >
+                      {activeVideo ? (
+                        <video
+                          controls
+                          autoPlay
+                          playsInline
+                          preload="metadata"
+                          poster={getBlobAssetUrl(activeVideo.poster)}
+                          className="h-auto max-h-full w-auto max-w-full rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+                        >
+                          <source src={getBlobAssetUrl(activeVideo.src)} type="video/mp4" />
+                        </video>
+                      ) : activePhoto ? (
+                        <Image
+                          src={getBlobAssetUrl(activePhoto)}
+                          alt={activeViewerItem.title}
+                          width={2400}
+                          height={1600}
+                          priority
+                          sizes="100vw"
+                          className="h-auto max-h-full w-auto max-w-full select-none rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+                        />
+                      ) : null}
+                    </motion.div>
+
+                    <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-between gap-3 sm:bottom-6 sm:left-6 sm:right-6">
+                      <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-white/70">
+                        {viewer.kind === 'video' ? `${activeVideo?.durationLabel ?? '--:--'} Runtime` : 'Photo Asset'}
+                      </div>
+                      <div className="rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-gold-200">
+                        {activeViewerItem.badge}
+                      </div>
                     </div>
-                  ) : activePhoto ? (
-                    <Image src={getBlobAssetUrl(activePhoto)} alt="Lodge Frame" fill className="object-contain p-8" />
-                  ) : null}
-                  <div className="absolute bottom-5 left-5 rounded-full border border-white/10 bg-black/55 px-4 py-2 text-[8px] font-black uppercase tracking-[0.2em] text-white/60 sm:bottom-8 sm:left-8">
-                    {viewer.kind === 'video'
-                      ? `${activeVideo?.durationLabel ?? '--:--'} Runtime`
-                      : `${String(viewer.index + 1).padStart(2, '0')} / ${String(lightboxCount).padStart(2, '0')} Photos`}
                   </div>
-               </motion.div>
+
+                  <div className="grid shrink-0 gap-4 lg:grid-cols-[minmax(16rem,0.95fr)_minmax(0,1.8fr)]">
+                    <div className="rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
+                      <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Asset Metadata</p>
+                      <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2">
+                        {[
+                          { label: 'Base', value: lodgeNamePlain },
+                          { label: 'Location', value: lodge.location },
+                          { label: 'Medium', value: viewer.kind === 'video' ? 'Video' : 'Photo' },
+                          { label: 'Runtime', value: viewer.kind === 'video' ? activeVideo?.durationLabel ?? '--:--' : 'PHOTO' },
+                        ].map((item) => (
+                          <div key={item.label} className="flex flex-col gap-1">
+                            <span className="text-[7px] font-black uppercase tracking-[0.3em] text-white/30">{item.label}</span>
+                            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white">{item.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
+                      <div className="mb-4 flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Quick Browse</p>
+                          <p className="mt-2 text-xs leading-relaxed text-gray-400">
+                            Browse the full {viewer.kind === 'video' ? 'motion archive' : 'photo archive'} from inside the lightbox and jump straight to any {viewer.kind === 'video' ? 'tape' : 'frame'}.
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            aria-label="Scroll quick browse left"
+                            onClick={() => scrollQuickBrowseBy('left')}
+                            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/55 transition-all hover:border-gold-400/40 hover:text-gold-200"
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                          </button>
+                          <button
+                            type="button"
+                            aria-label="Scroll quick browse right"
+                            onClick={() => scrollQuickBrowseBy('right')}
+                            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/55 transition-all hover:border-gold-400/40 hover:text-gold-200"
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                          </button>
+                          <div className="rounded-full border border-white/10 bg-black/40 px-3 py-2 text-[9px] font-black uppercase tracking-[0.22em] text-white/55">
+                            {String(lightboxCount).padStart(2, '0')}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        ref={quickBrowseRef}
+                        className={`no-scrollbar flex gap-3 overflow-x-auto pb-1 select-none ${isDraggingQuickBrowse ? 'cursor-grabbing' : 'cursor-grab'}`}
+                        onPointerDown={handleQuickBrowsePointerDown}
+                        onPointerMove={handleQuickBrowsePointerMove}
+                        onPointerUp={handleQuickBrowsePointerUp}
+                        onPointerCancel={handleQuickBrowsePointerUp}
+                        onWheel={handleQuickBrowseWheel}
+                        style={{ touchAction: 'pan-x' }}
+                      >
+                        {viewerItems.map((item, index) => (
+                          <button
+                            key={`lodge-lightbox-strip-${item.key}`}
+                            ref={(element) => {
+                              thumbnailRefs.current[index] = element;
+                            }}
+                            type="button"
+                            data-cursor="gallery"
+                            aria-label={`Open ${viewer.kind === 'video' ? 'tape' : 'frame'} ${index + 1}: ${item.title}`}
+                            onClick={() => handleQuickBrowseSelect(index)}
+                            onDragStart={(event) => event.preventDefault()}
+                            className={`group relative h-24 w-36 shrink-0 overflow-hidden rounded-[1.25rem] border text-left transition-all sm:h-28 sm:w-44 ${
+                              index === viewer.index
+                                ? 'border-gold-400 bg-gold-400/10 shadow-glow'
+                                : 'border-white/10 bg-white/[0.02] hover:border-white/30'
+                            }`}
+                          >
+                            <Image src={item.thumbSrc} alt={item.title} fill sizes="240px" className="object-cover" />
+
+                            <div
+                              className={`absolute inset-0 transition-colors ${
+                                index === viewer.index ? 'bg-black/10' : 'bg-black/45 group-hover:bg-black/28'
+                              }`}
+                            />
+
+                            <div className="absolute left-3 top-3 rounded-full border border-white/10 bg-black/55 px-2.5 py-1 text-[8px] font-black uppercase tracking-[0.2em] text-gold-200">
+                              {String(index + 1).padStart(2, '0')}
+                            </div>
+
+                            {item.mediaType === 'video' && (
+                              <div className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border border-gold-400/20 bg-black/55 text-gold-300">
+                                <Play className="ml-0.5 h-3 w-3" />
+                              </div>
+                            )}
+
+                            <div className="absolute inset-x-0 bottom-0 p-3">
+                              <p className="truncate text-[10px] font-bold uppercase tracking-[0.16em] text-white">{item.title}</p>
+                              <p className="mt-1 truncate text-[8px] font-black uppercase tracking-[0.2em] text-white/45">{item.badge}</p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+
+                      <p className="mt-4 text-[9px] font-black uppercase tracking-[0.24em] text-white/20">
+                        Use arrows, keyboard, or the internal strip to move through the archive.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
