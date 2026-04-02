@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { Calendar, ChevronLeft, ChevronRight, Locate, Maximize2, Play, ShieldCheck, Video, X } from 'lucide-react';
@@ -38,13 +38,41 @@ type GalleryVideoAsset = {
 
 type GalleryAsset = GalleryImageAsset | GalleryVideoAsset;
 
+type GalleryGroup = {
+  key: string;
+  label: string;
+  title: string;
+  sub: string;
+  assets: GalleryAsset[];
+};
+
+const previewGridClasses = [
+  'col-span-2 row-span-2 md:col-span-7 md:row-span-2',
+  'col-span-1 row-span-1 md:col-span-5 md:row-span-1',
+  'col-span-1 row-span-1 md:col-span-5 md:row-span-1',
+  'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
+  'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
+  'col-span-2 row-span-1 md:col-span-4 md:row-span-1',
+  'col-span-1 row-span-1 md:col-span-6 md:row-span-1',
+  'col-span-1 row-span-1 md:col-span-6 md:row-span-1',
+] as const;
+
+function formatAssetCount(value: number) {
+  return String(value).padStart(2, '0');
+}
+
 function isVideoAsset(asset: GalleryAsset): asset is GalleryVideoAsset {
   return asset.kind === 'video';
 }
 
 function buildImageSrc(asset: GalleryImageAsset) {
   if (!asset.blobPath) return getBlobAssetUrl(asset.src);
-  const params = new URLSearchParams({ pathname: asset.blobPath, fallback: asset.fallbackSrc ?? asset.src });
+
+  const params = new URLSearchParams({
+    pathname: asset.blobPath,
+    fallback: asset.fallbackSrc ?? asset.src,
+  });
+
   return `/api/blob-image?${params.toString()}`;
 }
 
@@ -148,33 +176,61 @@ const recentAssets = gallerySlike.map((img, index) => ({
   },
 })) satisfies GalleryImageAsset[];
 
-const allAssets: GalleryAsset[] = [
-  trophyAssets[0],
-  countyAssets[0],
-  videoAssets[0],
-  backcountryAssets[0],
-  lodgeAssets[0],
-  stayAssets[0],
+const allArchiveAssets: GalleryAsset[] = [
+  ...recentAssets,
+  ...trophyAssets,
+  ...countyAssets,
+  ...backcountryAssets,
+  ...lodgeAssets,
+  ...stayAssets,
+  ...videoAssets,
 ];
 
-const galleryGroups: Array<{ key: string; label: string; title: string; sub: string; assets: GalleryAsset[] }> = [
-  { key: 'all', label: 'All', title: 'Visual Archive', sub: 'Full-spectrum field operations log', assets: allAssets },
-  { key: 'video', label: 'Field Tapes', title: 'Motion Archive', sub: 'Premium hosted-stay video clips with cinematic field atmosphere', assets: videoAssets },
-  { key: 'trophies', label: 'Trophies', title: 'Trophy Archive', sub: 'Red stag | Sika | Fallow', assets: trophyAssets },
-  { key: 'county', label: 'County', title: 'County Country', sub: 'Bush edges, lower country, and hosted access terrain', assets: countyAssets },
-  { key: 'backcountry', label: 'Backcountry', title: 'Backcountry Lines', sub: 'Open basins, higher ridges, and deeper terrain', assets: backcountryAssets },
-  { key: 'lodge', label: 'Lodge', title: 'Hosted Base', sub: 'Ohakune lodge life', assets: lodgeAssets },
-  { key: 'stay', label: 'Stay', title: 'Hosted Stay', sub: 'Smestaj archive and additional accommodation frames', assets: stayAssets },
-  { key: 'recent', label: 'Recent', title: 'Recent Frames', sub: 'Current-season archive', assets: recentAssets },
+const galleryGroups: GalleryGroup[] = [
+  {
+    key: 'all',
+    label: 'All',
+    title: 'Complete Archive',
+    sub: 'Every field frame, hosted-stay still, and motion tape from the current archive.',
+    assets: allArchiveAssets,
+  },
+  {
+    key: 'video',
+    label: 'Field Tapes',
+    title: 'Motion Archive',
+    sub: 'Premium hosted-stay video clips with cinematic field atmosphere.',
+    assets: videoAssets,
+  },
+  { key: 'trophies', label: 'Trophies', title: 'Trophy Archive', sub: 'Red stag, sika, fallow, and field portraits.', assets: trophyAssets },
+  {
+    key: 'county',
+    label: 'County',
+    title: 'County Country',
+    sub: 'Bush edges, lower country, and hosted access terrain.',
+    assets: countyAssets,
+  },
+  {
+    key: 'backcountry',
+    label: 'Backcountry',
+    title: 'Backcountry Lines',
+    sub: 'Open basins, higher ridges, and deeper terrain.',
+    assets: backcountryAssets,
+  },
+  { key: 'lodge', label: 'Lodge', title: 'Hosted Base', sub: 'Ohakune lodge life and interior frames.', assets: lodgeAssets },
+  { key: 'stay', label: 'Stay', title: 'Hosted Stay', sub: 'Smestaj archive and additional accommodation frames.', assets: stayAssets },
+  { key: 'recent', label: 'Recent', title: 'Recent Frames', sub: 'Current-season archive.', assets: recentAssets },
 ];
 
 export default function GallerySection() {
-  const [activeKey, setActiveKey] = useState('all');
+  const [activeKey, setActiveKey] = useState('recent');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const active = galleryGroups.find((group) => group.key === activeKey) ?? galleryGroups[0];
   const assets = active.assets;
+  const previewAssets = assets.slice(0, previewGridClasses.length);
   const lightboxAsset = lightboxIndex !== null ? assets[lightboxIndex] : null;
+  const hasMultipleAssets = assets.length > 1;
 
   useEffect(() => {
     if (lightboxIndex !== null) {
@@ -194,13 +250,48 @@ export default function GallerySection() {
     };
   }, [lightboxIndex]);
 
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setLightboxIndex(null);
+        return;
+      }
+
+      if (event.key === 'ArrowRight' && assets.length > 1) {
+        event.preventDefault();
+        setLightboxIndex((current) => (current === null ? null : (current + 1) % assets.length));
+      }
+
+      if (event.key === 'ArrowLeft' && assets.length > 1) {
+        event.preventDefault();
+        setLightboxIndex((current) => (current === null ? null : (current - 1 + assets.length) % assets.length));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxIndex, assets.length]);
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+
+    thumbnailRefs.current[lightboxIndex]?.scrollIntoView({
+      block: 'nearest',
+      inline: 'center',
+      behavior: 'smooth',
+    });
+  }, [activeKey, lightboxIndex]);
+
   const closeLightbox = () => setLightboxIndex(null);
   const openLightbox = (index: number) => setLightboxIndex(index);
   const showNext = () => setLightboxIndex((current) => (current === null ? null : (current + 1) % assets.length));
   const showPrev = () => setLightboxIndex((current) => (current === null ? null : (current - 1 + assets.length) % assets.length));
 
   return (
-    <section id="gallery" className={`relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${lightboxIndex !== null ? 'z-[10000]' : 'z-10'}`}>
+    <section id="gallery" className={`gallery-lighttable relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${lightboxIndex !== null ? 'z-[10000]' : 'z-10'}`}>
       <div className="pointer-events-none absolute inset-0 bg-forest-950/10 backdrop-blur-[1px]" />
       <div className="pointer-events-none absolute -left-32 top-0 h-[500px] w-[500px] rounded-full bg-gold-600/4 blur-[140px]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,white_1px,transparent_1px)] bg-[size:40px_40px] opacity-[0.02]" />
@@ -231,64 +322,72 @@ export default function GallerySection() {
             {galleryGroups.map((group) => (
               <button
                 key={group.key}
+                type="button"
+                data-cursor="gallery"
+                aria-pressed={activeKey === group.key}
                 onClick={() => {
                   setActiveKey(group.key);
                   closeLightbox();
                 }}
-                className={`rounded-full border px-6 py-4 text-[10px] font-black uppercase tracking-[0.32em] transition-all ${
+                className={`group flex items-center gap-3 rounded-full border px-5 py-3 text-[10px] font-black uppercase tracking-[0.28em] transition-all sm:px-6 sm:py-4 ${
                   activeKey === group.key
                     ? 'border-gold-400/50 bg-gold-400/15 text-gold-300 shadow-glow'
                     : 'border-white/10 bg-white/[0.04] text-gray-500 hover:border-gold-400/20 hover:text-white'
                 }`}
               >
-                {group.label}
-                <span className={`ml-3 text-[8px] ${activeKey === group.key ? 'text-gold-400/60' : 'text-white/15'}`}>{group.assets.length}</span>
+                <span>{group.label}</span>
+                <span
+                  className={`inline-flex min-w-[2.2rem] items-center justify-center rounded-full border px-2 py-1 text-[8px] font-black tracking-[0.22em] ${
+                    activeKey === group.key
+                      ? 'border-gold-400/30 bg-black/25 text-gold-200'
+                      : 'border-white/10 bg-black/25 text-white/45 group-hover:text-white/80'
+                  }`}
+                >
+                  {formatAssetCount(group.assets.length)}
+                </span>
               </button>
             ))}
           </div>
         </div>
 
         <div className="mb-10 flex flex-col gap-6 border-b border-white/5 pb-10 lg:flex-row lg:items-end lg:justify-between">
-          <div>
+          <div className="max-w-3xl">
             <p className="mb-2 text-[10px] font-black uppercase tracking-[0.4em] text-gold-400/40">Active Category</p>
             <h3 className="font-display text-4xl font-bold uppercase tracking-tight text-white md:text-6xl">{active.title}</h3>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-gray-400">{active.sub}</p>
+            <p className="mt-3 text-sm leading-relaxed text-gray-400">{active.sub}</p>
           </div>
-          <div className="flex gap-8">
-            <div>
-              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Archive Sync</p>
-              <p className="mt-1 text-[11px] font-bold uppercase tracking-widest text-green-500/60">100%</p>
+          <div className="flex flex-wrap gap-3 sm:gap-4">
+            <div className="min-w-[8.5rem] rounded-[1.5rem] border border-white/10 bg-black/35 px-4 py-4 shadow-premium backdrop-blur-xl">
+              <p className="text-[9px] font-black uppercase tracking-[0.28em] text-white/25">In Category</p>
+              <p className="stat-number mt-2 font-display text-3xl font-bold uppercase tracking-tight text-white">{formatAssetCount(assets.length)}</p>
             </div>
-            <div>
-              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Assets Localized</p>
-              <p className="mt-1 text-[11px] font-bold uppercase tracking-widest text-white/40">{assets.length}</p>
+            <div className="min-w-[8.5rem] rounded-[1.5rem] border border-white/10 bg-black/35 px-4 py-4 shadow-premium backdrop-blur-xl">
+              <p className="text-[9px] font-black uppercase tracking-[0.28em] text-white/25">Preview Grid</p>
+              <p className="stat-number mt-2 font-display text-3xl font-bold uppercase tracking-tight text-gold-300">{formatAssetCount(previewAssets.length)}</p>
+            </div>
+            <div className="min-w-[8.5rem] rounded-[1.5rem] border border-white/10 bg-black/35 px-4 py-4 shadow-premium backdrop-blur-xl">
+              <p className="text-[9px] font-black uppercase tracking-[0.28em] text-white/25">Archive Sync</p>
+              <p className="mt-2 text-[13px] font-black uppercase tracking-[0.34em] text-green-400/80">100%</p>
             </div>
           </div>
         </div>
 
         <div className="grid auto-rows-[14rem] grid-cols-2 gap-4 md:auto-rows-[18rem] md:grid-cols-12 md:gap-6">
-          {assets.slice(0, Math.min(assets.length, 8)).map((asset, index) => {
-            const gridClass = [
-              'col-span-2 row-span-2 md:col-span-7 md:row-span-2',
-              'col-span-1 row-span-1 md:col-span-5 md:row-span-1',
-              'col-span-1 row-span-1 md:col-span-5 md:row-span-1',
-              'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
-              'col-span-1 row-span-1 md:col-span-4 md:row-span-1',
-              'col-span-2 row-span-1 md:col-span-4 md:row-span-1',
-              'col-span-1 row-span-1 md:col-span-6 md:row-span-1',
-              'col-span-1 row-span-1 md:col-span-6 md:row-span-1',
-            ][index] ?? 'col-span-1 row-span-1 md:col-span-4 md:row-span-1';
+          {previewAssets.map((asset, index) => {
+            const gridClass = previewGridClasses[index] ?? 'col-span-1 row-span-1 md:col-span-4 md:row-span-1';
 
             return (
               <motion.button
                 key={`${active.key}-${asset.meta.fileId}`}
                 type="button"
+                data-cursor="gallery"
+                aria-label={`Open ${asset.alt}`}
                 initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.06, duration: 0.55 }}
                 onClick={() => openLightbox(index)}
-                className={`group relative overflow-hidden rounded-[2.2rem] border border-white/10 shadow-premium transition-all duration-500 hover:-translate-y-2 hover:border-gold-400/35 ${gridClass}`}
+                className={`gallery-item group relative overflow-hidden rounded-[2.2rem] border border-white/10 shadow-premium transition-all duration-500 hover:-translate-y-2 hover:border-gold-400/35 ${gridClass}`}
               >
                 {isVideoAsset(asset) ? (
                   <video
@@ -307,7 +406,8 @@ export default function GallerySection() {
                     src={buildImageSrc(asset)}
                     alt={asset.alt}
                     fill
-                    sizes="(max-width: 768px) 100vw, 40vw"
+                    priority={index === 0}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 38vw"
                     className="object-cover transition-transform duration-[5000ms] group-hover:scale-110"
                   />
                 )}
@@ -357,17 +457,25 @@ export default function GallerySection() {
             );
           })}
         </div>
-
+ 
         <div className="mt-12 rounded-[2.5rem] border border-white/5 bg-black/40 p-6 shadow-premium backdrop-blur-3xl sm:p-8">
-          <p className="mb-6 text-center text-[9px] font-black uppercase tracking-[0.6em] text-white/10">Reference Filmstrip // RAW_CAPTURE_STREAM</p>
+          <div className="mb-6 flex flex-col gap-3 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
+            <p className="text-[9px] font-black uppercase tracking-[0.6em] text-white/10">Reference Filmstrip // RAW_CAPTURE_STREAM</p>
+            <div className="inline-flex items-center justify-center gap-3 self-center rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-white/55 sm:self-auto">
+              <span className="stat-number text-gold-300">{formatAssetCount(assets.length)}</span>
+              Assets Ready
+            </div>
+          </div>
           <div className="no-scrollbar flex gap-4 overflow-x-auto pb-1">
             {assets.map((asset, index) => (
               <button
                 key={`strip-${asset.meta.fileId}`}
                 type="button"
+                data-cursor="gallery"
+                aria-label={`Open asset ${index + 1}: ${asset.alt}`}
                 onClick={() => openLightbox(index)}
-                className={`relative h-24 w-40 shrink-0 overflow-hidden rounded-[1.2rem] border transition-all sm:h-28 sm:w-48 ${
-                  index === lightboxIndex ? 'scale-[1.02] border-gold-400 shadow-glow' : 'border-white/5 opacity-50 hover:opacity-100'
+                className={`relative h-24 w-40 shrink-0 overflow-hidden rounded-[1.2rem] border text-left transition-all sm:h-28 sm:w-48 ${
+                  index === lightboxIndex ? 'scale-[1.02] border-gold-400 shadow-glow' : 'border-white/5 opacity-70 hover:opacity-100'
                 }`}
               >
                 {isVideoAsset(asset) ? (
@@ -375,17 +483,18 @@ export default function GallerySection() {
                     <source src={buildVideoSrc(asset)} type="video/mp4" />
                   </video>
                 ) : (
-                  <Image src={buildImageSrc(asset)} alt={asset.alt} fill className="object-cover" />
+                  <Image src={buildImageSrc(asset)} alt={asset.alt} fill sizes="192px" className="object-cover" />
                 )}
-                <div className={`absolute inset-0 ${index === lightboxIndex ? 'bg-transparent' : 'bg-black/30'}`} />
+                <div className={`absolute inset-0 transition-colors ${index === lightboxIndex ? 'bg-black/10' : 'bg-black/35'}`} />
                 {isVideoAsset(asset) && (
                   <div className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border border-gold-400/20 bg-black/55 text-gold-300">
                     <Play className="ml-0.5 h-3 w-3" />
                   </div>
                 )}
-                <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[7px] font-black uppercase tracking-widest text-gold-400/40">
-                  FRM_{String(index + 1).padStart(2, '0')}
-                </span>
+                <div className="absolute inset-x-0 bottom-0 p-3">
+                  <p className="truncate text-[9px] font-black uppercase tracking-[0.18em] text-gold-300/85">{asset.meta.fileId}</p>
+                  <p className="truncate text-[10px] font-bold uppercase tracking-[0.14em] text-white/80">{asset.alt}</p>
+                </div>
               </button>
             ))}
           </div>
@@ -398,90 +507,196 @@ export default function GallerySection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] flex flex-col bg-forest-950/98 backdrop-blur-3xl"
+            className="fixed inset-0 z-[1000] overflow-y-auto bg-forest-950/96 backdrop-blur-3xl"
             onClick={closeLightbox}
             data-lenis-prevent
           >
-            <div className="shrink-0 px-4 pb-6 pt-16 sm:px-10 sm:pb-10 sm:pt-32" onClick={(event) => event.stopPropagation()}>
-              <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-black/60 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
-                <div className="flex items-center gap-4">
-                  <div className="min-w-0 flex-1">
-                    <div className="mb-1 flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.35em] text-gold-400/50">
-                      {isVideoAsset(lightboxAsset) ? <Video className="h-3 w-3 shrink-0" /> : <ShieldCheck className="h-3 w-3 shrink-0" />}
-                      {isVideoAsset(lightboxAsset) ? 'Field Tape' : 'Verified Field Data'}
-                    </div>
-                    <h2 className="truncate font-display text-lg font-bold uppercase tracking-tight text-white sm:text-3xl">{lightboxAsset.alt}</h2>
-                  </div>
-                  <button
-                    onClick={closeLightbox}
-                    className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/50 transition-all hover:rotate-90 hover:border-gold-400 hover:bg-gold-500 hover:text-black"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative flex-1 px-4 sm:px-8" onClick={(event) => event.stopPropagation()}>
-              <div className="relative h-full w-full overflow-hidden rounded-[2rem] border border-white/10 bg-black/40 shadow-premium sm:rounded-[3rem]">
-                <button
-                  onClick={showPrev}
-                  className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/50 text-white/40 transition-all hover:border-gold-400 hover:text-gold-300 sm:left-6 sm:h-14 sm:w-14"
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
-                <button
-                  onClick={showNext}
-                  className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/50 text-white/40 transition-all hover:border-gold-400 hover:text-gold-300 sm:right-6 sm:h-14 sm:w-14"
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </button>
-
-                <div className="flex h-full w-full items-center justify-center p-6 sm:p-10">
-                  {isVideoAsset(lightboxAsset) ? (
-                    <video
-                      controls
-                      autoPlay
-                      playsInline
-                      preload="metadata"
-                      poster={buildPosterSrc(lightboxAsset)}
-                      className="max-h-full max-w-full rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
-                    >
-                      <source src={buildVideoSrc(lightboxAsset)} type="video/mp4" />
-                    </video>
-                  ) : (
-                    <Image
-                      src={buildImageSrc(lightboxAsset)}
-                      alt={lightboxAsset.alt}
-                      width={2560}
-                      height={1440}
-                      className="max-h-full max-w-full object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="shrink-0 px-4 py-4 sm:px-8 sm:py-5" onClick={(event) => event.stopPropagation()}>
-              <div className="mx-auto max-w-6xl rounded-[2rem] border border-white/10 bg-black/60 px-5 py-4 shadow-premium backdrop-blur-3xl sm:px-8 sm:py-5">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-3 sm:flex sm:flex-wrap sm:gap-x-10 sm:gap-y-0">
-                    {[
-                      { label: 'File Hash', value: lightboxAsset.meta.fileId },
-                      { label: 'Field Coords', value: lightboxAsset.meta.coords },
-                      { label: 'Capture Date', value: lightboxAsset.meta.date },
-                      { label: 'Medium', value: lightboxAsset.meta.medium },
-                      { label: 'Runtime', value: lightboxAsset.meta.runtime ?? 'PHOTO' },
-                    ].map((item) => (
-                      <div key={item.label} className="flex flex-col gap-1">
-                        <span className="text-[7px] font-black uppercase tracking-[0.3em] text-white/30">{item.label}</span>
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-white">{item.value}</span>
+            <div className="min-h-full px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+              <div className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-7xl flex-col gap-4" onClick={(event) => event.stopPropagation()}>
+                <div className="rounded-[2rem] border border-white/10 bg-black/60 px-4 py-4 shadow-premium backdrop-blur-3xl sm:px-6 sm:py-5">
+                  <div className="flex items-start gap-4 sm:items-center">
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-2 flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.35em] text-gold-400/50">
+                        {isVideoAsset(lightboxAsset) ? <Video className="h-3 w-3 shrink-0" /> : <ShieldCheck className="h-3 w-3 shrink-0" />}
+                        {isVideoAsset(lightboxAsset) ? 'Field Tape' : 'Verified Field Data'}
                       </div>
-                    ))}
+                      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                        <div className="min-w-0">
+                          <h2 className="truncate font-display text-xl font-bold uppercase tracking-tight text-white sm:text-3xl">{lightboxAsset.alt}</h2>
+                          <p className="mt-1 text-[10px] font-black uppercase tracking-[0.24em] text-white/28">
+                            {active.title} | {active.sub}
+                          </p>
+                        </div>
+                        <div className="inline-flex items-center gap-3 self-start rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-gold-200">
+                          <span>Asset</span>
+                          <span className="stat-number text-base font-display tracking-tight">
+                            {formatAssetCount(lightboxIndex + 1)} / {formatAssetCount(assets.length)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      aria-label="Close expanded gallery view"
+                      onClick={closeLightbox}
+                      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/50 transition-all hover:rotate-90 hover:border-gold-400 hover:bg-gold-500 hover:text-black"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
                   </div>
-                  <div className="text-[9px] font-black uppercase tracking-[0.4em] text-gold-400/30">
-                    Asset {String(lightboxIndex + 1).padStart(2, '0')} / {String(assets.length).padStart(2, '0')}
+                </div>
+
+                <div className="grid flex-1 min-h-0 gap-4 xl:grid-cols-[minmax(0,1fr)_19rem]">
+                  <div className="relative min-h-[52vh] overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_42%),linear-gradient(180deg,rgba(14,20,19,0.94),rgba(6,10,10,0.98))] shadow-premium">
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.04] via-transparent to-black/40" />
+
+                    {hasMultipleAssets && (
+                      <>
+                        <button
+                          type="button"
+                          aria-label="Show previous asset"
+                          onClick={showPrev}
+                          className="absolute left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/55 text-white/40 transition-all hover:border-gold-400 hover:text-gold-300 sm:left-5 sm:h-14 sm:w-14"
+                        >
+                          <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+                        </button>
+                        <button
+                          type="button"
+                          aria-label="Show next asset"
+                          onClick={showNext}
+                          className="absolute right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/55 text-white/40 transition-all hover:border-gold-400 hover:text-gold-300 sm:right-5 sm:h-14 sm:w-14"
+                        >
+                          <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+                        </button>
+                      </>
+                    )}
+
+                    <motion.div
+                      key={`${active.key}-${lightboxAsset.meta.fileId}`}
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                      className="relative flex h-full min-h-[52vh] w-full items-center justify-center p-3 sm:p-6 lg:p-8"
+                    >
+                      {isVideoAsset(lightboxAsset) ? (
+                        <video
+                          controls
+                          autoPlay
+                          playsInline
+                          preload="metadata"
+                          poster={buildPosterSrc(lightboxAsset)}
+                          className="max-h-full max-w-full rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+                        >
+                          <source src={buildVideoSrc(lightboxAsset)} type="video/mp4" />
+                        </video>
+                      ) : (
+                        <div className="relative h-full min-h-[44vh] w-full">
+                          <Image
+                            src={buildImageSrc(lightboxAsset)}
+                            alt={lightboxAsset.alt}
+                            fill
+                            priority
+                            sizes="(max-width: 1280px) 100vw, 72vw"
+                            className="select-none object-contain"
+                          />
+                        </div>
+                      )}
+                    </motion.div>
+
+                    <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-between gap-3 sm:bottom-6 sm:left-6 sm:right-6">
+                      <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-white/70">
+                        {isVideoAsset(lightboxAsset) ? `${lightboxAsset.meta.runtime ?? '--:--'} Runtime` : 'Photo Asset'}
+                      </div>
+                      <div className="rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-gold-200">
+                        {lightboxAsset.meta.fileId}
+                      </div>
+                    </div>
                   </div>
+
+                  <aside className="flex min-h-0 flex-col gap-4 rounded-[2rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
+                    <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.02] p-4">
+                      <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Asset Metadata</p>
+                      <div className="mt-4 grid grid-cols-2 gap-4">
+                        {[
+                          { label: 'Capture Date', value: lightboxAsset.meta.date },
+                          { label: 'Field Coords', value: lightboxAsset.meta.coords },
+                          { label: 'Medium', value: lightboxAsset.meta.medium },
+                          { label: 'Runtime', value: lightboxAsset.meta.runtime ?? 'PHOTO' },
+                        ].map((item) => (
+                          <div key={item.label} className="flex flex-col gap-1">
+                            <span className="text-[7px] font-black uppercase tracking-[0.3em] text-white/30">{item.label}</span>
+                            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white">{item.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex min-h-0 flex-1 flex-col rounded-[1.6rem] border border-white/10 bg-white/[0.02] p-4">
+                      <div className="mb-4 flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Quick Browse</p>
+                          <p className="mt-2 text-xs leading-relaxed text-gray-400">Listaj celu kategoriju iz samog prikaza i preskoci odmah na zeljeni frame.</p>
+                        </div>
+                        <div className="rounded-full border border-white/10 bg-black/40 px-3 py-2 text-[9px] font-black uppercase tracking-[0.22em] text-white/55">
+                          {formatAssetCount(assets.length)}
+                        </div>
+                      </div>
+
+                      <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1 xl:flex-1 xl:flex-col xl:overflow-x-hidden xl:overflow-y-auto xl:pr-1">
+                        {assets.map((asset, index) => (
+                          <button
+                            key={`lightbox-strip-${asset.meta.fileId}`}
+                            ref={(element) => {
+                              thumbnailRefs.current[index] = element;
+                            }}
+                            type="button"
+                            data-cursor="gallery"
+                            aria-label={`Open asset ${index + 1}: ${asset.alt}`}
+                            onClick={() => openLightbox(index)}
+                            className={`group relative h-24 w-36 shrink-0 overflow-hidden rounded-[1.25rem] border text-left transition-all xl:h-24 xl:w-full ${
+                              index === lightboxIndex
+                                ? 'border-gold-400 bg-gold-400/10 shadow-glow'
+                                : 'border-white/10 bg-white/[0.02] hover:border-white/30'
+                            }`}
+                          >
+                            {isVideoAsset(asset) ? (
+                              <video muted playsInline preload="metadata" poster={buildPosterSrc(asset)} className="h-full w-full object-cover">
+                                <source src={buildVideoSrc(asset)} type="video/mp4" />
+                              </video>
+                            ) : (
+                              <Image src={buildImageSrc(asset)} alt={asset.alt} fill sizes="240px" className="object-cover" />
+                            )}
+
+                            <div
+                              className={`absolute inset-0 transition-colors ${
+                                index === lightboxIndex ? 'bg-black/10' : 'bg-black/45 group-hover:bg-black/28'
+                              }`}
+                            />
+
+                            <div className="absolute left-3 top-3 rounded-full border border-white/10 bg-black/55 px-2.5 py-1 text-[8px] font-black uppercase tracking-[0.2em] text-gold-200">
+                              {formatAssetCount(index + 1)}
+                            </div>
+
+                            {isVideoAsset(asset) && (
+                              <div className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border border-gold-400/20 bg-black/55 text-gold-300">
+                                <Play className="ml-0.5 h-3 w-3" />
+                              </div>
+                            )}
+
+                            <div className="absolute inset-x-0 bottom-0 p-3">
+                              <p className="truncate text-[10px] font-bold uppercase tracking-[0.16em] text-white">{asset.alt}</p>
+                              <p className="mt-1 truncate text-[8px] font-black uppercase tracking-[0.2em] text-white/45">{asset.meta.fileId}</p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+
+                      <p className="mt-4 text-[9px] font-black uppercase tracking-[0.24em] text-white/20">
+                        Use arrows, keyboard, or the internal strip to move through the category.
+                      </p>
+                    </div>
+                  </aside>
                 </div>
               </div>
             </div>
