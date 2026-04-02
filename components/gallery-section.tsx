@@ -231,6 +231,7 @@ export default function GallerySection() {
     pointerId: -1,
     startX: 0,
     startScrollLeft: 0,
+    hasMoved: false,
   });
   const suppressThumbnailClickRef = useRef(false);
   const [isDraggingQuickBrowse, setIsDraggingQuickBrowse] = useState(false);
@@ -302,6 +303,7 @@ export default function GallerySection() {
   const stopQuickBrowseDrag = () => {
     quickBrowseDragRef.current.isDragging = false;
     quickBrowseDragRef.current.pointerId = -1;
+    quickBrowseDragRef.current.hasMoved = false;
     setIsDraggingQuickBrowse(false);
   };
 
@@ -317,10 +319,10 @@ export default function GallerySection() {
       pointerId: event.pointerId,
       startX: event.clientX,
       startScrollLeft: viewport.scrollLeft,
+      hasMoved: false,
     };
     suppressThumbnailClickRef.current = false;
-    setIsDraggingQuickBrowse(true);
-    viewport.setPointerCapture(event.pointerId);
+    setIsDraggingQuickBrowse(false);
   };
 
   const handleQuickBrowsePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -331,8 +333,18 @@ export default function GallerySection() {
 
     const deltaX = event.clientX - drag.startX;
 
-    if (Math.abs(deltaX) > 6) {
+    if (!drag.hasMoved && Math.abs(deltaX) <= 6) {
+      return;
+    }
+
+    if (!drag.hasMoved) {
+      drag.hasMoved = true;
       suppressThumbnailClickRef.current = true;
+      setIsDraggingQuickBrowse(true);
+
+      if (!viewport.hasPointerCapture(event.pointerId)) {
+        viewport.setPointerCapture(event.pointerId);
+      }
     }
 
     viewport.scrollLeft = drag.startScrollLeft - deltaX;
@@ -344,6 +356,16 @@ export default function GallerySection() {
     if (viewport?.hasPointerCapture(event.pointerId)) {
       viewport.releasePointerCapture(event.pointerId);
     }
+
+    stopQuickBrowseDrag();
+  };
+
+  const handleQuickBrowsePointerLeave = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const viewport = quickBrowseRef.current;
+    const drag = quickBrowseDragRef.current;
+
+    if (!drag.isDragging || drag.pointerId !== event.pointerId) return;
+    if (viewport?.hasPointerCapture(event.pointerId)) return;
 
     stopQuickBrowseDrag();
   };
@@ -758,6 +780,7 @@ export default function GallerySection() {
                         onPointerMove={handleQuickBrowsePointerMove}
                         onPointerUp={handleQuickBrowsePointerUp}
                         onPointerCancel={handleQuickBrowsePointerUp}
+                        onPointerLeave={handleQuickBrowsePointerLeave}
                         onWheel={handleQuickBrowseWheel}
                         style={{ touchAction: 'pan-x' }}
                       >
