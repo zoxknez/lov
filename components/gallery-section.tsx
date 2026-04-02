@@ -359,6 +359,19 @@ export default function GallerySection() {
     }
   };
 
+  const scrollQuickBrowseBy = (direction: 'left' | 'right') => {
+    const viewport = quickBrowseRef.current;
+
+    if (!viewport) return;
+
+    const amount = Math.max(220, Math.round(viewport.clientWidth * 0.45));
+
+    viewport.scrollBy({
+      left: direction === 'left' ? -amount : amount,
+      behavior: 'smooth',
+    });
+  };
+
   const handleQuickBrowseSelect = (index: number) => {
     if (suppressThumbnailClickRef.current) {
       suppressThumbnailClickRef.current = false;
@@ -713,10 +726,28 @@ export default function GallerySection() {
                       <div className="mb-4 flex items-start justify-between gap-3">
                         <div>
                           <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Quick Browse</p>
-                          <p className="mt-2 text-xs leading-relaxed text-gray-400">Listaj celu kategoriju iz samog prikaza i preskoci odmah na zeljeni frame.</p>
+                          <p className="mt-2 text-xs leading-relaxed text-gray-400">Browse the full category from inside the lightbox and jump straight to any frame.</p>
                         </div>
-                        <div className="rounded-full border border-white/10 bg-black/40 px-3 py-2 text-[9px] font-black uppercase tracking-[0.22em] text-white/55">
-                          {formatAssetCount(assets.length)}
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            aria-label="Scroll quick browse left"
+                            onClick={() => scrollQuickBrowseBy('left')}
+                            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/55 transition-all hover:border-gold-400/40 hover:text-gold-200"
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                          </button>
+                          <button
+                            type="button"
+                            aria-label="Scroll quick browse right"
+                            onClick={() => scrollQuickBrowseBy('right')}
+                            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/55 transition-all hover:border-gold-400/40 hover:text-gold-200"
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                          </button>
+                          <div className="rounded-full border border-white/10 bg-black/40 px-3 py-2 text-[9px] font-black uppercase tracking-[0.22em] text-white/55">
+                            {formatAssetCount(assets.length)}
+                          </div>
                         </div>
                       </div>
 
