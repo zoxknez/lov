@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type WheelEvent as ReactWheelEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { Calendar, ChevronLeft, ChevronRight, Locate, Maximize2, Play, ShieldCheck, Video, X } from 'lucide-react';
@@ -225,6 +225,15 @@ export default function GallerySection() {
   const [activeKey, setActiveKey] = useState('recent');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const quickBrowseRef = useRef<HTMLDivElement | null>(null);
+  const quickBrowseDragRef = useRef({
+    isDragging: false,
+    pointerId: -1,
+    startX: 0,
+    startScrollLeft: 0,
+  });
+  const suppressThumbnailClickRef = useRef(false);
+  const [isDraggingQuickBrowse, setIsDraggingQuickBrowse] = useState(false);
 
   const active = galleryGroups.find((group) => group.key === activeKey) ?? galleryGroups[0];
   const assets = active.assets;
@@ -289,6 +298,75 @@ export default function GallerySection() {
   const openLightbox = (index: number) => setLightboxIndex(index);
   const showNext = () => setLightboxIndex((current) => (current === null ? null : (current + 1) % assets.length));
   const showPrev = () => setLightboxIndex((current) => (current === null ? null : (current - 1 + assets.length) % assets.length));
+
+  const stopQuickBrowseDrag = () => {
+    quickBrowseDragRef.current.isDragging = false;
+    quickBrowseDragRef.current.pointerId = -1;
+    setIsDraggingQuickBrowse(false);
+  };
+
+  const handleQuickBrowsePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+
+    const viewport = quickBrowseRef.current;
+
+    if (!viewport) return;
+
+    quickBrowseDragRef.current = {
+      isDragging: true,
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startScrollLeft: viewport.scrollLeft,
+    };
+    suppressThumbnailClickRef.current = false;
+    setIsDraggingQuickBrowse(true);
+    viewport.setPointerCapture(event.pointerId);
+  };
+
+  const handleQuickBrowsePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const viewport = quickBrowseRef.current;
+    const drag = quickBrowseDragRef.current;
+
+    if (!viewport || !drag.isDragging || drag.pointerId !== event.pointerId) return;
+
+    const deltaX = event.clientX - drag.startX;
+
+    if (Math.abs(deltaX) > 6) {
+      suppressThumbnailClickRef.current = true;
+    }
+
+    viewport.scrollLeft = drag.startScrollLeft - deltaX;
+  };
+
+  const handleQuickBrowsePointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const viewport = quickBrowseRef.current;
+
+    if (viewport?.hasPointerCapture(event.pointerId)) {
+      viewport.releasePointerCapture(event.pointerId);
+    }
+
+    stopQuickBrowseDrag();
+  };
+
+  const handleQuickBrowseWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
+    const viewport = quickBrowseRef.current;
+
+    if (!viewport) return;
+
+    if (Math.abs(event.deltaY) > Math.abs(event.deltaX) && viewport.scrollWidth > viewport.clientWidth) {
+      viewport.scrollLeft += event.deltaY;
+      event.preventDefault();
+    }
+  };
+
+  const handleQuickBrowseSelect = (index: number) => {
+    if (suppressThumbnailClickRef.current) {
+      suppressThumbnailClickRef.current = false;
+      return;
+    }
+
+    openLightbox(index);
+  };
 
   return (
     <section id="gallery" className={`gallery-lighttable relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${lightboxIndex !== null ? 'z-[10000]' : 'z-10'}`}>
@@ -507,12 +585,12 @@ export default function GallerySection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] overflow-y-auto bg-forest-950/96 backdrop-blur-3xl"
+            className="fixed inset-0 z-[1000] flex flex-col overflow-hidden bg-forest-950/96 backdrop-blur-3xl"
             onClick={closeLightbox}
             data-lenis-prevent
           >
-            <div className="min-h-full px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-              <div className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-7xl flex-col gap-4" onClick={(event) => event.stopPropagation()}>
+            <div className="flex-1 min-h-0 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+              <div className="mx-auto flex h-full max-w-7xl flex-col gap-4" onClick={(event) => event.stopPropagation()}>
                 <div className="rounded-[2rem] border border-white/10 bg-black/60 px-4 py-4 shadow-premium backdrop-blur-3xl sm:px-6 sm:py-5">
                   <div className="flex items-start gap-4 sm:items-center">
                     <div className="min-w-0 flex-1">
@@ -547,7 +625,7 @@ export default function GallerySection() {
                 </div>
 
                 <div className="flex flex-1 min-h-0 flex-col gap-4">
-                  <div className="relative min-h-[56vh] overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_42%),linear-gradient(180deg,rgba(14,20,19,0.94),rgba(6,10,10,0.98))] shadow-premium">
+                  <div className="relative flex-1 min-h-0 overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_42%),linear-gradient(180deg,rgba(14,20,19,0.94),rgba(6,10,10,0.98))] shadow-premium">
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.04] via-transparent to-black/40" />
 
                     {hasMultipleAssets && (
@@ -577,7 +655,7 @@ export default function GallerySection() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.98 }}
                       transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                      className="relative flex min-h-[56vh] w-full items-center justify-center p-4 sm:p-6 lg:p-8"
+                      className="relative flex h-full min-h-0 w-full items-center justify-center p-4 sm:p-6 lg:p-8"
                     >
                       {isVideoAsset(lightboxAsset) ? (
                         <video
@@ -586,7 +664,7 @@ export default function GallerySection() {
                           playsInline
                           preload="metadata"
                           poster={buildPosterSrc(lightboxAsset)}
-                          className="h-auto max-h-[72vh] w-auto max-w-full rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+                          className="h-auto max-h-full w-auto max-w-full rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
                         >
                           <source src={buildVideoSrc(lightboxAsset)} type="video/mp4" />
                         </video>
@@ -598,7 +676,7 @@ export default function GallerySection() {
                           height={1600}
                           priority
                           sizes="100vw"
-                          className="h-auto max-h-[72vh] w-auto max-w-full select-none rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
+                          className="h-auto max-h-full w-auto max-w-full select-none rounded-[1.6rem] object-contain shadow-[0_0_100px_rgba(0,0,0,0.8)]"
                         />
                       )}
                     </motion.div>
@@ -613,7 +691,7 @@ export default function GallerySection() {
                     </div>
                   </div>
 
-                  <div className="grid gap-4 lg:grid-cols-[minmax(16rem,0.9fr)_minmax(0,1.8fr)]">
+                  <div className="grid shrink-0 gap-4 lg:grid-cols-[minmax(16rem,0.9fr)_minmax(0,1.8fr)]">
                     <div className="rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
                       <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Asset Metadata</p>
                       <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2">
@@ -642,7 +720,16 @@ export default function GallerySection() {
                         </div>
                       </div>
 
-                      <div className="no-scrollbar flex gap-3 overflow-x-auto pb-1">
+                      <div
+                        ref={quickBrowseRef}
+                        className={`no-scrollbar flex gap-3 overflow-x-auto pb-1 select-none ${isDraggingQuickBrowse ? 'cursor-grabbing' : 'cursor-grab'}`}
+                        onPointerDown={handleQuickBrowsePointerDown}
+                        onPointerMove={handleQuickBrowsePointerMove}
+                        onPointerUp={handleQuickBrowsePointerUp}
+                        onPointerCancel={handleQuickBrowsePointerUp}
+                        onWheel={handleQuickBrowseWheel}
+                        style={{ touchAction: 'pan-x' }}
+                      >
                         {assets.map((asset, index) => (
                           <button
                             key={`lightbox-strip-${asset.meta.fileId}`}
@@ -652,7 +739,8 @@ export default function GallerySection() {
                             type="button"
                             data-cursor="gallery"
                             aria-label={`Open asset ${index + 1}: ${asset.alt}`}
-                            onClick={() => openLightbox(index)}
+                            onClick={() => handleQuickBrowseSelect(index)}
+                            onDragStart={(event) => event.preventDefault()}
                             className={`group relative h-24 w-36 shrink-0 overflow-hidden rounded-[1.25rem] border text-left transition-all sm:h-28 sm:w-44 ${
                               index === lightboxIndex
                                 ? 'border-gold-400 bg-gold-400/10 shadow-glow'
