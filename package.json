@@ -8,7 +8,8 @@
         "start": "next start",
         "lint": "eslint .",
         "upload:blob-assets": "node ./scripts/upload-blob-assets.mjs",
-        "upload:gallery-slike": "node ./scripts/upload-gallery-slike.mjs"
+        "upload:gallery-slike": "node ./scripts/upload-gallery-slike.mjs",
+        "import:nove-gallery": "node ./scripts/import-nove-gallery.mjs"
     },
     "dependencies": {
         "@vercel/blob": "^2.3.1",

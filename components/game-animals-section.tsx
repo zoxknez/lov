@@ -63,7 +63,7 @@ const animals: AnimalProfile[] = [
     description:
       'The only wild sika herd in the Southern Hemisphere. The Kaimanawa whistle period runs late March into May - elusive bush deer, dense cover, and one of the most authentic stalking experiences in New Zealand.',
     tags: ['Signature species', 'Kaimanawa bush stalking', 'Rut-driven whistle timing'],
-    image: '/media/hunting%20area%20%20and%20deers/Sika%20%20deer%20Stag.jpg',
+    image: '/media/hunting area  and deers/sika deer.jpeg',
   },
   {
     name: 'Himalayan Tahr',
@@ -139,13 +139,7 @@ const animals: AnimalProfile[] = [
     description:
       'A dedicated North Island program timed to the rusa rut in July-August. Usually planned as a stand-alone itinerary rather than mixed into autumn deer or alpine programs.',
     tags: ['Later-winter rut timing', 'Dense cover habitat', 'Standalone itinerary'],
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Rusa%20%28Cervus%20timorensis%29.jpg',
-    imageCredit: {
-      author: 'Ron Knight',
-      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Rusa_(Cervus_timorensis).jpg',
-      licenseLabel: 'CC BY 2.0',
-      licenseUrl: 'https://creativecommons.org/licenses/by/2.0/',
-    },
+    image: '/media/hunting area  and deers/rusa deer.jpeg',
   },
 ];
 

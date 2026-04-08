@@ -5,13 +5,14 @@ import { CheckCircle2, Mountain, Quote, ShieldCheck, Target, Trophy, Award, Navi
 import Image from 'next/image';
 import TextReveal from '@/components/text-reveal';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
+import gallerySlike from '@/lib/gallery-slike.json';
 
 const guide = {
   name: 'Vuk Mijatovic',
   title: 'Professional Hunting Guide',
   country: 'New Zealand Field Operations',
   experience: '35+ years',
-  image: null as string | null,
+  image: gallerySlike[3]?.localSrc ?? null,
   bio: 'With more than 35 years in the field, Vuk brings deep knowledge of New Zealand terrain, animal behaviour, and the patient, fair-chase pace required for successful trophy hunting.',
   intro: 'Lead-guide delivery is built around calm field judgement, clean shot selection, and the right tempo for the country.',
   specs: [

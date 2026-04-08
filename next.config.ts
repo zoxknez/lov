@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
     localPatterns: [
       {
         pathname: "/api/blob-image"
+      },
+      {
+        pathname: "/media/**"
       }
     ],
     remotePatterns: [

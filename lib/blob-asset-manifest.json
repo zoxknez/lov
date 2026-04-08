@@ -100,6 +100,11 @@
     "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/founders/alex.jpeg"
   },
   {
+    "localSrc": "/media/founders/artem%20prikazov.jpeg",
+    "blobPath": "site-media/media/founders/artem-prikazov.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/founders/artem-prikazov.jpeg"
+  },
+  {
     "localSrc": "/media/hero-wilderness-demo.mp4",
     "blobPath": "site-media/media/hero-wilderness-demo.mp4",
     "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hero-wilderness-demo.mp4"
@@ -135,9 +140,19 @@
     "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-area-and-deers/red-deer-stag.jpg"
   },
   {
+    "localSrc": "/media/hunting%20area%20%20and%20deers/rusa%20deer.jpeg",
+    "blobPath": "site-media/media/hunting-area-and-deers/rusa-deer.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-area-and-deers/rusa-deer.jpeg"
+  },
+  {
     "localSrc": "/media/hunting%20area%20%20and%20deers/Sika%20%20deer%20Stag.jpg",
     "blobPath": "site-media/media/hunting-area-and-deers/sika-deer-stag.jpg",
     "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-area-and-deers/sika-deer-stag.jpg"
+  },
+  {
+    "localSrc": "/media/hunting%20area%20%20and%20deers/sika%20deer.jpeg",
+    "blobPath": "site-media/media/hunting-area-and-deers/sika-deer.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/hunting-area-and-deers/sika-deer.jpeg"
   },
   {
     "localSrc": "/media/hunting%20lodge%20%20accommodation/13%20Ruapehu%20Rd%20Ohakune%20%20bedroom%201%20.jpg",
@@ -233,6 +248,131 @@
     "localSrc": "/media/logo.png",
     "blobPath": "site-media/media/logo.png",
     "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/logo.png"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.0124.10.jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-0124-10.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-0124-10.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.03.24.jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-03-24.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-03-24.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.0322324.10.jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-0322324-10.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-0322324-10.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.04.10.jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-04-10.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-04-10.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.041.10.jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-041-10.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-041-10.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.47%20(1).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-47-1.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-47-1.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.47%20(2).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-47-2.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-47-2.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.47%20(3).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-47-3.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-47-3.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.47.jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-47.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-47.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.48.jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-48.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-48.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.49%20(1).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49-1.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49-1.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.49%20(2).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49-2.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49-2.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.49%20(3).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49-3.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49-3.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.49%20(4).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49-4.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49-4.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.49%20(5).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49-5.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49-5.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.49.jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-49.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.50%20(1).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-50-1.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-50-1.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.50%20(2).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-50-2.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-50-2.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.50%20(3).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-50-3.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-50-3.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.50%20(4).jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-50-4.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-50-4.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.50.jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-50.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-50.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Image%202026-04-04%20at%2004.05.51.jpeg",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-51.jpeg",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-image-2026-04-04-at-04-05-51.jpeg"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Video%2020216-04-04%20at%2004.04.09.mp4",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-video-20216-04-04-at-04-04-09.mp4",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-video-20216-04-04-at-04-04-09.mp4"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Video%202026-04-04%20at%2004.04.09.mp4",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-video-2026-04-04-at-04-04-09.mp4",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-video-2026-04-04-at-04-04-09.mp4"
+  },
+  {
+    "localSrc": "/media/nove%20galerija/WhatsApp%20Video%202026-04-04%20at%2004.04.10.mp4",
+    "blobPath": "site-media/media/nove-galerija/whatsapp-video-2026-04-04-at-04-04-10.mp4",
+    "blobUrl": "https://pl4pr5js74z5q2a1.private.blob.vercel-storage.com/site-media/media/nove-galerija/whatsapp-video-2026-04-04-at-04-04-10.mp4"
   },
   {
     "localSrc": "/media/smestaj/WhatsApp%20Image%202026-03-25%20at%2000.526.38.jpeg",

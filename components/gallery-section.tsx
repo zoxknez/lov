@@ -5,46 +5,15 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import { Calendar, ChevronLeft, ChevronRight, Locate, Maximize2, Play, ShieldCheck, Video, X } from 'lucide-react';
 import TextReveal from '@/components/text-reveal';
-import gallerySlike from '@/lib/gallery-slike.json';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
-import { backcountryMedia, countyMedia, lodgeAccommodationMedia, stayMedia, stayVideoMedia, type VideoMediaItem } from '@/lib/media-collections';
-
-type AssetMeta = {
-  fileId: string;
-  coords: string;
-  date: string;
-  status: string;
-  medium: 'PHOTO' | 'VIDEO';
-  runtime?: string;
-};
-
-type GalleryImageAsset = {
-  kind: 'image';
-  src: string;
-  alt: string;
-  blobPath?: string;
-  fallbackSrc?: string;
-  meta: AssetMeta;
-};
-
-type GalleryVideoAsset = {
-  kind: 'video';
-  src: string;
-  poster: string;
-  alt: string;
-  orientation: 'landscape' | 'portrait';
-  meta: AssetMeta;
-};
-
-type GalleryAsset = GalleryImageAsset | GalleryVideoAsset;
-
-type GalleryGroup = {
-  key: string;
-  label: string;
-  title: string;
-  sub: string;
-  assets: GalleryAsset[];
-};
+import {
+  buildFallbackGalleryGroups,
+  getFirstActiveGalleryKey,
+  type GalleryAsset,
+  type GalleryGroup,
+  type GalleryImageAsset,
+  type GalleryVideoAsset,
+} from '@/lib/gallery-core';
 
 const previewGridClasses = [
   'col-span-2 row-span-2 md:col-span-7 md:row-span-2',
@@ -77,152 +46,104 @@ function buildImageSrc(asset: GalleryImageAsset) {
 }
 
 function buildVideoSrc(asset: GalleryVideoAsset) {
+  if (asset.blobPath) {
+    const params = new URLSearchParams({
+      pathname: asset.blobPath,
+      fallback: asset.fallbackSrc ?? asset.src,
+    });
+
+    return `/api/blob-image?${params.toString()}`;
+  }
+
   return getBlobAssetUrl(asset.src);
 }
 
 function buildPosterSrc(asset: GalleryVideoAsset) {
+  if (asset.posterBlobPath) {
+    const params = new URLSearchParams({
+      pathname: asset.posterBlobPath,
+      fallback: asset.posterFallbackSrc ?? asset.poster,
+    });
+
+    return `/api/blob-image?${params.toString()}`;
+  }
+
   return getBlobAssetUrl(asset.poster);
 }
 
-function buildImageSet(
-  prefix: string,
-  media: { src: string; alt: string }[],
-  coords: string,
-  date: string,
-  status: string,
-) {
-  return media.map((image, index) => ({
-    kind: 'image' as const,
-    src: image.src,
-    alt: image.alt,
-    meta: {
-      fileId: `${prefix}-${String(index + 1).padStart(2, '0')}`,
-      coords,
-      date,
-      status,
-      medium: 'PHOTO' as const,
-    },
-  })) satisfies GalleryImageAsset[];
+function getGalleryTone(key: GalleryGroup['key']) {
+  switch (key) {
+    case 'red-deer':
+      return {
+        dot: 'bg-amber-300',
+        line: 'via-amber-300/65',
+        activeContainer: 'border-amber-300/35 bg-[linear-gradient(135deg,rgba(251,191,36,0.16),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(251,191,36,0.08),0_18px_50px_rgba(0,0,0,0.28)]',
+        inactiveContainer: 'border-white/10 bg-white/[0.035] hover:border-amber-300/20 hover:bg-amber-300/[0.06]',
+        activeBadge: 'border-amber-300/30 bg-amber-300/12 text-amber-100',
+        activeLabel: 'text-amber-100',
+      };
+    case 'sika-deer':
+      return {
+        dot: 'bg-gold-300',
+        line: 'via-gold-300/65',
+        activeContainer: 'border-gold-300/35 bg-[linear-gradient(135deg,rgba(212,175,55,0.16),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(212,175,55,0.08),0_18px_50px_rgba(0,0,0,0.28)]',
+        inactiveContainer: 'border-white/10 bg-white/[0.035] hover:border-gold-300/20 hover:bg-gold-300/[0.06]',
+        activeBadge: 'border-gold-300/30 bg-gold-300/12 text-gold-100',
+        activeLabel: 'text-gold-100',
+      };
+    case 'fallow-deer':
+      return {
+        dot: 'bg-emerald-300',
+        line: 'via-emerald-300/65',
+        activeContainer: 'border-emerald-300/35 bg-[linear-gradient(135deg,rgba(110,231,183,0.16),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(110,231,183,0.08),0_18px_50px_rgba(0,0,0,0.28)]',
+        inactiveContainer: 'border-white/10 bg-white/[0.035] hover:border-emerald-300/20 hover:bg-emerald-300/[0.06]',
+        activeBadge: 'border-emerald-300/30 bg-emerald-300/12 text-emerald-100',
+        activeLabel: 'text-emerald-100',
+      };
+    case 'rusa-sambar':
+      return {
+        dot: 'bg-rose-300',
+        line: 'via-rose-300/65',
+        activeContainer: 'border-rose-300/35 bg-[linear-gradient(135deg,rgba(253,164,175,0.16),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(253,164,175,0.08),0_18px_50px_rgba(0,0,0,0.28)]',
+        inactiveContainer: 'border-white/10 bg-white/[0.035] hover:border-rose-300/20 hover:bg-rose-300/[0.06]',
+        activeBadge: 'border-rose-300/30 bg-rose-300/12 text-rose-100',
+        activeLabel: 'text-rose-100',
+      };
+    case 'himalayan-tahr':
+      return {
+        dot: 'bg-sky-300',
+        line: 'via-sky-300/65',
+        activeContainer: 'border-sky-300/35 bg-[linear-gradient(135deg,rgba(125,211,252,0.16),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(125,211,252,0.08),0_18px_50px_rgba(0,0,0,0.28)]',
+        inactiveContainer: 'border-white/10 bg-white/[0.035] hover:border-sky-300/20 hover:bg-sky-300/[0.06]',
+        activeBadge: 'border-sky-300/30 bg-sky-300/12 text-sky-100',
+        activeLabel: 'text-sky-100',
+      };
+    case 'chamois':
+      return {
+        dot: 'bg-orange-300',
+        line: 'via-orange-300/65',
+        activeContainer: 'border-orange-300/35 bg-[linear-gradient(135deg,rgba(253,186,116,0.16),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(253,186,116,0.08),0_18px_50px_rgba(0,0,0,0.28)]',
+        inactiveContainer: 'border-white/10 bg-white/[0.035] hover:border-orange-300/20 hover:bg-orange-300/[0.06]',
+        activeBadge: 'border-orange-300/30 bg-orange-300/12 text-orange-100',
+        activeLabel: 'text-orange-100',
+      };
+    default:
+      return {
+        dot: 'bg-zinc-200',
+        line: 'via-zinc-200/60',
+        activeContainer: 'border-zinc-200/30 bg-[linear-gradient(135deg,rgba(255,255,255,0.14),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_18px_50px_rgba(0,0,0,0.28)]',
+        inactiveContainer: 'border-white/10 bg-white/[0.035] hover:border-white/20 hover:bg-white/[0.06]',
+        activeBadge: 'border-zinc-200/25 bg-white/10 text-white',
+        activeLabel: 'text-white',
+      };
+  }
 }
 
-function buildVideoSet(
-  prefix: string,
-  media: VideoMediaItem[],
-  coords: string,
-  date: string,
-  status: string,
-) {
-  return media.map((video, index) => ({
-    kind: 'video' as const,
-    src: video.src,
-    poster: video.poster,
-    alt: video.alt,
-    orientation: video.orientation,
-    meta: {
-      fileId: `${prefix}-${String(index + 1).padStart(2, '0')}`,
-      coords,
-      date,
-      status,
-      medium: 'VIDEO' as const,
-      runtime: video.durationLabel,
-    },
-  })) satisfies GalleryVideoAsset[];
-}
-
-const trophyAssets: GalleryAsset[] = [
-  {
-    kind: 'image',
-    src: '/media/hunting area  and deers/Red Deer Stag.jpg',
-    alt: 'Red stag trophy portrait',
-    meta: { fileId: 'TG-RD-01', coords: '39.12S 175.40E', date: 'April 2025', status: 'ARCHIVED', medium: 'PHOTO' },
-  },
-  {
-    kind: 'image',
-    src: '/media/hunting area  and deers/Sika  deer Stag.jpg',
-    alt: 'Sika stag trophy portrait',
-    meta: { fileId: 'TG-SK-02', coords: '39.05S 175.45E', date: 'March 2025', status: 'ARCHIVED', medium: 'PHOTO' },
-  },
-  {
-    kind: 'image',
-    src: '/media/hunting area  and deers/Fellow  deer.jpg',
-    alt: 'Fallow buck trophy portrait',
-    meta: { fileId: 'TG-FL-03', coords: '39.18S 175.52E', date: 'May 2025', status: 'ARCHIVED', medium: 'PHOTO' },
-  },
-  {
-    kind: 'image',
-    src: '/media/hunting area  and deers/Hunting  area  near Rotorua.jpg',
-    alt: 'Country and trophy moment',
-    meta: { fileId: 'TG-CT-04', coords: '38.15S 176.10E', date: 'April 2025', status: 'ARCHIVED', medium: 'PHOTO' },
-  },
-];
-
-const countyAssets = buildImageSet('CTY', countyMedia, 'North Island county', 'March 2026', 'FIELD-READY');
-const backcountryAssets = buildImageSet('BKC', backcountryMedia, 'High-country basin', 'March 2026', 'ACTIVE');
-const lodgeAssets = buildImageSet('LDG', lodgeAccommodationMedia, '39.27S 175.58E', 'Base Log', 'OPERATIONAL');
-const stayAssets = buildImageSet('STY', stayMedia, 'Hosted hillside stay', 'March 2026', 'READY');
-const videoAssets = buildVideoSet('VID', stayVideoMedia, 'Hosted hillside stay', 'March 2026', 'ACTIVE');
-const recentAssets = gallerySlike.map((img, index) => ({
-  kind: 'image' as const,
-  src: img.localSrc,
-  fallbackSrc: img.localSrc,
-  blobPath: img.blobPath,
-  alt: img.alt,
-  meta: {
-    fileId: `RF-${String(index + 1).padStart(2, '0')}`,
-    coords: '39.25S 175.50E',
-    date: 'Recent',
-    status: 'NEW',
-    medium: 'PHOTO' as const,
-  },
-})) satisfies GalleryImageAsset[];
-
-const allArchiveAssets: GalleryAsset[] = [
-  ...recentAssets,
-  ...trophyAssets,
-  ...countyAssets,
-  ...backcountryAssets,
-  ...lodgeAssets,
-  ...stayAssets,
-  ...videoAssets,
-];
-
-const galleryGroups: GalleryGroup[] = [
-  {
-    key: 'all',
-    label: 'All',
-    title: 'Complete Archive',
-    sub: 'Every field frame, hosted-stay still, and motion tape from the current archive.',
-    assets: allArchiveAssets,
-  },
-  {
-    key: 'video',
-    label: 'Field Tapes',
-    title: 'Motion Archive',
-    sub: 'Premium hosted-stay video clips with cinematic field atmosphere.',
-    assets: videoAssets,
-  },
-  { key: 'trophies', label: 'Trophies', title: 'Trophy Archive', sub: 'Red stag, sika, fallow, and field portraits.', assets: trophyAssets },
-  {
-    key: 'county',
-    label: 'County',
-    title: 'County Country',
-    sub: 'Bush edges, lower country, and hosted access terrain.',
-    assets: countyAssets,
-  },
-  {
-    key: 'backcountry',
-    label: 'Backcountry',
-    title: 'Backcountry Lines',
-    sub: 'Open basins, higher ridges, and deeper terrain.',
-    assets: backcountryAssets,
-  },
-  { key: 'lodge', label: 'Lodge', title: 'Hosted Base', sub: 'Ohakune lodge life and interior frames.', assets: lodgeAssets },
-  { key: 'stay', label: 'Stay', title: 'Hosted Stay', sub: 'Smestaj archive and additional accommodation frames.', assets: stayAssets },
-  { key: 'recent', label: 'Recent', title: 'Recent Frames', sub: 'Current-season archive.', assets: recentAssets },
-];
+const fallbackGalleryGroups = buildFallbackGalleryGroups();
 
 export default function GallerySection() {
-  const [activeKey, setActiveKey] = useState('recent');
+  const [galleryGroups, setGalleryGroups] = useState<GalleryGroup[]>(fallbackGalleryGroups);
+  const [activeKey, setActiveKey] = useState(getFirstActiveGalleryKey(fallbackGalleryGroups));
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const quickBrowseRef = useRef<HTMLDivElement | null>(null);
@@ -236,11 +157,49 @@ export default function GallerySection() {
   const suppressThumbnailClickRef = useRef(false);
   const [isDraggingQuickBrowse, setIsDraggingQuickBrowse] = useState(false);
 
-  const active = galleryGroups.find((group) => group.key === activeKey) ?? galleryGroups[0];
+  const active = galleryGroups.find((group) => group.key === activeKey) ?? galleryGroups.find((group) => group.assets.length > 0) ?? galleryGroups[0];
   const assets = active.assets;
   const previewAssets = assets.slice(0, previewGridClasses.length);
   const lightboxAsset = lightboxIndex !== null ? assets[lightboxIndex] : null;
   const hasMultipleAssets = assets.length > 1;
+  const activeIndex = galleryGroups.findIndex((group) => group.key === active.key) + 1;
+  const activeTone = getGalleryTone(active.key);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function syncAdminManifest() {
+      try {
+        const response = await fetch('/api/gallery/manifest', {
+          cache: 'no-store',
+        });
+        const payload = (await response.json()) as { ok?: boolean; groups?: GalleryGroup[] };
+
+        if (!response.ok || !payload.ok || !payload.groups?.length || !isMounted) {
+          return;
+        }
+
+        const remoteGroups = payload.groups;
+
+        setGalleryGroups(remoteGroups);
+        setActiveKey((current) => {
+          if (remoteGroups.some((group) => group.key === current && group.assets.length > 0)) {
+            return current;
+          }
+
+          return getFirstActiveGalleryKey(remoteGroups);
+        });
+      } catch {
+        // Keep the local fallback groups when the admin manifest is unavailable.
+      }
+    }
+
+    void syncAdminManifest();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (lightboxIndex !== null) {
@@ -426,61 +385,111 @@ export default function GallerySection() {
             <div className="h-px w-full bg-gradient-to-l from-transparent via-gold-400/40 to-transparent" />
           </motion.div>
           <p className="mx-auto mt-8 max-w-2xl text-sm italic leading-relaxed text-white/40 sm:text-lg">
-            &ldquo;Trophy portraits, county lines, backcountry texture, lodge comfort, and the new motion archive from the smestaj collection.&rdquo;
+            &ldquo;A species-led visual archive, grouped by red deer, sika, fallow, rusa or sambar, tahr, chamois, and a final set of general hunting frames.&rdquo;
           </p>
         </div>
 
-        <div className="-mx-4 mb-10 overflow-x-auto px-4 no-scrollbar">
-          <div className="flex w-max min-w-full gap-3 md:flex-wrap md:justify-center">
-            {galleryGroups.map((group) => (
-              <button
-                key={group.key}
-                type="button"
-                data-cursor="gallery"
-                aria-pressed={activeKey === group.key}
-                onClick={() => {
-                  setActiveKey(group.key);
-                  closeLightbox();
-                }}
-                className={`group flex items-center gap-3 rounded-full border px-5 py-3 text-[10px] font-black uppercase tracking-[0.28em] transition-all sm:px-6 sm:py-4 ${
-                  activeKey === group.key
-                    ? 'border-gold-400/50 bg-gold-400/15 text-gold-300 shadow-glow'
-                    : 'border-white/10 bg-white/[0.04] text-gray-500 hover:border-gold-400/20 hover:text-white'
-                }`}
-              >
-                <span>{group.label}</span>
-                <span
-                  className={`inline-flex min-w-[2.2rem] items-center justify-center rounded-full border px-2 py-1 text-[8px] font-black tracking-[0.22em] ${
-                    activeKey === group.key
-                      ? 'border-gold-400/30 bg-black/25 text-gold-200'
-                      : 'border-white/10 bg-black/25 text-white/45 group-hover:text-white/80'
-                  }`}
-                >
-                  {formatAssetCount(group.assets.length)}
-                </span>
-              </button>
-            ))}
+        <div className="mb-8 rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.015))] p-3 shadow-premium backdrop-blur-xl sm:p-4">
+          <div className="-mx-1 overflow-x-auto px-1 no-scrollbar lg:overflow-visible">
+            <div className="grid min-w-max grid-flow-col auto-cols-[minmax(10.75rem,1fr)] gap-3 pb-2 sm:auto-cols-[minmax(11.75rem,1fr)] md:gap-4 lg:min-w-0 lg:grid-flow-row lg:grid-cols-3 lg:pb-0 xl:grid-cols-4">
+              {galleryGroups.map((group, index) => {
+                const isActive = activeKey === group.key;
+                const tone = getGalleryTone(group.key);
+                const isEmpty = group.assets.length === 0;
+
+                return (
+                  <button
+                    key={group.key}
+                    type="button"
+                    data-cursor="gallery"
+                    aria-pressed={isActive}
+                    disabled={isEmpty}
+                    onClick={() => {
+                      if (isEmpty) return;
+                      setActiveKey(group.key);
+                      closeLightbox();
+                    }}
+                    className={`group relative overflow-hidden rounded-[1.7rem] border px-4 py-4 text-left transition-all duration-500 disabled:cursor-not-allowed disabled:opacity-45 sm:px-5 ${
+                      isActive ? tone.activeContainer : tone.inactiveContainer
+                    }`}
+                  >
+                    <div className={`pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent ${tone.line} to-transparent ${isActive ? 'opacity-100' : 'opacity-35 group-hover:opacity-70'}`} />
+                    <div className="relative">
+                      <div className="mb-3 flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-2">
+                          <span className={`h-2 w-2 rounded-full ${tone.dot} ${isActive ? 'opacity-100 shadow-glow' : 'opacity-55 group-hover:opacity-90'}`} />
+                          <span className={`text-[8px] font-black uppercase tracking-[0.28em] ${isActive ? 'text-white/55' : 'text-white/28 group-hover:text-white/45'}`}>
+                            Archive {formatAssetCount(index + 1)}
+                          </span>
+                        </div>
+
+                        <span className={`inline-flex min-w-[2.35rem] items-center justify-center rounded-full border px-2.5 py-1 text-[8px] font-black tracking-[0.2em] ${isActive ? tone.activeBadge : 'border-white/10 bg-black/25 text-white/45 group-hover:text-white/75'}`}>
+                          {formatAssetCount(group.assets.length)}
+                        </span>
+                      </div>
+
+                      <p className={`font-display text-[0.95rem] font-bold uppercase leading-tight tracking-[0.18em] sm:text-[1.02rem] ${isActive ? tone.activeLabel : 'text-white/72 group-hover:text-white'}`}>
+                        {group.label}
+                      </p>
+                      <p className={`mt-2 text-[8px] font-black uppercase tracking-[0.24em] ${isActive ? 'text-white/34' : 'text-white/18 group-hover:text-white/28'}`}>
+                        Species Profile
+                      </p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        <div className="mb-10 flex flex-col gap-6 border-b border-white/5 pb-10 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl">
-            <p className="mb-2 text-[10px] font-black uppercase tracking-[0.4em] text-gold-400/40">Active Category</p>
-            <h3 className="font-display text-4xl font-bold uppercase tracking-tight text-white md:text-6xl">{active.title}</h3>
-            <p className="mt-3 text-sm leading-relaxed text-gray-400">{active.sub}</p>
+        <div className="mb-12 grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)] lg:items-stretch">
+          <div className={`relative overflow-hidden rounded-[2.2rem] border px-5 py-6 shadow-premium backdrop-blur-xl sm:px-7 sm:py-7 ${activeTone.activeContainer}`}>
+            <div className={`pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent ${activeTone.line} to-transparent`} />
+            <div className="pointer-events-none absolute -right-20 top-0 h-40 w-40 rounded-full bg-white/6 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 left-10 h-40 w-40 rounded-full bg-black/35 blur-3xl" />
+
+            <div className="relative flex h-full flex-col justify-between gap-6">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className={`inline-flex items-center rounded-full border px-3 py-1 text-[9px] font-black uppercase tracking-[0.26em] ${activeTone.activeBadge}`}>
+                  Active Category
+                </span>
+                <span className="inline-flex items-center rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[9px] font-black uppercase tracking-[0.26em] text-white/60">
+                  Archive {formatAssetCount(activeIndex)}
+                </span>
+              </div>
+
+              <div className="max-w-3xl">
+                <div className="mb-4 flex items-start gap-3">
+                  <span className={`mt-3 h-2.5 w-2.5 shrink-0 rounded-full ${activeTone.dot} shadow-glow`} />
+                  <div>
+                    <h3 className="font-display text-4xl font-bold uppercase tracking-tight text-white md:text-6xl">{active.title}</h3>
+                    <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/66 sm:text-[15px]">{active.sub}</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-3 text-[10px] font-black uppercase tracking-[0.26em] text-white/46">
+                  <span className="rounded-full border border-white/10 bg-black/20 px-3 py-2">Species-led curation</span>
+                  <span className="rounded-full border border-white/10 bg-black/20 px-3 py-2">Premium field archive</span>
+                  <span className="rounded-full border border-white/10 bg-black/20 px-3 py-2">Client-sorted RF frames</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-3 sm:gap-4">
-            <div className="min-w-[8.5rem] rounded-[1.5rem] border border-white/10 bg-black/35 px-4 py-4 shadow-premium backdrop-blur-xl">
-              <p className="text-[9px] font-black uppercase tracking-[0.28em] text-white/25">In Category</p>
+          <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+            <div className={`rounded-[1.7rem] border px-4 py-4 shadow-premium backdrop-blur-xl ${activeTone.activeContainer}`}>
+              <p className="text-[9px] font-black uppercase tracking-[0.28em] text-white/38">Archive Frames</p>
               <p className="stat-number mt-2 font-display text-3xl font-bold uppercase tracking-tight text-white">{formatAssetCount(assets.length)}</p>
+              <p className="mt-3 text-[10px] uppercase tracking-[0.24em] text-white/46">in selected species</p>
             </div>
-            <div className="min-w-[8.5rem] rounded-[1.5rem] border border-white/10 bg-black/35 px-4 py-4 shadow-premium backdrop-blur-xl">
+            <div className="rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-4 shadow-premium backdrop-blur-xl">
               <p className="text-[9px] font-black uppercase tracking-[0.28em] text-white/25">Preview Grid</p>
-              <p className="stat-number mt-2 font-display text-3xl font-bold uppercase tracking-tight text-gold-300">{formatAssetCount(previewAssets.length)}</p>
+              <p className={`stat-number mt-2 font-display text-3xl font-bold uppercase tracking-tight ${activeTone.activeLabel}`}>{formatAssetCount(previewAssets.length)}</p>
+              <p className="mt-3 text-[10px] uppercase tracking-[0.24em] text-white/40">front-of-gallery selection</p>
             </div>
-            <div className="min-w-[8.5rem] rounded-[1.5rem] border border-white/10 bg-black/35 px-4 py-4 shadow-premium backdrop-blur-xl">
+            <div className="rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-4 shadow-premium backdrop-blur-xl">
               <p className="text-[9px] font-black uppercase tracking-[0.28em] text-white/25">Archive Sync</p>
               <p className="mt-2 text-[13px] font-black uppercase tracking-[0.34em] text-green-400/80">100%</p>
+              <p className="mt-3 text-[10px] uppercase tracking-[0.24em] text-white/40">matched to client brief</p>
             </div>
           </div>
         </div>
@@ -494,7 +503,7 @@ export default function GallerySection() {
                 key={`${active.key}-${asset.meta.fileId}`}
                 type="button"
                 data-cursor="gallery"
-                aria-label={`Open ${asset.alt}`}
+                aria-label={`Open ${asset.label}`}
                 initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -548,7 +557,7 @@ export default function GallerySection() {
                     {isVideoAsset(asset) ? <Video className="h-3 w-3" /> : <ShieldCheck className="h-3 w-3" />}
                     {isVideoAsset(asset) ? 'Motion Asset' : asset.meta.status}
                   </div>
-                  <p className="font-display text-xl font-bold uppercase leading-tight text-white sm:text-2xl">{asset.alt}</p>
+                  <p className="font-display text-xl font-bold uppercase leading-tight text-white sm:text-2xl">{asset.label}</p>
                   <div className="mt-4 flex flex-wrap gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white/55">
                     <span className="flex items-center gap-2">
                       <Calendar className="h-3 w-3 text-gold-400/60" />
@@ -585,7 +594,7 @@ export default function GallerySection() {
                 key={`strip-${asset.meta.fileId}`}
                 type="button"
                 data-cursor="gallery"
-                aria-label={`Open asset ${index + 1}: ${asset.alt}`}
+                aria-label={`Open asset ${index + 1}: ${asset.label}`}
                 onClick={() => openLightbox(index)}
                 className={`relative h-24 w-40 shrink-0 overflow-hidden rounded-[1.2rem] border text-left transition-all sm:h-28 sm:w-48 ${
                   index === lightboxIndex ? 'scale-[1.02] border-gold-400 shadow-glow' : 'border-white/5 opacity-70 hover:opacity-100'
@@ -606,7 +615,7 @@ export default function GallerySection() {
                 )}
                 <div className="absolute inset-x-0 bottom-0 p-3">
                   <p className="truncate text-[9px] font-black uppercase tracking-[0.18em] text-gold-300/85">{asset.meta.fileId}</p>
-                  <p className="truncate text-[10px] font-bold uppercase tracking-[0.14em] text-white/80">{asset.alt}</p>
+                  <p className="truncate text-[10px] font-bold uppercase tracking-[0.14em] text-white/80">{asset.label}</p>
                 </div>
               </button>
             ))}
@@ -635,7 +644,7 @@ export default function GallerySection() {
                       </div>
                       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                         <div className="min-w-0">
-                          <h2 className="truncate font-display text-xl font-bold uppercase tracking-tight text-white sm:text-3xl">{lightboxAsset.alt}</h2>
+                          <h2 className="truncate font-display text-xl font-bold uppercase tracking-tight text-white sm:text-3xl">{lightboxAsset.label}</h2>
                           <p className="mt-1 text-[10px] font-black uppercase tracking-[0.24em] text-white/28">
                             {active.title} | {active.sub}
                           </p>
@@ -792,7 +801,7 @@ export default function GallerySection() {
                             }}
                             type="button"
                             data-cursor="gallery"
-                            aria-label={`Open asset ${index + 1}: ${asset.alt}`}
+                            aria-label={`Open asset ${index + 1}: ${asset.label}`}
                             onClick={() => handleQuickBrowseSelect(index)}
                             onDragStart={(event) => event.preventDefault()}
                             className={`group relative h-24 w-36 shrink-0 overflow-hidden rounded-[1.25rem] border text-left transition-all sm:h-28 sm:w-44 ${
@@ -826,7 +835,7 @@ export default function GallerySection() {
                             )}
 
                             <div className="absolute inset-x-0 bottom-0 p-3">
-                              <p className="truncate text-[10px] font-bold uppercase tracking-[0.16em] text-white">{asset.alt}</p>
+                              <p className="truncate text-[10px] font-bold uppercase tracking-[0.16em] text-white">{asset.label}</p>
                               <p className="mt-1 truncate text-[8px] font-black uppercase tracking-[0.2em] text-white/45">{asset.meta.fileId}</p>
                             </div>
                           </button>

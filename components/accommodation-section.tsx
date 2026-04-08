@@ -7,6 +7,13 @@ import { Bed, Coffee, Flame, MapPin, Users, Utensils, Wifi, Play, Compass, Exter
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 import TextReveal from '@/components/text-reveal';
 import { lodgeAccommodationMedia, stayMedia, stayVideoMedia, type VideoMediaItem } from '@/lib/media-collections';
+import gallerySlike from '@/lib/gallery-slike.json';
+
+type PhotoFrame = {
+  src: string;
+  title: string;
+  badge: string;
+};
 
 type Lodge = {
   id: string;
@@ -17,7 +24,7 @@ type Lodge = {
   tagline: string;
   description: string;
   image: string;
-  gallery: string[];
+  gallery: PhotoFrame[];
   videos: VideoMediaItem[];
   capacity: string;
   specs: { label: string; value: string }[];
@@ -29,6 +36,49 @@ type ViewerState =
   | { kind: 'photo'; index: number }
   | { kind: 'video'; index: number };
 
+function buildReversedPhotoFrames(sources: string[], titleBase: string) {
+  const total = sources.length;
+
+  return [...sources].reverse().map((src, index) => {
+    const originalNumber = total - index;
+    const paddedNumber = String(originalNumber).padStart(2, '0');
+
+    return {
+      src,
+      title: `${titleBase} Frame ${paddedNumber}`,
+      badge: `Frame ${paddedNumber}`,
+    };
+  });
+}
+
+function buildRfPhotoFrame(rfNumber: number, titleBase: string): PhotoFrame | null {
+  const asset = gallerySlike[rfNumber - 1];
+
+  if (!asset) return null;
+
+  const paddedNumber = String(rfNumber).padStart(2, '0');
+
+  return {
+    src: asset.localSrc,
+    title: `${titleBase} RF ${paddedNumber}`,
+    badge: `RF ${paddedNumber}`,
+  };
+}
+
+const lodgeGalleryFrames = buildReversedPhotoFrames(
+  lodgeAccommodationMedia.map((image) => image.src),
+  'Ohakune Lodge Base',
+);
+
+const stayGalleryFrames = [
+  buildRfPhotoFrame(44, 'Hillside Hunter Stay'),
+  buildRfPhotoFrame(35, 'Hillside Hunter Stay'),
+  ...buildReversedPhotoFrames(
+    stayMedia.map((image) => image.src),
+    'Hillside Hunter Stay',
+  ),
+].filter((frame): frame is PhotoFrame => frame !== null);
+
 const lodges: Lodge[] = [
   {
     id: 'ohakune',
@@ -39,8 +89,8 @@ const lodges: Lodge[] = [
     tagline: 'Central North Island hunting base',
     description:
       'A comfortable, properly hosted lodge sitting at the heart of the North Island program. Everything runs from here - meals, briefings, debrief evenings, and early starts into the Kaimanawa.',
-    image: lodgeAccommodationMedia[5]?.src ?? lodgeAccommodationMedia[0].src,
-    gallery: lodgeAccommodationMedia.map((image) => image.src),
+    image: lodgeGalleryFrames[0]?.src ?? lodgeAccommodationMedia[0].src,
+    gallery: lodgeGalleryFrames,
     videos: [],
     capacity: '2-4 hunters',
     specs: [
@@ -67,8 +117,8 @@ const lodges: Lodge[] = [
     tagline: 'Compact hosted stay with elevated views',
     description:
       'An additional stay option built for small groups or quieter overnights, with a covered outdoor lounge, a self-contained interior, and open views across the surrounding hill country.',
-    image: stayMedia[0].src,
-    gallery: stayMedia.map((image) => image.src),
+    image: stayGalleryFrames[0]?.src ?? stayMedia[0].src,
+    gallery: stayGalleryFrames,
     videos: stayVideoMedia,
     capacity: '1-2 hunters',
     specs: [
@@ -120,9 +170,9 @@ export default function AccommodationSection() {
         }))
       : lodge.gallery.map((photo, index) => ({
           key: `photo-${index}`,
-          thumbSrc: getBlobAssetUrl(photo),
-          title: `${lodgeNamePlain} Frame ${String(index + 1).padStart(2, '0')}`,
-          badge: `Frame ${String(index + 1).padStart(2, '0')}`,
+          thumbSrc: getBlobAssetUrl(photo.src),
+          title: photo.title,
+          badge: photo.badge,
           runtime: 'PHOTO',
           mediaType: 'photo' as const,
         }));
@@ -474,7 +524,7 @@ export default function AccommodationSection() {
                     className="group relative flex-1 min-h-[240px] cursor-pointer overflow-hidden rounded-[2.5rem] border border-white/10 bg-black/40 shadow-premium"
                   >
                     <Image
-                      src={getBlobAssetUrl(lodge.gallery[1 % lodge.gallery.length])}
+                      src={getBlobAssetUrl(lodge.gallery[1 % lodge.gallery.length].src)}
                       alt="Archive Detail"
                       fill
                       className="object-cover opacity-60 contrast-[1.1] transition-transform duration-1000 group-hover:scale-115"
@@ -710,7 +760,7 @@ export default function AccommodationSection() {
                         </video>
                       ) : activePhoto ? (
                         <Image
-                          src={getBlobAssetUrl(activePhoto)}
+                          src={getBlobAssetUrl(activePhoto.src)}
                           alt={activeViewerItem.title}
                           width={2400}
                           height={1600}

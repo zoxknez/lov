@@ -7,7 +7,7 @@ import TextReveal from '@/components/text-reveal';
 import TeamMemberModal from './team-member-modal';
 import { useState, useEffect, useRef } from 'react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
-import { alexFounderMedia } from '@/lib/media-collections';
+import { alexFounderMedia, artemFounderMedia } from '@/lib/media-collections';
 
 const founders = [
   { 
@@ -29,19 +29,8 @@ const founders = [
     initials: 'AP',
     expertise: 'Technical Precision / Logistics',
     bio: 'Artem brings 15 years of dedicated hunting experience, combining technical precision with a deep passion for the wild. As a co-founder, he ensures that every detail of the safari experience meets the highest standards of luxury and authenticity.',
-    portrait: null,
-    images: [],
-  },
-  { 
-    name: 'Vuk Mijatovic', 
-    role: 'Lead Guide', 
-    origin: 'NZ Field Ops', 
-    exp: '35+ Yrs', expNum: 35, expSuffix: '+ Yrs',
-    initials: 'VM',
-    expertise: 'High Alpine / Field Ops',
-    bio: 'Our Lead Guide, Vuk, has spent 35+ years mastering the rugged terrain of New Zealand. His operational expertise and tactical knowledge of the field make him an invaluable asset for hunters seeking the ultimate fair chase challenge.',
-    portrait: null,
-    images: [],
+    portrait: artemFounderMedia[0]?.src ?? null,
+    images: artemFounderMedia.map((image) => image.src),
   },
 ];
 
@@ -143,7 +132,7 @@ export default function StorySection() {
               <div className="mt-8 flex items-center justify-center gap-4 text-[9px] font-bold uppercase tracking-[0.3em] text-gray-500">
                  <span>Est. 2025</span>
                  <div className="h-1 w-1 rounded-full bg-gold-400/30" />
-                 <span>90+ Combined Years</span>
+                 <span>55+ Combined Years</span>
               </div>
            </motion.div>
         </div>
@@ -157,21 +146,22 @@ export default function StorySection() {
               </div>
               <div className="flex items-center gap-2">
                  <div className="h-1 w-1 animate-pulse rounded-full bg-gold-400" />
-                 <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-gray-500">Click for Detailed Bio</p>
+                 <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-gray-500">Open Member Profile</p>
               </div>
            </div>
 
-           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+           <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 xl:gap-8">
               {founders.map((founder, index) => (
-                <motion.div
+                <motion.button
                   key={founder.name}
+                  type="button"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.15, duration: 0.8 }}
                   whileHover={{ y: -8, transition: { duration: 0.4, ease: "easeOut" } }}
                   onClick={() => setSelectedFounder(founder)}
-                  className="group relative cursor-pointer overflow-hidden rounded-[2.2rem] border border-white/8 bg-forest-900/20 p-8 shadow-premium transition-all duration-500 hover:border-gold-500/40 hover:bg-forest-900/40 has-beam"
+                  className="group relative overflow-hidden rounded-[2.2rem] border border-white/8 bg-forest-900/20 p-8 text-left shadow-premium transition-all duration-500 hover:border-gold-500/40 hover:bg-forest-900/40 has-beam"
                 >
                   {/* Card Background Decoration */}
                   <div className="absolute -right-8 -top-8 opacity-5">
@@ -233,11 +223,17 @@ export default function StorySection() {
                         <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/20">Specialization</span>
                         <span className="text-[10px] font-bold uppercase tracking-tight text-gold-400/60">{founder.expertise}</span>
                      </div>
-                     <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all group-hover:bg-gold-500 group-hover:text-black">
-                        <Zap className="h-3.5 w-3.5" />
+                     <div className="flex items-center gap-3">
+                        <div className="text-right">
+                           <span className="block text-[8px] font-black uppercase tracking-[0.24em] text-white/20">Detailed View</span>
+                           <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gold-300/80">Open Profile</span>
+                        </div>
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all group-hover:bg-gold-500 group-hover:text-black">
+                           <Zap className="h-3.5 w-3.5" />
+                        </div>
                      </div>
                   </div>
-                </motion.div>
+                </motion.button>
               ))}
            </div>
         </div>

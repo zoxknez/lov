@@ -96,6 +96,7 @@ const stayPaths = [
 ];
 
 export const alexFounderMedia = createMediaItems(['/media/founders/Alex.jpeg'], 'Founder portrait');
+export const artemFounderMedia = createMediaItems(['/media/founders/artem%20prikazov.jpeg'], 'Founder portrait');
 export const countyMedia = createMediaItems(countyPaths, 'County landscape');
 export const backcountryMedia = createMediaItems(backcountryPaths, 'Backcountry landscape');
 export const lodgeAccommodationMedia = createMediaItems(lodgeAccommodationPaths, 'Ohakune lodge frame');
