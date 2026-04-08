@@ -7,7 +7,7 @@ import TextReveal from '@/components/text-reveal';
 import TeamMemberModal from './team-member-modal';
 import { useState, useEffect, useRef } from 'react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
-import { alexFounderMedia, artemFounderMedia } from '@/lib/media-collections';
+import { alexFounderMedia, artemFounderMedia, vukFounderMedia } from '@/lib/media-collections';
 
 const founders = [
   { 
@@ -31,6 +31,17 @@ const founders = [
     bio: 'Artem brings 15 years of dedicated hunting experience, combining technical precision with a deep passion for the wild. As a co-founder, he ensures that every detail of the safari experience meets the highest standards of luxury and authenticity.',
     portrait: artemFounderMedia[0]?.src ?? null,
     images: artemFounderMedia.map((image) => image.src),
+  },
+  {
+    name: 'Vuk Mijatovic',
+    role: 'Lead Guide',
+    origin: 'New Zealand',
+    exp: '35 Yrs', expNum: 35, expSuffix: ' Yrs',
+    initials: 'VM',
+    expertise: 'Field Judgement / Fair Chase',
+    bio: 'With more than 35 years in the field, Vuk brings deep knowledge of New Zealand terrain, animal behaviour, and the patient, fair-chase pace required for successful trophy hunting.',
+    portrait: vukFounderMedia[0]?.src ?? null,
+    images: vukFounderMedia.map((image) => image.src),
   },
 ];
 
@@ -132,7 +143,7 @@ export default function StorySection() {
               <div className="mt-8 flex items-center justify-center gap-4 text-[9px] font-bold uppercase tracking-[0.3em] text-gray-500">
                  <span>Est. 2025</span>
                  <div className="h-1 w-1 rounded-full bg-gold-400/30" />
-                 <span>55+ Combined Years</span>
+                 <span>90+ Combined Years</span>
               </div>
            </motion.div>
         </div>
@@ -150,7 +161,7 @@ export default function StorySection() {
               </div>
            </div>
 
-           <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 xl:gap-8">
+           <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-3 xl:gap-8">
               {founders.map((founder, index) => (
                 <motion.button
                   key={founder.name}

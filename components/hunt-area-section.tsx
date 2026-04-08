@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Compass, Mountain, ShieldCheck, Trees, Wind, Calendar, Activity, Zap, Award, Target, Crosshair } from 'lucide-react';
+import { Compass, Mountain, ShieldCheck, Trees, Wind, Activity, Zap, Award, Target } from 'lucide-react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 import TextReveal from '@/components/text-reveal';
 import { backcountryMedia, countyMedia } from '@/lib/media-collections';
@@ -59,7 +59,7 @@ const regions = [
   },
 ];
 
-const seasons = [
+export const seasons = [
   {
     window: 'Mar - Apr',
     title: 'Red Deer Roar',
@@ -160,9 +160,7 @@ const principles = [
 
 export default function HuntAreaSection() {
   const [activeRegion, setActiveRegion] = useState(0);
-  const [activeSeason, setActiveSeason] = useState(0);
   const region = regions[activeRegion];
-  const season = seasons[activeSeason];
 
   return (
     <section id="territory" className="territory-contours relative overflow-hidden bg-transparent py-20 font-sans md:py-32">
@@ -309,121 +307,6 @@ export default function HuntAreaSection() {
             </div>
           </motion.div>
         </AnimatePresence>
-
-        {/* EXPANDED SEASONAL WINDOWS DOSSIER */}
-        <div className="mb-12">
-          <div className="mb-8 flex items-center gap-4">
-             <div className="h-px flex-1 bg-white/5" />
-             <div className="flex items-center gap-3">
-                <Calendar className="h-4 w-4 text-gold-400/40" />
-                <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-gold-400/60">Operational Windows</p>
-             </div>
-             <div className="h-px flex-1 bg-white/5" />
-          </div>
-
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-10">
-             {/* Seasonal Tab List */}
-             <div className="flex flex-wrap gap-2 lg:w-[28%] lg:flex-col lg:gap-3">
-                {seasons.map((item, index) => (
-                   <button
-                     key={item.title}
-                     onClick={() => setActiveSeason(index)}
-                     className={`flex flex-col items-center justify-center rounded-2xl border p-4 text-center transition-all duration-300 lg:p-6 ${
-                       activeSeason === index
-                         ? 'border-gold-400/60 bg-gold-400/10 text-gold-300 shadow-glow ring-1 ring-gold-400/20'
-                         : 'border-white/5 bg-forest-900/20 text-gray-400 hover:border-white/20'
-                     }`}
-                   >
-                      <div className="flex flex-col items-center gap-1.5">
-                         <span className={`font-display font-bold uppercase tracking-tight transition-colors ${
-                           activeSeason === index ? 'text-sm text-gold-300' : 'text-[13px] text-white/70 group-hover:text-white'
-                         }`}>
-                            {item.title}
-                         </span>
-                         <span className={`text-[9px] font-bold uppercase tracking-[0.2em] ${
-                           activeSeason === index ? 'text-gold-400/50' : 'text-white/20'
-                         }`}>
-                            {item.window}
-                         </span>
-                      </div>
-                   </button>
-                ))}
-             </div>
-
-             {/* Dynamic Content Dossier Panel */}
-             <div className="relative flex-1">
-                <AnimatePresence mode="wait">
-                   <motion.div
-                     key={activeSeason}
-                     initial={{ opacity: 0, x: 20 }}
-                     animate={{ opacity: 1, x: 0 }}
-                     exit={{ opacity: 0, x: -10 }}
-                     transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                     className="group relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-[linear-gradient(135deg,rgba(15,22,21,0.6),rgba(9,14,13,0.8))] p-8 shadow-premium md:p-10 lg:p-14"
-                   >
-                      {/* Topographic Accents */}
-                      <div className="absolute -right-20 -top-20 h-64 w-64 rotate-45 border border-white/[0.03] opacity-50" />
-                      <div className="absolute -left-20 -bottom-20 h-64 w-64 rotate-45 border border-white/[0.03] opacity-50" />
-                      
-                      <div className="relative z-10">
-                        <div className="mb-10 flex flex-col justify-between gap-6 border-b border-white/5 pb-10 sm:flex-row sm:items-end">
-                           <div className="flex flex-col gap-3">
-                              <div className="flex items-center gap-3">
-                                <Crosshair className="h-3.5 w-3.5 text-gold-400/40" />
-                                <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-gold-400/60">Field Report // 0{activeSeason + 1}</span>
-                              </div>
-                              <h3 className="font-display text-4xl font-bold uppercase text-white sm:text-5xl md:text-6xl">{season.title}</h3>
-                           </div>
-                           <div className="flex flex-col items-start gap-1 sm:items-end">
-                              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gold-400">{season.window}</span>
-                              <span className="text-[8px] font-bold uppercase tracking-widest text-white/20">{season.region}</span>
-                           </div>
-                        </div>
-
-                        <div className="grid gap-12 lg:grid-cols-2">
-                           {/* Left Column: Narrative */}
-                           <div className="space-y-8">
-                              <div>
-                                 <p className="mb-4 text-[9px] font-black uppercase tracking-[0.4em] text-gold-400/40">Tactical Summary</p>
-                                 <p className="text-lg leading-relaxed text-gray-300 italic lg:text-xl">
-                                   &ldquo;{season.detail}&rdquo;
-                                 </p>
-                              </div>
-                              <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6 lg:p-8">
-                                 <p className="mb-3 text-[9px] font-black uppercase tracking-[0.4em] text-gold-400/60">Operational Note</p>
-                                 <p className="text-sm leading-relaxed text-gray-400 line-clamp-4">
-                                   {season.dossierNote}
-                                 </p>
-                              </div>
-                           </div>
-
-                           {/* Right Column: Specs Grid */}
-                           <div className="grid grid-cols-2 gap-4">
-                              {season.specs.map((spec, idx) => {
-                                 const SpecIcon = spec.icon;
-                                 return (
-                                    <div key={idx} className="flex flex-col gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-5 transition-all hover:bg-gold-500/5 hover:border-gold-500/20">
-                                       <div className="flex items-center gap-2 text-gold-400/60">
-                                          <SpecIcon className="h-3.5 w-3.5" />
-                                          <span className="text-[8px] font-black uppercase tracking-[0.2em]">{spec.label}</span>
-                                       </div>
-                                       <span className="text-sm font-bold uppercase tracking-tight text-white lg:text-base">{spec.value}</span>
-                                    </div>
-                                 );
-                              })}
-                              
-                              <div className="col-span-2 mt-2 flex items-center gap-4 rounded-xl border border-gold-400/10 bg-gold-400/5 p-4">
-                                 <div className="h-2 w-2 animate-pulse rounded-full bg-gold-400" />
-                                 <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-300">Peak Rut Signal // Active</span>
-                              </div>
-                           </div>
-                        </div>
-                      </div>
-                   </motion.div>
-                </AnimatePresence>
-             </div>
-          </div>
-        </div>
 
         {/* REFINED PRINCIPLES */}
         <div className="grid gap-3 sm:grid-cols-3">

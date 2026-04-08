@@ -15,7 +15,6 @@ const navLinks = [
   { label: 'Species', href: '#species', id: 'species' },
   { label: 'Stay', href: '#stay', id: 'stay' },
   { label: 'Gallery', href: '#gallery', id: 'gallery' },
-  { label: 'Guide', href: '#guide', id: 'guide' },
   { label: 'Contact', href: '#contact', id: 'contact' },
 ];
 

@@ -97,6 +97,10 @@ const stayPaths = [
 
 export const alexFounderMedia = createMediaItems(['/media/founders/Alex.jpeg'], 'Founder portrait');
 export const artemFounderMedia = createMediaItems(['/media/founders/artem%20prikazov.jpeg'], 'Founder portrait');
+export const vukFounderMedia = createMediaItems(
+  ['/media/slike/WhatsApp%20Image%202026-03-23%20at%2015.08.39%20(10).jpeg'],
+  'Lead guide portrait'
+);
 export const countyMedia = createMediaItems(countyPaths, 'County landscape');
 export const backcountryMedia = createMediaItems(backcountryPaths, 'Backcountry landscape');
 export const lodgeAccommodationMedia = createMediaItems(lodgeAccommodationPaths, 'Ohakune lodge frame');

@@ -6,7 +6,6 @@ import HuntAreaSection from '@/components/hunt-area-section';
 import GameAnimalsSection from '@/components/game-animals-section';
 import AccommodationSection from '@/components/accommodation-section';
 import GallerySection from '@/components/gallery-section';
-import GuideSection from '@/components/guide-section';
 import ContactSection from '@/components/contact-section';
 import GlobalBackground from '@/components/global-background';
 import { getAbsoluteBlobAssetUrl } from '@/lib/blob-asset';
@@ -70,7 +69,6 @@ export default function Home() {
           <GameAnimalsSection />
           <AccommodationSection />
           <GallerySection />
-          <GuideSection />
           <ContactSection />
           <Footer />
         </div>
