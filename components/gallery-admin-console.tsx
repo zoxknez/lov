@@ -4,6 +4,8 @@ import { useDeferredValue, useEffect, useState, useTransition } from 'react';
 import Image from 'next/image';
 import {
   AlertCircle,
+  ArrowLeft,
+  ArrowRight,
   ArrowDown,
   ArrowUp,
   Loader2,
@@ -134,6 +136,21 @@ export default function GalleryAdminConsole({ authenticated, initialManifest, co
   const selectedItem = items.find((item) => item.id === selectedId) ?? null;
   const visibleCount = items.filter((item) => item.isVisible).length;
   const usedCategories = new Set(items.map((item) => item.categoryKey)).size;
+  const filteredCount = filteredItems.length;
+  const activeCategoryLabel = activeCategory === 'all'
+    ? 'All categories'
+    : GALLERY_CATEGORY_DEFINITIONS.find((entry) => entry.key === activeCategory)?.label ?? 'Archive';
+  const selectedPosition = selectedItem ? filteredItems.findIndex((item) => item.id === selectedItem.id) + 1 : 0;
+
+  useEffect(() => {
+    if (!filteredItems.length) {
+      return;
+    }
+
+    if (!filteredItems.some((item) => item.id === selectedId)) {
+      setSelectedId(filteredItems[0]?.id ?? '');
+    }
+  }, [filteredItems, selectedId]);
 
   function applyServerManifest(nextManifest: GalleryAdminManifest, tone: BannerTone, text: string) {
     setManifest(nextManifest);
@@ -189,6 +206,21 @@ export default function GalleryAdminConsole({ authenticated, initialManifest, co
         return item;
       }),
     );
+  }
+
+  function moveFilteredSelection(direction: 'prev' | 'next') {
+    if (!filteredItems.length) return;
+
+    const currentIndex = filteredItems.findIndex((item) => item.id === selectedId);
+    const fallbackIndex = direction === 'prev' ? filteredItems.length - 1 : 0;
+    const nextIndex = currentIndex === -1
+      ? fallbackIndex
+      : currentIndex + (direction === 'prev' ? -1 : 1);
+    const target = filteredItems[nextIndex];
+
+    if (target) {
+      setSelectedId(target.id);
+    }
   }
 
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
@@ -425,6 +457,138 @@ export default function GalleryAdminConsole({ authenticated, initialManifest, co
         )}
         {banner && <div className={`mb-6 rounded-[1.5rem] border px-4 py-3 text-sm ${getBannerClasses(banner.tone)}`}>{banner.text}</div>}
 
+        <section className="mb-6 rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-5 shadow-premium backdrop-blur-3xl sm:p-6">
+          <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-[10px] font-black uppercase tracking-[0.34em] text-gold-300/60">Media Browser // Fast Selection</p>
+              <h2 className="mt-3 font-display text-3xl font-bold uppercase tracking-tight sm:text-4xl">Find And Select Assets</h2>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/60">
+                Search by title or code, switch species instantly, then move through the archive without a long stacked list.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <div className="rounded-[1.2rem] border border-white/10 bg-black/30 px-4 py-3">
+                <p className="text-[9px] font-black uppercase tracking-[0.22em] text-white/28">Shown</p>
+                <p className="mt-2 font-display text-2xl font-bold">{String(filteredCount).padStart(2, '0')}</p>
+              </div>
+              <div className="rounded-[1.2rem] border border-white/10 bg-black/30 px-4 py-3">
+                <p className="text-[9px] font-black uppercase tracking-[0.22em] text-white/28">Selected</p>
+                <p className="mt-2 font-display text-2xl font-bold text-gold-200">
+                  {filteredCount > 0 && selectedPosition > 0 ? String(selectedPosition).padStart(2, '0') : '--'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-center">
+            <label className="flex items-center gap-3 rounded-[1.4rem] border border-white/10 bg-black/30 px-4 py-3">
+              <Search className="h-4 w-4 shrink-0 text-gold-300" />
+              <input
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder="Search title, code, file"
+                className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/25"
+              />
+            </label>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => moveFilteredSelection('prev')}
+                disabled={selectedPosition <= 1}
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-white/65 disabled:opacity-35"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous
+              </button>
+              <button
+                type="button"
+                onClick={() => moveFilteredSelection('next')}
+                disabled={!filteredCount || selectedPosition <= 0 || selectedPosition >= filteredCount}
+                className="inline-flex items-center gap-2 rounded-full border border-gold-400/28 bg-gold-400/12 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-gold-100 disabled:opacity-35"
+              >
+                Next
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button type="button" onClick={() => setActiveCategory('all')} className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.22em] ${activeCategory === 'all' ? 'border-gold-400/35 bg-gold-400/15 text-gold-100' : 'border-white/10 bg-white/[0.03] text-white/55 hover:border-white/20'}`}>All</button>
+            {GALLERY_CATEGORY_DEFINITIONS.map((category) => (
+              <button key={category.key} type="button" onClick={() => setActiveCategory(category.key)} className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.22em] ${activeCategory === category.key ? 'border-gold-400/35 bg-gold-400/15 text-gold-100' : 'border-white/10 bg-white/[0.03] text-white/55 hover:border-white/20'}`}>
+                {category.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-4 rounded-[1.5rem] border border-white/10 bg-black/25 px-4 py-4">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-[0.22em] text-white/28">Active Filter</p>
+                <p className="mt-2 text-base font-semibold text-white">{activeCategoryLabel}</p>
+              </div>
+              <div className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-gold-200/80">
+                {filteredCount > 0 && selectedPosition > 0
+                  ? `${String(selectedPosition).padStart(2, '0')} / ${String(filteredCount).padStart(2, '0')}`
+                  : `${String(filteredCount).padStart(2, '0')} result${filteredCount === 1 ? '' : 's'}`}
+              </div>
+            </div>
+            {selectedItem && (
+              <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-white/48">
+                <span className="rounded-full border border-gold-400/20 bg-gold-400/10 px-3 py-1 font-black uppercase tracking-[0.18em] text-gold-100">
+                  {selectedItem.referenceCode || 'Draft Code'}
+                </span>
+                <span className="truncate">{selectedItem.title}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-5 overflow-hidden rounded-[1.6rem] border border-white/10 bg-black/20">
+            {filteredItems.length ? (
+              <div className="flex gap-4 overflow-x-auto px-4 py-4 [scrollbar-width:thin]">
+                {filteredItems.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setSelectedId(item.id)}
+                    className={`group w-[11rem] shrink-0 overflow-hidden rounded-[1.35rem] border text-left transition-all sm:w-[12.5rem] ${selectedId === item.id ? 'border-gold-400/40 bg-gold-400/10 shadow-[0_18px_40px_-24px_rgba(200,169,110,0.65)]' : 'border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]'}`}
+                  >
+                    <div className="relative aspect-[4/5] overflow-hidden bg-black/35">
+                      {isVideoItem(item) ? (
+                        <>
+                          <video muted playsInline preload="metadata" poster={buildAdminPosterSrc(item)} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]">
+                            <source src={buildAdminImageSrc(item)} type="video/mp4" />
+                          </video>
+                          <div className="pointer-events-none absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border border-gold-400/30 bg-black/55 text-gold-200">
+                            <Play className="ml-0.5 h-3.5 w-3.5" />
+                          </div>
+                        </>
+                      ) : (
+                        <Image src={buildAdminImageSrc(item)} alt={item.altText} fill sizes="200px" className="object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+                      )}
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 p-3">
+                        <p className="truncate text-[10px] font-black uppercase tracking-[0.2em] text-gold-200/80">{item.referenceCode || 'Draft Code'}</p>
+                        <p className="mt-1 line-clamp-2 text-sm font-semibold text-white">{item.title}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between gap-2 border-t border-white/8 px-3 py-3">
+                      <p className="truncate text-[10px] font-black uppercase tracking-[0.18em] text-white/40">
+                        {GALLERY_CATEGORY_DEFINITIONS.find((entry) => entry.key === item.categoryKey)?.label}
+                      </p>
+                      <span className={`rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.18em] ${selectedId === item.id ? 'bg-gold-400/16 text-gold-100' : 'bg-white/[0.05] text-white/45'}`}>
+                        {isVideoItem(item) ? 'Video' : 'Photo'}
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="px-6 py-10 text-center text-sm text-white/45">No assets match this filter yet.</div>
+            )}
+          </div>
+        </section>
+
         <div className="grid gap-6 xl:grid-cols-[22rem_minmax(0,1fr)]">
           <aside className="space-y-6">
             <form onSubmit={handleUpload} className="rounded-[2rem] border border-white/10 bg-black/35 p-5 shadow-premium backdrop-blur-2xl">
@@ -457,51 +621,6 @@ export default function GalleryAdminConsole({ authenticated, initialManifest, co
               </div>
             </form>
 
-            <div className="rounded-[2rem] border border-white/10 bg-black/35 p-5 shadow-premium backdrop-blur-2xl">
-              <div className="mb-4 flex items-center gap-3">
-                <Search className="h-4 w-4 text-gold-300" />
-                <div>
-                  <p className="text-[9px] font-black uppercase tracking-[0.28em] text-white/28">Browser</p>
-                  <h2 className="font-display text-2xl font-bold uppercase tracking-tight">Archive Items</h2>
-                </div>
-              </div>
-              <input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search title, code, file" className="mb-4 w-full rounded-[1.2rem] border border-white/10 bg-black/35 px-4 py-3 text-white outline-none placeholder:text-white/20" />
-              <div className="mb-4 flex flex-wrap gap-2">
-                <button type="button" onClick={() => setActiveCategory('all')} className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.22em] ${activeCategory === 'all' ? 'border-gold-400/35 bg-gold-400/15 text-gold-100' : 'border-white/10 bg-white/[0.03] text-white/55'}`}>All</button>
-                {GALLERY_CATEGORY_DEFINITIONS.map((category) => (
-                  <button key={category.key} type="button" onClick={() => setActiveCategory(category.key)} className={`rounded-full border px-3 py-2 text-[10px] font-black uppercase tracking-[0.22em] ${activeCategory === category.key ? 'border-gold-400/35 bg-gold-400/15 text-gold-100' : 'border-white/10 bg-white/[0.03] text-white/55'}`}>
-                    {category.label}
-                  </button>
-                ))}
-              </div>
-              <div className="space-y-3">
-                {filteredItems.length ? filteredItems.map((item) => (
-                  <button key={item.id} type="button" onClick={() => setSelectedId(item.id)} className={`flex w-full items-center gap-3 rounded-[1.2rem] border p-3 text-left ${selectedId === item.id ? 'border-gold-400/35 bg-gold-400/12' : 'border-white/10 bg-white/[0.03]'}`}>
-                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-[1rem] border border-white/10 bg-black/30">
-                      {isVideoItem(item) ? (
-                        <>
-                          <video muted playsInline preload="metadata" poster={buildAdminPosterSrc(item)} className="h-full w-full object-cover">
-                            <source src={buildAdminImageSrc(item)} type="video/mp4" />
-                          </video>
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/25">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gold-400/30 bg-black/55 text-gold-200">
-                              <Play className="ml-0.5 h-3.5 w-3.5" />
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <Image src={buildAdminImageSrc(item)} alt={item.altText} fill sizes="64px" className="object-cover" />
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-[10px] font-black uppercase tracking-[0.2em] text-gold-200/80">{item.referenceCode || 'Draft Code'}</p>
-                      <p className="truncate font-semibold text-white">{item.title}</p>
-                      <p className="truncate text-xs text-white/40">{item.filename}</p>
-                    </div>
-                  </button>
-                )) : <div className="rounded-[1.2rem] border border-dashed border-white/10 bg-black/20 px-4 py-6 text-center text-sm text-white/45">No items for this filter.</div>}
-              </div>
-            </div>
           </aside>
 
           <section className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-5 shadow-premium backdrop-blur-3xl sm:p-6">
