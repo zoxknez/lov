@@ -7,6 +7,10 @@ import { Compass, Mountain, ShieldCheck, Trees, Wind, Activity, Zap, Award, Targ
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 import TextReveal from '@/components/text-reveal';
 import { backcountryMedia, countyMedia } from '@/lib/media-collections';
+import gallerySlike from '@/lib/gallery-slike.json';
+
+const southIslandShowcaseImage =
+  gallerySlike[43]?.localSrc ?? backcountryMedia[1]?.src ?? backcountryMedia[0].src;
 
 const regions = [
   {
@@ -38,7 +42,7 @@ const regions = [
     tag: 'South Island',
     name: 'Southern Alps\nAlpine Country',
     location: 'West Coast - Canterbury - High Country',
-    image: backcountryMedia[1]?.src ?? backcountryMedia[0].src,
+    image: southIslandShowcaseImage,
     icon: Mountain,
     accent: 'text-sky-300 border-sky-400/30 bg-sky-400/8',
     species: ['Himalayan Tahr', 'Chamois', 'Mountain Red Deer'],
