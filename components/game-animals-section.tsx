@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Calendar, ChevronLeft, ChevronRight, MapPin, Target, Trophy } from 'lucide-react';
+import { Banknote, Calendar, ChevronLeft, ChevronRight, MapPin, Target, Trophy } from 'lucide-react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 import TextReveal from '@/components/text-reveal';
 
@@ -17,6 +17,7 @@ type AnimalProfile = {
   };
   region: string;
   season: string;
+  price: string;
   trophy: string;
   trophyPct: number;
   terrain: string;
@@ -40,6 +41,7 @@ const animals: AnimalProfile[] = [
     grade: { label: 'Gold Grade', color: 'text-amber-300 border-amber-400/30 bg-amber-400/8' },
     region: 'North + South Island',
     season: 'Mar - Apr',
+    price: '$5,000 - $10,000',
     trophy: '350-400 SCI',
     trophyPct: 92,
     terrain: 'Bush, hill country, alpine basins',
@@ -56,6 +58,7 @@ const animals: AnimalProfile[] = [
     grade: { label: 'Signature', color: 'text-gold-300 border-gold-400/30 bg-gold-400/8' },
     region: 'Kaimanawa, Central Plateau',
     season: 'Mar - May',
+    price: '$3,000 - $5,000',
     trophy: '160-200 Douglas',
     trophyPct: 80,
     terrain: 'Dense beech and podocarp bush',
@@ -72,6 +75,7 @@ const animals: AnimalProfile[] = [
     grade: { label: 'Alpine Rare', color: 'text-sky-300 border-sky-400/30 bg-sky-400/8' },
     region: 'Southern Alps',
     season: 'May - Jul',
+    price: '$3,000 - $5,000',
     trophy: '10-13 inches',
     trophyPct: 88,
     terrain: 'Alpine grasslands, remote basins, steep faces',
@@ -94,6 +98,7 @@ const animals: AnimalProfile[] = [
     grade: { label: 'Select', color: 'text-emerald-300 border-emerald-400/30 bg-emerald-400/8' },
     region: 'North Island private blocks',
     season: 'Apr - May',
+    price: '$2,000 - $4,000',
     trophy: '170-200 points',
     trophyPct: 68,
     terrain: 'Open country, private-land blocks',
@@ -110,6 +115,7 @@ const animals: AnimalProfile[] = [
     grade: { label: 'Alpine', color: 'text-blue-300 border-blue-400/30 bg-blue-400/8' },
     region: 'South Island high country',
     season: 'May - Jun',
+    price: '$2,000 - $4,000',
     trophy: '8-10 inches',
     trophyPct: 72,
     terrain: 'Steep alpine faces, high country ridges',
@@ -132,6 +138,7 @@ const animals: AnimalProfile[] = [
     grade: { label: 'Specialist', color: 'text-rose-300 border-rose-400/30 bg-rose-400/8' },
     region: 'North Island',
     season: 'Jul - Aug',
+    price: '$2,000 - $4,000',
     trophy: 'Late-winter trophy',
     trophyPct: 60,
     terrain: 'Dense cover, river-valley habitat',
@@ -284,15 +291,32 @@ export default function GameAnimalsSection() {
 
                 <p className="text-sm leading-relaxed text-gray-300 sm:text-base">{animal.description}</p>
 
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {animal.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-gold-400/15 bg-gold-400/5 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] text-gold-300"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_240px] lg:items-end">
+                  <div className="flex flex-wrap gap-2">
+                    {animal.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-gold-400/15 bg-gold-400/5 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] text-gold-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="relative overflow-hidden rounded-[1.5rem] border border-gold-400/18 bg-black/20 px-5 py-4 shadow-[0_18px_40px_-26px_rgba(200,169,110,0.55)] backdrop-blur-xl">
+                    <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-gold-400/65 to-transparent" />
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-gold-400/18 bg-gold-400/8 text-gold-300">
+                        <Banknote className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="text-[8px] font-bold uppercase tracking-[0.28em] text-gold-400/55">Price Guide</p>
+                        <p className="mt-2 font-display text-2xl font-bold leading-none tracking-tight text-white tabular-nums">
+                          {animal.price}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
