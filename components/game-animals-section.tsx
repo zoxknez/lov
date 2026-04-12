@@ -157,16 +157,16 @@ export default function GameAnimalsSection() {
   const isExternalImage = animal.image.startsWith('https://');
 
   return (
-    <section id="species" className="relative overflow-hidden bg-transparent py-20 font-sans md:py-32">
+    <section id="species" className="relative overflow-hidden bg-transparent py-16 font-sans sm:py-20 md:py-32">
       <div className="pointer-events-none absolute inset-0 bg-forest-950/10 backdrop-blur-[1px]" />
       <div className="pointer-events-none absolute left-1/4 top-1/2 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-gold-400/3 blur-[140px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mb-12 text-center">
-          <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.44em] text-gold-400">
+        <div className="mb-10 text-center sm:mb-12">
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400 sm:mb-4 sm:text-[11px] sm:tracking-[0.44em]">
             <TextReveal>Premium Trophies</TextReveal>
           </p>
-          <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8rem]">
+          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8rem]">
             <TextReveal delay={0.1}>Species Profiles</TextReveal>
           </h2>
           <motion.div
@@ -187,7 +187,7 @@ export default function GameAnimalsSection() {
               <button
                 key={item.name}
                 onClick={() => setActive(index)}
-                className={`relative whitespace-nowrap rounded-full border px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-400 sm:px-5 sm:tracking-[0.24em] ${
+                className={`relative whitespace-nowrap rounded-full border px-4 py-2 text-[9px] font-bold uppercase tracking-[0.14em] transition-all duration-400 sm:px-5 sm:text-[10px] sm:tracking-[0.24em] ${
                   active === index
                     ? 'border-gold-400/50 bg-gold-400/10 text-gold-300 shadow-glow'
                     : 'border-white/10 bg-white/[0.03] text-gray-400 hover:border-white/20 hover:text-white'
@@ -211,7 +211,7 @@ export default function GameAnimalsSection() {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="grid gap-4 sm:gap-6 lg:grid-cols-5"
           >
-            <div className="relative min-h-[340px] overflow-hidden rounded-[2rem] sm:min-h-[440px] md:rounded-[2.5rem] lg:col-span-2 lg:min-h-[560px]">
+            <div className="relative min-h-[300px] overflow-hidden rounded-[1.8rem] sm:min-h-[440px] md:rounded-[2.5rem] lg:col-span-2 lg:min-h-[560px]">
               <Image
                 src={animalImageSrc}
                 alt={animal.name}
@@ -232,21 +232,21 @@ export default function GameAnimalsSection() {
                 <div className="h-px w-8 bg-gold-400/50" />
               </div>
 
-              <div className="absolute left-1/2 top-5 flex -translate-x-1/2 gap-2 sm:top-6">
-                <span className="rounded-full border border-white/15 bg-black/50 px-3 py-1 text-[8px] font-bold uppercase tracking-[0.18em] text-white/60 backdrop-blur-md">
+              <div className="absolute left-4 right-16 top-4 flex justify-start sm:left-1/2 sm:right-auto sm:top-6 sm:-translate-x-1/2 sm:justify-center">
+                <span className="truncate rounded-full border border-white/15 bg-black/50 px-3 py-1 text-[8px] font-bold uppercase tracking-[0.12em] text-white/60 backdrop-blur-md sm:tracking-[0.18em]">
                   {animal.scientific}
                 </span>
               </div>
 
-              <div className="absolute right-6 top-5 font-display text-6xl font-bold leading-none text-white/[0.06] select-none sm:top-6 sm:right-8 sm:text-7xl">
+              <div className="absolute right-4 top-4 font-display text-5xl font-bold leading-none text-white/[0.06] select-none sm:top-6 sm:right-8 sm:text-7xl">
                 {animal.index}
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-                <span className={`mb-4 inline-block rounded-full border px-3 py-1 text-[9px] font-bold uppercase tracking-[0.22em] backdrop-blur-md ${animal.grade.color}`}>
+              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8">
+                <span className={`mb-3 inline-block rounded-full border px-3 py-1 text-[8px] font-bold uppercase tracking-[0.16em] backdrop-blur-md sm:mb-4 sm:text-[9px] sm:tracking-[0.22em] ${animal.grade.color}`}>
                   {animal.grade.label}
                 </span>
-                <h3 className="whitespace-pre-line font-display text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
+                <h3 className="whitespace-pre-line font-display text-[1.95rem] font-bold uppercase leading-tight text-white sm:text-4xl">
                   {animal.headline}
                 </h3>
                 {animal.imageCredit && (
@@ -275,13 +275,13 @@ export default function GameAnimalsSection() {
             </div>
 
             <div className="flex flex-col gap-4 sm:gap-5 lg:col-span-3">
-              <div className="relative overflow-hidden rounded-[1.8rem] border border-white/8 bg-forest-900/20 p-6 shadow-premium sm:p-8 md:rounded-[2rem] has-beam">
+              <div className="relative overflow-hidden rounded-[1.6rem] border border-white/8 bg-forest-900/20 p-5 shadow-premium sm:p-8 md:rounded-[2rem] has-beam">
                 <div className="absolute left-0 top-0 h-px w-32 bg-gradient-to-r from-gold-400/50 to-transparent" />
                 <div className="absolute left-0 top-0 h-10 w-px bg-gradient-to-b from-gold-400/30 to-transparent" />
 
                 <div className="mb-5 flex flex-col items-start gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <h4 className="font-display text-3xl font-bold uppercase tracking-tight text-white sm:text-4xl">{animal.name}</h4>
+                    <h4 className="font-display text-[1.9rem] font-bold uppercase tracking-tight text-white sm:text-4xl">{animal.name}</h4>
                     <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-gold-400/50">{animal.scientific}</p>
                   </div>
                   <span className={`rounded-full border px-3 py-1 text-[9px] font-bold uppercase tracking-[0.22em] ${animal.grade.color}`}>
@@ -296,14 +296,14 @@ export default function GameAnimalsSection() {
                     {animal.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full border border-gold-400/15 bg-gold-400/5 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] text-gold-300"
+                      className="rounded-full border border-gold-400/15 bg-gold-400/5 px-3 py-1.5 text-[8px] font-bold uppercase tracking-[0.16em] text-gold-300 sm:px-4 sm:text-[9px] sm:tracking-[0.2em]"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
 
-                  <div className="relative overflow-hidden rounded-[1.5rem] border border-gold-400/18 bg-black/20 px-5 py-4 shadow-[0_18px_40px_-26px_rgba(200,169,110,0.55)] backdrop-blur-xl">
+                  <div className="relative overflow-hidden rounded-[1.5rem] border border-gold-400/18 bg-black/20 px-5 py-4 shadow-[0_18px_40px_-26px_rgba(200,169,110,0.55)] backdrop-blur-xl lg:ml-auto">
                     <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-gold-400/65 to-transparent" />
                     <div className="flex items-start gap-3">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-gold-400/18 bg-gold-400/8 text-gold-300">
@@ -332,7 +332,7 @@ export default function GameAnimalsSection() {
                   return (
                     <div
                       key={stat.label}
-                      className="group rounded-[1.4rem] border border-white/8 bg-forest-900/20 p-5 shadow-premium transition-all hover:border-gold-400/20 sm:rounded-[1.6rem]"
+                      className="group rounded-[1.4rem] border border-white/8 bg-forest-900/20 p-4 shadow-premium transition-all hover:border-gold-400/20 sm:rounded-[1.6rem] sm:p-5"
                     >
                       <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl border border-gold-400/15 bg-gold-400/8 text-gold-400 transition-transform group-hover:scale-110">
                         <Icon className="h-4 w-4" />
@@ -356,15 +356,15 @@ export default function GameAnimalsSection() {
                 })}
               </div>
 
-              <div className="flex items-center justify-between gap-3 rounded-[1.6rem] border border-white/8 bg-forest-900/20 px-4 py-3 sm:px-6 sm:py-4">
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1.6rem] border border-white/8 bg-forest-900/20 px-4 py-3 sm:flex-nowrap sm:px-6 sm:py-4">
                 <button
                   onClick={() => setActive((active - 1 + animals.length) % animals.length)}
-                  className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400 transition-colors hover:text-gold-300"
+                  className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-[9px] font-bold uppercase tracking-[0.14em] text-gray-400 transition-colors hover:text-gold-300 sm:text-[10px] sm:tracking-[0.18em]"
                 >
                   <ChevronLeft className="h-4 w-4" />
                   Prev
                 </button>
-                <div className="flex gap-1.5">
+                <div className="order-first flex w-full justify-center gap-1.5 sm:order-none sm:w-auto">
                   {animals.map((_, index) => (
                     <button
                       key={index}
@@ -376,7 +376,7 @@ export default function GameAnimalsSection() {
                 </div>
                 <button
                   onClick={() => setActive((active + 1) % animals.length)}
-                  className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400 transition-colors hover:text-gold-300"
+                  className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-[9px] font-bold uppercase tracking-[0.14em] text-gray-400 transition-colors hover:text-gold-300 sm:text-[10px] sm:tracking-[0.18em]"
                 >
                   Next
                   <ChevronRight className="h-4 w-4" />
@@ -391,7 +391,7 @@ export default function GameAnimalsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="relative mt-8 overflow-hidden rounded-[1.8rem] border border-gold-500/10 bg-forest-900/30 p-6 text-center shadow-premium backdrop-blur-xl sm:mt-10 sm:p-10 md:rounded-[2rem]"
+          className="relative mt-8 overflow-hidden rounded-[1.8rem] border border-gold-500/10 bg-forest-900/30 p-5 text-center shadow-premium backdrop-blur-xl sm:mt-10 sm:p-10 md:rounded-[2rem]"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-gold-500/5 via-transparent to-forest-600/5" />
           <p className="relative mx-auto max-w-3xl font-display text-lg font-light italic leading-relaxed text-gray-300 sm:text-xl">

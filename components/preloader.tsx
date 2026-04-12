@@ -41,7 +41,7 @@ export default function Preloader() {
         <div className="fixed inset-0 z-[1000] overflow-hidden">
           {/* Left Panel */}
           <motion.div
-            className="absolute inset-y-0 left-0 w-1/2 bg-[#060809] flex items-center justify-end pr-6"
+            className="absolute inset-y-0 left-0 flex w-1/2 items-center justify-end bg-[#060809] pr-4 sm:pr-6"
             animate={exiting ? { x: "-100%" } : { x: 0 }}
             transition={{ duration: 0.85, ease: [0.76, 0, 0.24, 1] }}
           >
@@ -50,7 +50,7 @@ export default function Preloader() {
 
           {/* Right Panel */}
           <motion.div
-            className="absolute inset-y-0 right-0 w-1/2 bg-[#060809] flex items-center justify-start pl-6"
+            className="absolute inset-y-0 right-0 flex w-1/2 items-center justify-start bg-[#060809] pl-4 sm:pl-6"
             animate={exiting ? { x: "100%" } : { x: 0 }}
             transition={{ duration: 0.85, ease: [0.76, 0, 0.24, 1] }}
           >
@@ -64,7 +64,7 @@ export default function Preloader() {
             transition={{ duration: 0.5, ease: "easeIn" }}
           >
             {/* Crosshair corners */}
-            <div className="absolute inset-[15%] pointer-events-none">
+            <div className="pointer-events-none absolute inset-[18%] sm:inset-[15%]">
               {/* Top-left */}
               <div className="absolute top-0 left-0">
                 <div className="h-8 w-px bg-gold-400/40" />
@@ -92,7 +92,7 @@ export default function Preloader() {
               initial={{ opacity: 0, scale: 0.6 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative h-28 w-28"
+              className="relative h-24 w-24 sm:h-28 sm:w-28"
             >
               <Image
                 src={BRAND_LOGO_SRC}
@@ -109,12 +109,12 @@ export default function Preloader() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="text-center space-y-2"
+              className="space-y-2 text-center"
             >
-              <p className="font-display text-2xl font-bold uppercase tracking-[0.5em] text-white">
+              <p className="font-display text-xl font-bold uppercase tracking-[0.28em] text-white sm:text-2xl sm:tracking-[0.5em]">
                 Kaimanawa
               </p>
-              <p className="text-[10px] font-bold uppercase tracking-[0.46em] text-gold-400/70">
+              <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-gold-400/70 sm:text-[10px] sm:tracking-[0.46em]">
                 Trophy Safaris · New Zealand
               </p>
             </motion.div>
@@ -126,7 +126,7 @@ export default function Preloader() {
               transition={{ delay: 0.4 }}
               className="flex flex-col items-center gap-3"
             >
-              <div className="relative h-px w-48 overflow-hidden bg-white/10">
+              <div className="relative h-px w-40 overflow-hidden bg-white/10 sm:w-48">
                 <motion.div
                   className="absolute inset-y-0 left-0 bg-gold-400"
                   style={{ width: `${count}%` }}

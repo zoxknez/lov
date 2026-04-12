@@ -360,7 +360,7 @@ export default function AccommodationSection() {
   };
 
   return (
-    <section id="stay" className={`relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${viewer !== null ? 'z-[10000]' : 'z-10'}`}>
+    <section id="stay" className={`relative overflow-hidden bg-transparent py-16 font-sans sm:py-20 md:py-32 ${viewer !== null ? 'z-[10000]' : 'z-10'}`}>
       {/* Immersive Background Decor */}
       <div className="pointer-events-none absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-600/5 blur-[160px]" />
@@ -370,11 +370,11 @@ export default function AccommodationSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         {/* -- Cinematic Header -- */}
-        <div className="mb-14 text-center md:mb-20">
-          <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.5em] text-gold-400/60">
+        <div className="mb-10 text-center sm:mb-14 md:mb-20">
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400/60 sm:mb-4 sm:text-[11px] sm:tracking-[0.5em]">
             <TextReveal>Operational Bases</TextReveal>
           </p>
-          <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8.5rem]">
+          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8.5rem]">
             <TextReveal delay={0.1}>Lodge & Stay</TextReveal>
           </h2>
           <motion.div
@@ -390,8 +390,8 @@ export default function AccommodationSection() {
         </div>
 
         {/* -- Enhanced Tab Switcher -- */}
-        <div className="-mx-4 mb-16 overflow-x-auto px-4 no-scrollbar">
-          <div className="flex w-max min-w-full gap-4 md:justify-center">
+        <div className="-mx-4 mb-10 overflow-x-auto px-4 no-scrollbar sm:mb-16">
+          <div className="flex w-max min-w-full gap-3 md:justify-center">
             {lodges.map((item, index) => (
               <button
                 key={item.id}
@@ -399,7 +399,7 @@ export default function AccommodationSection() {
                   setActive(index);
                   setViewer(null);
                 }}
-                className={`group relative flex items-center gap-4 whitespace-nowrap rounded-full border px-8 py-5 text-[11px] font-black uppercase tracking-[0.4em] transition-all duration-500 ${
+                className={`group relative flex items-center gap-3 whitespace-nowrap rounded-full border px-5 py-3.5 text-[10px] font-black uppercase tracking-[0.22em] transition-all duration-500 sm:px-8 sm:py-5 sm:text-[11px] sm:tracking-[0.4em] ${
                   active === index
                     ? 'border-gold-400/50 bg-gold-400/15 text-gold-300 shadow-glow ring-1 ring-gold-400/20'
                     : 'border-white/10 bg-white/[0.04] text-gray-500 hover:border-gold-400/20 hover:text-white'
@@ -427,7 +427,7 @@ export default function AccommodationSection() {
               <div className="lg:col-span-4 flex flex-col h-full">
                 <div 
                   onClick={() => setViewer({ kind: 'photo', index: 0 })}
-                  className="group relative flex-1 cursor-pointer overflow-hidden rounded-[3rem] border border-white/15 min-h-[500px] lg:min-h-[680px] shadow-premium"
+                  className="group relative flex-1 cursor-pointer overflow-hidden rounded-[2rem] border border-white/15 min-h-[380px] shadow-premium sm:min-h-[500px] sm:rounded-[3rem] lg:min-h-[680px]"
                 >
                   <Image
                     src={getBlobAssetUrl(lodge.image)}
@@ -439,26 +439,26 @@ export default function AccommodationSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90" />
 
                   {/* Operational Badge */}
-                  <div className="absolute left-1/2 top-6 -translate-x-1/2 z-20">
-                    <span className={`rounded-full border px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.4em] backdrop-blur-xl shadow-premium ${lodge.typeColor}`}>
+                  <div className="absolute left-1/2 top-5 z-20 -translate-x-1/2 sm:top-6">
+                    <span className={`rounded-full border px-4 py-2 text-[9px] font-black uppercase tracking-[0.22em] backdrop-blur-xl shadow-premium sm:px-6 sm:py-2.5 sm:text-[10px] sm:tracking-[0.4em] ${lodge.typeColor}`}>
                       {lodge.type} 
                     </span>
                   </div>
 
-                  <div className="absolute bottom-10 left-10 right-10 z-30">
+                  <div className="absolute bottom-6 left-6 right-6 z-30 sm:bottom-10 sm:left-10 sm:right-10">
                     <div className="flex flex-col gap-4">
                       <div className="flex items-center gap-3">
                         <MapPin className="h-4 w-4 text-gold-400" />
-                        <span className="text-[11px] font-black uppercase tracking-[0.5em] text-white/50">{lodge.location}</span>
+                        <span className="text-[9px] font-black uppercase tracking-[0.22em] text-white/50 sm:text-[11px] sm:tracking-[0.5em]">{lodge.location}</span>
                       </div>
-                      <h3 className="whitespace-pre-line font-display text-4xl font-bold uppercase leading-[0.85] text-white sm:text-5xl lg:text-7xl">
+                      <h3 className="whitespace-pre-line font-display text-3xl font-bold uppercase leading-[0.88] text-white sm:text-5xl lg:text-7xl">
                         {lodge.name}
                       </h3>
                     </div>
                   </div>
 
-                  <div className="absolute right-8 bottom-10 flex h-14 w-14 items-center justify-center rounded-full border border-gold-400/40 bg-gold-400/15 text-white backdrop-blur-xl transition-all hover:bg-gold-500 hover:text-black hover:scale-110 shadow-glow">
-                    <Maximize2 className="h-6 w-6" />
+                  <div className="absolute bottom-6 right-5 flex h-12 w-12 items-center justify-center rounded-full border border-gold-400/40 bg-gold-400/15 text-white shadow-glow backdrop-blur-xl transition-all hover:scale-110 hover:bg-gold-500 hover:text-black sm:bottom-10 sm:right-8 sm:h-14 sm:w-14">
+                    <Maximize2 className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
                 </div>
               </div>
@@ -469,8 +469,8 @@ export default function AccommodationSection() {
                 {/* Precision Metrics Card */}
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1">
                   {lodge.specs.map((spec) => (
-                    <div key={spec.label} className="flex items-center justify-between rounded-2xl border border-white/10 bg-forest-900/40 p-5 group transition-colors hover:bg-gold-500/10">
-                       <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gold-400/40">{spec.label}</span>
+                    <div key={spec.label} className="group flex flex-col items-start justify-between gap-2 rounded-2xl border border-white/10 bg-forest-900/40 p-4 transition-colors hover:bg-gold-500/10 sm:flex-row sm:items-center sm:gap-4 sm:p-5">
+                       <span className="text-[9px] font-black uppercase tracking-[0.18em] text-gold-400/40 sm:text-[10px] sm:tracking-[0.3em]">{spec.label}</span>
                        <span className="text-xs font-bold uppercase text-white tracking-widest">{spec.value}</span>
                     </div>
                   ))}
@@ -480,7 +480,7 @@ export default function AccommodationSection() {
                 {hasVideos ? (
                   <div
                     onClick={() => setViewer({ kind: 'video', index: 0 })}
-                    className="group relative flex-1 min-h-[240px] cursor-pointer overflow-hidden rounded-[2.5rem] border border-white/10 bg-black/40 shadow-premium"
+                    className="group relative flex-1 min-h-[220px] cursor-pointer overflow-hidden rounded-[2rem] border border-white/10 bg-black/40 shadow-premium sm:min-h-[240px] sm:rounded-[2.5rem]"
                   >
                     <video
                       muted
@@ -494,19 +494,19 @@ export default function AccommodationSection() {
                       <source src={getBlobAssetUrl(lodge.videos[0].src)} type="video/mp4" />
                     </video>
                     <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-black/25 to-transparent" />
-                    <div className="absolute left-6 top-6 rounded-full border border-gold-400/20 bg-black/50 px-4 py-2 text-[9px] font-black uppercase tracking-[0.3em] text-gold-300">
+                    <div className="absolute left-4 top-4 rounded-full border border-gold-400/20 bg-black/50 px-3 py-1.5 text-[8px] font-black uppercase tracking-[0.18em] text-gold-300 sm:left-6 sm:top-6 sm:px-4 sm:py-2 sm:text-[9px] sm:tracking-[0.3em]">
                       Motion Archive
                     </div>
-                    <div className="absolute right-6 top-6 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[8px] font-bold uppercase tracking-[0.2em] text-white/60">
+                    <div className="absolute right-4 top-4 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[8px] font-bold uppercase tracking-[0.14em] text-white/60 sm:right-6 sm:top-6 sm:tracking-[0.2em]">
                       {lodge.videos[0].durationLabel}
                     </div>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/20 p-8 text-center transition-colors group-hover:bg-black/5">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full border border-gold-400/30 bg-gold-400/10 text-gold-300 shadow-glow">
-                        <Play className="ml-1 h-6 w-6" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/20 p-6 text-center transition-colors group-hover:bg-black/5 sm:p-8">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full border border-gold-400/30 bg-gold-400/10 text-gold-300 shadow-glow sm:h-16 sm:w-16">
+                        <Play className="ml-1 h-5 w-5 sm:h-6 sm:w-6" />
                       </div>
-                      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gold-300">Launch Field Tape</p>
+                      <p className="text-[9px] font-black uppercase tracking-[0.18em] text-gold-300 sm:text-[10px] sm:tracking-[0.4em]">Launch Field Tape</p>
                     </div>
-                    <div className="absolute inset-x-0 bottom-0 p-6">
+                    <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
                       <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-5">
                         <div>
                           <p className="text-[8px] font-black uppercase tracking-[0.3em] text-white/25">Featured Clip</p>
@@ -521,7 +521,7 @@ export default function AccommodationSection() {
                 ) : (
                   <div 
                     onClick={() => setViewer({ kind: 'photo', index: 1 % lodge.gallery.length })}
-                    className="group relative flex-1 min-h-[240px] cursor-pointer overflow-hidden rounded-[2.5rem] border border-white/10 bg-black/40 shadow-premium"
+                    className="group relative flex-1 min-h-[220px] cursor-pointer overflow-hidden rounded-[2rem] border border-white/10 bg-black/40 shadow-premium sm:min-h-[240px] sm:rounded-[2.5rem]"
                   >
                     <Image
                       src={getBlobAssetUrl(lodge.gallery[1 % lodge.gallery.length].src)}
@@ -530,15 +530,15 @@ export default function AccommodationSection() {
                       className="object-cover opacity-60 contrast-[1.1] transition-transform duration-1000 group-hover:scale-115"
                     />
                     <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-transparent to-transparent" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-8 text-center bg-black/20 group-hover:bg-black/10 transition-colors">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/20 p-6 text-center transition-colors group-hover:bg-black/10 sm:p-8">
                        <Play className="h-6 w-6 text-gold-400/30 group-hover:text-gold-400 transition-colors" />
-                       <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gold-400/50 group-hover:text-gold-300">Operational Log</p>
-                    </div>
+                       <p className="text-[9px] font-black uppercase tracking-[0.18em] text-gold-400/50 transition-colors group-hover:text-gold-300 sm:text-[10px] sm:tracking-[0.4em]">Operational Log</p>
+                     </div>
                   </div>
                 )}
 
                 {/* Grid System / Status Hub */}
-                <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-forest-900/30 p-8 shadow-premium">
+                <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-forest-900/30 p-6 shadow-premium sm:rounded-[2.5rem] sm:p-8">
                    <div className="flex items-center justify-between gap-4">
                       <div className="flex flex-col gap-1">
                          <div className="flex items-center gap-3">
@@ -553,7 +553,7 @@ export default function AccommodationSection() {
                       </div>
                    </div>
                    
-                   <div className="mt-8 flex items-center gap-6 justify-center">
+                   <div className="mt-6 flex items-center justify-center gap-5 sm:mt-8 sm:gap-6">
                       <Compass className="h-10 w-10 text-white/5 animate-spin-slow" />
                       <div className="h-1.5 w-1.5 rounded-full bg-gold-400/20" />
                       <Locate className="h-10 w-10 text-white/5" />
@@ -565,20 +565,20 @@ export default function AccommodationSection() {
               <div className="lg:col-span-4 flex flex-col justify-between gap-6">
                 
                 {/* Mission Narrative Dossier */}
-                <div className="relative flex flex-1 flex-col overflow-hidden rounded-[3rem] border border-white/8 bg-[linear-gradient(135deg,rgba(18,28,26,0.6),rgba(10,16,15,0.8))] p-10 shadow-premium">
+                <div className="relative flex flex-1 flex-col overflow-hidden rounded-[2rem] border border-white/8 bg-[linear-gradient(135deg,rgba(18,28,26,0.6),rgba(10,16,15,0.8))] p-6 shadow-premium sm:rounded-[3rem] sm:p-10">
                   <div className="absolute left-0 top-0 h-px w-40 bg-gradient-to-r from-gold-400/40 to-transparent" />
                   <div className="absolute left-0 top-0 h-40 w-px bg-gradient-to-b from-gold-400/30 to-transparent" />
                   
-                  <div className="mb-6 flex items-center justify-between">
-                     <span className="text-[10px] font-black uppercase tracking-[0.5em] text-gold-400/50 uppercase">{lodge.tagline}</span>
+                   <div className="mb-5 flex items-center justify-between gap-4 sm:mb-6">
+                     <span className="text-[9px] font-black uppercase tracking-[0.22em] text-gold-400/50 sm:text-[10px] sm:tracking-[0.5em]">{lodge.tagline}</span>
                      <ShieldCheck className="h-4 w-4 text-white/10" />
-                  </div>
+                   </div>
 
-                  <p className="flex-1 text-lg leading-relaxed text-gray-300 font-medium md:text-xl lg:text-[1.2rem] lg:leading-[1.75]">
-                     {lodge.description}
-                  </p>
-                  
-                  <div className="mt-10 flex items-center gap-6 border-t border-white/5 pt-10">
+                   <p className="flex-1 text-base font-medium leading-relaxed text-gray-300 md:text-xl lg:text-[1.2rem] lg:leading-[1.75]">
+                      {lodge.description}
+                   </p>
+                   
+                   <div className="mt-8 flex flex-col items-start gap-4 border-t border-white/5 pt-8 sm:mt-10 sm:flex-row sm:items-center sm:gap-6 sm:pt-10">
                      <div className="flex flex-col gap-1.5">
                         <span className="text-[11px] font-black uppercase tracking-[0.3em] text-white/20">Operational Profile</span>
                         <span className="text-xs font-bold uppercase text-gold-400/70 italic">{lodge.highlight}</span>
@@ -588,19 +588,19 @@ export default function AccommodationSection() {
                 </div>
 
                 {/* Base Logistics (Amenities Dashboard) */}
-                <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-forest-900/30 p-10 shadow-premium">
-                  <div className="mb-8 flex items-center justify-between">
-                      <p className="text-[11px] font-black uppercase tracking-[0.5em] text-gold-400/60">Base Logistics</p>
+                <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-forest-900/30 p-6 shadow-premium sm:rounded-[2.5rem] sm:p-10">
+                  <div className="mb-6 flex flex-col items-start justify-between gap-3 sm:mb-8 sm:flex-row sm:items-center">
+                      <p className="text-[10px] font-black uppercase tracking-[0.26em] text-gold-400/60 sm:text-[11px] sm:tracking-[0.5em]">Base Logistics</p>
                       <div className="flex items-center gap-2 rounded-full border border-white/5 bg-black/40 px-4 py-2">
                          <Users className="h-4 w-4 text-gold-400/40" />
-                         <span className="text-[9px] font-bold uppercase tracking-widest text-white/40">{lodge.capacity} Personnel</span>
+                         <span className="text-[8px] font-bold uppercase tracking-[0.14em] text-white/40 sm:text-[9px] sm:tracking-widest">{lodge.capacity} Personnel</span>
                       </div>
                    </div>
                    {hasVideos && (
-                     <div className="mb-6 flex items-center justify-between rounded-2xl border border-emerald-400/15 bg-emerald-400/5 px-5 py-4">
+                     <div className="mb-6 flex flex-col items-start justify-between gap-3 rounded-2xl border border-emerald-400/15 bg-emerald-400/5 px-4 py-4 sm:flex-row sm:items-center sm:px-5">
                         <div className="flex items-center gap-3">
                            <div className="h-2 w-2 animate-pulse rounded-full bg-emerald-300" />
-                           <span className="text-[9px] font-black uppercase tracking-[0.3em] text-emerald-300">Motion Log Ready</span>
+                           <span className="text-[8px] font-black uppercase tracking-[0.18em] text-emerald-300 sm:text-[9px] sm:tracking-[0.3em]">Motion Log Ready</span>
                         </div>
                         <button
                           onClick={() => setViewer({ kind: 'video', index: 0 })}
@@ -610,13 +610,13 @@ export default function AccommodationSection() {
                         </button>
                      </div>
                    )}
-                   <div className="grid grid-cols-2 gap-4">
+                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
                      {lodge.features.map((feature) => {
                        const Icon = feature.icon;
                        return (
                          <div
                            key={feature.label}
-                           className="group flex items-center gap-4 rounded-3xl border border-white/5 bg-white/[0.03] px-6 py-5 transition-all hover:border-gold-400/30 hover:bg-gold-400/10 hover:-translate-y-1"
+                           className="group flex items-center gap-4 rounded-[1.5rem] border border-white/5 bg-white/[0.03] px-5 py-4 transition-all hover:-translate-y-1 hover:border-gold-400/30 hover:bg-gold-400/10 sm:rounded-3xl sm:px-6 sm:py-5"
                          >
                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-400/5 transition-colors group-hover:bg-gold-400/20">
                               <Icon className="h-5 w-5 text-gold-400/50 group-hover:text-gold-400" />
@@ -641,7 +641,7 @@ export default function AccommodationSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1.2 }}
-          className="relative mt-12 overflow-hidden rounded-[4rem] border border-gold-500/10 bg-forest-950/40 p-10 text-center backdrop-blur-3xl sm:p-14"
+          className="relative mt-12 overflow-hidden rounded-[2.2rem] border border-gold-500/10 bg-forest-950/40 p-7 text-center backdrop-blur-3xl sm:rounded-[4rem] sm:p-14"
         >
           {/* Topographic Background Decor */}
           <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
@@ -651,13 +651,13 @@ export default function AccommodationSection() {
             </svg>
           </div>
 
-          <div className="relative z-10 flex flex-col items-center gap-10 md:flex-row md:gap-14 md:text-left">
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[2rem] border border-gold-400/20 bg-gold-400/5 text-gold-400/40 shadow-glow">
-              <Utensils className="h-8 w-8" />
+          <div className="relative z-10 flex flex-col items-center gap-6 md:flex-row md:gap-14 md:text-left">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[1.5rem] border border-gold-400/20 bg-gold-400/5 text-gold-400/40 shadow-glow sm:h-20 sm:w-20 sm:rounded-[2rem]">
+              <Utensils className="h-7 w-7 sm:h-8 sm:w-8" />
             </div>
             <div className="max-w-4xl">
-               <p className="mb-4 text-[11px] font-black uppercase tracking-[0.6em] text-gold-400/40 italic">Operational Hospitality</p>
-               <p className="font-display text-2xl leading-relaxed text-gray-300 italic sm:text-3xl md:text-4xl">
+               <p className="mb-3 text-[10px] font-black uppercase tracking-[0.28em] text-gold-400/40 italic sm:mb-4 sm:text-[11px] sm:tracking-[0.6em]">Operational Hospitality</p>
+               <p className="font-display text-xl leading-relaxed text-gray-300 italic sm:text-3xl md:text-4xl">
                  &ldquo;Meals are prepared around the rhythm of the hunt - not the other way around. Excellent food, reliable hospitality, and a stay that feels relaxed after long days in the bush.&rdquo;
                </p>
             </div>
@@ -672,17 +672,17 @@ export default function AccommodationSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] flex flex-col overflow-hidden bg-forest-950/98 backdrop-blur-3xl"
+            className="fixed inset-0 z-[1000] flex flex-col overflow-y-auto bg-forest-950/98 backdrop-blur-3xl"
             onClick={() => setViewer(null)}
             data-lenis-prevent
           >
             {/* Lightbox Layout */}
             <div className="flex-1 min-h-0 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
               <div className="mx-auto flex h-full max-w-7xl flex-col gap-4" onClick={(event) => event.stopPropagation()}>
-                <div className="rounded-[2rem] border border-white/10 bg-black/60 px-4 py-4 shadow-premium backdrop-blur-3xl sm:px-6 sm:py-5">
+                <div className="rounded-[1.6rem] border border-white/10 bg-black/60 px-4 py-4 shadow-premium backdrop-blur-3xl sm:rounded-[2rem] sm:px-6 sm:py-5">
                   <div className="flex items-start gap-4 sm:items-center">
                     <div className="min-w-0 flex-1">
-                      <div className="mb-2 flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.35em] text-gold-400/50">
+                      <div className="mb-2 flex items-center gap-2 text-[8px] font-black uppercase tracking-[0.2em] text-gold-400/50 sm:text-[9px] sm:tracking-[0.35em]">
                         {viewer.kind === 'video' ? <Play className="h-3 w-3 shrink-0" /> : <Maximize2 className="h-3 w-3 shrink-0" />}
                         {viewer.kind === 'video' ? 'Motion Archive' : 'Lodge Archive'}
                       </div>
@@ -691,11 +691,11 @@ export default function AccommodationSection() {
                           <h2 className="truncate font-display text-xl font-bold uppercase tracking-tight text-white sm:text-3xl">
                             {activeViewerItem.title}
                           </h2>
-                          <p className="mt-1 text-[10px] font-black uppercase tracking-[0.24em] text-white/28">
+                          <p className="mt-1 text-[9px] font-black uppercase tracking-[0.16em] text-white/28 sm:text-[10px] sm:tracking-[0.24em]">
                             {lodgeNamePlain} | {lodge.location}
                           </p>
                         </div>
-                        <div className="inline-flex items-center gap-3 self-start rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-gold-200">
+                        <div className="inline-flex items-center gap-3 self-start rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[9px] font-black uppercase tracking-[0.16em] text-gold-200 sm:text-[10px] sm:tracking-[0.24em]">
                           <span>{viewer.kind === 'video' ? 'Tape' : 'Frame'}</span>
                           <span className="stat-number text-base font-display tracking-tight">
                             {String(viewer.index + 1).padStart(2, '0')} / {String(lightboxCount).padStart(2, '0')}
@@ -715,7 +715,7 @@ export default function AccommodationSection() {
                 </div>
                 {/* Media Stage */}
                 <div className="flex flex-1 min-h-0 flex-col gap-4">
-                  <div className="relative flex-1 min-h-0 overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_42%),linear-gradient(180deg,rgba(14,20,19,0.94),rgba(6,10,10,0.98))] shadow-premium">
+                  <div className="relative min-h-[42vh] flex-1 overflow-hidden rounded-[1.6rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_42%),linear-gradient(180deg,rgba(14,20,19,0.94),rgba(6,10,10,0.98))] shadow-premium sm:min-h-0 sm:rounded-[2rem]">
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.04] via-transparent to-black/40" />
 
                     {lightboxCount > 1 && (
@@ -771,18 +771,18 @@ export default function AccommodationSection() {
                       ) : null}
                     </motion.div>
 
-                    <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-between gap-3 sm:bottom-6 sm:left-6 sm:right-6">
-                      <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-white/70">
+                    <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-between gap-2 sm:bottom-6 sm:left-6 sm:right-6 sm:gap-3">
+                      <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-[8px] font-black uppercase tracking-[0.14em] text-white/70 sm:text-[10px] sm:tracking-[0.22em]">
                         {viewer.kind === 'video' ? `${activeVideo?.durationLabel ?? '--:--'} Runtime` : 'Photo Asset'}
                       </div>
-                      <div className="rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-gold-200">
+                      <div className="rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[8px] font-black uppercase tracking-[0.14em] text-gold-200 sm:text-[10px] sm:tracking-[0.22em]">
                         {activeViewerItem.badge}
                       </div>
                     </div>
                   </div>
 
                   <div className="grid shrink-0 gap-4 lg:grid-cols-[minmax(16rem,0.95fr)_minmax(0,1.8fr)]">
-                    <div className="rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
+                    <div className="hidden rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:block sm:p-5">
                       <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Asset Metadata</p>
                       <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2">
                         {[
@@ -803,11 +803,11 @@ export default function AccommodationSection() {
                       <div className="mb-4 flex items-start justify-between gap-3">
                         <div>
                           <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Quick Browse</p>
-                          <p className="mt-2 text-xs leading-relaxed text-gray-400">
+                          <p className="mt-2 hidden text-xs leading-relaxed text-gray-400 sm:block">
                             Browse the full {viewer.kind === 'video' ? 'motion archive' : 'photo archive'} from inside the lightbox and jump straight to any {viewer.kind === 'video' ? 'tape' : 'frame'}.
                           </p>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="hidden items-center gap-2 sm:flex">
                           <button
                             type="button"
                             aria-label="Scroll quick browse left"
@@ -884,7 +884,7 @@ export default function AccommodationSection() {
                         ))}
                       </div>
 
-                      <p className="mt-4 text-[9px] font-black uppercase tracking-[0.24em] text-white/20">
+                      <p className="mt-4 hidden text-[9px] font-black uppercase tracking-[0.24em] text-white/20 sm:block">
                         Use arrows, keyboard, or the internal strip to move through the archive.
                       </p>
                     </div>

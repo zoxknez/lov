@@ -363,15 +363,15 @@ export default function GallerySection() {
   };
 
   return (
-    <section id="gallery" className={`gallery-lighttable relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${lightboxIndex !== null ? 'z-[10000]' : 'z-10'}`}>
+    <section id="gallery" className={`gallery-lighttable relative overflow-hidden bg-transparent py-16 font-sans sm:py-20 md:py-32 ${lightboxIndex !== null ? 'z-[10000]' : 'z-10'}`}>
       <div className="pointer-events-none absolute inset-0 bg-forest-950/10 backdrop-blur-[1px]" />
       <div className="pointer-events-none absolute -left-32 top-0 h-[500px] w-[500px] rounded-full bg-gold-600/4 blur-[140px]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,white_1px,transparent_1px)] bg-[size:40px_40px] opacity-[0.02]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mb-14 flex flex-col items-center text-center">
-          <p className="mb-4 text-[10px] font-black uppercase tracking-[0.6em] text-gold-400/60">Operational Visual Archive // Log.2026</p>
-          <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8.5rem]">
+        <div className="mb-10 flex flex-col items-center text-center sm:mb-14">
+          <p className="mb-3 text-[9px] font-black uppercase tracking-[0.28em] text-gold-400/60 sm:mb-4 sm:text-[10px] sm:tracking-[0.6em]">Operational Visual Archive // Log.2026</p>
+          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8.5rem]">
             <TextReveal delay={0.1}>Gallery</TextReveal>
           </h2>
           <motion.div
@@ -384,12 +384,12 @@ export default function GallerySection() {
             <div className="h-2 w-2 shrink-0 rotate-45 border border-gold-400/60 bg-gold-400/20 shadow-glow" />
             <div className="h-px w-full bg-gradient-to-l from-transparent via-gold-400/40 to-transparent" />
           </motion.div>
-          <p className="mx-auto mt-8 max-w-2xl text-sm italic leading-relaxed text-white/40 sm:text-lg">
+          <p className="mx-auto mt-6 max-w-2xl text-[15px] italic leading-relaxed text-white/40 sm:mt-8 sm:text-lg">
             &ldquo;A species-led visual archive, grouped by red deer, sika, fallow, rusa or sambar, tahr, chamois, and a final set of general hunting frames.&rdquo;
           </p>
         </div>
 
-        <div className="mb-8 rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.015))] p-3 shadow-premium backdrop-blur-xl sm:p-4">
+        <div className="mb-8 rounded-[1.8rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.015))] p-3 shadow-premium backdrop-blur-xl sm:rounded-[2.2rem] sm:p-4">
           <div className="-mx-1 overflow-x-auto px-1 no-scrollbar lg:overflow-visible">
             <div className="grid min-w-max grid-flow-col auto-cols-[minmax(10.75rem,1fr)] gap-3 pb-2 sm:auto-cols-[minmax(11.75rem,1fr)] md:gap-4 lg:min-w-0 lg:grid-flow-row lg:grid-cols-3 lg:pb-0 xl:grid-cols-4">
               {galleryGroups.map((group, index) => {
@@ -442,8 +442,8 @@ export default function GallerySection() {
           </div>
         </div>
 
-        <div className="mb-12 grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)] lg:items-stretch">
-          <div className={`relative overflow-hidden rounded-[2.2rem] border px-5 py-6 shadow-premium backdrop-blur-xl sm:px-7 sm:py-7 ${activeTone.activeContainer}`}>
+        <div className="mb-10 grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)] lg:items-stretch sm:mb-12">
+          <div className={`relative overflow-hidden rounded-[1.8rem] border px-5 py-6 shadow-premium backdrop-blur-xl sm:rounded-[2.2rem] sm:px-7 sm:py-7 ${activeTone.activeContainer}`}>
             <div className={`pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent ${activeTone.line} to-transparent`} />
             <div className="pointer-events-none absolute -right-20 top-0 h-40 w-40 rounded-full bg-white/6 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-24 left-10 h-40 w-40 rounded-full bg-black/35 blur-3xl" />
@@ -462,7 +462,7 @@ export default function GallerySection() {
                 <div className="mb-4 flex items-start gap-3">
                   <span className={`mt-3 h-2.5 w-2.5 shrink-0 rounded-full ${activeTone.dot} shadow-glow`} />
                   <div>
-                    <h3 className="font-display text-4xl font-bold uppercase tracking-tight text-white md:text-6xl">{active.title}</h3>
+                    <h3 className="font-display text-3xl font-bold uppercase tracking-tight text-white sm:text-4xl md:text-6xl">{active.title}</h3>
                     <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/66 sm:text-[15px]">{active.sub}</p>
                   </div>
                 </div>
@@ -476,17 +476,17 @@ export default function GallerySection() {
             </div>
           </div>
           <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-            <div className={`rounded-[1.7rem] border px-4 py-4 shadow-premium backdrop-blur-xl ${activeTone.activeContainer}`}>
+            <div className={`rounded-[1.5rem] border px-4 py-4 shadow-premium backdrop-blur-xl sm:rounded-[1.7rem] ${activeTone.activeContainer}`}>
               <p className="text-[9px] font-black uppercase tracking-[0.28em] text-white/38">Archive Frames</p>
               <p className="stat-number mt-2 font-display text-3xl font-bold uppercase tracking-tight text-white">{formatAssetCount(assets.length)}</p>
               <p className="mt-3 text-[10px] uppercase tracking-[0.24em] text-white/46">in selected species</p>
             </div>
-            <div className="rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-4 shadow-premium backdrop-blur-xl">
+            <div className="rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-4 shadow-premium backdrop-blur-xl sm:rounded-[1.7rem]">
               <p className="text-[9px] font-black uppercase tracking-[0.28em] text-white/25">Preview Grid</p>
               <p className={`stat-number mt-2 font-display text-3xl font-bold uppercase tracking-tight ${activeTone.activeLabel}`}>{formatAssetCount(previewAssets.length)}</p>
               <p className="mt-3 text-[10px] uppercase tracking-[0.24em] text-white/40">front-of-gallery selection</p>
             </div>
-            <div className="rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-4 shadow-premium backdrop-blur-xl">
+            <div className="rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-4 shadow-premium backdrop-blur-xl sm:rounded-[1.7rem]">
               <p className="text-[9px] font-black uppercase tracking-[0.28em] text-white/25">Archive Sync</p>
               <p className="mt-2 text-[13px] font-black uppercase tracking-[0.34em] text-green-400/80">100%</p>
               <p className="mt-3 text-[10px] uppercase tracking-[0.24em] text-white/40">matched to client brief</p>
@@ -494,7 +494,7 @@ export default function GallerySection() {
           </div>
         </div>
 
-        <div className="grid auto-rows-[14rem] grid-cols-2 gap-4 md:auto-rows-[18rem] md:grid-cols-12 md:gap-6">
+        <div className="grid auto-rows-[11rem] grid-cols-2 gap-3 sm:gap-4 md:auto-rows-[18rem] md:grid-cols-12 md:gap-6">
           {previewAssets.map((asset, index) => {
             const gridClass = previewGridClasses[index] ?? 'col-span-1 row-span-1 md:col-span-4 md:row-span-1';
 
@@ -509,7 +509,7 @@ export default function GallerySection() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.06, duration: 0.55 }}
                 onClick={() => openLightbox(index)}
-                className={`gallery-item group relative overflow-hidden rounded-[2.2rem] border border-white/10 shadow-premium transition-all duration-500 hover:-translate-y-2 hover:border-gold-400/35 ${gridClass}`}
+                className={`gallery-item group relative overflow-hidden rounded-[1.8rem] border border-white/10 shadow-premium transition-all duration-500 hover:-translate-y-2 hover:border-gold-400/35 sm:rounded-[2.2rem] ${gridClass}`}
               >
                 {isVideoAsset(asset) ? (
                   <video
@@ -535,30 +535,30 @@ export default function GallerySection() {
                 )}
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
-                <div className="absolute inset-5 border border-white/5 opacity-40 transition-opacity group-hover:opacity-100" />
+                <div className="absolute inset-4 border border-white/5 opacity-40 transition-opacity group-hover:opacity-100 sm:inset-5" />
 
-                <div className="absolute left-6 top-6 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[9px] font-black uppercase tracking-[0.22em] text-gold-300">
+                <div className="absolute left-4 top-4 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-[8px] font-black uppercase tracking-[0.14em] text-gold-300 sm:left-6 sm:top-6 sm:text-[9px] sm:tracking-[0.22em]">
                   {asset.meta.fileId}
                 </div>
 
                 {isVideoAsset(asset) && (
                   <>
-                    <div className="absolute right-6 top-6 rounded-full border border-gold-400/20 bg-black/50 px-3 py-1 text-[8px] font-bold uppercase tracking-[0.18em] text-white/70">
+                    <div className="absolute right-4 top-4 rounded-full border border-gold-400/20 bg-black/50 px-3 py-1 text-[8px] font-bold uppercase tracking-[0.14em] text-white/70 sm:right-6 sm:top-6 sm:tracking-[0.18em]">
                       {asset.meta.runtime}
                     </div>
-                    <div className="absolute right-6 bottom-6 flex h-14 w-14 items-center justify-center rounded-full border border-gold-400/30 bg-gold-400/10 text-gold-300 shadow-glow">
-                      <Play className="ml-1 h-5 w-5" />
+                    <div className="absolute bottom-4 right-4 flex h-12 w-12 items-center justify-center rounded-full border border-gold-400/30 bg-gold-400/10 text-gold-300 shadow-glow sm:bottom-6 sm:right-6 sm:h-14 sm:w-14">
+                      <Play className="ml-1 h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
                   </>
                 )}
 
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-left">
-                  <div className="mb-3 flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.24em] text-gold-400/60">
+                <div className="absolute bottom-0 left-0 right-0 p-4 text-left sm:p-6">
+                  <div className="mb-2 flex items-center gap-2 text-[8px] font-black uppercase tracking-[0.16em] text-gold-400/60 sm:mb-3 sm:text-[9px] sm:tracking-[0.24em]">
                     {isVideoAsset(asset) ? <Video className="h-3 w-3" /> : <ShieldCheck className="h-3 w-3" />}
                     {isVideoAsset(asset) ? 'Motion Asset' : asset.meta.status}
                   </div>
-                  <p className="font-display text-xl font-bold uppercase leading-tight text-white sm:text-2xl">{asset.label}</p>
-                  <div className="mt-4 flex flex-wrap gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white/55">
+                  <p className="font-display text-lg font-bold uppercase leading-tight text-white sm:text-2xl">{asset.label}</p>
+                  <div className="mt-3 flex flex-wrap gap-3 text-[9px] font-bold uppercase tracking-[0.14em] text-white/55 sm:mt-4 sm:gap-4 sm:text-[10px] sm:tracking-[0.2em]">
                     <span className="flex items-center gap-2">
                       <Calendar className="h-3 w-3 text-gold-400/60" />
                       {asset.meta.date}
@@ -571,7 +571,7 @@ export default function GallerySection() {
                 </div>
 
                 {!isVideoAsset(asset) && (
-                  <div className="absolute bottom-6 right-6 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/50 text-white/40 transition-all group-hover:border-gold-400/40 group-hover:text-gold-300">
+                  <div className="absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-black/50 text-white/40 transition-all group-hover:border-gold-400/40 group-hover:text-gold-300 sm:bottom-6 sm:right-6 sm:h-12 sm:w-12">
                     <Maximize2 className="h-5 w-5" />
                   </div>
                 )}
@@ -580,7 +580,7 @@ export default function GallerySection() {
           })}
         </div>
  
-        <div className="mt-12 rounded-[2.5rem] border border-white/5 bg-black/40 p-6 shadow-premium backdrop-blur-3xl sm:p-8">
+        <div className="mt-12 rounded-[2rem] border border-white/5 bg-black/40 p-5 shadow-premium backdrop-blur-3xl sm:rounded-[2.5rem] sm:p-8">
           <div className="mb-6 flex flex-col gap-3 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
             <p className="text-[9px] font-black uppercase tracking-[0.6em] text-white/10">Reference Filmstrip // RAW_CAPTURE_STREAM</p>
             <div className="inline-flex items-center justify-center gap-3 self-center rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-white/55 sm:self-auto">
@@ -629,27 +629,27 @@ export default function GallerySection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] flex flex-col overflow-hidden bg-forest-950/96 backdrop-blur-3xl"
+            className="fixed inset-0 z-[1000] flex flex-col overflow-y-auto bg-forest-950/96 backdrop-blur-3xl"
             onClick={closeLightbox}
             data-lenis-prevent
           >
             <div className="flex-1 min-h-0 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
               <div className="mx-auto flex h-full max-w-7xl flex-col gap-4" onClick={(event) => event.stopPropagation()}>
-                <div className="rounded-[2rem] border border-white/10 bg-black/60 px-4 py-4 shadow-premium backdrop-blur-3xl sm:px-6 sm:py-5">
+                <div className="rounded-[1.6rem] border border-white/10 bg-black/60 px-4 py-4 shadow-premium backdrop-blur-3xl sm:rounded-[2rem] sm:px-6 sm:py-5">
                   <div className="flex items-start gap-4 sm:items-center">
                     <div className="min-w-0 flex-1">
-                      <div className="mb-2 flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.35em] text-gold-400/50">
+                      <div className="mb-2 flex items-center gap-2 text-[8px] font-black uppercase tracking-[0.2em] text-gold-400/50 sm:text-[9px] sm:tracking-[0.35em]">
                         {isVideoAsset(lightboxAsset) ? <Video className="h-3 w-3 shrink-0" /> : <ShieldCheck className="h-3 w-3 shrink-0" />}
                         {isVideoAsset(lightboxAsset) ? 'Field Tape' : 'Verified Field Data'}
                       </div>
                       <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                         <div className="min-w-0">
                           <h2 className="truncate font-display text-xl font-bold uppercase tracking-tight text-white sm:text-3xl">{lightboxAsset.label}</h2>
-                          <p className="mt-1 text-[10px] font-black uppercase tracking-[0.24em] text-white/28">
+                          <p className="mt-1 text-[9px] font-black uppercase tracking-[0.16em] text-white/28 sm:text-[10px] sm:tracking-[0.24em]">
                             {active.title} | {active.sub}
                           </p>
                         </div>
-                        <div className="inline-flex items-center gap-3 self-start rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-gold-200">
+                        <div className="inline-flex items-center gap-3 self-start rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[9px] font-black uppercase tracking-[0.16em] text-gold-200 sm:text-[10px] sm:tracking-[0.24em]">
                           <span>Asset</span>
                           <span className="stat-number text-base font-display tracking-tight">
                             {formatAssetCount(lightboxIndex + 1)} / {formatAssetCount(assets.length)}
@@ -669,7 +669,7 @@ export default function GallerySection() {
                 </div>
 
                 <div className="flex flex-1 min-h-0 flex-col gap-4">
-                  <div className="relative flex-1 min-h-0 overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_42%),linear-gradient(180deg,rgba(14,20,19,0.94),rgba(6,10,10,0.98))] shadow-premium">
+                  <div className="relative min-h-[42vh] flex-1 overflow-hidden rounded-[1.6rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_42%),linear-gradient(180deg,rgba(14,20,19,0.94),rgba(6,10,10,0.98))] shadow-premium sm:min-h-0 sm:rounded-[2rem]">
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.04] via-transparent to-black/40" />
 
                     {hasMultipleAssets && (
@@ -725,18 +725,18 @@ export default function GallerySection() {
                       )}
                     </motion.div>
 
-                    <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-between gap-3 sm:bottom-6 sm:left-6 sm:right-6">
-                      <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-white/70">
+                    <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-between gap-2 sm:bottom-6 sm:left-6 sm:right-6 sm:gap-3">
+                      <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-[8px] font-black uppercase tracking-[0.14em] text-white/70 sm:text-[10px] sm:tracking-[0.22em]">
                         {isVideoAsset(lightboxAsset) ? `${lightboxAsset.meta.runtime ?? '--:--'} Runtime` : 'Photo Asset'}
                       </div>
-                      <div className="rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-gold-200">
+                      <div className="rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[8px] font-black uppercase tracking-[0.14em] text-gold-200 sm:text-[10px] sm:tracking-[0.22em]">
                         {lightboxAsset.meta.fileId}
                       </div>
                     </div>
                   </div>
 
                   <div className="grid shrink-0 gap-4 lg:grid-cols-[minmax(16rem,0.9fr)_minmax(0,1.8fr)]">
-                    <div className="rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
+                    <div className="hidden rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:block sm:p-5">
                       <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Asset Metadata</p>
                       <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2">
                         {[
@@ -757,9 +757,9 @@ export default function GallerySection() {
                       <div className="mb-4 flex items-start justify-between gap-3">
                         <div>
                           <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Quick Browse</p>
-                          <p className="mt-2 text-xs leading-relaxed text-gray-400">Browse the full category from inside the lightbox and jump straight to any frame.</p>
+                          <p className="mt-2 hidden text-xs leading-relaxed text-gray-400 sm:block">Browse the full category from inside the lightbox and jump straight to any frame.</p>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="hidden items-center gap-2 sm:flex">
                           <button
                             type="button"
                             aria-label="Scroll quick browse left"
@@ -842,7 +842,7 @@ export default function GallerySection() {
                         ))}
                       </div>
 
-                      <p className="mt-4 text-[9px] font-black uppercase tracking-[0.24em] text-white/20">
+                      <p className="mt-4 hidden text-[9px] font-black uppercase tracking-[0.24em] text-white/20 sm:block">
                         Use arrows, keyboard, or the internal strip to move through the category.
                       </p>
                     </div>

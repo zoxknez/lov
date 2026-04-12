@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/smooth-scroll";
 import AnalyticsBeacon from "@/components/analytics-beacon";
@@ -8,6 +9,17 @@ import { getAbsoluteBlobAssetUrl, getBlobAssetUrl } from "@/lib/blob-asset";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
 const logoAssetUrl = getBlobAssetUrl("/media/logo.png");
 const absoluteLogoAssetUrl = getAbsoluteBlobAssetUrl("/media/logo.png", siteUrl);
+const bodyFont = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-body",
+});
+const displayFont = Cormorant_Garamond({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-display",
+  weight: ["300", "400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   metadataBase: siteUrl ? new URL(siteUrl) : undefined,
@@ -53,8 +65,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className="bg-black text-white selection:bg-gold-400/30 overflow-x-hidden">
+    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`}>
+      <body className="overflow-x-hidden bg-black text-white selection:bg-gold-400/30">
         <a href="#top" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[200] focus:rounded-md focus:bg-white/95 focus:px-3 focus:py-2 focus:text-sm focus:text-black">
           Skip to content
         </a>

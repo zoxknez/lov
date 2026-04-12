@@ -167,15 +167,15 @@ export default function HuntAreaSection() {
   const region = regions[activeRegion];
 
   return (
-    <section id="territory" className="territory-contours relative overflow-hidden bg-transparent py-20 font-sans md:py-32">
+    <section id="territory" className="territory-contours relative overflow-hidden bg-transparent py-16 font-sans sm:py-20 md:py-32">
       <div className="pointer-events-none absolute inset-0 bg-forest-950/10 backdrop-blur-[1px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mb-12 text-center md:mb-16">
-          <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.44em] text-gold-400">
+        <div className="mb-10 text-center md:mb-16">
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400 sm:mb-4 sm:text-[11px] sm:tracking-[0.44em]">
             <TextReveal>Hunting Territory</TextReveal>
           </p>
-          <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8rem]">
+          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8rem]">
             <TextReveal delay={0.1}>Where You Hunt</TextReveal>
           </h2>
           <motion.div
@@ -188,7 +188,7 @@ export default function HuntAreaSection() {
             <div className="h-1.5 w-1.5 shrink-0 rotate-45 border border-gold-400/60 bg-gold-400/20" />
             <div className="h-px w-full bg-gradient-to-l from-transparent via-gold-400/50 to-transparent" />
           </motion.div>
-          <p className="mx-auto mt-6 max-w-2xl text-base italic leading-relaxed text-gray-400 sm:text-lg">
+          <p className="mx-auto mt-5 max-w-2xl text-[15px] italic leading-relaxed text-gray-400 sm:mt-6 sm:text-lg">
             <TextReveal delay={0.3}>
               Programs built around the right country first - matched to the species, the seasonal window, and the pace your group wants in the field.
             </TextReveal>
@@ -197,12 +197,12 @@ export default function HuntAreaSection() {
 
         {/* Region Selector */}
         <div className="-mx-4 mb-8 overflow-x-auto px-4 no-scrollbar">
-          <div className="flex w-max min-w-full gap-3 md:justify-center">
+          <div className="flex w-max min-w-full gap-2.5 md:justify-center">
             {regions.map((item, index) => (
               <button
                 key={item.id}
                 onClick={() => setActiveRegion(index)}
-                className={`relative flex items-center gap-3 whitespace-nowrap rounded-full border px-5 py-3 text-[10px] font-bold uppercase tracking-[0.24em] transition-all duration-500 sm:px-7 sm:text-[11px] sm:tracking-[0.28em] ${
+                className={`relative flex items-center gap-2.5 whitespace-nowrap rounded-full border px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.18em] transition-all duration-500 sm:px-7 sm:py-3 sm:text-[11px] sm:tracking-[0.28em] ${
                   activeRegion === index
                     ? 'border-gold-400/60 bg-gold-400/10 text-gold-300 shadow-glow'
                     : 'border-white/10 bg-white/[0.03] text-gray-400 hover:border-white/20 hover:text-white'
@@ -225,9 +225,9 @@ export default function HuntAreaSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-12 grid gap-6 lg:mb-16 lg:grid-cols-5"
+            className="mb-10 grid gap-5 sm:gap-6 lg:mb-16 lg:grid-cols-5"
           >
-            <div className="relative min-h-[320px] overflow-hidden rounded-[2rem] sm:min-h-[400px] md:rounded-[2.5rem] lg:col-span-2 lg:min-h-[560px]">
+            <div className="relative min-h-[280px] overflow-hidden rounded-[1.8rem] sm:min-h-[400px] md:rounded-[2.5rem] lg:col-span-2 lg:min-h-[560px]">
               <Image
                 src={getBlobAssetUrl(region.image)}
                 alt={region.tag}
@@ -236,8 +236,8 @@ export default function HuntAreaSection() {
                 className="object-cover transition-transform duration-[2000ms] scale-[1.03] hover:scale-[1.08]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8">
-                <p className="whitespace-pre-line font-display text-3xl font-bold uppercase leading-tight text-white sm:text-4xl">
+              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-8">
+                <p className="whitespace-pre-line font-display text-[1.85rem] font-bold uppercase leading-tight text-white sm:text-4xl">
                   {region.name}
                 </p>
                 <div className="mt-4 grid grid-cols-3 gap-2 sm:mt-6 sm:gap-3">
@@ -257,7 +257,7 @@ export default function HuntAreaSection() {
             </div>
 
             <div className="flex flex-col gap-5 lg:col-span-3">
-              <div className="relative overflow-hidden rounded-[1.8rem] border border-white/8 bg-forest-900/20 p-6 shadow-premium sm:p-8 md:rounded-[2rem]">
+              <div className="relative overflow-hidden rounded-[1.6rem] border border-white/8 bg-forest-900/20 p-5 shadow-premium sm:p-8 md:rounded-[2rem]">
                 <div className="absolute left-0 top-0 h-px w-32 bg-gradient-to-r from-gold-400/50 to-transparent" />
                 <p className="mb-3 text-[9px] font-bold uppercase tracking-[0.32em] text-gold-400/60 sm:tracking-[0.4em]">
                   Territory Brief
@@ -267,7 +267,7 @@ export default function HuntAreaSection() {
                   {region.species.map((species) => (
                     <span
                       key={species}
-                      className="rounded-full border border-gold-400/20 bg-gold-400/5 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.22em] text-gold-300"
+                      className="rounded-full border border-gold-400/20 bg-gold-400/5 px-3 py-1.5 text-[8px] font-bold uppercase tracking-[0.16em] text-gold-300 sm:px-4 sm:text-[9px] sm:tracking-[0.22em]"
                     >
                       {species}
                     </span>
@@ -275,7 +275,7 @@ export default function HuntAreaSection() {
                 </div>
               </div>
 
-              <div className="rounded-[1.8rem] border border-white/8 bg-forest-900/20 p-6 shadow-premium sm:p-8 md:rounded-[2rem]">
+              <div className="rounded-[1.6rem] border border-white/8 bg-forest-900/20 p-5 shadow-premium sm:p-8 md:rounded-[2rem]">
                 <p className="mb-5 text-[9px] font-bold uppercase tracking-[0.32em] text-gold-400/60 sm:tracking-[0.4em]">
                   Access Routes
                 </p>
@@ -323,7 +323,7 @@ export default function HuntAreaSection() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.7 }}
-                className="group flex items-center gap-5 rounded-2xl border border-white/5 bg-forest-900/15 p-5 shadow-premium transition-all hover:bg-gold-500/5 hover:border-gold-500/30 lg:p-6"
+                className="group flex items-start gap-4 rounded-2xl border border-white/5 bg-forest-900/15 p-5 shadow-premium transition-all hover:bg-gold-500/5 hover:border-gold-500/30 sm:items-center sm:gap-5 lg:p-6"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gold-400/5 text-gold-400 shadow-glow transition-transform group-hover:scale-110">
                   <Icon className="h-5 w-5" />

@@ -66,8 +66,8 @@ export default function Header() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'border-b border-white/10 bg-forest-950/90 backdrop-blur-md py-3'
-          : 'border-b border-transparent bg-transparent py-4 md:py-5'
+          ? 'border-b border-white/10 bg-forest-950/90 py-2.5 backdrop-blur-md sm:py-3'
+          : 'border-b border-transparent bg-transparent py-3 sm:py-4 md:py-5'
       }`}
     >
       <div
@@ -78,9 +78,9 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="group relative flex items-center gap-2.5 sm:gap-3">
+          <Link href="/" className="group relative flex items-center gap-2 sm:gap-3">
             <div
-              className={`relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border transition-all duration-500 sm:h-10 sm:w-10 ${
+              className={`relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border transition-all duration-500 sm:h-10 sm:w-10 ${
                 scrolled
                   ? 'border-gold-500/30 bg-forest-900/45 shadow-glow md:h-11 md:w-11'
                   : 'border-white/10 bg-black/20'
@@ -93,6 +93,14 @@ export default function Header() {
                 sizes="44px"
                 className="object-contain p-2 transition-transform duration-500 group-hover:scale-110"
               />
+            </div>
+            <div className="sm:hidden">
+              <p className="font-display text-[12px] font-bold uppercase leading-none tracking-[0.18em] text-white/92">
+                Kaimanawa
+              </p>
+              <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.2em] text-gold-400/80">
+                Trophy Safaris
+              </p>
             </div>
             <div className="hidden sm:block">
               <p
@@ -169,7 +177,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="rounded-xl border border-white/10 bg-black/25 p-2 text-gold-400 transition-colors hover:text-gold-300 lg:hidden"
+            className="rounded-xl border border-white/10 bg-black/25 p-2.5 text-gold-400 transition-colors hover:text-gold-300 lg:hidden"
             aria-label={isOpen ? 'Close navigation' : 'Open navigation'}
             aria-expanded={isOpen}
             aria-controls="mobile-navigation"
@@ -188,13 +196,13 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-0 top-[64px] h-[calc(100svh-64px)] border-t border-white/10 bg-forest-950/98 backdrop-blur-xl lg:hidden sm:top-[72px] sm:h-[calc(100svh-72px)]"
+            className="fixed inset-x-0 top-[60px] h-[calc(100svh-60px)] border-t border-white/10 bg-forest-950/98 backdrop-blur-xl lg:hidden sm:top-[68px] sm:h-[calc(100svh-68px)]"
           >
             {/* Mobile Decorative */}
             <div className="pointer-events-none absolute inset-0">
               <div className="absolute top-12 left-1/2 -translate-x-1/2 h-px w-24 bg-gradient-to-r from-transparent via-gold-400/30 to-transparent" />
             </div>
-            <div className="flex h-full flex-col items-center justify-start gap-6 overflow-y-auto px-6 pb-12 pt-10">
+            <div className="flex h-full flex-col items-center justify-start gap-5 overflow-y-auto px-5 pb-10 pt-8 sm:px-6 sm:pt-10">
               {navLinks.map((link, idx) => (
                 <motion.a
                   key={link.href}
@@ -203,7 +211,7 @@ export default function Header() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.06, duration: 0.4 }}
-                  className={`group relative text-xl font-display font-bold uppercase tracking-[0.18em] transition-all hover:text-gold-400 sm:text-2xl ${
+                  className={`group relative text-[1.3rem] font-display font-bold uppercase tracking-[0.16em] transition-all hover:text-gold-400 sm:text-2xl ${
                     activeSection === link.id ? 'text-gold-400' : 'text-white'
                   }`}
                 >
@@ -217,7 +225,7 @@ export default function Header() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.4 }}
-                className="mt-4 w-full max-w-xs rounded-full border-2 border-gold-400 bg-gold-400 px-8 py-4 text-center text-sm font-bold uppercase tracking-[0.18em] text-black transition-all hover:bg-gold-300"
+                className="mt-2 w-full max-w-sm rounded-full border-2 border-gold-400 bg-gold-400 px-6 py-3.5 text-center text-[12px] font-bold uppercase tracking-[0.16em] text-black transition-all hover:bg-gold-300"
               >
                 Consult a Guide
               </motion.a>

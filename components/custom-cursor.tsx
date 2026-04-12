@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 
 type CursorState = 'default' | 'link' | 'image' | 'gallery' | 'button';

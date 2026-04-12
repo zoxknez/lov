@@ -2,16 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@400;500;600;700&display=swap");
-
 :root {
   color-scheme: dark;
   --bg: #080808;
   --ink: #f5f0e8;
   --gold: #c8a96e;
   --line: rgba(245, 240, 232, 0.08);
-  --font-display: "Cormorant Garamond", Georgia, serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  --font-display-fallback: "Cormorant Garamond", Georgia, serif;
+  --font-body-fallback: "Inter", system-ui, sans-serif;
 }
 
 *,
@@ -31,7 +29,7 @@ html {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-body);
+  font-family: var(--font-body), var(--font-body-fallback);
   font-weight: 400;
   line-height: 1.5;
   overflow-x: hidden;
@@ -87,7 +85,7 @@ svg {
 }
 
 .label {
-  font-family: var(--font-body);
+  font-family: var(--font-body), var(--font-body-fallback);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.28em;
@@ -301,6 +299,42 @@ svg {
   .season-track-fade {
     -webkit-mask-image: none;
     mask-image: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .tracking-widest {
+    letter-spacing: 0.18em;
+  }
+
+  [class*="tracking-[0.6em]"] {
+    letter-spacing: 0.34em;
+  }
+
+  [class*="tracking-[0.5em]"] {
+    letter-spacing: 0.3em;
+  }
+
+  [class*="tracking-[0.44em]"] {
+    letter-spacing: 0.28em;
+  }
+
+  [class*="tracking-[0.4em]"] {
+    letter-spacing: 0.26em;
+  }
+
+  [class*="tracking-[0.35em]"],
+  [class*="tracking-[0.34em]"],
+  [class*="tracking-[0.32em]"],
+  [class*="tracking-[0.3em]"] {
+    letter-spacing: 0.22em;
+  }
+
+  [class*="tracking-[0.28em]"],
+  [class*="tracking-[0.26em]"],
+  [class*="tracking-[0.25em]"],
+  [class*="tracking-[0.24em]"] {
+    letter-spacing: 0.18em;
   }
 }
 

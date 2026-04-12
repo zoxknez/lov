@@ -76,17 +76,17 @@ export default function ContactSection() {
   ];
 
   return (
-    <section id="contact" className="relative overflow-hidden bg-transparent py-20 font-sans md:py-32">
+    <section id="contact" className="relative overflow-hidden bg-transparent py-16 font-sans sm:py-20 md:py-32">
       <div className="pointer-events-none absolute inset-0 bg-forest-950/10 backdrop-blur-[1px]" />
       <div className="pointer-events-none absolute -left-[10%] bottom-[10%] h-[600px] w-[600px] rounded-full bg-gold-500/[0.02] blur-[160px]" />
       <div className="pointer-events-none absolute -right-[10%] top-[10%] h-[600px] w-[600px] rounded-full bg-gold-400/[0.02] blur-[160px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mb-16 text-center">
-          <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.44em] text-gold-400">
+        <div className="mb-12 text-center sm:mb-16">
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400 sm:mb-4 sm:text-[11px] sm:tracking-[0.44em]">
             <TextReveal>Secure Field Link</TextReveal>
           </p>
-          <h2 className="font-display text-6xl font-black uppercase leading-none tracking-tighter text-white soft-text-glow sm:text-7xl md:text-9xl">
+          <h2 className="font-display text-5xl font-black uppercase leading-none tracking-tighter text-white soft-text-glow sm:text-7xl md:text-9xl">
             <TextReveal delay={0.1}>Dispatch</TextReveal>
           </h2>
           <motion.div
@@ -99,7 +99,7 @@ export default function ContactSection() {
             <div className="h-1.5 w-1.5 shrink-0 rotate-45 border border-gold-400/60 bg-gold-400/20" />
             <div className="h-px w-full bg-gradient-to-l from-transparent via-gold-400/50 to-transparent" />
           </motion.div>
-          <p className="mx-auto mt-8 max-w-xl text-base italic leading-relaxed text-gray-400 opacity-60 sm:text-lg">
+          <p className="mx-auto mt-6 max-w-xl text-[15px] italic leading-relaxed text-gray-400 opacity-60 sm:mt-8 sm:text-lg">
                Start planning your New Zealand adventure. Serious inquiries reviewed within 24 operational hours.
           </p>
         </div>
@@ -113,10 +113,10 @@ export default function ContactSection() {
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="h-full lg:col-span-8"
           >
-            <div className="relative h-full flex flex-col overflow-hidden rounded-[2.5rem] border border-white/10 bg-[linear-gradient(135deg,rgba(15,22,21,0.6),rgba(9,14,13,0.8))] p-8 shadow-premium md:rounded-[3rem] lg:p-14">
+            <div className="relative flex h-full flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(15,22,21,0.6),rgba(9,14,13,0.8))] p-6 shadow-premium md:rounded-[3rem] sm:p-8 lg:p-14">
               <div className="absolute left-0 top-0 h-px w-32 bg-gradient-to-r from-gold-400/40 to-transparent" />
               
-              <div className="mb-12 flex items-center justify-between border-b border-white/5 pb-8">
+              <div className="mb-8 flex flex-col items-start justify-between gap-4 border-b border-white/5 pb-6 sm:mb-12 sm:flex-row sm:items-center sm:pb-8">
                  <div className="flex items-center gap-4">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gold-400/20 bg-gold-400/5 text-gold-400 shadow-glow">
                       <Radio className="h-5 w-5 animate-pulse" />
@@ -132,10 +132,10 @@ export default function ContactSection() {
                  </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="flex-grow space-y-12">
-                <div className="grid gap-12 sm:grid-cols-2">
+              <form onSubmit={handleSubmit} className="flex-grow space-y-8 sm:space-y-10 lg:space-y-12">
+                <div className="grid gap-8 sm:grid-cols-2 sm:gap-12">
                   <div className="group relative">
-                    <label className="mb-3 block text-[9.5px] font-black uppercase tracking-[0.4em] text-gold-400/60 transition-colors group-focus-within:text-gold-400">
+                    <label className="mb-3 block text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors group-focus-within:text-gold-400 sm:text-[9.5px] sm:tracking-[0.4em]">
                       Full Name
                     </label>
                     <input
@@ -150,7 +150,7 @@ export default function ContactSection() {
                     <span className="form-focus-line" />
                   </div>
                   <div className="group relative">
-                    <label className="mb-3 block text-[9.5px] font-black uppercase tracking-[0.4em] text-gold-400/60 transition-colors group-focus-within:text-gold-400">
+                    <label className="mb-3 block text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors group-focus-within:text-gold-400 sm:text-[9.5px] sm:tracking-[0.4em]">
                       Email Address
                     </label>
                     <input
@@ -166,9 +166,9 @@ export default function ContactSection() {
                   </div>
                 </div>
 
-                <div className="grid gap-12 sm:grid-cols-2">
+                <div className="grid gap-8 sm:grid-cols-2 sm:gap-12">
                   <div className="group relative">
-                    <label className="mb-3 block text-[9.5px] font-black uppercase tracking-[0.4em] text-gold-400/60 transition-colors group-focus-within:text-gold-400">
+                    <label className="mb-3 block text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors group-focus-within:text-gold-400 sm:text-[9.5px] sm:tracking-[0.4em]">
                       Inquiry Category
                     </label>
                     <div className="relative">
@@ -189,7 +189,7 @@ export default function ContactSection() {
                     </div>
                   </div>
                   <div className="group relative">
-                    <label className="mb-3 block text-[9.5px] font-black uppercase tracking-[0.4em] text-gold-400/60 transition-colors group-focus-within:text-gold-400">
+                    <label className="mb-3 block text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors group-focus-within:text-gold-400 sm:text-[9.5px] sm:tracking-[0.4em]">
                       Phone (Optional)
                     </label>
                     <input
@@ -206,7 +206,7 @@ export default function ContactSection() {
 
                 <div className="group relative">
                   <div className="mb-3 flex items-center justify-between gap-3">
-                    <label className="block text-[9.5px] font-black uppercase tracking-[0.4em] text-gold-400/60 transition-colors group-focus-within:text-gold-400">
+                    <label className="block text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors group-focus-within:text-gold-400 sm:text-[9.5px] sm:tracking-[0.4em]">
                       Requirements & Trophy Goals
                     </label>
                     <span className={`text-[9px] font-black tabular-nums ${formData.message.length > MAX_MESSAGE * 0.9 ? 'text-red-400' : 'text-gold-400/40'}`}>
@@ -227,7 +227,7 @@ export default function ContactSection() {
 
                 {turnstileEnabled && (
                   <div className="flex flex-col items-start gap-4 rounded-2xl border border-white/5 bg-white/[0.02] p-6 sm:flex-row sm:items-center sm:gap-8 lg:p-8">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-gold-400/30">Auth Protocol</p>
+                    <p className="text-[9px] font-bold uppercase tracking-[0.26em] text-gold-400/30 sm:text-[10px] sm:tracking-[0.5em]">Auth Protocol</p>
                     <TurnstileWidget key={turnstileKey} onTokenChange={setTurnstileToken} />
                   </div>
                 )}
@@ -236,7 +236,7 @@ export default function ContactSection() {
                   <MagneticButton
                     type="submit"
                     disabled={submitStatus === 'loading' || (turnstileEnabled && !turnstileToken)}
-                    className="group relative w-full overflow-hidden rounded-[2rem] bg-gold-400 py-6 text-[11px] font-black uppercase tracking-[0.5em] text-black shadow-premium shadow-gold-500/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 sm:py-8"
+                    className="group relative w-full overflow-hidden rounded-[1.6rem] bg-gold-400 py-5 text-[10px] font-black uppercase tracking-[0.22em] text-black shadow-premium shadow-gold-500/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 sm:rounded-[2rem] sm:py-8 sm:text-[11px] sm:tracking-[0.5em]"
                   >
                     <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent group-hover:animate-shimmer" />
                     <div className="flex items-center justify-center gap-5">
@@ -248,7 +248,7 @@ export default function ContactSection() {
 
                 <AnimatePresence>
                   {submitStatus === 'success' && (
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex items-center gap-5 rounded-2xl border border-gold-400/20 bg-gold-400/5 p-6 shadow-glow">
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex items-center gap-4 rounded-2xl border border-gold-400/20 bg-gold-400/5 p-5 shadow-glow sm:gap-5 sm:p-6">
                       <ShieldCheck className="h-6 w-6 text-gold-400" />
                       <p className="font-display font-bold text-gold-100">{submitMessage}</p>
                     </motion.div>
@@ -262,8 +262,8 @@ export default function ContactSection() {
               </form>
 
               {/* Space Filler: Operational Status Monitor */}
-              <div className="mt-12 pt-10 border-t border-white/5">
-                 <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-8">
+               <div className="mt-10 border-t border-white/5 pt-8 sm:mt-12 sm:pt-10">
+                 <div className="grid grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-4 sm:gap-8">
                     <div className="flex flex-col gap-2">
                        <div className="flex items-center gap-2 text-gold-400">
                           <Activity className="h-3 w-3" />
@@ -313,14 +313,14 @@ export default function ContactSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-              className="relative overflow-hidden rounded-[3rem] border border-white/10 bg-[linear-gradient(135deg,rgba(15,22,21,0.6),rgba(9,14,13,0.8))] p-8 lg:p-10"
-            >
-               <p className="mb-8 text-[10px] font-bold uppercase tracking-[0.5em] text-gold-400/60">Field Contacts</p>
-               <div className="space-y-8">
+             className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(15,22,21,0.6),rgba(9,14,13,0.8))] p-6 sm:rounded-[3rem] sm:p-8 lg:p-10"
+           >
+               <p className="mb-6 text-[9px] font-bold uppercase tracking-[0.28em] text-gold-400/60 sm:mb-8 sm:text-[10px] sm:tracking-[0.5em]">Field Contacts</p>
+               <div className="space-y-6 sm:space-y-8">
                   {contactNodes.map((node) => {
                     const Icon = node.icon;
                     return (
-                      <div key={node.label} className="group relative flex items-start gap-6">
+                      <div key={node.label} className="group relative flex items-start gap-4 sm:gap-6">
                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-gold-400 transition-all group-hover:bg-gold-500/10 group-hover:border-gold-500/40">
                             <Icon className="h-5 w-5" />
                          </div>
@@ -333,7 +333,7 @@ export default function ContactSection() {
                   })}
                </div>
 
-               <div className="mt-12 pt-10 border-t border-white/5">
+               <div className="mt-10 border-t border-white/5 pt-8 sm:mt-12 sm:pt-10">
                   <div className="mb-6 flex items-center gap-4">
                     <Clock className="h-4 w-4 text-gold-400/60" />
                     <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gold-400">Field Protocol</p>
@@ -352,7 +352,7 @@ export default function ContactSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-              className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-forest-900/20 p-8 shadow-premium lg:p-10"
+              className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-forest-900/20 p-6 shadow-premium sm:rounded-[2.5rem] sm:p-8 lg:p-10"
             >
                <div className="mb-8 flex items-center justify-between">
                   <div className="flex items-center gap-4">

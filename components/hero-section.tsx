@@ -53,7 +53,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section id="home" className="relative h-screen min-h-[100svh] w-full overflow-hidden bg-black font-sans">
+    <section id="home" className="relative min-h-[100svh] w-full overflow-hidden bg-black font-sans lg:min-h-screen">
       {/* Cinematic Background */}
       <motion.div 
         className="absolute inset-0" 
@@ -104,10 +104,10 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      <div className="relative z-20 mx-auto flex h-full max-w-7xl flex-col justify-center px-4 pb-10 pt-24 sm:px-6 sm:pb-12 sm:pt-28 lg:px-10 lg:py-0">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-12">
+      <div className="relative z-20 mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-start px-4 pb-14 pt-28 sm:px-6 sm:pb-16 sm:pt-32 lg:h-screen lg:min-h-0 lg:justify-center lg:px-10 lg:py-0">
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-center lg:gap-12">
           <motion.div style={{ opacity }} className="text-center lg:col-span-8 lg:text-left">
-            <div className="mb-6 flex flex-col items-center gap-5 sm:mb-8 sm:flex-row sm:items-center sm:justify-center sm:gap-8 md:gap-12 lg:justify-start">
+            <div className="mb-5 flex flex-col items-center gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-center sm:gap-8 md:gap-12 lg:justify-start">
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -117,7 +117,7 @@ export default function HeroSection() {
                 <div className="pointer-events-none absolute inset-[-20px] hidden rounded-full border border-gold-400/10 sm:block sm:animate-spin-slow" />
                 <div className="pointer-events-none absolute inset-[-10px] hidden rounded-full border border-dashed border-gold-400/20 sm:block" />
 
-                <div className="relative h-32 w-32 transition-transform duration-700 hover:rotate-3 sm:h-36 sm:w-36 md:h-48 md:w-48">
+                <div className="relative h-28 w-28 transition-transform duration-700 hover:rotate-3 sm:h-36 sm:w-36 md:h-48 md:w-48">
                   <Image
                     src={BRAND_LOGO_SRC}
                     alt="KTS Logo"
@@ -136,12 +136,12 @@ export default function HeroSection() {
                 className="space-y-3 text-center sm:text-left"
               >
                 <div className="flex flex-col gap-1">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-gold-400 sm:text-[13px] sm:tracking-[0.4em]">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-gold-400 sm:text-[13px] sm:tracking-[0.4em]">
                     Kaimanawa Trophy Safaris
                   </p>
                   <div className="flex items-center justify-center gap-3 text-white/40 sm:justify-start">
                     <Globe className="h-3 w-3 text-gold-400/40" />
-                    <span className="text-[9px] font-bold uppercase tracking-[0.18em] sm:text-[10px] sm:tracking-[0.25em]">
+                    <span className="text-[8px] font-bold uppercase tracking-[0.14em] sm:text-[10px] sm:tracking-[0.25em]">
                       Ohakune Base - 39.4167 deg S
                     </span>
                   </div>
@@ -150,13 +150,13 @@ export default function HeroSection() {
               </motion.div>
             </div>
 
-            <h1 className="mx-auto space-y-1 text-balance lg:mx-0 lg:max-w-3xl">
+            <h1 className="mx-auto max-w-[18rem] space-y-1 text-balance sm:max-w-none lg:mx-0 lg:max-w-3xl">
               <span className="block overflow-hidden">
                 <motion.span
                   initial={{ y: '100%' }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className="block font-display text-[3.45rem] font-black uppercase leading-[0.92] tracking-tighter text-white soft-text-glow sm:text-6xl md:text-7xl lg:text-9xl"
+                  className="block font-display text-[2.9rem] font-black uppercase leading-[0.92] tracking-tighter text-white soft-text-glow sm:text-6xl md:text-7xl lg:text-9xl"
                 >
                   True NZ
                 </motion.span>
@@ -166,7 +166,7 @@ export default function HeroSection() {
                   initial={{ y: '100%' }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="block font-display text-[3.45rem] font-black uppercase leading-[0.92] tracking-tighter text-gold-200 sm:text-6xl md:text-7xl lg:text-9xl"
+                  className="block font-display text-[2.9rem] font-black uppercase leading-[0.92] tracking-tighter text-gold-200 sm:text-6xl md:text-7xl lg:text-9xl"
                 >
                   Fair Chase
                 </motion.span>
@@ -177,7 +177,7 @@ export default function HeroSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1.2 }}
-              className="mx-auto mt-4 max-w-xl text-base font-light italic leading-relaxed text-gray-400 sm:text-lg md:text-xl lg:mx-0"
+              className="mx-auto mt-4 max-w-xl text-[15px] font-light italic leading-relaxed text-gray-400 sm:text-lg md:text-xl lg:mx-0"
             >
               Professional outfitting for international hunters. From the volcanic plateaus to the alpine peaks of the Southern Alps.
             </motion.p>
@@ -186,11 +186,11 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 1.5 }}
-              className="mt-8 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:gap-4 lg:mt-10"
+              className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:gap-4 lg:mt-10"
             >
               <Link
                 href="#contact"
-                className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-full bg-gold-400 px-7 py-4 text-[10px] font-black uppercase tracking-[0.26em] text-black shadow-premium transition-all hover:scale-105 active:scale-95 sm:w-auto sm:gap-5 sm:px-10 sm:py-5 sm:text-[11px] sm:tracking-[0.4em]"
+                className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-full bg-gold-400 px-6 py-4 text-[10px] font-black uppercase tracking-[0.18em] text-black shadow-premium transition-all hover:scale-105 active:scale-95 sm:w-auto sm:gap-5 sm:px-10 sm:py-5 sm:text-[11px] sm:tracking-[0.4em]"
               >
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent group-hover:animate-shimmer" />
                 <Zap className="h-3.5 w-3.5" />
@@ -198,7 +198,7 @@ export default function HeroSection() {
               </Link>
               <Link
                 href="#territory"
-                className="group flex w-full items-center justify-center gap-3 rounded-full border border-white/10 bg-white/5 px-7 py-4 text-[10px] font-black uppercase tracking-[0.26em] text-white backdrop-blur-md transition-all hover:border-gold-400/50 hover:bg-white/10 sm:w-auto sm:gap-5 sm:px-10 sm:py-5 sm:text-[11px] sm:tracking-[0.4em]"
+                className="group flex w-full items-center justify-center gap-3 rounded-full border border-white/10 bg-white/5 px-6 py-4 text-[10px] font-black uppercase tracking-[0.18em] text-white backdrop-blur-md transition-all hover:border-gold-400/50 hover:bg-white/10 sm:w-auto sm:gap-5 sm:px-10 sm:py-5 sm:text-[11px] sm:tracking-[0.4em]"
               >
                 <span>Explore Territory</span>
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -213,7 +213,7 @@ export default function HeroSection() {
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, delay: 1.8 }}
-                className="relative overflow-hidden rounded-[2rem] border border-white/8 bg-forest-900/40 p-6 shadow-premium backdrop-blur-3xl sm:p-8 lg:p-10"
+                className="relative overflow-hidden rounded-[2rem] border border-white/8 bg-forest-900/40 p-5 shadow-premium backdrop-blur-3xl sm:p-8 lg:p-10"
               >
                 {/* SVG Topographic Accent */}
                 <div className="absolute -right-4 -top-4 opacity-5 pointer-events-none">
@@ -224,7 +224,7 @@ export default function HeroSection() {
                   </svg>
                 </div>
 
-                <div className="mb-8 flex items-center justify-between border-b border-white/5 pb-5">
+                <div className="mb-6 flex items-center justify-between border-b border-white/5 pb-4 sm:mb-8 sm:pb-5">
                   <div className="flex items-center gap-4">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-gold-400/20 bg-gold-400/10 text-gold-400 shadow-glow">
                       <Radio className="h-4 w-4 animate-pulse" />
@@ -240,8 +240,8 @@ export default function HeroSection() {
                   <Share2 className="h-4 w-4 text-white/10" />
                 </div>
 
-                <div className="grid gap-8">
-                  <div className="flex items-center gap-5">
+                <div className="grid gap-6 sm:gap-8">
+                  <div className="flex items-center gap-4 sm:gap-5">
                     <Clock className="h-5 w-5 text-white/20" />
                     <div>
                       <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.25em] text-white/30">Ohakune Base Time</p>
@@ -250,7 +250,7 @@ export default function HeroSection() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-4 sm:gap-5">
                     <Wind className="h-5 w-5 text-white/20" />
                     <div>
                       <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.25em] text-white/30">Field Conditions</p>
@@ -262,17 +262,17 @@ export default function HeroSection() {
                 </div>
 
                 {/* Operational Ticker */}
-                <div className="mt-10 border-t border-white/5 pt-6">
+                <div className="mt-8 border-t border-white/5 pt-5 sm:mt-10 sm:pt-6">
                    <div className="flex items-center gap-3">
                       <Activity className="h-3 w-3 text-gold-400/40" />
-                      <div className="flex-1 overflow-hidden h-4">
+                      <div className="h-5 flex-1 overflow-hidden">
                          <AnimatePresence mode="wait">
                             <motion.p
                                key={reportIndex}
                                initial={{ y: 20, opacity: 0 }}
                                animate={{ y: 0, opacity: 1 }}
                                exit={{ y: -20, opacity: 0 }}
-                               className="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-400/60"
+                               className="text-[8px] font-bold uppercase tracking-[0.2em] text-gold-400/60 sm:text-[9px] sm:tracking-[0.3em]"
                             >
                                {FIELD_REPORTS[reportIndex]}
                             </motion.p>
@@ -286,7 +286,7 @@ export default function HeroSection() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, delay: 2.1 }}
-                className="group relative overflow-hidden rounded-[1.8rem] border border-gold-400/20 bg-gold-400/5 p-6 backdrop-blur-md transition-all hover:bg-gold-400/10"
+                className="group relative overflow-hidden rounded-[1.8rem] border border-gold-400/20 bg-gold-400/5 p-5 backdrop-blur-md transition-all hover:bg-gold-400/10 sm:p-6"
               >
                 <div className="relative flex items-center justify-between">
                   <div className="flex items-center gap-4">

@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["'Cormorant Garamond'", "Palatino Linotype", "Book Antiqua", "Georgia", "serif"],
-        sans:    ["'Inter'", "Segoe UI", "system-ui", "sans-serif"]
+        display: ["var(--font-display)", "Palatino Linotype", "Book Antiqua", "Georgia", "serif"],
+        sans:    ["var(--font-body)", "Segoe UI", "system-ui", "sans-serif"]
       },
       colors: {
         forest: {

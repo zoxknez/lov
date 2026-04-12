@@ -55,7 +55,7 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
   return (
     <AnimatePresence>
       {member ? (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-5" data-lenis-prevent>
+        <div className="fixed inset-0 z-[100] flex items-start justify-center p-3 sm:items-center sm:p-5" data-lenis-prevent>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -70,7 +70,7 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
             exit={{ opacity: 0, scale: 0.97, y: 12 }}
             transition={{ type: 'spring', damping: 26, stiffness: 280 }}
             onClick={(event) => event.stopPropagation()}
-            className="relative w-full max-w-4xl overflow-hidden rounded-[1.8rem] border border-white/10 bg-[#070b0a] shadow-[0_30px_110px_rgba(0,0,0,0.58)] sm:rounded-[2.4rem]"
+            className="relative max-h-[calc(100svh-1.5rem)] w-full max-w-4xl overflow-y-auto overflow-x-hidden rounded-[1.8rem] border border-white/10 bg-[#070b0a] shadow-[0_30px_110px_rgba(0,0,0,0.58)] sm:max-h-[calc(100svh-2.5rem)] sm:rounded-[2.4rem]"
           >
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-400/35 to-transparent" />
 

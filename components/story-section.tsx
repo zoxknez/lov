@@ -102,23 +102,23 @@ export default function StorySection() {
   const [selectedFounder, setSelectedFounder] = useState<typeof founders[0] | null>(null);
 
   return (
-    <section id="story" className={`relative overflow-hidden bg-transparent py-20 font-sans md:py-32 ${selectedFounder ? 'z-[10000]' : 'z-10'}`}>
+    <section id="story" className={`relative overflow-hidden bg-transparent py-16 font-sans sm:py-20 md:py-32 ${selectedFounder ? 'z-[10000]' : 'z-10'}`}>
       <div className="pointer-events-none absolute inset-0 bg-forest-950/10 backdrop-blur-[1px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         {/* Section Header */}
-        <div className="mb-12 flex flex-col items-center text-center md:mb-20">
-          <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.44em] text-gold-400">
+        <div className="mb-10 flex flex-col items-center text-center md:mb-20">
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400 sm:mb-4 sm:text-[11px] sm:tracking-[0.44em]">
             <TextReveal>The Legacy</TextReveal>
           </p>
-          <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight text-white text-balance soft-text-glow sm:text-6xl md:text-8xl lg:text-[8rem]">
+          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white text-balance soft-text-glow sm:text-6xl md:text-8xl lg:text-[8rem]">
             <TextReveal delay={0.1}>Our Story</TextReveal>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
             whileInView={{ width: 120, opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.4, ease: 'easeOut' }}
-            className="mx-auto mt-8 flex items-center gap-3"
+            className="mx-auto mt-6 flex items-center gap-3 sm:mt-8"
           >
             <div className="h-px w-full bg-gradient-to-r from-transparent via-gold-400/50 to-transparent" />
             <div className="h-1.5 w-1.5 shrink-0 rotate-45 border border-gold-400/60 bg-gold-400/20" />
@@ -127,20 +127,20 @@ export default function StorySection() {
         </div>
 
         {/* Founding Statement / Mission Preface */}
-        <div className="mb-16 flex justify-center">
+        <div className="mb-12 flex justify-center sm:mb-16">
            <motion.div
              initial={{ opacity: 0, y: 20 }}
              whileInView={{ opacity: 1, y: 0 }}
              viewport={{ once: true }}
              transition={{ duration: 1 }}
-             className="relative max-w-4xl overflow-hidden rounded-[2rem] border border-white/5 bg-forest-900/10 p-8 text-center sm:p-12 md:rounded-[2.5rem]"
+             className="relative max-w-4xl overflow-hidden rounded-[1.8rem] border border-white/5 bg-forest-900/10 p-6 text-center sm:p-12 md:rounded-[2.5rem]"
            >
               <div className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-gold-400/20 to-transparent" />
-              <p className="mb-6 text-[10px] font-black uppercase tracking-[0.4em] text-gold-400/40">Founding Mission</p>
-              <h3 className="font-display text-2xl italic leading-tight text-white sm:text-3xl md:text-4xl">
+              <p className="mb-5 text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/40 sm:text-[10px] sm:tracking-[0.4em]">Founding Mission</p>
+              <h3 className="font-display text-xl italic leading-tight text-white sm:text-3xl md:text-4xl">
                 &ldquo;Founded to introduce international hunters to the quality of New Zealand trophies and the raw majesty of its wild landscapes.&rdquo;
               </h3>
-              <div className="mt-8 flex items-center justify-center gap-4 text-[9px] font-bold uppercase tracking-[0.3em] text-gray-500">
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-[8px] font-bold uppercase tracking-[0.18em] text-gray-500 sm:mt-8 sm:text-[9px] sm:tracking-[0.3em]">
                  <span>Est. 2025</span>
                  <div className="h-1 w-1 rounded-full bg-gold-400/30" />
                  <span>90+ Combined Years</span>
@@ -149,11 +149,11 @@ export default function StorySection() {
         </div>
 
         {/* Specialist Showcase Grid */}
-        <div className="mb-20">
-           <div className="mb-10 flex items-center justify-between border-b border-white/5 pb-4">
+        <div className="mb-16 sm:mb-20">
+           <div className="mb-8 flex flex-col items-start gap-3 border-b border-white/5 pb-4 sm:mb-10 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
                  <User className="h-4 w-4 text-gold-400/40" />
-                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gold-400/60 transition-colors">Team Specialists</p>
+                 <p className="text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors sm:text-[10px] sm:tracking-[0.4em]">Team Specialists</p>
               </div>
               <div className="flex items-center gap-2">
                  <div className="h-1 w-1 animate-pulse rounded-full bg-gold-400" />
@@ -172,7 +172,7 @@ export default function StorySection() {
                   transition={{ delay: index * 0.15, duration: 0.8 }}
                   whileHover={{ y: -8, transition: { duration: 0.4, ease: "easeOut" } }}
                   onClick={() => setSelectedFounder(founder)}
-                  className="group relative overflow-hidden rounded-[2.2rem] border border-white/8 bg-forest-900/20 p-8 text-left shadow-premium transition-all duration-500 hover:border-gold-500/40 hover:bg-forest-900/40 has-beam"
+                  className="group relative overflow-hidden rounded-[2rem] border border-white/8 bg-forest-900/20 p-6 text-left shadow-premium transition-all duration-500 hover:border-gold-500/40 hover:bg-forest-900/40 has-beam sm:rounded-[2.2rem] sm:p-8"
                 >
                   {/* Card Background Decoration */}
                   <div className="absolute -right-8 -top-8 opacity-5">
@@ -180,7 +180,7 @@ export default function StorySection() {
                   </div>
                   
                   {/* Header: Initial & Badge */}
-                  <div className="mb-8 flex items-start justify-between">
+                  <div className="mb-6 flex items-start justify-between gap-4 sm:mb-8">
                      {founder.portrait ? (
                        <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-gold-400/30 bg-gold-400/5 shadow-glow transition-all group-hover:border-gold-400/50">
                           <Image
@@ -200,9 +200,9 @@ export default function StorySection() {
                        </div>
                      )}
                      <div className="flex flex-col items-end gap-1">
-                        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[9px] font-black uppercase tracking-[0.18em] text-gray-400 transition-colors group-hover:text-gold-200">
-                           <CountUp target={founder.expNum} suffix={founder.expSuffix} /> Experience
-                        </span>
+                         <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[8px] font-black uppercase tracking-[0.14em] text-gray-400 transition-colors group-hover:text-gold-200 sm:text-[9px] sm:tracking-[0.18em]">
+                            <CountUp target={founder.expNum} suffix={founder.expSuffix} /> Experience
+                         </span>
                         <div className="flex items-center gap-1.5 opacity-40">
                            <Activity className="h-2.5 w-2.5" />
                            <span className="text-[7px] font-bold uppercase tracking-widest">Active</span>
@@ -215,7 +215,7 @@ export default function StorySection() {
                      <h3 className="font-display text-2xl font-bold uppercase tracking-tight text-white group-hover:text-gold-100 transition-colors">
                         {founder.name}
                      </h3>
-                     <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.25em] text-gold-400/60">
+                     <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.16em] text-gold-400/60 sm:text-[9px] sm:tracking-[0.25em]">
                         {`${founder.role} / ${founder.origin}`}
                      </p>
                      <div className="mt-4 h-0.5 w-12 bg-gold-500/20 transition-all group-hover:w-20 group-hover:bg-gold-500/40" />
@@ -229,7 +229,7 @@ export default function StorySection() {
                   </div>
 
                   {/* Footer Stats & View */}
-                  <div className="flex items-center justify-between border-t border-white/5 pt-6">
+                  <div className="flex flex-col items-start gap-4 border-t border-white/5 pt-6 sm:flex-row sm:items-center sm:justify-between">
                      <div className="flex flex-col gap-0.5">
                         <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/20">Specialization</span>
                         <span className="text-[10px] font-bold uppercase tracking-tight text-gold-400/60">{founder.expertise}</span>
@@ -250,7 +250,7 @@ export default function StorySection() {
         </div>
 
         {/* Operational Values Footer */}
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
           {values.map((value, index) => {
             const Icon = value.icon;
             return (
@@ -260,7 +260,7 @@ export default function StorySection() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.8 }}
-                className="group flex items-center gap-6 rounded-[1.8rem] border border-white/5 bg-forest-900/10 p-6 shadow-premium transition-all hover:bg-gold-500/5 hover:border-gold-500/20"
+                className="group flex items-start gap-4 rounded-[1.6rem] border border-white/5 bg-forest-900/10 p-5 shadow-premium transition-all hover:bg-gold-500/5 hover:border-gold-500/20 sm:items-center sm:gap-6 sm:p-6 sm:rounded-[1.8rem]"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gold-400/5 text-gold-400 transition-transform group-hover:scale-110">
                   <Icon className="h-5 w-5" />
