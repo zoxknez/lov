@@ -672,13 +672,13 @@ export default function AccommodationSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] flex flex-col overflow-y-auto bg-forest-950/98 backdrop-blur-3xl"
+            className="fixed inset-0 z-[1000] flex flex-col overflow-x-hidden overflow-y-auto bg-forest-950/98 backdrop-blur-3xl"
             onClick={() => setViewer(null)}
             data-lenis-prevent
           >
             {/* Lightbox Layout */}
-            <div className="flex-1 min-h-0 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-              <div className="mx-auto flex h-full max-w-7xl flex-col gap-4" onClick={(event) => event.stopPropagation()}>
+            <div className="flex-1 min-h-0 w-full px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+              <div className="mx-auto flex h-full w-full min-w-0 max-w-7xl flex-col gap-4" onClick={(event) => event.stopPropagation()}>
                 <div className="rounded-[1.6rem] border border-white/10 bg-black/60 px-4 py-4 shadow-premium backdrop-blur-3xl sm:rounded-[2rem] sm:px-6 sm:py-5">
                   <div className="flex items-start gap-4 sm:items-center">
                     <div className="min-w-0 flex-1">
@@ -714,7 +714,7 @@ export default function AccommodationSection() {
                   </div>
                 </div>
                 {/* Media Stage */}
-                <div className="flex flex-1 min-h-0 flex-col gap-4">
+                <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col gap-4">
                   <div className="relative min-h-[42vh] flex-1 overflow-hidden rounded-[1.6rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_42%),linear-gradient(180deg,rgba(14,20,19,0.94),rgba(6,10,10,0.98))] shadow-premium sm:min-h-0 sm:rounded-[2rem]">
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.04] via-transparent to-black/40" />
 
@@ -781,8 +781,8 @@ export default function AccommodationSection() {
                     </div>
                   </div>
 
-                  <div className="grid shrink-0 gap-4 lg:grid-cols-[minmax(16rem,0.95fr)_minmax(0,1.8fr)]">
-                    <div className="hidden rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:block sm:p-5">
+                  <div className="grid w-full min-w-0 shrink-0 gap-4 lg:grid-cols-[minmax(16rem,0.95fr)_minmax(0,1.8fr)]">
+                    <div className="hidden min-w-0 rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:block sm:p-5">
                       <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Asset Metadata</p>
                       <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2">
                         {[
@@ -799,7 +799,7 @@ export default function AccommodationSection() {
                       </div>
                     </div>
 
-                    <div className="rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
+                    <div className="min-w-0 rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
                       <div className="mb-4 flex items-start justify-between gap-3">
                         <div>
                           <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Quick Browse</p>
@@ -832,7 +832,7 @@ export default function AccommodationSection() {
 
                       <div
                         ref={quickBrowseRef}
-                        className={`no-scrollbar flex gap-3 overflow-x-auto pb-1 select-none ${isDraggingQuickBrowse ? 'cursor-grabbing' : 'cursor-grab'}`}
+                        className={`no-scrollbar flex w-full min-w-0 max-w-full gap-3 overflow-x-auto pb-1 select-none ${isDraggingQuickBrowse ? 'cursor-grabbing' : 'cursor-grab'}`}
                         onPointerDown={handleQuickBrowsePointerDown}
                         onPointerMove={handleQuickBrowsePointerMove}
                         onPointerUp={handleQuickBrowsePointerUp}
