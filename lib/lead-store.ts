@@ -34,22 +34,33 @@ export async function storeLead(lead: StoredLead) {
     const timestampSegment = lead.createdAt.replace(/[:.]/g, "-");
     const emailSegment = sanitizeSegment(lead.payload.email);
 
-    await put(
-      `inquiries/${dateSegment}/${timestampSegment}-${emailSegment}.json`,
-      JSON.stringify(lead, null, 2),
-      {
-        access: "private",
-        contentType: "application/json",
-        token: blobToken,
-      },
-    );
-    return;
+    try {
+      await put(
+        `inquiries/${dateSegment}/${timestampSegment}-${emailSegment}.json`,
+        JSON.stringify(lead, null, 2),
+        {
+          access: "private",
+          contentType: "application/json",
+          token: blobToken,
+          addRandomSuffix: false,
+        },
+      );
+      return;
+    } catch (error) {
+      console.error("Blob storage failed:", error);
+      throw new Error("Failed to store lead in blob storage.");
+    }
   }
 
   if (process.env.NODE_ENV === "production") {
     throw new Error("Lead storage is not configured for production.");
   }
 
-  await mkdir(dataDir, { recursive: true });
-  await appendFile(leadFile, `${JSON.stringify(lead)}\n`, "utf8");
+  try {
+    await mkdir(dataDir, { recursive: true });
+    await appendFile(leadFile, `${JSON.stringify(lead)}\n`, "utf8");
+  } catch (error) {
+    console.error("Local storage failed:", error);
+    throw new Error("Failed to store lead locally.");
+  }
 }

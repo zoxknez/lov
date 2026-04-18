@@ -167,11 +167,13 @@ export default function GallerySection() {
 
   useEffect(() => {
     let isMounted = true;
+    const controller = new AbortController();
 
     async function syncAdminManifest() {
       try {
         const response = await fetch('/api/gallery/manifest', {
           cache: 'no-store',
+          signal: controller.signal,
         });
         const payload = (await response.json()) as { ok?: boolean; groups?: GalleryGroup[] };
 
@@ -189,8 +191,11 @@ export default function GallerySection() {
 
           return getFirstActiveGalleryKey(remoteGroups);
         });
-      } catch {
+      } catch (error) {
         // Keep the local fallback groups when the admin manifest is unavailable.
+        if (error instanceof Error && error.name !== 'AbortError') {
+          console.warn('Gallery manifest sync failed:', error.message);
+        }
       }
     }
 
@@ -198,6 +203,7 @@ export default function GallerySection() {
 
     return () => {
       isMounted = false;
+      controller.abort();
     };
   }, []);
 

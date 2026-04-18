@@ -43,12 +43,18 @@ export default function ContactSection() {
     setSubmitStatus('loading');
     setSubmitMessage('');
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
     try {
       const response = await fetch('/api/inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, turnstileToken }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       const result = (await response.json()) as { ok?: boolean; error?: string };
 
@@ -63,8 +69,13 @@ export default function ContactSection() {
       setTurnstileKey((count) => count + 1);
       setTimeout(() => setSubmitStatus('idle'), 6000);
     } catch (error) {
+      clearTimeout(timeoutId);
       setSubmitStatus('error');
-      setSubmitMessage(error instanceof Error ? error.message : 'Transmission failed. Re-establish link.');
+      if (error instanceof Error && error.name === 'AbortError') {
+        setSubmitMessage('Request timeout. Please try again.');
+      } else {
+        setSubmitMessage(error instanceof Error ? error.message : 'Transmission failed. Re-establish link.');
+      }
       setTimeout(() => setSubmitStatus('idle'), 5000);
     }
   };

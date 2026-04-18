@@ -68,13 +68,21 @@ export async function POST(request: Request) {
       {
         status: 429,
         headers: {
-          "Retry-After": String(Math.ceil((rate.resetAt - Date.now()) / 1000))
+          "Retry-After": String(Math.ceil((rate.resetAt - Date.now()) / 1000)),
+          "X-RateLimit-Limit": "6",
+          "X-RateLimit-Remaining": String(rate.remaining),
+          "X-RateLimit-Reset": String(Math.floor(rate.resetAt / 1000))
         }
       }
     );
   }
 
   try {
+    const contentType = request.headers.get("content-type");
+    if (!contentType?.includes("application/json")) {
+      return NextResponse.json({ ok: false, error: "Invalid content type." }, { status: 400 });
+    }
+
     const body = await request.json();
     const payload = inquirySchema.parse(body);
 

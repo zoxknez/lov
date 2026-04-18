@@ -3,10 +3,11 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "dev": "next dev --webpack",
-        "build": "next build --webpack",
+        "dev": "next dev",
+        "build": "next build",
         "start": "next start",
         "lint": "eslint .",
+        "type-check": "tsc --noEmit",
         "upload:blob-assets": "node ./scripts/upload-blob-assets.mjs",
         "upload:gallery-slike": "node ./scripts/upload-gallery-slike.mjs",
         "import:nove-gallery": "node ./scripts/import-nove-gallery.mjs"

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 type TelemetryPayload = {
   name?: string;
@@ -8,8 +9,26 @@ type TelemetryPayload = {
   delta?: number;
 };
 
+function getClientIp(request: Request) {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0]?.trim() ?? "unknown";
+  return request.headers.get("x-real-ip") ?? "unknown";
+}
+
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const rate = checkRateLimit(`telemetry:${ip}`, 30, 60 * 1000);
+
+  if (!rate.allowed) {
+    return NextResponse.json({ ok: false }, { status: 429 });
+  }
+
   try {
+    const contentType = request.headers.get("content-type");
+    if (!contentType?.includes("application/json")) {
+      return NextResponse.json({ ok: false }, { status: 400 });
+    }
+
     const payload = (await request.json()) as TelemetryPayload;
     if (!payload?.name) {
       return NextResponse.json({ ok: false }, { status: 400 });
@@ -25,7 +44,8 @@ export async function POST(request: Request) {
           source: "kaimanawa-web-vitals",
           createdAt: new Date().toISOString(),
           payload
-        })
+        }),
+        signal: AbortSignal.timeout(5000)
       }).catch(() => undefined);
     }
 

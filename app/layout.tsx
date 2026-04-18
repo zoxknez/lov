@@ -65,8 +65,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`}>
-      <body className="overflow-x-hidden bg-black text-white selection:bg-gold-400/30">
+    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`} suppressHydrationWarning>
+      <body className="overflow-x-hidden bg-black text-white selection:bg-gold-400/30" suppressHydrationWarning>
         <a href="#top" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[200] focus:rounded-md focus:bg-white/95 focus:px-3 focus:py-2 focus:text-sm focus:text-black">
           Skip to content
         </a>
@@ -76,7 +76,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {children}
         </SmoothScroll>
       </body>
-
     </html>
   );
 }
