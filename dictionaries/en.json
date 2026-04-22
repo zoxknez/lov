@@ -37,7 +37,8 @@
     ]
   },
   "story": {
-    "legacy": "The Legacy",
+    "legacy": "OUR LEGACY",
+    "yrsSuffix": " Yrs",
     "title": "Our Story",
     "foundingMission": "Founding Mission",
     "missionText": "\"Founded to introduce international hunters to the quality of New Zealand trophies and the raw majesty of its wild landscapes.\"",
@@ -49,6 +50,10 @@
     "active": "Active",
     "specialization": "Specialization",
     "detailedView": "Detailed View",
+    "fieldPortrait": "Field Portrait",
+    "personnelFile": "Personnel File",
+    "overview": "Overview",
+    "portraitArchivePending": "Portrait Archive Pending",
     "founders": {
       "alex": {
         "role": "Co-Founder",
@@ -172,6 +177,8 @@
     "cardSeasonWindow": "Season Window",
     "cardTerritory": "Territory",
     "cardTerrain": "Terrain",
+    "photoCredit": "Photo",
+    "wikimediaCommons": "Wikimedia Commons",
     "footerText": "All hunts follow fair-chase principles. Multiple-species itineraries can be built by arrangement - final programs shaped by trophy goals, seasonal timing, and the right country.",
     "animals": [
       {
@@ -271,7 +278,18 @@
     "galleryViewer": "Basecamp Gallery",
     "videoViewer": "Basecamp Operations",
     "viewPhotos": "View Photos",
-    "viewVideos": "View Videos"
+    "viewVideos": "View Videos",
+    "operationalLog": "Operational Log",
+    "gridStatus": "Grid Status",
+    "encryptionLevel": "ENCRYPTION: LEVEL 4",
+    "operationalStatus": "OPERATIONAL",
+    "operationalProfile": "Operational Profile",
+    "baseLogistics": "Base Logistics",
+    "personnel": "Personnel",
+    "motionLogReady": "Motion Log Ready",
+    "openVideos": "Open Videos",
+    "operationalHospitality": "Operational Hospitality",
+    "hospitalityQuote": "Meals are prepared around the rhythm of the hunt - not the other way around. Excellent food, reliable hospitality, and a stay that feels relaxed after long days in the bush."
   },
   "gallery": {
     "tag": "The Archive",
@@ -279,14 +297,28 @@
     "subtitle": "A visual record of our operations across New Zealand. Honest representation of the terrain, the animals, and the reality of the hunt.",
     "categories": {
       "all": "All Media",
-      "trophies": "Trophies",
-      "landscape": "Terrain",
-      "lodges": "Basecamps"
+      "red-deer": "Red Deer",
+      "sika-deer": "Sika Deer",
+      "fallow-deer": "Fallow Deer",
+      "rusa-sambar": "Rusa / Sambar",
+      "himalayan-tahr": "Himalayan Tahr",
+      "chamois": "Chamois",
+      "hunting-photos": "Field Photos"
     },
+    "archive": "Archive",
+    "speciesProfile": "Species Profile",
     "playVideo": "Play Video",
     "close": "Close",
     "next": "Next",
-    "prev": "Previous"
+    "prev": "Previous",
+    "runtime": "Runtime",
+    "photoAsset": "Photo Asset",
+    "assetMetadata": "Asset Metadata",
+    "captureDate": "Capture Date",
+    "fieldCoords": "Field Coords",
+    "medium": "Medium",
+    "quickBrowse": "Quick Browse",
+    "browseFullCategory": "Browse the full category from inside the lightbox and jump straight to any frame."
   },
   "contact": {
     "tag": "Consultation",
@@ -306,14 +338,49 @@
     "selectOption": "Select Species",
     "submitting": "Sending...",
     "successMsg": "Inquiry received. We will contact you shortly.",
-    "errorMsg": "Error sending message. Please try again or use direct contact."
+    "errorMsg": "Error sending message. Please try again or use direct contact.",
+    "formNamePlaceholder": "e.g. Alexander Knight",
+    "formEmailPlaceholder": "alex@knight-ops.com",
+    "formMessagePlaceholder": "Describe your desired campaign, target species, and timeline...",
+    "optBooking": "Book a Safari Campaign",
+    "optPricing": "Species & Quota Info",
+    "optTravel": "Logistics & Field Support",
+    "optOther": "General Operational Inquiry",
+    "authProtocol": "Auth Protocol",
+    "baseLink": "Base Link",
+    "currentOp": "Current Op",
+    "readiness": "Readiness",
+    "fieldStatus": "Field Status",
+    "encryptedTransmissions": "All transmissions are encrypted. We prioritize serious inquiries for upcoming alpine and bush campaigns.",
+    "fieldProtocol": "Field Protocol",
+    "fieldProtocolQuote": "Field operations are often out of reach, but the Ohakune base stays connected. Technical logistics or simple checks - we manage the details.",
+    "logistics": "Logistics",
+    "logisticsInfo": "Domestic travel and trophy logistics are managed from Auckland (AKL) arrival through final field movement.",
+    "notice": "Notice",
+    "firearmsLicenseInfo": "Visitor firearms licenses should be started about 4 months ahead. High-quality rifle hire is available from NZD 100/day."
   },
   "footer": {
     "tagline": "Professional fair-chase outfitting for international hunters across New Zealand.",
     "explore": "Explore",
+    "exploreLinks": {
+      "story": "Story",
+      "territory": "Territory",
+      "species": "Species",
+      "stay": "Stay",
+      "gallery": "Gallery",
+      "contact": "Contact"
+    },
     "contact": "Contact",
     "social": "Social",
     "copyright": "Kaimanawa Trophy Safaris. All rights reserved.",
-    "backToTop": "Back to Top"
+    "backToTop": "Top",
+    "primaryLink": "Primary Link // Signal: Stable",
+    "secureEmail": "Secure Email // Enc: AES-256",
+    "hqLocation": "HQ Location // NZ Base",
+    "ohakuneNZ": "Ohakune - New Zealand",
+    "secureProtocol": "Secure Consultation Protocol",
+    "nzOpTime": "NZ Operational Time",
+    "basedInNZ": "Based In New Zealand",
+    "legalDispatch": "International guests should confirm firearm processing times and DOC permit protocols. Full itinerary terms are available on dispatch. // DATA_LOCK_V1.0"
   }
 }

@@ -338,6 +338,92 @@ svg {
   }
 }
 
+/* ─────────────────────────────────────────
+   CYRILLIC / RUSSIAN LANGUAGE OVERRIDES
+   Cyrillic glyphs are inherently wider than Latin.
+   These rules tighten tracking and scale text
+   when html[lang="ru"] is active.
+───────────────────────────────────────── */
+html[lang="ru"] {
+  /* Reduce aggressive letter-spacing globally */
+  --ru-tracking-scale: 0.6;
+}
+
+html[lang="ru"] [class*="tracking-[0.5em]"] {
+  letter-spacing: 0.22em;
+}
+
+html[lang="ru"] [class*="tracking-[0.44em]"],
+html[lang="ru"] [class*="tracking-[0.4em]"] {
+  letter-spacing: 0.18em;
+}
+
+html[lang="ru"] [class*="tracking-[0.34em]"],
+html[lang="ru"] [class*="tracking-[0.35em]"],
+html[lang="ru"] [class*="tracking-[0.3em]"],
+html[lang="ru"] [class*="tracking-[0.32em]"] {
+  letter-spacing: 0.14em;
+}
+
+html[lang="ru"] [class*="tracking-[0.28em]"],
+html[lang="ru"] [class*="tracking-[0.26em]"],
+html[lang="ru"] [class*="tracking-[0.25em]"],
+html[lang="ru"] [class*="tracking-[0.24em]"],
+html[lang="ru"] [class*="tracking-[0.22em]"] {
+  letter-spacing: 0.1em;
+}
+
+html[lang="ru"] [class*="tracking-[0.2em]"],
+html[lang="ru"] [class*="tracking-[0.18em]"],
+html[lang="ru"] [class*="tracking-[0.16em]"] {
+  letter-spacing: 0.08em;
+}
+
+html[lang="ru"] .tracking-widest {
+  letter-spacing: 0.12em;
+}
+
+/* Scale down section titles on Russian */
+html[lang="ru"] h2 {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Tighter text for Russian nav items */
+html[lang="ru"] nav a {
+  letter-spacing: 0.08em;
+}
+
+/* Prevent Russian labels from overflowing compact stat cards */
+html[lang="ru"] [class*="text-[8px]"],
+html[lang="ru"] [class*="text-[9px]"] {
+  letter-spacing: 0.06em;
+}
+
+html[lang="ru"] [class*="text-[10px]"],
+html[lang="ru"] [class*="text-[11px]"] {
+  letter-spacing: 0.08em;
+}
+
+/* Mobile extra tightening for Russian */
+@media (max-width: 640px) {
+  html[lang="ru"] h1 span,
+  html[lang="ru"] h2 span {
+    letter-spacing: -0.02em;
+  }
+
+  html[lang="ru"] [class*="tracking-[0.5em]"],
+  html[lang="ru"] [class*="tracking-[0.44em]"],
+  html[lang="ru"] [class*="tracking-[0.4em]"] {
+    letter-spacing: 0.12em;
+  }
+
+  html[lang="ru"] [class*="tracking-[0.3em]"],
+  html[lang="ru"] [class*="tracking-[0.28em]"] {
+    letter-spacing: 0.08em;
+  }
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;

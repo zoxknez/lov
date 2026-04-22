@@ -139,14 +139,14 @@ export default function Header({ dict, lang }: { dict: any, lang: string }) {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="relative hidden lg:flex items-center gap-2">
+          <nav className="relative hidden lg:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`group relative px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] transition-all duration-500 ${
+                  className={`group relative px-4 py-2.5 text-[10px] font-bold uppercase tracking-[0.16em] transition-all duration-500 ${
                     isActive
                       ? 'text-gold-400'
                       : scrolled
@@ -167,44 +167,54 @@ export default function Header({ dict, lang }: { dict: any, lang: string }) {
                   
                   {/* Hover Trace */}
                   {!isActive && (
-                    <span className="absolute bottom-1 left-5 right-5 h-px scale-x-0 bg-gold-400/40 transition-transform duration-500 group-hover:scale-x-100" />
+                    <span className="absolute bottom-1 left-4 right-4 h-px scale-x-0 bg-gold-400/40 transition-transform duration-500 group-hover:scale-x-100" />
                   )}
                 </a>
               );
             })}
           </nav>
 
-          {/* CTA Button & Language - Desktop */}
-          <div
-            className={`hidden md:flex items-center gap-4 transition-all duration-500 ${
-              scrolled ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0 pointer-events-none'
-            }`}
-          >
+          {/* Right side: Language + CTA */}
+          <div className="flex items-center gap-3">
             <button
               onClick={toggleLanguage}
-              className="group relative flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/25 text-[10px] font-bold uppercase text-white backdrop-blur-md transition-all duration-300 hover:border-gold-400/50 hover:bg-white/10"
+              className={`group relative flex items-center gap-2 rounded-full border px-3 py-2 backdrop-blur-md transition-all duration-300 hover:bg-white/10 ${
+                scrolled 
+                  ? 'border-white/15 bg-black/30 hover:border-gold-400/40' 
+                  : 'border-white/25 bg-black/40 hover:border-gold-400/60 shadow-lg'
+              }`}
             >
-              {lang === 'en' ? 'RU' : 'EN'}
+              <span className={`text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                lang === 'en' ? 'text-gold-400' : 'text-white/40'
+              }`}>EN</span>
+              <span className="h-3 w-px bg-white/15" />
+              <span className={`text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                lang === 'ru' ? 'text-gold-400' : 'text-white/40'
+              }`}>RU</span>
             </button>
+
+            {/* CTA - Visible on scroll */}
             <a
               href="#contact"
-              className="group relative overflow-hidden rounded-full border border-gold-400/70 bg-black/25 px-8 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gold-300 backdrop-blur-md transition-all duration-300 hover:border-gold-300 hover:bg-gold-400 hover:text-black"
+              className={`group relative hidden lg:flex overflow-hidden rounded-full border border-gold-400/70 bg-black/25 px-7 py-2.5 text-[10px] font-bold uppercase tracking-[0.18em] text-gold-300 backdrop-blur-md transition-all duration-500 hover:border-gold-300 hover:bg-gold-400 hover:text-black ${
+                scrolled ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0 pointer-events-none'
+              }`}
             >
               <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0)_30%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0)_70%)] bg-[length:200%_100%] opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
               <span className="relative">{dict.planYourHunt}</span>
             </a>
-          </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="rounded-xl border border-white/10 bg-black/25 p-2.5 text-gold-400 transition-colors hover:text-gold-300 lg:hidden"
-            aria-label={isOpen ? 'Close navigation' : 'Open navigation'}
-            aria-expanded={isOpen}
-            aria-controls="mobile-navigation"
-          >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="rounded-xl border border-white/10 bg-black/25 p-2.5 text-gold-400 transition-colors hover:text-gold-300 lg:hidden"
+              aria-label={isOpen ? 'Close navigation' : 'Open navigation'}
+              aria-expanded={isOpen}
+              aria-controls="mobile-navigation"
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -240,25 +250,27 @@ export default function Header({ dict, lang }: { dict: any, lang: string }) {
                   <span className="absolute -bottom-1 left-0 h-px w-0 bg-gold-400/50 transition-all duration-500 group-hover:w-full" />
                 </motion.a>
               ))}
+              <motion.button
+                onClick={toggleLanguage}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: navLinks.length * 0.06, duration: 0.4 }}
+                className="mt-4 flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-6 py-3 backdrop-blur-md"
+              >
+                <span className={`text-xs font-bold uppercase tracking-widest ${lang === 'en' ? 'text-gold-400' : 'text-white/40'}`}>EN</span>
+                <span className="h-4 w-px bg-white/15" />
+                <span className={`text-xs font-bold uppercase tracking-widest ${lang === 'ru' ? 'text-gold-400' : 'text-white/40'}`}>RU</span>
+              </motion.button>
               <motion.a
                 href="#contact"
                 onClick={() => setIsOpen(false)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.4 }}
-                className="mt-2 w-full max-w-sm rounded-full border-2 border-gold-400 bg-gold-400 px-6 py-3.5 text-center text-[12px] font-bold uppercase tracking-[0.16em] text-black transition-all hover:bg-gold-300"
+                transition={{ delay: (navLinks.length + 1) * 0.06, duration: 0.4 }}
+                className="mt-4 flex items-center gap-2 rounded-full bg-gold-400 px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-black shadow-glow"
               >
-                {dict.consultGuide}
+                {dict.planYourHunt}
               </motion.a>
-              <motion.button
-                onClick={toggleLanguage}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.4 }}
-                className="mt-4 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-xs font-bold text-white transition-all hover:bg-white/10"
-              >
-                {lang === 'en' ? 'RU' : 'EN'}
-              </motion.button>
             </div>
           </motion.div>
         )}

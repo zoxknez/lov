@@ -377,7 +377,7 @@ export default function GallerySection({ dict }: { dict: any }) {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 flex flex-col items-center text-center sm:mb-14">
           <p className="mb-3 text-[9px] font-black uppercase tracking-[0.28em] text-gold-400/60 sm:mb-4 sm:text-[10px] sm:tracking-[0.6em]">{dict.tag}</p>
-          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8.5rem]">
+          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[7rem]">
             <TextReveal delay={0.1}>{dict.title}</TextReveal>
           </h2>
           <motion.div
@@ -425,7 +425,7 @@ export default function GallerySection({ dict }: { dict: any }) {
                         <div className="flex items-center gap-2">
                           <span className={`h-2 w-2 rounded-full ${tone.dot} ${isActive ? 'opacity-100 shadow-glow' : 'opacity-55 group-hover:opacity-90'}`} />
                           <span className={`text-[8px] font-black uppercase tracking-[0.28em] ${isActive ? 'text-white/55' : 'text-white/28 group-hover:text-white/45'}`}>
-                            Archive {formatAssetCount(index + 1)}
+                            {dict.archive} {formatAssetCount(index + 1)}
                           </span>
                         </div>
 
@@ -435,10 +435,10 @@ export default function GallerySection({ dict }: { dict: any }) {
                       </div>
 
                       <p className={`font-display text-[0.95rem] font-bold uppercase leading-tight tracking-[0.18em] sm:text-[1.02rem] ${isActive ? tone.activeLabel : 'text-white/72 group-hover:text-white'}`}>
-                        {group.label}
+                        {dict.categories[group.key] || group.label}
                       </p>
                       <p className={`mt-2 text-[8px] font-black uppercase tracking-[0.24em] ${isActive ? 'text-white/34' : 'text-white/18 group-hover:text-white/28'}`}>
-                        Species Profile
+                        {dict.speciesProfile}
                       </p>
                     </div>
                   </button>
@@ -732,8 +732,8 @@ export default function GallerySection({ dict }: { dict: any }) {
                     </motion.div>
 
                     <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-between gap-2 sm:bottom-6 sm:left-6 sm:right-6 sm:gap-3">
-                      <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-[8px] font-black uppercase tracking-[0.14em] text-white/70 sm:text-[10px] sm:tracking-[0.22em]">
-                        {isVideoAsset(lightboxAsset) ? `${lightboxAsset.meta.runtime ?? '--:--'} Runtime` : 'Photo Asset'}
+                     <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-[8px] font-black uppercase tracking-[0.14em] text-white/70 sm:text-[10px] sm:tracking-[0.22em]">
+                        {isVideoAsset(lightboxAsset) ? `${lightboxAsset.meta.runtime ?? '--:--'} ${dict.runtime}` : dict.photoAsset}
                       </div>
                       <div className="rounded-full border border-gold-400/20 bg-gold-400/10 px-4 py-2 text-[8px] font-black uppercase tracking-[0.14em] text-gold-200 sm:text-[10px] sm:tracking-[0.22em]">
                         {lightboxAsset.meta.fileId}
@@ -743,13 +743,13 @@ export default function GallerySection({ dict }: { dict: any }) {
 
                   <div className="grid w-full min-w-0 shrink-0 gap-4 lg:grid-cols-[minmax(16rem,0.9fr)_minmax(0,1.8fr)]">
                     <div className="hidden min-w-0 rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:block sm:p-5">
-                      <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Asset Metadata</p>
+                      <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">{dict.assetMetadata}</p>
                       <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2">
                         {[
-                          { label: 'Capture Date', value: lightboxAsset.meta.date },
-                          { label: 'Field Coords', value: lightboxAsset.meta.coords },
-                          { label: 'Medium', value: lightboxAsset.meta.medium },
-                          { label: 'Runtime', value: lightboxAsset.meta.runtime ?? 'PHOTO' },
+                          { label: dict.captureDate, value: lightboxAsset.meta.date },
+                          { label: dict.fieldCoords, value: lightboxAsset.meta.coords },
+                          { label: dict.medium, value: lightboxAsset.meta.medium },
+                          { label: dict.runtime, value: lightboxAsset.meta.runtime ?? 'PHOTO' },
                         ].map((item) => (
                           <div key={item.label} className="flex flex-col gap-1">
                             <span className="text-[7px] font-black uppercase tracking-[0.3em] text-white/30">{item.label}</span>
@@ -762,8 +762,8 @@ export default function GallerySection({ dict }: { dict: any }) {
                     <div className="min-w-0 rounded-[1.6rem] border border-white/10 bg-black/55 p-4 shadow-premium backdrop-blur-3xl sm:p-5">
                       <div className="mb-4 flex items-start justify-between gap-3">
                         <div>
-                          <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">Quick Browse</p>
-                          <p className="mt-2 hidden text-xs leading-relaxed text-gray-400 sm:block">Browse the full category from inside the lightbox and jump straight to any frame.</p>
+                          <p className="text-[9px] font-black uppercase tracking-[0.32em] text-gold-400/45">{dict.quickBrowse}</p>
+                          <p className="mt-2 hidden text-xs leading-relaxed text-gray-400 sm:block">{dict.browseFullCategory}</p>
                         </div>
                         <div className="hidden items-center gap-2 sm:flex">
                           <button

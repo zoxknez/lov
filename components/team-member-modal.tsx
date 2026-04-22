@@ -19,10 +19,11 @@ interface TeamMember {
 
 interface TeamMemberModalProps {
   member: TeamMember | null;
+  dict: any;
   onClose: () => void;
 }
 
-export default function TeamMemberModal({ member, onClose }: TeamMemberModalProps) {
+export default function TeamMemberModal({ member, dict, onClose }: TeamMemberModalProps) {
   useEffect(() => {
     if (member) {
       document.body.style.overflow = 'hidden';
@@ -85,7 +86,7 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
             <div className="grid md:grid-cols-[0.88fr_1.12fr]">
               <div className="border-b border-white/8 bg-[linear-gradient(180deg,rgba(15,21,20,0.98),rgba(8,11,10,0.98))] p-4 sm:p-6 md:border-b-0 md:border-r md:p-7">
                 <p className="mb-3 text-[9px] font-black uppercase tracking-[0.34em] text-gold-400/55 sm:mb-4">
-                  Field Portrait
+                  {dict.fieldPortrait}
                 </p>
 
                 <div className="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(194,157,84,0.14),transparent_42%),linear-gradient(180deg,rgba(27,33,31,0.96),rgba(10,14,13,0.98))] shadow-[0_18px_60px_rgba(0,0,0,0.32)]">
@@ -118,7 +119,7 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
                             {member.initials}
                           </div>
                           <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400/55">
-                            Portrait Archive Pending
+                            {dict.portraitArchivePending}
                           </p>
                           <ImageIcon className="mx-auto mt-3 h-4 w-4 text-white/20" />
                         </div>
@@ -132,7 +133,7 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
                 <div className="mb-2 flex items-center gap-2">
                   <div className="h-1.5 w-1.5 rounded-full bg-gold-400 shadow-glow animate-pulse" />
                   <p className="text-[9px] font-black uppercase tracking-[0.38em] text-gold-400/55">
-                    Personnel File
+                    {dict.personnelFile}
                   </p>
                 </div>
 
@@ -158,7 +159,7 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
                   <div className="mb-3 flex items-center gap-2.5">
                     <Quote className="h-4 w-4 text-gold-400/45 sm:h-5 sm:w-5" />
                     <p className="text-[9px] font-black uppercase tracking-[0.3em] text-gold-400/55">
-                      Overview
+                      {dict.overview}
                     </p>
                   </div>
                   <p className="text-[14px] leading-7 text-gray-200">
@@ -168,7 +169,7 @@ export default function TeamMemberModal({ member, onClose }: TeamMemberModalProp
 
                 <div className="mt-5 rounded-[1.4rem] border border-gold-400/12 bg-[linear-gradient(135deg,rgba(194,157,84,0.08),rgba(255,255,255,0.02))] px-4 py-4 sm:px-5">
                   <p className="text-[9px] font-black uppercase tracking-[0.3em] text-gold-400/55">
-                    Specialization
+                    {dict.specialization}
                   </p>
                   <p className="mt-2 font-display text-lg font-bold uppercase leading-tight tracking-[0.06em] text-white sm:text-xl">
                     {member.expertise}

@@ -154,7 +154,7 @@ export default function ContactSection({ dict }: { dict: any }) {
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleInputChange}
-                      placeholder="e.g. Alexander Knight"
+                      placeholder={dict.formNamePlaceholder}
                       required
                       className="w-full border-b border-white/10 bg-transparent py-4 text-base font-medium text-white placeholder-white/10 transition-all focus:outline-none sm:text-lg"
                     />
@@ -169,7 +169,7 @@ export default function ContactSection({ dict }: { dict: any }) {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      placeholder="alex@knight-ops.com"
+                      placeholder={dict.formEmailPlaceholder}
                       required
                       className="w-full border-b border-white/10 bg-transparent py-4 text-base font-medium text-white placeholder-white/10 transition-all focus:outline-none sm:text-lg"
                     />
@@ -191,10 +191,10 @@ export default function ContactSection({ dict }: { dict: any }) {
                          className="w-full cursor-pointer appearance-none border-b border-white/10 bg-transparent py-4 text-base font-medium text-white transition-all focus:border-gold-400 focus:outline-none sm:text-lg"
                        >
                          <option value="" disabled className="bg-forest-950">{dict.selectOption}</option>
-                         <option value="booking" className="bg-forest-950">Book a Safari Campaign</option>
-                         <option value="pricing" className="bg-forest-950">Species & Quota Info</option>
-                         <option value="travel" className="bg-forest-950">Logistics & Field Support</option>
-                         <option value="other" className="bg-forest-950">General Operational Inquiry</option>
+                         <option value="booking" className="bg-forest-950">{dict.optBooking}</option>
+                         <option value="pricing" className="bg-forest-950">{dict.optPricing}</option>
+                         <option value="travel" className="bg-forest-950">{dict.optTravel}</option>
+                         <option value="other" className="bg-forest-950">{dict.optOther}</option>
                        </select>
                        <ChevronDown className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-gold-400/40" />
                     </div>
@@ -231,14 +231,14 @@ export default function ContactSection({ dict }: { dict: any }) {
                     required
                     rows={4}
                     maxLength={MAX_MESSAGE}
-                    placeholder="Describe your desired campaign, target species, and timeline..."
+                    placeholder={dict.formMessagePlaceholder}
                     className="w-full resize-none rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-5 text-base font-medium text-white placeholder-white/10 transition-all focus:border-gold-400 focus:outline-none focus:bg-white/[0.05] sm:text-lg"
                   />
                 </div>
 
                 {turnstileEnabled && (
                   <div className="flex flex-col items-start gap-4 rounded-2xl border border-white/5 bg-white/[0.02] p-6 sm:flex-row sm:items-center sm:gap-8 lg:p-8">
-                    <p className="text-[9px] font-bold uppercase tracking-[0.26em] text-gold-400/30 sm:text-[10px] sm:tracking-[0.5em]">Auth Protocol</p>
+                    <p className="text-[9px] font-bold uppercase tracking-[0.26em] text-gold-400/30 sm:text-[10px] sm:tracking-[0.5em]">{dict.authProtocol}</p>
                     <TurnstileWidget key={turnstileKey} onTokenChange={setTurnstileToken} />
                   </div>
                 )}
@@ -278,28 +278,28 @@ export default function ContactSection({ dict }: { dict: any }) {
                     <div className="flex flex-col gap-2">
                        <div className="flex items-center gap-2 text-gold-400">
                           <Activity className="h-3 w-3" />
-                          <p className="text-[9px] font-black uppercase tracking-widest">Base Link</p>
+                          <p className="text-[9px] font-black uppercase tracking-widest">{dict.baseLink}</p>
                        </div>
                        <p className="text-xs font-bold text-white uppercase tracking-tight">Stable - 98ms</p>
                     </div>
                     <div className="flex flex-col gap-2">
                        <div className="flex items-center gap-2 text-gold-400">
                           <Compass className="h-3 w-3" />
-                          <p className="text-[9px] font-black uppercase tracking-widest">Current Op</p>
+                          <p className="text-[9px] font-black uppercase tracking-widest">{dict.currentOp}</p>
                        </div>
                        <p className="text-xs font-bold text-white uppercase tracking-tight">Kaimanawa Bush</p>
                     </div>
                     <div className="flex flex-col gap-2">
                        <div className="flex items-center gap-2 text-gold-400">
                           <Zap className="h-3 w-3" />
-                          <p className="text-[9px] font-black uppercase tracking-widest">Readiness</p>
+                          <p className="text-[9px] font-black uppercase tracking-widest">{dict.readiness}</p>
                        </div>
                        <p className="text-xs font-bold text-white uppercase tracking-tight">Tactical Peak</p>
                     </div>
                     <div className="flex flex-col gap-2">
                        <div className="flex items-center gap-2 text-gold-400">
                           <Globe className="h-3 w-3" />
-                          <p className="text-[9px] font-black uppercase tracking-widest">Field Status</p>
+                          <p className="text-[9px] font-black uppercase tracking-widest">{dict.fieldStatus}</p>
                        </div>
                        <p className="text-xs font-bold text-white uppercase tracking-tight">Active Ops</p>
                     </div>
@@ -310,7 +310,7 @@ export default function ContactSection({ dict }: { dict: any }) {
                        <ShieldCheck className="h-4 w-4" />
                     </div>
                     <p className="text-[11px] font-medium leading-relaxed text-gray-400 italic">
-                      All transmissions are encrypted. We prioritize serious inquiries for upcoming alpine and bush campaigns.
+                      {dict.encryptedTransmissions}
                     </p>
                  </div>
               </div>
@@ -347,12 +347,12 @@ export default function ContactSection({ dict }: { dict: any }) {
                <div className="mt-10 border-t border-white/5 pt-8 sm:mt-12 sm:pt-10">
                   <div className="mb-6 flex items-center gap-4">
                     <Clock className="h-4 w-4 text-gold-400/60" />
-                    <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gold-400">Field Protocol</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gold-400">{dict.fieldProtocol}</p>
                   </div>
                   <div className="relative rounded-2xl border border-white/5 bg-white/[0.01] p-6 lg:p-8">
                      <Quote className="absolute -left-3 -top-3 h-8 w-8 text-gold-400/10" />
                      <p className="text-sm italic italic leading-relaxed text-gray-400">
-                       &ldquo;Field operations are often out of reach, but the Ohakune base stays connected. Technical logistics or simple checks - we manage the details.&rdquo;
+                       &ldquo;{dict.fieldProtocolQuote}&rdquo;
                      </p>
                   </div>
                </div>
@@ -370,22 +370,22 @@ export default function ContactSection({ dict }: { dict: any }) {
                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-400/5 text-gold-400">
                         <Globe className="h-5 w-5" />
                      </div>
-                     <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-white">Logistics</p>
+                     <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-white">{dict.logistics}</p>
                   </div>
                   <Info className="h-4 w-4 text-white/10" />
                </div>
                
                <p className="mb-8 text-sm leading-relaxed text-gray-400">
-                 Domestic travel and trophy logistics are managed from Auckland (AKL) arrival through final field movement.
+                 {dict.logisticsInfo}
                </p>
                
                <div className="rounded-2xl bg-[#090e0d] p-6 border border-white/5">
                   <div className="mb-3 flex items-center gap-2 text-gold-400">
                      <Award className="h-3.5 w-3.5" />
-                     <p className="text-[9px] font-black uppercase tracking-[0.3em]">Notice</p>
+                     <p className="text-[9px] font-black uppercase tracking-[0.3em]">{dict.notice}</p>
                   </div>
                   <p className="text-[12px] font-medium italic leading-relaxed text-gray-300">
-                    Visitor firearms licenses should be started about 4 months ahead. High-quality rifle hire is available from NZD 100/day.
+                    {dict.firearmsLicenseInfo}
                   </p>
                </div>
             </motion.div>

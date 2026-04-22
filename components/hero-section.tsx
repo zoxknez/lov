@@ -156,7 +156,7 @@ export default function HeroSection({ dict }: { dict: any }) {
                   initial={{ y: '100%' }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className="block font-display text-[2.9rem] font-black uppercase leading-[0.92] tracking-tighter text-white soft-text-glow sm:text-6xl md:text-7xl lg:text-9xl"
+                  className="block font-display text-[2.5rem] font-black uppercase leading-[0.92] tracking-tighter text-white soft-text-glow sm:text-5xl md:text-6xl lg:text-8xl"
                 >
                   {dict.title1}
                 </motion.span>
@@ -166,7 +166,7 @@ export default function HeroSection({ dict }: { dict: any }) {
                   initial={{ y: '100%' }}
                   animate={{ y: 0 }}
                   transition={{ duration: 1, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="block font-display text-[2.9rem] font-black uppercase leading-[0.92] tracking-tighter text-gold-200 sm:text-6xl md:text-7xl lg:text-9xl"
+                  className="block font-display text-[2.5rem] font-black uppercase leading-[0.92] tracking-tighter text-gold-200 sm:text-5xl md:text-6xl lg:text-8xl"
                 >
                   {dict.title2}
                 </motion.span>
@@ -190,7 +190,7 @@ export default function HeroSection({ dict }: { dict: any }) {
             >
               <Link
                 href="#contact"
-                className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-full bg-gold-400 px-6 py-4 text-[10px] font-black uppercase tracking-[0.18em] text-black shadow-premium transition-all hover:scale-105 active:scale-95 sm:w-auto sm:gap-5 sm:px-10 sm:py-5 sm:text-[11px] sm:tracking-[0.4em]"
+                className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-full bg-gold-400 px-5 py-3.5 text-[9px] font-black uppercase tracking-[0.12em] text-black shadow-premium transition-all hover:scale-105 active:scale-95 sm:w-auto sm:gap-4 sm:px-8 sm:py-4 sm:text-[10px] sm:tracking-[0.22em]"
               >
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent group-hover:animate-shimmer" />
                 <Zap className="h-3.5 w-3.5" />
@@ -198,7 +198,7 @@ export default function HeroSection({ dict }: { dict: any }) {
               </Link>
               <Link
                 href="#territory"
-                className="group flex w-full items-center justify-center gap-3 rounded-full border border-white/10 bg-white/5 px-6 py-4 text-[10px] font-black uppercase tracking-[0.18em] text-white backdrop-blur-md transition-all hover:border-gold-400/50 hover:bg-white/10 sm:w-auto sm:gap-5 sm:px-10 sm:py-5 sm:text-[11px] sm:tracking-[0.4em]"
+                className="group flex w-full items-center justify-center gap-3 rounded-full border border-white/10 bg-white/5 px-5 py-3.5 text-[9px] font-black uppercase tracking-[0.12em] text-white backdrop-blur-md transition-all hover:border-gold-400/50 hover:bg-white/10 sm:w-auto sm:gap-4 sm:px-8 sm:py-4 sm:text-[10px] sm:tracking-[0.22em]"
               >
                 <span>{dict.exploreTerritory}</span>
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />

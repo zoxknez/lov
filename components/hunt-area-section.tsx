@@ -85,7 +85,7 @@ export default function HuntAreaSection({ dict }: { dict: any }) {
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400 sm:mb-4 sm:text-[11px] sm:tracking-[0.44em]">
             <TextReveal>{dict.tag}</TextReveal>
           </p>
-          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8rem]">
+          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[7rem]">
             <TextReveal delay={0.1}>{dict.title}</TextReveal>
           </h2>
           <motion.div

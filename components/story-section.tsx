@@ -17,7 +17,7 @@ export default function StorySection({ dict }: { dict: any }) {
       name: 'Alex Sipka', 
       role: dict.founders.alex.role, 
       origin: dict.founders.alex.origin, 
-      exp: '40 Yrs', expNum: 40, expSuffix: ' Yrs',
+      exp: `40${dict.yrsSuffix}`, expNum: 40, expSuffix: dict.yrsSuffix,
       initials: 'AS',
       expertise: dict.founders.alex.expertise,
       bio: dict.founders.alex.bio,
@@ -28,7 +28,7 @@ export default function StorySection({ dict }: { dict: any }) {
       name: 'Artem Prikazov', 
       role: dict.founders.artem.role, 
       origin: dict.founders.artem.origin, 
-      exp: '15 Yrs', expNum: 15, expSuffix: ' Yrs',
+      exp: `15${dict.yrsSuffix}`, expNum: 15, expSuffix: dict.yrsSuffix,
       initials: 'AP',
       expertise: dict.founders.artem.expertise,
       bio: dict.founders.artem.bio,
@@ -39,7 +39,7 @@ export default function StorySection({ dict }: { dict: any }) {
       name: 'Vuk Mijatovic',
       role: dict.founders.vuk.role,
       origin: dict.founders.vuk.origin,
-      exp: '35 Yrs', expNum: 35, expSuffix: ' Yrs',
+      exp: `35${dict.yrsSuffix}`, expNum: 35, expSuffix: dict.yrsSuffix,
       initials: 'VM',
       expertise: dict.founders.vuk.expertise,
       bio: dict.founders.vuk.bio,
@@ -76,7 +76,7 @@ export default function StorySection({ dict }: { dict: any }) {
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400 sm:mb-4 sm:text-[11px] sm:tracking-[0.44em]">
             <TextReveal>{dict.legacy}</TextReveal>
           </p>
-          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white text-balance soft-text-glow sm:text-6xl md:text-8xl lg:text-[8rem]">
+          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white text-balance soft-text-glow sm:text-6xl md:text-7xl lg:text-[7rem]">
             <TextReveal delay={0.1}>{dict.title}</TextReveal>
           </h2>
           <motion.div
@@ -118,11 +118,11 @@ export default function StorySection({ dict }: { dict: any }) {
            <div className="mb-8 flex flex-col items-start gap-3 border-b border-white/5 pb-4 sm:mb-10 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-3">
                  <User className="h-4 w-4 text-gold-400/40" />
-                 <p className="text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors sm:text-[10px] sm:tracking-[0.4em]">Team Specialists</p>
+                  <p className="text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors sm:text-[10px] sm:tracking-[0.4em]">{dict.teamSpecialists}</p>
               </div>
               <div className="flex items-center gap-2">
                  <div className="h-1 w-1 animate-pulse rounded-full bg-gold-400" />
-                 <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-gray-500">Open Member Profile</p>
+                 <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-gray-500">{dict.openProfile}</p>
               </div>
            </div>
 
@@ -242,6 +242,7 @@ export default function StorySection({ dict }: { dict: any }) {
 
       <TeamMemberModal 
         member={selectedFounder} 
+        dict={dict}
         onClose={() => setSelectedFounder(null)} 
       />
     </section>

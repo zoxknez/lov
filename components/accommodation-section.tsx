@@ -395,7 +395,7 @@ export default function AccommodationSection({ dict }: { dict: any }) {
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400/60 sm:mb-4 sm:text-[11px] sm:tracking-[0.5em]">
             <TextReveal>{dict.tag}</TextReveal>
           </p>
-          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8.5rem]">
+          <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[7rem]">
             <TextReveal delay={0.1}>{dict.title}</TextReveal>
           </h2>
           <motion.div
@@ -553,7 +553,7 @@ export default function AccommodationSection({ dict }: { dict: any }) {
                     <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-transparent to-transparent" />
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/20 p-6 text-center transition-colors group-hover:bg-black/10 sm:p-8">
                        <Play className="h-6 w-6 text-gold-400/30 group-hover:text-gold-400 transition-colors" />
-                       <p className="text-[9px] font-black uppercase tracking-[0.18em] text-gold-400/50 transition-colors group-hover:text-gold-300 sm:text-[10px] sm:tracking-[0.4em]">Operational Log</p>
+                       <p className="text-[9px] font-black uppercase tracking-[0.18em] text-gold-400/50 transition-colors group-hover:text-gold-300 sm:text-[10px] sm:tracking-[0.4em]">{dict.operationalLog}</p>
                      </div>
                   </div>
                 )}
@@ -564,13 +564,13 @@ export default function AccommodationSection({ dict }: { dict: any }) {
                       <div className="flex flex-col gap-1">
                          <div className="flex items-center gap-3">
                             <Activity className="h-4 w-4 text-gold-400" />
-                            <span className="text-[11px] font-black uppercase text-white tracking-[0.3em]">Grid Status</span>
+                            <span className="text-[11px] font-black uppercase text-white tracking-[0.3em]">{dict.gridStatus}</span>
                          </div>
-                         <span className="text-[8px] font-bold text-gold-400/40 uppercase tracking-[0.2em] ml-7">ENCRYPTION: LEVEL 4</span>
+                         <span className="text-[8px] font-bold text-gold-400/40 uppercase tracking-[0.2em] ml-7">{dict.encryptionLevel}</span>
                       </div>
                       <div className="flex flex-col items-end">
                          <div className="h-2 w-2 rounded-full bg-green-500 shadow-glow animate-pulse" />
-                         <span className="text-[9px] font-black uppercase text-green-500/60 tracking-widest mt-1">OPERATIONAL</span>
+                         <span className="text-[9px] font-black uppercase text-green-500/60 tracking-widest mt-1">{dict.operationalStatus}</span>
                       </div>
                    </div>
                    
@@ -601,7 +601,7 @@ export default function AccommodationSection({ dict }: { dict: any }) {
                    
                    <div className="mt-8 flex flex-col items-start gap-4 border-t border-white/5 pt-8 sm:mt-10 sm:flex-row sm:items-center sm:gap-6 sm:pt-10">
                      <div className="flex flex-col gap-1.5">
-                        <span className="text-[11px] font-black uppercase tracking-[0.3em] text-white/20">Operational Profile</span>
+                        <span className="text-[11px] font-black uppercase tracking-[0.3em] text-white/20">{dict.operationalProfile}</span>
                         <span className="text-xs font-bold uppercase text-gold-400/70 italic">{lodge.highlight}</span>
                      </div>
                      <ExternalLink className="ml-auto h-5 w-5 text-white/10 hover:text-gold-400 transition-colors cursor-pointer" />
@@ -611,23 +611,23 @@ export default function AccommodationSection({ dict }: { dict: any }) {
                 {/* Base Logistics (Amenities Dashboard) */}
                 <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-forest-900/30 p-6 shadow-premium sm:rounded-[2.5rem] sm:p-10">
                   <div className="mb-6 flex flex-col items-start justify-between gap-3 sm:mb-8 sm:flex-row sm:items-center">
-                      <p className="text-[10px] font-black uppercase tracking-[0.26em] text-gold-400/60 sm:text-[11px] sm:tracking-[0.5em]">Base Logistics</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.26em] text-gold-400/60 sm:text-[11px] sm:tracking-[0.5em]">{dict.baseLogistics}</p>
                       <div className="flex items-center gap-2 rounded-full border border-white/5 bg-black/40 px-4 py-2">
                          <Users className="h-4 w-4 text-gold-400/40" />
-                         <span className="text-[8px] font-bold uppercase tracking-[0.14em] text-white/40 sm:text-[9px] sm:tracking-widest">{lodge.capacity} Personnel</span>
+                         <span className="text-[8px] font-bold uppercase tracking-[0.14em] text-white/40 sm:text-[9px] sm:tracking-widest">{lodge.capacity} {dict.personnel}</span>
                       </div>
                    </div>
                    {hasVideos && (
                      <div className="mb-6 flex flex-col items-start justify-between gap-3 rounded-2xl border border-emerald-400/15 bg-emerald-400/5 px-4 py-4 sm:flex-row sm:items-center sm:px-5">
                         <div className="flex items-center gap-3">
                            <div className="h-2 w-2 animate-pulse rounded-full bg-emerald-300" />
-                           <span className="text-[8px] font-black uppercase tracking-[0.18em] text-emerald-300 sm:text-[9px] sm:tracking-[0.3em]">Motion Log Ready</span>
+                           <span className="text-[8px] font-black uppercase tracking-[0.18em] text-emerald-300 sm:text-[9px] sm:tracking-[0.3em]">{dict.motionLogReady}</span>
                         </div>
                         <button
                           onClick={() => setViewer({ kind: 'video', index: 0 })}
                           className="rounded-full border border-white/10 bg-black/40 px-4 py-2 text-[8px] font-bold uppercase tracking-[0.2em] text-white/70 transition-colors hover:border-gold-400/30 hover:text-gold-200"
                         >
-                          Open Videos
+                          {dict.openVideos}
                         </button>
                      </div>
                    )}
@@ -677,9 +677,9 @@ export default function AccommodationSection({ dict }: { dict: any }) {
               <Utensils className="h-7 w-7 sm:h-8 sm:w-8" />
             </div>
             <div className="max-w-4xl">
-               <p className="mb-3 text-[10px] font-black uppercase tracking-[0.28em] text-gold-400/40 italic sm:mb-4 sm:text-[11px] sm:tracking-[0.6em]">Operational Hospitality</p>
+               <p className="mb-3 text-[10px] font-black uppercase tracking-[0.28em] text-gold-400/40 italic sm:mb-4 sm:text-[11px] sm:tracking-[0.6em]">{dict.operationalHospitality}</p>
                <p className="font-display text-xl leading-relaxed text-gray-300 italic sm:text-3xl md:text-4xl">
-                 &ldquo;Meals are prepared around the rhythm of the hunt - not the other way around. Excellent food, reliable hospitality, and a stay that feels relaxed after long days in the bush.&rdquo;
+                 &ldquo;{dict.hospitalityQuote}&rdquo;
                </p>
             </div>
           </div>

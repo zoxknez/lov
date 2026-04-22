@@ -106,12 +106,12 @@ export default function Footer({ dict }: { dict: any }) {
             </h5>
             <ul className="grid gap-5">
               {[
-                { label: 'Story', href: '#story', id: '01' },
-                { label: 'Territory', href: '#territory', id: '02' },
-                { label: 'Species', href: '#species', id: '03' },
-                { label: 'Stay', href: '#stay', id: '04' },
-                { label: 'Gallery', href: '#gallery', id: '05' },
-                { label: 'Contact', href: '#contact', id: '06' },
+                { label: dict.exploreLinks.story, href: '#story', id: '01' },
+                { label: dict.exploreLinks.territory, href: '#territory', id: '02' },
+                { label: dict.exploreLinks.species, href: '#species', id: '03' },
+                { label: dict.exploreLinks.stay, href: '#stay', id: '04' },
+                { label: dict.exploreLinks.gallery, href: '#gallery', id: '05' },
+                { label: dict.exploreLinks.contact, href: '#contact', id: '06' },
               ].map((item) => (
                 <li key={item.label}>
                   <a
@@ -143,7 +143,7 @@ export default function Footer({ dict }: { dict: any }) {
                 </div>
                 <div className="min-w-0">
                   <p className="mb-1 text-[8px] font-black uppercase tracking-[0.2em] text-white/20 sm:text-[9px] sm:tracking-[0.4em]">
-                    Primary Link // Signal: Stable
+                    {dict.primaryLink}
                   </p>
                   <a href="tel:+642108850131" className="text-base font-bold text-gray-300 transition-colors hover:text-white tracking-[0.12em]">
                     +64 21 088 50131
@@ -158,7 +158,7 @@ export default function Footer({ dict }: { dict: any }) {
                 </div>
                 <div className="min-w-0">
                   <p className="mb-1 text-[8px] font-black uppercase tracking-[0.2em] text-white/20 sm:text-[9px] sm:tracking-[0.4em]">
-                    Secure Email // Enc: AES-256
+                    {dict.secureEmail}
                   </p>
                   <a href="mailto:hunting@kaimanawasafaris.com" className="break-all text-base font-bold text-gray-300 transition-colors hover:text-white">
                     hunting@kaimanawasafaris.com
@@ -173,9 +173,9 @@ export default function Footer({ dict }: { dict: any }) {
                 </div>
                 <div className="min-w-0">
                   <p className="mb-1 text-[8px] font-black uppercase tracking-[0.2em] text-white/20 sm:text-[9px] sm:tracking-[0.4em]">
-                    HQ Location // NZ Base
+                    {dict.hqLocation}
                   </p>
-                  <p className="text-base font-bold text-gray-300 tracking-[0.12em]">Ohakune - New Zealand</p>
+                  <p className="text-base font-bold text-gray-300 tracking-[0.12em]">{dict.ohakuneNZ}</p>
                 </div>
               </div>
             </div>
@@ -192,7 +192,7 @@ export default function Footer({ dict }: { dict: any }) {
             <div className="flex flex-wrap items-center gap-3 rounded-full border border-gold-500/10 bg-gold-400/5 px-5 py-2.5 backdrop-blur-3xl shadow-glow sm:px-6">
               <ShieldCheck className="h-4 w-4 text-gold-400/60" />
               <span className="text-[8px] font-black uppercase tracking-[0.18em] text-gold-300/80 sm:text-[9px] sm:tracking-[0.35em]">
-                Secure Consultation Protocol
+                {dict.secureProtocol}
               </span>
               <div className="h-2 w-2 rounded-full bg-green-500 shadow-glow animate-pulse" />
             </div>
@@ -202,7 +202,7 @@ export default function Footer({ dict }: { dict: any }) {
              <div className="flex items-center gap-4 group">
                 <Clock className="h-4 w-4 text-gold-400/40" />
                 <div className="flex flex-col">
-                   <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">NZ Operational Time</span>
+                   <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">{dict.nzOpTime}</span>
                    <span className="text-sm font-mono font-bold text-gold-400 tabular-nums">{nzTime}</span>
                 </div>
              </div>
@@ -210,7 +210,7 @@ export default function Footer({ dict }: { dict: any }) {
              <div className="group flex items-center gap-5">
                <div className="text-left sm:text-right">
                  <p className="text-[9px] font-black uppercase tracking-[0.24em] text-white/40 leading-none transition-colors group-hover:text-gold-400 sm:text-[10px] sm:tracking-[0.5em]">
-                   Based In New Zealand
+                   {dict.basedInNZ}
                  </p>
                </div>
                <Mountain className="h-6 w-6 text-gold-400/20 group-hover:text-gold-400/50 transition-colors" />
@@ -221,7 +221,7 @@ export default function Footer({ dict }: { dict: any }) {
         {/* LEGAL DISPATCH */}
         <div className="mx-auto mt-16 max-w-4xl text-center md:mt-24 border-t border-white/5 pt-12">
           <p className="text-[9px] uppercase tracking-[0.18em] leading-relaxed text-white/10 sm:text-[10px] sm:tracking-[0.4em]">
-            International guests should confirm firearm processing times and DOC permit protocols. Full itinerary terms are available on dispatch. // DATA_LOCK_V1.0
+            {dict.legalDispatch}
           </p>
         </div>
       </div>
