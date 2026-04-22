@@ -12,158 +12,68 @@ import gallerySlike from '@/lib/gallery-slike.json';
 const southIslandShowcaseImage =
   gallerySlike[43]?.localSrc ?? backcountryMedia[1]?.src ?? backcountryMedia[0].src;
 
-const regions = [
-  {
-    id: 'north',
-    tag: 'North Island',
-    name: 'Kaimanawa\nCentral Plateau',
-    location: 'Taupo - Turangi - Ohakune',
-    image: countyMedia[2]?.src ?? countyMedia[0].src,
-    icon: Trees,
-    accent: 'text-emerald-300 border-emerald-400/30 bg-emerald-400/8',
-    species: ['Sika Deer', 'Red Deer', 'Fallow Deer', 'Rusa Deer'],
-    terrain: 'Beech and podocarp bush, river valleys, and tussock tops.',
-    signature:
-      'The only wild sika herd in the Southern Hemisphere. The Kaimanawa and Kaweka country delivers the defining North Island bush hunt across deep cover, river systems, and open tops.',
-    access: [
-      { label: 'Clements Mill Road', note: 'Main recreation hunting access east of Taupo.' },
-      { label: 'Southern Corridor', note: 'Turangi side approach for selected catchments.' },
-      { label: 'Kiko Road', note: 'Useful upper-country entry into bush and tops.' },
-    ],
-    stats: [
-      { label: 'Park Area', value: '74,000 ha' },
-      { label: 'Ranges', value: '4 ranges' },
-      { label: 'Base', value: 'Ohakune' },
-    ],
-    permit: 'DOC public-land permits plus private-land permission where required.',
-  },
-  {
-    id: 'south',
-    tag: 'South Island',
-    name: 'Southern Alps\nAlpine Country',
-    location: 'West Coast - Canterbury - High Country',
-    image: southIslandShowcaseImage,
-    icon: Mountain,
-    accent: 'text-sky-300 border-sky-400/30 bg-sky-400/8',
-    species: ['Himalayan Tahr', 'Chamois', 'Mountain Red Deer'],
-    terrain: 'Alpine grasslands, sub-alpine scrub, steep faces, and remote basins.',
-    signature:
-      'DOC places tahr across the Southern Alps chain, while chamois range through South Island high country and forest margins. This is real alpine work, not a scenic add-on.',
-    access: [
-      { label: 'Helicopter Support', note: 'Used only when terrain and weather truly demand it.' },
-      { label: 'Foot and 4WD', note: 'Primary access into most productive basins and faces.' },
-      { label: 'Alpine Camps', note: 'Field camps extend reach for longer mountain programs.' },
-    ],
-    stats: [
-      { label: 'Altitude', value: '1,200-2,800m' },
-      { label: 'Terrain', value: 'Steep alpine' },
-      { label: 'Peak Window', value: 'May - Jul' },
-    ],
-    permit: 'DOC access, concessions where required, and weather-led field planning.',
-  },
-];
-
-export const seasons = [
-  {
-    window: 'Mar - Apr',
-    title: 'Red Deer Roar',
-    region: 'North + South Island',
-    detail: 'Classic autumn roar timing when mature stags are vocal, territorial, and highly responsive to callers.',
-    specs: [
-      { icon: Activity, label: 'Behavior', value: 'Vocal Roar' },
-      { icon: Zap, label: 'Tactics', value: 'Calling/Challenge' },
-      { icon: Award, label: 'Trophy', value: 'Hard Antler' },
-      { icon: Target, label: 'Alertness', value: 'Aggressive' },
-    ],
-    dossierNote: 'Primary roar peak occurs early-to-mid April. Stags establish gut-level vocal dominance across territory boundaries.',
-  },
-  {
-    window: 'Mar - May',
-    title: 'Sika Whistle',
-    region: 'Central Plateau',
-    detail: 'The defining Kaimanawa period. High-pitched whistle activity through dense beech and podocarp bush country.',
-    specs: [
-      { icon: Activity, label: 'Behavior', value: 'Whistle/Scream' },
-      { icon: Zap, label: 'Tactics', value: 'Bush Stalking' },
-      { icon: Award, label: 'Trophy', value: 'Prime Multi-Point' },
-      { icon: Target, label: 'Alertness', value: 'Ghost-Like' },
-    ],
-    dossierNote: 'The Ghost of the Forest is most visible now. Bush stalking requires silence and extreme patience in deep cover.',
-  },
-  {
-    window: 'Apr - May',
-    title: 'Fallow Rut',
-    region: 'North Island',
-    detail: 'Exceptional Fallow buck trophies. Deep frog-like "croak" and use of "rut pads" in mixed bush. Ideal for selective palmate-buck hunting.',
-    specs: [
-      { icon: Activity, label: 'Behavior', value: 'Deep Croak' },
-      { icon: Zap, label: 'Tactics', value: 'Scrape Hunting' },
-      { icon: Award, label: 'Trophy', value: 'Palmate Palms' },
-      { icon: Target, label: 'Alertness', value: 'Territorial' },
-    ],
-    dossierNote: 'Bucks defend small forest patches (rut pads) intensely. Best visual opportunities as they advertise their presence.',
-  },
-  {
-    window: 'May - Jun',
-    title: 'Chamois Buck',
-    region: 'Southern Alps',
-    detail: 'Alpine buck period built around careful glassing and high-country work. Bucks become more active and visible.',
-    specs: [
-      { icon: Activity, label: 'Behavior', value: 'Winter Rut' },
-      { icon: Zap, label: 'Tactics', value: 'Alpine Glassing' },
-      { icon: Award, label: 'Trophy', value: 'Dark Winter Coat' },
-      { icon: Mountain, label: 'Demand', value: 'High Endurance' },
-    ],
-    dossierNote: 'The winter rut makes bucks mobile on steep faces. Winter skins are dark and thick—highly prized for trophies.',
-  },
-  {
-    window: 'May - Jul',
-    title: 'Tahr Winter',
-    region: 'Southern Alps',
-    detail: 'Prime winter-coat and rut window for bulls in steep basins. Long, blonde-tipped manes are at their absolute peak.',
-    specs: [
-      { icon: Activity, label: 'Behavior', value: 'Competitive Rut' },
-      { icon: Zap, label: 'Tactics', value: 'High Basin Ops' },
-      { icon: Award, label: 'Trophy', value: 'Full Winter Mane' },
-      { icon: Mountain, label: 'Demand', value: 'Severe Alpine' },
-    ],
-    dossierNote: 'Bulls develop massive manes during the May-July rut. Operations focus on high alpine basins where bulls gather with nannies.',
-  },
-  {
-    window: 'Jul - Aug',
-    title: 'Rusa Rut',
-    region: 'North Island',
-    detail: 'Later-winter dedicated add-on timed to the rusa rut. Unique timing for a tropical species adapted to NZ.',
-    specs: [
-      { icon: Activity, label: 'Behavior', value: 'Sobs/Barks' },
-      { icon: Zap, label: 'Tactics', value: 'Margin Stalking' },
-      { icon: Award, label: 'Trophy', value: 'Hard Antler' },
-      { icon: Target, label: 'Alertness', value: 'Secretive' },
-    ],
-    dossierNote: 'Rusa follow a different biological clock. Their winter rut in July/August offers a distinct tactical challenge.',
-  },
-];
-
-const principles = [
-  {
-    icon: ShieldCheck,
-    label: 'DOC Permitted',
-    text: 'Valid DOC permits used for all public-land access.',
-  },
-  {
-    icon: Wind,
-    label: 'Terrain First',
-    text: 'Programs matched to country and seasonal window.',
-  },
-  {
-    icon: Compass,
-    label: 'Flexible Access',
-    text: 'Context-led selection of foot, 4WD, or helicopter.',
-  },
-];
-
-export default function HuntAreaSection() {
+export default function HuntAreaSection({ dict }: { dict: any }) {
   const [activeRegion, setActiveRegion] = useState(0);
+
+  const regions = [
+    {
+      id: 'north',
+      tag: dict.regions.north.tag,
+      name: dict.regions.north.name,
+      location: dict.regions.north.location,
+      image: countyMedia[2]?.src ?? countyMedia[0].src,
+      icon: Trees,
+      accent: 'text-emerald-300 border-emerald-400/30 bg-emerald-400/8',
+      species: ['Sika Deer', 'Red Deer', 'Fallow Deer', 'Rusa Deer'],
+      terrain: dict.regions.north.terrain,
+      signature: dict.regions.north.signature,
+      access: dict.regions.north.access,
+      stats: [
+        { label: dict.regions.north.stats.parkArea, value: '74,000 ha' },
+        { label: dict.regions.north.stats.ranges, value: '4 ranges' },
+        { label: dict.regions.north.stats.base, value: 'Ohakune' },
+      ],
+      permit: dict.regions.north.permit,
+    },
+    {
+      id: 'south',
+      tag: dict.regions.south.tag,
+      name: dict.regions.south.name,
+      location: dict.regions.south.location,
+      image: southIslandShowcaseImage,
+      icon: Mountain,
+      accent: 'text-sky-300 border-sky-400/30 bg-sky-400/8',
+      species: ['Himalayan Tahr', 'Chamois', 'Mountain Red Deer'],
+      terrain: dict.regions.south.terrain,
+      signature: dict.regions.south.signature,
+      access: dict.regions.south.access,
+      stats: [
+        { label: dict.regions.south.stats.altitude, value: '1,200-2,800m' },
+        { label: dict.regions.south.stats.terrain, value: 'Steep alpine' },
+        { label: dict.regions.south.stats.peakWindow, value: 'May - Jul' },
+      ],
+      permit: dict.regions.south.permit,
+    },
+  ];
+
+  const principles = [
+    {
+      icon: ShieldCheck,
+      label: dict.principles.docPermitted.label,
+      text: dict.principles.docPermitted.text,
+    },
+    {
+      icon: Wind,
+      label: dict.principles.terrainFirst.label,
+      text: dict.principles.terrainFirst.text,
+    },
+    {
+      icon: Compass,
+      label: dict.principles.flexibleAccess.label,
+      text: dict.principles.flexibleAccess.text,
+    },
+  ];
+
   const region = regions[activeRegion];
 
   return (
@@ -173,10 +83,10 @@ export default function HuntAreaSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 text-center md:mb-16">
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400 sm:mb-4 sm:text-[11px] sm:tracking-[0.44em]">
-            <TextReveal>Hunting Territory</TextReveal>
+            <TextReveal>{dict.tag}</TextReveal>
           </p>
           <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8rem]">
-            <TextReveal delay={0.1}>Where You Hunt</TextReveal>
+            <TextReveal delay={0.1}>{dict.title}</TextReveal>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
@@ -190,7 +100,7 @@ export default function HuntAreaSection() {
           </motion.div>
           <p className="mx-auto mt-5 max-w-2xl text-[15px] italic leading-relaxed text-gray-400 sm:mt-6 sm:text-lg">
             <TextReveal delay={0.3}>
-              Programs built around the right country first - matched to the species, the seasonal window, and the pace your group wants in the field.
+              {dict.subtitle}
             </TextReveal>
           </p>
         </div>
@@ -260,7 +170,7 @@ export default function HuntAreaSection() {
               <div className="relative overflow-hidden rounded-[1.6rem] border border-white/8 bg-forest-900/20 p-5 shadow-premium sm:p-8 md:rounded-[2rem]">
                 <div className="absolute left-0 top-0 h-px w-32 bg-gradient-to-r from-gold-400/50 to-transparent" />
                 <p className="mb-3 text-[9px] font-bold uppercase tracking-[0.32em] text-gold-400/60 sm:tracking-[0.4em]">
-                  Territory Brief
+                  {dict.territoryBrief}
                 </p>
                 <p className="text-sm leading-relaxed text-gray-300 sm:text-base">{region.signature}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
@@ -277,10 +187,10 @@ export default function HuntAreaSection() {
 
               <div className="rounded-[1.6rem] border border-white/8 bg-forest-900/20 p-5 shadow-premium sm:p-8 md:rounded-[2rem]">
                 <p className="mb-5 text-[9px] font-bold uppercase tracking-[0.32em] text-gold-400/60 sm:tracking-[0.4em]">
-                  Access Routes
+                  {dict.accessRoutes}
                 </p>
                 <div className="grid gap-4 sm:grid-cols-1">
-                  {region.access.map((route, index) => (
+                  {region.access.map((route: any, index: number) => (
                     <div key={route.label} className="flex items-start gap-4 group">
                       <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gold-400/30 bg-gold-400/10 group-hover:bg-gold-400 group-hover:text-black transition-all">
                         <span className="text-[9px] font-bold">{index + 1}</span>
@@ -297,13 +207,13 @@ export default function HuntAreaSection() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-[1.6rem] border border-white/8 bg-forest-900/20 p-5 shadow-premium sm:p-6 md:rounded-[1.8rem]">
                   <p className="mb-2 text-[9px] font-bold uppercase tracking-[0.32em] text-gold-400/60 sm:tracking-[0.4em]">
-                    Terrain
+                    {dict.terrainTitle}
                   </p>
                   <p className="text-sm leading-relaxed text-gray-300">{region.terrain}</p>
                 </div>
                 <div className="rounded-[1.6rem] border border-white/8 bg-forest-900/20 p-5 shadow-premium sm:p-6 md:rounded-[1.8rem]">
                   <p className="mb-2 text-[9px] font-bold uppercase tracking-[0.32em] text-gold-400/60 sm:tracking-[0.4em]">
-                    Permit
+                    {dict.permitTitle}
                   </p>
                   <p className="text-sm leading-relaxed text-gray-300">{region.permit}</p>
                 </div>

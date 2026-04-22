@@ -9,10 +9,15 @@ import GallerySection from '@/components/gallery-section';
 import ContactSection from '@/components/contact-section';
 import GlobalBackground from '@/components/global-background';
 import { getAbsoluteBlobAssetUrl } from '@/lib/blob-asset';
+import { getDictionary } from '@/lib/dictionaries';
+import { Locale } from '@/i18n.config';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '');
 
-export default function Home() {
+export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
   const organizationLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -59,18 +64,18 @@ export default function Home() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
-      <Header />
+      <Header dict={dict.header} lang={lang} />
       <main id="top" className="relative z-10 bg-black">
-        <HeroSection />
+        <HeroSection dict={dict.hero} />
         <div className="relative isolate overflow-hidden">
           <GlobalBackground />
-          <StorySection />
-          <HuntAreaSection />
-          <GameAnimalsSection />
-          <AccommodationSection />
-          <GallerySection />
-          <ContactSection />
-          <Footer />
+          <StorySection dict={dict.story} />
+          <HuntAreaSection dict={dict.territory} />
+          <GameAnimalsSection dict={dict.species} />
+          <AccommodationSection dict={dict.stay} />
+          <GallerySection dict={dict.gallery} />
+          <ContactSection dict={dict.contact} />
+          <Footer dict={dict.footer} />
         </div>
       </main>
     </>

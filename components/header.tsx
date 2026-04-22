@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
@@ -9,19 +10,33 @@ import { getBlobAssetUrl } from '@/lib/blob-asset';
 
 const HEADER_LOGO_SRC = getBlobAssetUrl('/media/logo.png');
 
-const navLinks = [
-  { label: 'Story', href: '#story', id: 'story' },
-  { label: 'Territory', href: '#territory', id: 'territory' },
-  { label: 'Species', href: '#species', id: 'species' },
-  { label: 'Stay', href: '#stay', id: 'stay' },
-  { label: 'Gallery', href: '#gallery', id: 'gallery' },
-  { label: 'Contact', href: '#contact', id: 'contact' },
-];
-
-export default function Header() {
+export default function Header({ dict, lang }: { dict: any, lang: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const navLinks = [
+    { label: dict.story, href: '#story', id: 'story' },
+    { label: dict.territory, href: '#territory', id: 'territory' },
+    { label: dict.species, href: '#species', id: 'species' },
+    { label: dict.stay, href: '#stay', id: 'stay' },
+    { label: dict.gallery, href: '#gallery', id: 'gallery' },
+    { label: dict.contact, href: '#contact', id: 'contact' },
+  ];
+
+  const toggleLanguage = () => {
+    const nextLang = lang === 'en' ? 'ru' : 'en';
+    // If pathname starts with /en or /ru, replace it
+    let newPath = pathname;
+    if (pathname.startsWith(`/${lang}`)) {
+      newPath = pathname.replace(`/${lang}`, `/${nextLang}`);
+    } else {
+      newPath = `/${nextLang}${pathname}`;
+    }
+    router.push(newPath);
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 56);
@@ -96,10 +111,10 @@ export default function Header() {
             </div>
             <div className="sm:hidden">
               <p className="font-display text-[12px] font-bold uppercase leading-none tracking-[0.18em] text-white/92">
-                Kaimanawa
+                {dict.kaimanawa}
               </p>
               <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.2em] text-gold-400/80">
-                Trophy Safaris
+                {dict.trophySafaris}
               </p>
             </div>
             <div className="hidden sm:block">
@@ -108,7 +123,7 @@ export default function Header() {
                   scrolled ? 'text-[14px]' : 'text-[13px] text-white/88'
                 }`}
               >
-                KAIMANAWA
+                {dict.kaimanawa}
               </p>
               <div
                 className={`mt-1 flex items-center gap-2 overflow-hidden transition-all duration-500 ${
@@ -117,7 +132,7 @@ export default function Header() {
               >
                 <div className="h-px w-3 bg-gold-400/50" />
                 <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-gold-400">
-                  Trophy Safaris
+                  {dict.trophySafaris}
                 </p>
               </div>
             </div>
@@ -159,18 +174,24 @@ export default function Header() {
             })}
           </nav>
 
-          {/* CTA Button - Desktop */}
+          {/* CTA Button & Language - Desktop */}
           <div
-            className={`hidden md:flex items-center gap-8 transition-all duration-500 ${
+            className={`hidden md:flex items-center gap-4 transition-all duration-500 ${
               scrolled ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0 pointer-events-none'
             }`}
           >
+            <button
+              onClick={toggleLanguage}
+              className="group relative flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/25 text-[10px] font-bold uppercase text-white backdrop-blur-md transition-all duration-300 hover:border-gold-400/50 hover:bg-white/10"
+            >
+              {lang === 'en' ? 'RU' : 'EN'}
+            </button>
             <a
               href="#contact"
               className="group relative overflow-hidden rounded-full border border-gold-400/70 bg-black/25 px-8 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gold-300 backdrop-blur-md transition-all duration-300 hover:border-gold-300 hover:bg-gold-400 hover:text-black"
             >
               <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(255,255,255,0)_30%,rgba(255,255,255,0.2)_50%,rgba(255,255,255,0)_70%)] bg-[length:200%_100%] opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
-              <span className="relative">Plan Your Hunt</span>
+              <span className="relative">{dict.planYourHunt}</span>
             </a>
           </div>
 
@@ -227,8 +248,17 @@ export default function Header() {
                 transition={{ delay: 0.5, duration: 0.4 }}
                 className="mt-2 w-full max-w-sm rounded-full border-2 border-gold-400 bg-gold-400 px-6 py-3.5 text-center text-[12px] font-bold uppercase tracking-[0.16em] text-black transition-all hover:bg-gold-300"
               >
-                Consult a Guide
+                {dict.consultGuide}
               </motion.a>
+              <motion.button
+                onClick={toggleLanguage}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.4 }}
+                className="mt-4 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-xs font-bold text-white transition-all hover:bg-white/10"
+              >
+                {lang === 'en' ? 'RU' : 'EN'}
+              </motion.button>
             </div>
           </motion.div>
         )}

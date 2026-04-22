@@ -138,7 +138,7 @@ const lodges: Lodge[] = [
   },
 ];
 
-export default function AccommodationSection() {
+export default function AccommodationSection({ dict }: { dict: any }) {
   const [active, setActive] = useState(0);
   const [viewer, setViewer] = useState<ViewerState | null>(null);
   const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -152,7 +152,28 @@ export default function AccommodationSection() {
   });
   const suppressThumbnailClickRef = useRef(false);
   const [isDraggingQuickBrowse, setIsDraggingQuickBrowse] = useState(false);
-  const lodge = lodges[active];
+  const lodgeList = lodges.map((l, i) => ({
+    ...l,
+    type: dict.lodges[i]?.type ?? l.type,
+    name: dict.lodges[i]?.name ?? l.name,
+    location: dict.lodges[i]?.location ?? l.location,
+    tagline: dict.lodges[i]?.tagline ?? l.tagline,
+    description: dict.lodges[i]?.description ?? l.description,
+    capacity: dict.lodges[i]?.capacity ?? l.capacity,
+    highlight: dict.lodges[i]?.highlight ?? l.highlight,
+    features: l.features.map(f => {
+      let mappedLabel = f.label;
+      if (f.icon === Bed) mappedLabel = dict.features?.comfort ?? f.label;
+      if (f.icon === Flame) mappedLabel = dict.features?.warmth ?? f.label;
+      if (f.icon === Utensils) mappedLabel = dict.features?.cuisine ?? f.label;
+      if (f.icon === MapPin) mappedLabel = dict.features?.location ?? f.label;
+      if (f.icon === Users) mappedLabel = dict.features?.groups ?? f.label;
+      if (f.icon === Wifi) mappedLabel = dict.features?.connectivity ?? f.label;
+      return { ...f, label: mappedLabel };
+    })
+  }));
+
+  const lodge = lodgeList[active];
   const hasVideos = lodge.videos.length > 0;
   const lightboxCount = viewer ? (viewer.kind === 'photo' ? lodge.gallery.length : lodge.videos.length) : 0;
   const activeVideo = viewer?.kind === 'video' ? lodge.videos[viewer.index] : null;
@@ -372,10 +393,10 @@ export default function AccommodationSection() {
         {/* -- Cinematic Header -- */}
         <div className="mb-10 text-center sm:mb-14 md:mb-20">
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400/60 sm:mb-4 sm:text-[11px] sm:tracking-[0.5em]">
-            <TextReveal>Operational Bases</TextReveal>
+            <TextReveal>{dict.tag}</TextReveal>
           </p>
           <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8.5rem]">
-            <TextReveal delay={0.1}>Lodge & Stay</TextReveal>
+            <TextReveal delay={0.1}>{dict.title}</TextReveal>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
@@ -392,7 +413,7 @@ export default function AccommodationSection() {
         {/* -- Enhanced Tab Switcher -- */}
         <div className="-mx-4 mb-10 overflow-x-auto px-4 no-scrollbar sm:mb-16">
           <div className="flex w-max min-w-full gap-3 md:justify-center">
-            {lodges.map((item, index) => (
+            {lodgeList.map((item, index) => (
               <button
                 key={item.id}
                 onClick={() => {
@@ -406,7 +427,7 @@ export default function AccommodationSection() {
                 }`}
               >
                 {active === index && <motion.span layoutId="lodge-dot-v4" className="h-2 w-2 rounded-full bg-gold-400 shadow-glow" />}
-                {item.id === 'ohakune' ? 'North Island Hub' : 'Hunter Stay'}
+                {lodgeList[index].name.replace(/\n/g, ' ')}
               </button>
             ))}
           </div>

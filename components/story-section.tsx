@@ -9,97 +9,62 @@ import { useState, useEffect, useRef } from 'react';
 import { getBlobAssetUrl } from '@/lib/blob-asset';
 import { alexFounderMedia, artemFounderMedia, vukFounderMedia } from '@/lib/media-collections';
 
-const founders = [
-  { 
-    name: 'Alex Sipka', 
-    role: 'Co-Founder', 
-    origin: 'Serbia', 
-    exp: '40 Yrs', expNum: 40, expSuffix: ' Yrs',
-    initials: 'AS',
-    expertise: 'International Heritage / Ethics',
-    bio: 'With over 40 years of experience in the international hunting industry, Alex is a veteran who understands the importance of heritage and ethics. He has guided hundreds of successful hunts across the globe and brought his expertise to the pristine landscapes of New Zealand.',
-    portrait: alexFounderMedia[0]?.src ?? null,
-    images: alexFounderMedia.map((image) => image.src),
-  },
-  { 
-    name: 'Artem Prikazov', 
-    role: 'Co-Founder', 
-    origin: 'Russia', 
-    exp: '15 Yrs', expNum: 15, expSuffix: ' Yrs',
-    initials: 'AP',
-    expertise: 'Technical Precision / Logistics',
-    bio: 'Artem brings 15 years of dedicated hunting experience, combining technical precision with a deep passion for the wild. As a co-founder, he ensures that every detail of the safari experience meets the highest standards of luxury and authenticity.',
-    portrait: artemFounderMedia[0]?.src ?? null,
-    images: artemFounderMedia.map((image) => image.src),
-  },
-  {
-    name: 'Vuk Mijatovic',
-    role: 'Lead Guide',
-    origin: 'New Zealand',
-    exp: '35 Yrs', expNum: 35, expSuffix: ' Yrs',
-    initials: 'VM',
-    expertise: 'Field Judgement / Fair Chase',
-    bio: 'With more than 35 years in the field, Vuk brings deep knowledge of New Zealand terrain, animal behaviour, and the patient, fair-chase pace required for successful trophy hunting.',
-    portrait: vukFounderMedia[0]?.src ?? null,
-    images: vukFounderMedia.map((image) => image.src),
-  },
-];
+export default function StorySection({ dict }: { dict: any }) {
+  const [selectedFounder, setSelectedFounder] = useState<any>(null);
 
-// Count-up component: triggers when the element enters the viewport
-function CountUp({ target, suffix = '' }: { target: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const triggered = useRef(false);
+  const founders = [
+    { 
+      name: 'Alex Sipka', 
+      role: dict.founders.alex.role, 
+      origin: dict.founders.alex.origin, 
+      exp: '40 Yrs', expNum: 40, expSuffix: ' Yrs',
+      initials: 'AS',
+      expertise: dict.founders.alex.expertise,
+      bio: dict.founders.alex.bio,
+      portrait: alexFounderMedia[0]?.src ?? null,
+      images: alexFounderMedia.map((image) => image.src),
+    },
+    { 
+      name: 'Artem Prikazov', 
+      role: dict.founders.artem.role, 
+      origin: dict.founders.artem.origin, 
+      exp: '15 Yrs', expNum: 15, expSuffix: ' Yrs',
+      initials: 'AP',
+      expertise: dict.founders.artem.expertise,
+      bio: dict.founders.artem.bio,
+      portrait: artemFounderMedia[0]?.src ?? null,
+      images: artemFounderMedia.map((image) => image.src),
+    },
+    {
+      name: 'Vuk Mijatovic',
+      role: dict.founders.vuk.role,
+      origin: dict.founders.vuk.origin,
+      exp: '35 Yrs', expNum: 35, expSuffix: ' Yrs',
+      initials: 'VM',
+      expertise: dict.founders.vuk.expertise,
+      bio: dict.founders.vuk.bio,
+      portrait: vukFounderMedia[0]?.src ?? null,
+      images: vukFounderMedia.map((image) => image.src),
+    },
+  ];
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !triggered.current) {
-          triggered.current = true;
-          let startTs: number | null = null;
-          const duration = 900;
-          const step = (ts: number) => {
-            if (!startTs) startTs = ts;
-            const progress = Math.min((ts - startTs) / duration, 1);
-            // ease-out cubic
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.floor(eased * target));
-            if (progress < 1) requestAnimationFrame(step);
-          };
-          requestAnimationFrame(step);
-        }
-      },
-      { rootMargin: '-10% 0px' }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [target]);
-
-  return <span ref={ref}>{count}{suffix}</span>;
-}
-
-const values = [
-  {
-    icon: ShieldCheck,
-    label: 'Fair Chase',
-    text: 'Every hunt is earned, physical, and respectful of the animal and the land.',
-  },
-  {
-    icon: Award,
-    label: 'Ethical Standard',
-    text: 'Shot selection, recovery, and camp conduct are our non-negotiable baseline.',
-  },
-  {
-    icon: Crosshair,
-    label: 'Precision Planning',
-    text: 'Itineraries shaped around your trophy goals, species windows, and preferred terrain.',
-  },
-];
-
-export default function StorySection() {
-  const [selectedFounder, setSelectedFounder] = useState<typeof founders[0] | null>(null);
+  const values = [
+    {
+      icon: ShieldCheck,
+      label: dict.values.fairChase.label,
+      text: dict.values.fairChase.text,
+    },
+    {
+      icon: Award,
+      label: dict.values.ethicalStandard.label,
+      text: dict.values.ethicalStandard.text,
+    },
+    {
+      icon: Crosshair,
+      label: dict.values.precisionPlanning.label,
+      text: dict.values.precisionPlanning.text,
+    },
+  ];
 
   return (
     <section id="story" className={`relative overflow-hidden bg-transparent py-16 font-sans sm:py-20 md:py-32 ${selectedFounder ? 'z-[10000]' : 'z-10'}`}>
@@ -109,10 +74,10 @@ export default function StorySection() {
         {/* Section Header */}
         <div className="mb-10 flex flex-col items-center text-center md:mb-20">
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400 sm:mb-4 sm:text-[11px] sm:tracking-[0.44em]">
-            <TextReveal>The Legacy</TextReveal>
+            <TextReveal>{dict.legacy}</TextReveal>
           </p>
           <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white text-balance soft-text-glow sm:text-6xl md:text-8xl lg:text-[8rem]">
-            <TextReveal delay={0.1}>Our Story</TextReveal>
+            <TextReveal delay={0.1}>{dict.title}</TextReveal>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
@@ -136,14 +101,14 @@ export default function StorySection() {
              className="relative max-w-4xl overflow-hidden rounded-[1.8rem] border border-white/5 bg-forest-900/10 p-6 text-center sm:p-12 md:rounded-[2.5rem]"
            >
               <div className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-gold-400/20 to-transparent" />
-              <p className="mb-5 text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/40 sm:text-[10px] sm:tracking-[0.4em]">Founding Mission</p>
+              <p className="mb-5 text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/40 sm:text-[10px] sm:tracking-[0.4em]">{dict.foundingMission}</p>
               <h3 className="font-display text-xl italic leading-tight text-white sm:text-3xl md:text-4xl">
-                &ldquo;Founded to introduce international hunters to the quality of New Zealand trophies and the raw majesty of its wild landscapes.&rdquo;
+                {dict.missionText}
               </h3>
               <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-[8px] font-bold uppercase tracking-[0.18em] text-gray-500 sm:mt-8 sm:text-[9px] sm:tracking-[0.3em]">
-                 <span>Est. 2025</span>
+                 <span>{dict.est}</span>
                  <div className="h-1 w-1 rounded-full bg-gold-400/30" />
-                 <span>90+ Combined Years</span>
+                 <span>{dict.combinedYears}</span>
               </div>
            </motion.div>
         </div>
@@ -201,11 +166,11 @@ export default function StorySection() {
                      )}
                      <div className="flex flex-col items-end gap-1">
                          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[8px] font-black uppercase tracking-[0.14em] text-gray-400 transition-colors group-hover:text-gold-200 sm:text-[9px] sm:tracking-[0.18em]">
-                            <CountUp target={founder.expNum} suffix={founder.expSuffix} /> Experience
+                            {founder.expNum}{founder.expSuffix} {dict.experience}
                          </span>
                         <div className="flex items-center gap-1.5 opacity-40">
                            <Activity className="h-2.5 w-2.5" />
-                           <span className="text-[7px] font-bold uppercase tracking-widest">Active</span>
+                           <span className="text-[7px] font-bold uppercase tracking-widest">{dict.active}</span>
                         </div>
                      </div>
                   </div>
@@ -231,13 +196,13 @@ export default function StorySection() {
                   {/* Footer Stats & View */}
                   <div className="flex flex-col items-start gap-4 border-t border-white/5 pt-6 sm:flex-row sm:items-center sm:justify-between">
                      <div className="flex flex-col gap-0.5">
-                        <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/20">Specialization</span>
+                        <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/20">{dict.specialization}</span>
                         <span className="text-[10px] font-bold uppercase tracking-tight text-gold-400/60">{founder.expertise}</span>
                      </div>
                      <div className="flex items-center gap-3">
                         <div className="text-right">
-                           <span className="block text-[8px] font-black uppercase tracking-[0.24em] text-white/20">Detailed View</span>
-                           <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gold-300/80">Open Profile</span>
+                           <span className="block text-[8px] font-black uppercase tracking-[0.24em] text-white/20">{dict.detailedView}</span>
+                           <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gold-300/80">{dict.openProfile}</span>
                         </div>
                         <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all group-hover:bg-gold-500 group-hover:text-black">
                            <Zap className="h-3.5 w-3.5" />

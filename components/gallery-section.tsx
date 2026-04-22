@@ -141,7 +141,7 @@ function getGalleryTone(key: GalleryGroup['key']) {
 
 const fallbackGalleryGroups = buildFallbackGalleryGroups();
 
-export default function GallerySection() {
+export default function GallerySection({ dict }: { dict: any }) {
   const [galleryGroups, setGalleryGroups] = useState<GalleryGroup[]>(fallbackGalleryGroups);
   const [activeKey, setActiveKey] = useState(getFirstActiveGalleryKey(fallbackGalleryGroups));
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -376,9 +376,9 @@ export default function GallerySection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 flex flex-col items-center text-center sm:mb-14">
-          <p className="mb-3 text-[9px] font-black uppercase tracking-[0.28em] text-gold-400/60 sm:mb-4 sm:text-[10px] sm:tracking-[0.6em]">Operational Visual Archive // Log.2026</p>
+          <p className="mb-3 text-[9px] font-black uppercase tracking-[0.28em] text-gold-400/60 sm:mb-4 sm:text-[10px] sm:tracking-[0.6em]">{dict.tag}</p>
           <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8.5rem]">
-            <TextReveal delay={0.1}>Gallery</TextReveal>
+            <TextReveal delay={0.1}>{dict.title}</TextReveal>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
@@ -391,7 +391,7 @@ export default function GallerySection() {
             <div className="h-px w-full bg-gradient-to-l from-transparent via-gold-400/40 to-transparent" />
           </motion.div>
           <p className="mx-auto mt-6 max-w-2xl text-[15px] italic leading-relaxed text-white/40 sm:mt-8 sm:text-lg">
-            &ldquo;A species-led visual archive, grouped by red deer, sika, fallow, rusa or sambar, tahr, chamois, and a final set of general hunting frames.&rdquo;
+            {dict.subtitle}
           </p>
         </div>
 

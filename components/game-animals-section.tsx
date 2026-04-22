@@ -150,9 +150,25 @@ const animals: AnimalProfile[] = [
   },
 ];
 
-export default function GameAnimalsSection() {
+export default function GameAnimalsSection({ dict }: { dict: any }) {
   const [active, setActive] = useState(0);
-  const animal = animals[active];
+  const animalList = animals.map((a, i) => ({
+    ...a,
+    name: dict.animals[i]?.name ?? a.name,
+    scientific: dict.animals[i]?.scientific ?? a.scientific,
+    region: dict.animals[i]?.region ?? a.region,
+    season: dict.animals[i]?.season ?? a.season,
+    terrain: dict.animals[i]?.terrain ?? a.terrain,
+    headline: dict.animals[i]?.headline ?? a.headline,
+    description: dict.animals[i]?.description ?? a.description,
+    tags: (dict.animals[i]?.tags as string[]) ?? a.tags,
+    grade: {
+      ...a.grade,
+      label: dict.animals[i]?.grade ?? a.grade.label,
+    }
+  }));
+
+  const animal = animalList[active];
   const animalImageSrc = animal.image.startsWith('https://') ? animal.image : getBlobAssetUrl(animal.image);
   const isExternalImage = animal.image.startsWith('https://');
 
@@ -164,10 +180,10 @@ export default function GameAnimalsSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 text-center sm:mb-12">
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400 sm:mb-4 sm:text-[11px] sm:tracking-[0.44em]">
-            <TextReveal>Premium Trophies</TextReveal>
+            <TextReveal>{dict.tag}</TextReveal>
           </p>
           <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight text-white sm:text-6xl md:text-8xl lg:text-[8rem]">
-            <TextReveal delay={0.1}>Species Profiles</TextReveal>
+            <TextReveal delay={0.1}>{dict.title}</TextReveal>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
@@ -183,7 +199,7 @@ export default function GameAnimalsSection() {
 
         <div className="-mx-4 mb-6 overflow-x-auto px-4 no-scrollbar">
           <div className="flex w-max min-w-full gap-2 md:flex-wrap md:justify-center">
-            {animals.map((item, index) => (
+            {animalList.map((item, index) => (
               <button
                 key={item.name}
                 onClick={() => setActive(index)}
@@ -310,7 +326,7 @@ export default function GameAnimalsSection() {
                         <Banknote className="h-4 w-4" />
                       </div>
                       <div>
-                        <p className="text-[8px] font-bold uppercase tracking-[0.28em] text-gold-400/55">Price Guide</p>
+                        <p className="text-[8px] font-bold uppercase tracking-[0.28em] text-gold-400/55">{dict.cardPriceGuide}</p>
                         <p className="mt-2 font-display text-2xl font-bold leading-none tracking-tight text-white tabular-nums">
                           {animal.price}
                         </p>
@@ -322,10 +338,10 @@ export default function GameAnimalsSection() {
 
               <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
                 {[
-                  { icon: Trophy, label: 'Trophy Score', value: animal.trophy },
-                  { icon: Calendar, label: 'Season Window', value: animal.season },
-                  { icon: MapPin, label: 'Territory', value: animal.region },
-                  { icon: Target, label: 'Terrain', value: animal.terrain },
+                  { icon: Trophy, label: dict.cardTrophyScore, value: animal.trophy },
+                  { icon: Calendar, label: dict.cardSeasonWindow, value: animal.season },
+                  { icon: MapPin, label: dict.cardTerritory, value: animal.region },
+                  { icon: Target, label: dict.cardTerrain, value: animal.terrain },
                 ].map((stat) => {
                   const Icon = stat.icon;
 
@@ -339,8 +355,7 @@ export default function GameAnimalsSection() {
                       </div>
                       <p className="mb-1 text-[8px] font-bold uppercase tracking-[0.24em] text-gold-400/50">{stat.label}</p>
                       <p className="text-sm font-bold leading-relaxed text-white">{stat.value}</p>
-                      {/* Animated trophy score bar */}
-                      {stat.label === 'Trophy Score' && (
+                      {stat.label === dict.cardTrophyScore && (
                         <div className="mt-3 h-px w-full overflow-hidden rounded-full bg-white/5">
                           <motion.div
                             key={animal.name}
@@ -358,14 +373,14 @@ export default function GameAnimalsSection() {
 
               <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1.6rem] border border-white/8 bg-forest-900/20 px-4 py-3 sm:flex-nowrap sm:px-6 sm:py-4">
                 <button
-                  onClick={() => setActive((active - 1 + animals.length) % animals.length)}
+                  onClick={() => setActive((active - 1 + animalList.length) % animalList.length)}
                   className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-[9px] font-bold uppercase tracking-[0.14em] text-gray-400 transition-colors hover:text-gold-300 sm:text-[10px] sm:tracking-[0.18em]"
                 >
                   <ChevronLeft className="h-4 w-4" />
                   Prev
                 </button>
                 <div className="order-first flex w-full justify-center gap-1.5 sm:order-none sm:w-auto">
-                  {animals.map((_, index) => (
+                  {animalList.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setActive(index)}
@@ -375,7 +390,7 @@ export default function GameAnimalsSection() {
                   ))}
                 </div>
                 <button
-                  onClick={() => setActive((active + 1) % animals.length)}
+                  onClick={() => setActive((active + 1) % animalList.length)}
                   className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-[9px] font-bold uppercase tracking-[0.14em] text-gray-400 transition-colors hover:text-gold-300 sm:text-[10px] sm:tracking-[0.18em]"
                 >
                   Next
@@ -395,7 +410,7 @@ export default function GameAnimalsSection() {
         >
           <div className="absolute inset-0 bg-gradient-to-r from-gold-500/5 via-transparent to-forest-600/5" />
           <p className="relative mx-auto max-w-3xl font-display text-lg font-light italic leading-relaxed text-gray-300 sm:text-xl">
-            &ldquo;All hunts follow fair-chase principles. Multiple-species itineraries can be built by arrangement - final programs shaped by trophy goals, seasonal timing, and the right country.&rdquo;
+            {dict.footerText}
           </p>
         </motion.div>
       </div>

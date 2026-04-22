@@ -18,7 +18,7 @@ const FIELD_REPORTS = [
   "Alpine: Zero cloud at 2000m",
 ];
 
-export default function HeroSection() {
+export default function HeroSection({ dict }: { dict: any }) {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 800], [0, 300]);
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
@@ -47,10 +47,10 @@ export default function HeroSection() {
 
   useEffect(() => {
     const reportTimer = setInterval(() => {
-      setReportIndex((prev) => (prev + 1) % FIELD_REPORTS.length);
+      setReportIndex((prev) => (prev + 1) % dict.fieldReports.length);
     }, 4000);
     return () => clearInterval(reportTimer);
-  }, []);
+  }, [dict.fieldReports.length]);
 
   return (
     <section id="home" className="relative min-h-[100svh] w-full overflow-hidden bg-black font-sans lg:min-h-screen">
@@ -142,7 +142,7 @@ export default function HeroSection() {
                   <div className="flex items-center justify-center gap-3 text-white/40 sm:justify-start">
                     <Globe className="h-3 w-3 text-gold-400/40" />
                     <span className="text-[8px] font-bold uppercase tracking-[0.14em] sm:text-[10px] sm:tracking-[0.25em]">
-                      Ohakune Base - 39.4167 deg S
+                      {dict.base}
                     </span>
                   </div>
                 </div>
@@ -158,7 +158,7 @@ export default function HeroSection() {
                   transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   className="block font-display text-[2.9rem] font-black uppercase leading-[0.92] tracking-tighter text-white soft-text-glow sm:text-6xl md:text-7xl lg:text-9xl"
                 >
-                  True NZ
+                  {dict.title1}
                 </motion.span>
               </span>
               <span className="block overflow-hidden pb-4">
@@ -168,7 +168,7 @@ export default function HeroSection() {
                   transition={{ duration: 1, delay: 1, ease: [0.16, 1, 0.3, 1] }}
                   className="block font-display text-[2.9rem] font-black uppercase leading-[0.92] tracking-tighter text-gold-200 sm:text-6xl md:text-7xl lg:text-9xl"
                 >
-                  Fair Chase
+                  {dict.title2}
                 </motion.span>
               </span>
             </h1>
@@ -179,7 +179,7 @@ export default function HeroSection() {
               transition={{ duration: 1, delay: 1.2 }}
               className="mx-auto mt-4 max-w-xl text-[15px] font-light italic leading-relaxed text-gray-400 sm:text-lg md:text-xl lg:mx-0"
             >
-              Professional outfitting for international hunters. From the volcanic plateaus to the alpine peaks of the Southern Alps.
+              {dict.subtitle}
             </motion.p>
 
             <motion.div
@@ -194,13 +194,13 @@ export default function HeroSection() {
               >
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent group-hover:animate-shimmer" />
                 <Zap className="h-3.5 w-3.5" />
-                <span>Plan Expedition</span>
+                <span>{dict.planExpedition}</span>
               </Link>
               <Link
                 href="#territory"
                 className="group flex w-full items-center justify-center gap-3 rounded-full border border-white/10 bg-white/5 px-6 py-4 text-[10px] font-black uppercase tracking-[0.18em] text-white backdrop-blur-md transition-all hover:border-gold-400/50 hover:bg-white/10 sm:w-auto sm:gap-5 sm:px-10 sm:py-5 sm:text-[11px] sm:tracking-[0.4em]"
               >
-                <span>Explore Territory</span>
+                <span>{dict.exploreTerritory}</span>
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </Link>
             </motion.div>
@@ -230,10 +230,10 @@ export default function HeroSection() {
                       <Radio className="h-4 w-4 animate-pulse" />
                     </div>
                     <div>
-                      <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-gold-400">Live Feed</span>
+                      <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-gold-400">{dict.liveFeed}</span>
                       <div className="flex items-center gap-1.5 pt-0.5">
                          <div className="h-1 w-1 rounded-full bg-emerald-500" />
-                         <span className="text-[7px] font-bold uppercase tracking-widest text-emerald-400/60">SAT-LINK: STABLE</span>
+                         <span className="text-[7px] font-bold uppercase tracking-widest text-emerald-400/60">{dict.satLink}</span>
                       </div>
                     </div>
                   </div>
@@ -244,7 +244,7 @@ export default function HeroSection() {
                   <div className="flex items-center gap-4 sm:gap-5">
                     <Clock className="h-5 w-5 text-white/20" />
                     <div>
-                      <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.25em] text-white/30">Ohakune Base Time</p>
+                      <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.25em] text-white/30">{dict.ohakuneBaseTime}</p>
                       <p className="font-display text-2xl font-bold leading-none tracking-[0.18em] text-white sm:text-3xl">
                         {nzTime}
                       </p>
@@ -253,7 +253,7 @@ export default function HeroSection() {
                   <div className="flex items-center gap-4 sm:gap-5">
                     <Wind className="h-5 w-5 text-white/20" />
                     <div>
-                      <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.25em] text-white/30">Field Conditions</p>
+                      <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.25em] text-white/30">{dict.fieldConditions}</p>
                       <p className="font-display text-2xl font-bold leading-none tracking-[0.12em] text-white sm:text-3xl">
                         12C - NW 8kn
                       </p>
@@ -274,7 +274,7 @@ export default function HeroSection() {
                                exit={{ y: -20, opacity: 0 }}
                                className="text-[8px] font-bold uppercase tracking-[0.2em] text-gold-400/60 sm:text-[9px] sm:tracking-[0.3em]"
                             >
-                               {FIELD_REPORTS[reportIndex]}
+                               {dict.fieldReports[reportIndex]}
                             </motion.p>
                          </AnimatePresence>
                       </div>
@@ -291,7 +291,7 @@ export default function HeroSection() {
                 <div className="relative flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <Shield className="h-4 w-4 text-gold-400/60" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gold-300">Season Active</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gold-300">{dict.seasonActive}</span>
                   </div>
                   <span className="font-display text-sm font-bold text-white">2026/27</span>
                 </div>
@@ -310,13 +310,13 @@ export default function HeroSection() {
         >
           {Array.from({ length: 4 }).map((_, index) => (
             <div key={index} className="flex gap-16 text-[11px] font-bold uppercase tracking-[0.5em] text-white italic">
-              <span>Fair Chase New Zealand</span>
+              <span>{dict.tickers[0]}</span>
               <span className="text-gold-400">-</span>
-              <span>Alpine Specialist</span>
+              <span>{dict.tickers[1]}</span>
               <span className="text-gold-400">-</span>
-              <span>International Outfitting</span>
+              <span>{dict.tickers[2]}</span>
               <span className="text-gold-400">-</span>
-              <span>Est. 2025</span>
+              <span>{dict.tickers[3]}</span>
               <span className="text-gold-400">-</span>
             </div>
           ))}

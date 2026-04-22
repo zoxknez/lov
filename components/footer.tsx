@@ -9,7 +9,7 @@ import MagneticButton from '@/components/magnetic-button';
 
 const FOOTER_LOGO_SRC = getBlobAssetUrl('/media/logo.png');
 
-export default function Footer() {
+export default function Footer({ dict }: { dict: any }) {
   const [showTop, setShowTop] = useState(false);
   const [nzTime, setNzTime] = useState('');
 
@@ -82,7 +82,7 @@ export default function Footer() {
             </div>
 
             <p className="max-w-md text-lg italic leading-relaxed text-gray-400 sm:text-xl md:leading-[1.6]">
-              Curated New Zealand hunting programs focusing on fair chase, field ethics, and the hosted rhythm of the South Pacific.
+              {dict.tagline}
             </p>
 
             <div className="flex gap-4">
@@ -102,7 +102,7 @@ export default function Footer() {
           {/* NAVIGATION ARCHIVE PILLAR */}
           <div className="lg:col-span-3">
             <h5 className="mb-8 border-l border-gold-400/30 pl-4 text-[9px] font-black uppercase tracking-[0.28em] text-gold-400/30 sm:mb-10 sm:text-[10px] sm:tracking-[0.6em]">
-              Navigation Archive
+              {dict.explore}
             </h5>
             <ul className="grid gap-5">
               {[
@@ -133,7 +133,7 @@ export default function Footer() {
           {/* OPERATIONAL CONTACT PILLAR */}
           <div className="lg:col-span-4 flex flex-col gap-10">
             <h5 className="border-l border-gold-400/30 pl-4 text-[9px] font-black uppercase tracking-[0.28em] text-gold-400/30 sm:text-[10px] sm:tracking-[0.6em]">
-              Operational Contact
+              {dict.contact}
             </h5>
             <div className="space-y-6 sm:space-y-8">
               <div className="group flex items-center gap-4 sm:gap-6">
@@ -186,7 +186,7 @@ export default function Footer() {
         <div className="mt-12 flex flex-col gap-8 md:mt-20 md:flex-row md:items-center md:justify-between md:gap-10">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-14">
             <p className="text-[9px] font-black uppercase tracking-[0.22em] text-white/20 sm:text-[10px] sm:tracking-[0.4em]">
-              Copyright 2026 Kaimanawa Trophy Safaris
+              &copy; {new Date().getFullYear()} {dict.copyright}
             </p>
             
             <div className="flex flex-wrap items-center gap-3 rounded-full border border-gold-500/10 bg-gold-400/5 px-5 py-2.5 backdrop-blur-3xl shadow-glow sm:px-6">
@@ -239,7 +239,7 @@ export default function Footer() {
             <div className="absolute inset-0 border border-white/10 rounded-2xl opacity-40" />
             <div className="flex flex-col items-center">
                <ChevronUp className="h-6 w-6 transition-transform group-hover:-translate-y-1" />
-               <span className="text-[7px] font-black uppercase tracking-tighter opacity-40">ASCENT</span>
+               <span className="text-[7px] font-black uppercase tracking-tighter opacity-40">{dict.backToTop}</span>
             </div>
           </motion.button>
         )}

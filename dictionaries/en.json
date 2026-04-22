@@ -1,0 +1,319 @@
+{
+  "header": {
+    "kaimanawa": "KAIMANAWA",
+    "trophySafaris": "Trophy Safaris",
+    "story": "Story",
+    "territory": "Territory",
+    "species": "Species",
+    "stay": "Stay",
+    "gallery": "Gallery",
+    "contact": "Contact",
+    "planYourHunt": "Plan Your Hunt",
+    "consultGuide": "Consult a Guide"
+  },
+  "hero": {
+    "base": "Ohakune Base - 39.4167 deg S",
+    "title1": "True NZ",
+    "title2": "Fair Chase",
+    "subtitle": "Professional outfitting for international hunters. From the volcanic plateaus to the alpine peaks of the Southern Alps.",
+    "planExpedition": "Plan Expedition",
+    "exploreTerritory": "Explore Territory",
+    "liveFeed": "Live Feed",
+    "satLink": "SAT-LINK: STABLE",
+    "ohakuneBaseTime": "Ohakune Base Time",
+    "fieldConditions": "Field Conditions",
+    "seasonActive": "Season Active",
+    "tickers": [
+      "Fair Chase New Zealand",
+      "Alpine Specialist",
+      "International Outfitting",
+      "Est. 2025"
+    ],
+    "fieldReports": [
+      "Scout 01: North Tops clear",
+      "Base: Weather window holding",
+      "Ops: Logistics sync complete",
+      "Alpine: Zero cloud at 2000m"
+    ]
+  },
+  "story": {
+    "legacy": "The Legacy",
+    "title": "Our Story",
+    "foundingMission": "Founding Mission",
+    "missionText": "\"Founded to introduce international hunters to the quality of New Zealand trophies and the raw majesty of its wild landscapes.\"",
+    "est": "Est. 2025",
+    "combinedYears": "90+ Combined Years",
+    "teamSpecialists": "Team Specialists",
+    "openProfile": "Open Profile",
+    "experience": "Experience",
+    "active": "Active",
+    "specialization": "Specialization",
+    "detailedView": "Detailed View",
+    "founders": {
+      "alex": {
+        "role": "Co-Founder",
+        "origin": "Serbia",
+        "expertise": "International Heritage / Ethics",
+        "bio": "With over 40 years of experience in the international hunting industry, Alex is a veteran who understands the importance of heritage and ethics. He has guided hundreds of successful hunts across the globe and brought his expertise to the pristine landscapes of New Zealand."
+      },
+      "artem": {
+        "role": "Co-Founder",
+        "origin": "Russia",
+        "expertise": "Technical Precision / Logistics",
+        "bio": "Artem brings 15 years of dedicated hunting experience, combining technical precision with a deep passion for the wild. As a co-founder, he ensures that every detail of the safari experience meets the highest standards of luxury and authenticity."
+      },
+      "vuk": {
+        "role": "Lead Guide",
+        "origin": "New Zealand",
+        "expertise": "Field Judgement / Fair Chase",
+        "bio": "With more than 35 years in the field, Vuk brings deep knowledge of New Zealand terrain, animal behaviour, and the patient, fair-chase pace required for successful trophy hunting."
+      }
+    },
+    "values": {
+      "fairChase": {
+        "label": "Fair Chase",
+        "text": "Every hunt is earned, physical, and respectful of the animal and the land."
+      },
+      "ethicalStandard": {
+        "label": "Ethical Standard",
+        "text": "Shot selection, recovery, and camp conduct are our non-negotiable baseline."
+      },
+      "precisionPlanning": {
+        "label": "Precision Planning",
+        "text": "Itineraries shaped around your trophy goals, species windows, and preferred terrain."
+      }
+    }
+  },
+  "territory": {
+    "tag": "Hunting Territory",
+    "title": "Where You Hunt",
+    "subtitle": "Programs built around the right country first - matched to the species, the seasonal window, and the pace your group wants in the field.",
+    "territoryBrief": "Territory Brief",
+    "accessRoutes": "Access Routes",
+    "terrainTitle": "Terrain",
+    "permitTitle": "Permit",
+    "regions": {
+      "north": {
+        "tag": "North Island",
+        "name": "Kaimanawa\nCentral Plateau",
+        "location": "Taupo - Turangi - Ohakune",
+        "terrain": "Beech and podocarp bush, river valleys, and tussock tops.",
+        "signature": "The only wild sika herd in the Southern Hemisphere. The Kaimanawa and Kaweka country delivers the defining North Island bush hunt across deep cover, river systems, and open tops.",
+        "permit": "DOC public-land permits plus private-land permission where required.",
+        "stats": {
+          "parkArea": "Park Area",
+          "ranges": "Ranges",
+          "base": "Base"
+        },
+        "access": [
+          {
+            "label": "Clements Mill Road",
+            "note": "Main recreation hunting access east of Taupo."
+          },
+          {
+            "label": "Southern Corridor",
+            "note": "Turangi side approach for selected catchments."
+          },
+          {
+            "label": "Kiko Road",
+            "note": "Useful upper-country entry into bush and tops."
+          }
+        ]
+      },
+      "south": {
+        "tag": "South Island",
+        "name": "Southern Alps\nAlpine Country",
+        "location": "West Coast - Canterbury - High Country",
+        "terrain": "Alpine grasslands, sub-alpine scrub, steep faces, and remote basins.",
+        "signature": "DOC places tahr across the Southern Alps chain, while chamois range through South Island high country and forest margins. This is real alpine work, not a scenic add-on.",
+        "permit": "DOC access, concessions where required, and weather-led field planning.",
+        "stats": {
+          "altitude": "Altitude",
+          "terrain": "Terrain",
+          "peakWindow": "Peak Window"
+        },
+        "access": [
+          {
+            "label": "Helicopter Support",
+            "note": "Used only when terrain and weather truly demand it."
+          },
+          {
+            "label": "Foot and 4WD",
+            "note": "Primary access into most productive basins and faces."
+          },
+          {
+            "label": "Alpine Camps",
+            "note": "Field camps extend reach for longer mountain programs."
+          }
+        ]
+      }
+    },
+    "principles": {
+      "docPermitted": {
+        "label": "DOC Permitted",
+        "text": "Valid DOC permits used for all public-land access."
+      },
+      "terrainFirst": {
+        "label": "Terrain First",
+        "text": "Programs matched to country and seasonal window."
+      },
+      "flexibleAccess": {
+        "label": "Flexible Access",
+        "text": "Context-led selection of foot, 4WD, or helicopter."
+      }
+    }
+  },
+  "species": {
+    "tag": "Game Animals",
+    "title": "Target Species",
+    "subtitle": "Our programs focus on mature, hard-antler trophies and prime winter coats across both North and South Island territories.",
+    "cardPriceGuide": "Price Guide",
+    "cardTrophyScore": "Trophy Score",
+    "cardSeasonWindow": "Season Window",
+    "cardTerritory": "Territory",
+    "cardTerrain": "Terrain",
+    "footerText": "All hunts follow fair-chase principles. Multiple-species itineraries can be built by arrangement - final programs shaped by trophy goals, seasonal timing, and the right country.",
+    "animals": [
+      {
+        "name": "Red Deer",
+        "scientific": "Cervus elaphus",
+        "grade": "Gold Grade",
+        "region": "North + South Island",
+        "season": "Mar - Apr",
+        "terrain": "Bush, hill country, alpine basins",
+        "headline": "The Classic\nNZ Roar",
+        "description": "Classic New Zealand roar hunting for mature stags in beech bush, open hill country, and alpine basins. The autumn roar window runs from late March into April - vocal, territorial stags at their most aggressive.",
+        "tags": [
+          "Roar-led autumn timing",
+          "Mature stag focus",
+          "NI + SI programs"
+        ]
+      },
+      {
+        "name": "Sika Deer",
+        "scientific": "Cervus nippon",
+        "grade": "Signature",
+        "region": "Kaimanawa, Central Plateau",
+        "season": "Mar - May",
+        "terrain": "Dense beech and podocarp bush",
+        "headline": "Kaimanawa\nSignature",
+        "description": "The only wild sika herd in the Southern Hemisphere. The Kaimanawa whistle period runs late March into May - elusive bush deer, dense cover, and one of the most authentic stalking experiences in New Zealand.",
+        "tags": [
+          "Signature species",
+          "Kaimanawa bush stalking",
+          "Rut-driven whistle timing"
+        ]
+      },
+      {
+        "name": "Himalayan Tahr",
+        "scientific": "Hemitragus jemlahicus",
+        "grade": "Alpine Rare",
+        "region": "Southern Alps",
+        "season": "May - Jul",
+        "terrain": "Alpine grasslands, remote basins, steep faces",
+        "headline": "The Alpine\nTrophy",
+        "description": "Genuine mountain work in the Southern Alps. Winter coat quality and rut timing make May-July the premium window. Steep basins, remote access, and the most physically demanding hunt in the program.",
+        "tags": [
+          "Winter coat quality",
+          "Remote alpine terrain",
+          "Rut-active bulls"
+        ]
+      },
+      {
+        "name": "Fallow Deer",
+        "scientific": "Dama dama",
+        "grade": "Select",
+        "region": "North Island private blocks",
+        "season": "Apr - May",
+        "terrain": "Mixed native bush and scrub",
+        "headline": "Fallow\nRut",
+        "description": "Targeting mature, palmate bucks during the croak. Fallow provide a different challenge, often holding tight in mixed cover and defending specific rut pads.",
+        "tags": [
+          "Palmate trophies",
+          "Rut pad hunting",
+          "NI blocks"
+        ]
+      }
+    ]
+  },
+  "stay": {
+    "tag": "Basecamps",
+    "title": "Premium Lodging",
+    "subtitle": "Whether operating from our Ohakune base or high-country backcountry huts, comfort and recovery are built into every itinerary.",
+    "features": {
+      "comfort": "Premium Comfort",
+      "cuisine": "Chef Cuisine",
+      "warmth": "Fireplace",
+      "location": "Wilderness Access",
+      "groups": "Group Ready",
+      "connectivity": "Starlink"
+    },
+    "lodges": [
+      {
+        "type": "Primary Base",
+        "name": "Ohakune Lodge",
+        "location": "Central Plateau, NI",
+        "tagline": "Modern comfort on the edge of the Kaimanawa.",
+        "description": "Our primary headquarters for North Island operations. Fully equipped for comfort between bush missions, featuring premium dining, gear rooms, and immediate access to both public and private blocks.",
+        "capacity": "Up to 8 Guests",
+        "highlight": "Strategic base for Sika and Red Deer operations."
+      },
+      {
+        "type": "Field Camp",
+        "name": "Alpine Hut",
+        "location": "Southern Alps, SI",
+        "tagline": "Remote efficiency for high-country work.",
+        "description": "Functional, weather-proof, and positioned deep in Tahr and Chamois country. These huts strip away the unnecessary, focusing entirely on warmth, recovery, and proximity to the game.",
+        "capacity": "Up to 4 Guests",
+        "highlight": "True backcountry immersion with helicopter access."
+      }
+    ],
+    "galleryViewer": "Basecamp Gallery",
+    "videoViewer": "Basecamp Operations",
+    "viewPhotos": "View Photos",
+    "viewVideos": "View Videos"
+  },
+  "gallery": {
+    "tag": "The Archive",
+    "title": "Field Gallery",
+    "subtitle": "A visual record of our operations across New Zealand. Honest representation of the terrain, the animals, and the reality of the hunt.",
+    "categories": {
+      "all": "All Media",
+      "trophies": "Trophies",
+      "landscape": "Terrain",
+      "lodges": "Basecamps"
+    },
+    "playVideo": "Play Video",
+    "close": "Close",
+    "next": "Next",
+    "prev": "Previous"
+  },
+  "contact": {
+    "tag": "Consultation",
+    "title": "Plan Your Hunt",
+    "subtitle": "Every program is custom-built. Submit your details or contact us directly to begin discussing seasonal windows, species goals, and logistics.",
+    "contactInfo": "Direct Contact",
+    "email": "hunting@kaimanawasafaris.com",
+    "phone": "+64 21 088 50131",
+    "base": "Ohakune Base, NZ",
+    "formTitle": "Expedition Inquiry",
+    "formName": "Name",
+    "formEmail": "Email Address",
+    "formPhone": "Phone Number",
+    "formTarget": "Target Species",
+    "formDetails": "Additional Details (Group size, preferred dates, etc)",
+    "submitBtn": "Submit Inquiry",
+    "selectOption": "Select Species",
+    "submitting": "Sending...",
+    "successMsg": "Inquiry received. We will contact you shortly.",
+    "errorMsg": "Error sending message. Please try again or use direct contact."
+  },
+  "footer": {
+    "tagline": "Professional fair-chase outfitting for international hunters across New Zealand.",
+    "explore": "Explore",
+    "contact": "Contact",
+    "social": "Social",
+    "copyright": "Kaimanawa Trophy Safaris. All rights reserved.",
+    "backToTop": "Back to Top"
+  }
+}

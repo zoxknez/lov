@@ -18,7 +18,7 @@ interface FormData {
 
 const MAX_MESSAGE = 800;
 
-export default function ContactSection() {
+export default function ContactSection({ dict }: { dict: any }) {
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     email: '',
@@ -95,10 +95,10 @@ export default function ContactSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-12 text-center sm:mb-16">
           <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.34em] text-gold-400 sm:mb-4 sm:text-[11px] sm:tracking-[0.44em]">
-            <TextReveal>Secure Field Link</TextReveal>
+            <TextReveal>{dict.tag}</TextReveal>
           </p>
           <h2 className="font-display text-5xl font-black uppercase leading-none tracking-tighter text-white soft-text-glow sm:text-7xl md:text-9xl">
-            <TextReveal delay={0.1}>Dispatch</TextReveal>
+            <TextReveal delay={0.1}>{dict.title}</TextReveal>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
@@ -111,7 +111,7 @@ export default function ContactSection() {
             <div className="h-px w-full bg-gradient-to-l from-transparent via-gold-400/50 to-transparent" />
           </motion.div>
           <p className="mx-auto mt-6 max-w-xl text-[15px] italic leading-relaxed text-gray-400 opacity-60 sm:mt-8 sm:text-lg">
-               Start planning your New Zealand adventure. Serious inquiries reviewed within 24 operational hours.
+               {dict.subtitle}
           </p>
         </div>
 
@@ -133,7 +133,7 @@ export default function ContactSection() {
                       <Radio className="h-5 w-5 animate-pulse" />
                     </div>
                     <div>
-                       <h3 className="font-display text-2xl font-bold uppercase tracking-tight text-white sm:text-3xl">Inquiry Post</h3>
+                       <h3 className="font-display text-2xl font-bold uppercase tracking-tight text-white sm:text-3xl">{dict.formTitle}</h3>
                        <p className="text-[10px] font-bold uppercase tracking-widest text-gold-400/40">Field Link Protocol v2.6</p>
                     </div>
                  </div>
@@ -147,7 +147,7 @@ export default function ContactSection() {
                 <div className="grid gap-8 sm:grid-cols-2 sm:gap-12">
                   <div className="group relative">
                     <label className="mb-3 block text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors group-focus-within:text-gold-400 sm:text-[9.5px] sm:tracking-[0.4em]">
-                      Full Name
+                      {dict.formName}
                     </label>
                     <input
                       type="text"
@@ -162,7 +162,7 @@ export default function ContactSection() {
                   </div>
                   <div className="group relative">
                     <label className="mb-3 block text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors group-focus-within:text-gold-400 sm:text-[9.5px] sm:tracking-[0.4em]">
-                      Email Address
+                      {dict.formEmail}
                     </label>
                     <input
                       type="email"
@@ -180,7 +180,7 @@ export default function ContactSection() {
                 <div className="grid gap-8 sm:grid-cols-2 sm:gap-12">
                   <div className="group relative">
                     <label className="mb-3 block text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors group-focus-within:text-gold-400 sm:text-[9.5px] sm:tracking-[0.4em]">
-                      Inquiry Category
+                      {dict.formTarget}
                     </label>
                     <div className="relative">
                        <select
@@ -190,7 +190,7 @@ export default function ContactSection() {
                          required
                          className="w-full cursor-pointer appearance-none border-b border-white/10 bg-transparent py-4 text-base font-medium text-white transition-all focus:border-gold-400 focus:outline-none sm:text-lg"
                        >
-                         <option value="" disabled className="bg-forest-950">Select Destination</option>
+                         <option value="" disabled className="bg-forest-950">{dict.selectOption}</option>
                          <option value="booking" className="bg-forest-950">Book a Safari Campaign</option>
                          <option value="pricing" className="bg-forest-950">Species & Quota Info</option>
                          <option value="travel" className="bg-forest-950">Logistics & Field Support</option>
@@ -201,7 +201,7 @@ export default function ContactSection() {
                   </div>
                   <div className="group relative">
                     <label className="mb-3 block text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors group-focus-within:text-gold-400 sm:text-[9.5px] sm:tracking-[0.4em]">
-                      Phone (Optional)
+                      {dict.formPhone}
                     </label>
                     <input
                       type="tel"
@@ -218,7 +218,7 @@ export default function ContactSection() {
                 <div className="group relative">
                   <div className="mb-3 flex items-center justify-between gap-3">
                     <label className="block text-[9px] font-black uppercase tracking-[0.26em] text-gold-400/60 transition-colors group-focus-within:text-gold-400 sm:text-[9.5px] sm:tracking-[0.4em]">
-                      Requirements & Trophy Goals
+                      {dict.formDetails}
                     </label>
                     <span className={`text-[9px] font-black tabular-nums ${formData.message.length > MAX_MESSAGE * 0.9 ? 'text-red-400' : 'text-gold-400/40'}`}>
                       {formData.message.length}/{MAX_MESSAGE}
@@ -252,7 +252,7 @@ export default function ContactSection() {
                     <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent group-hover:animate-shimmer" />
                     <div className="flex items-center justify-center gap-5">
                       <Send className={`h-4 w-4 ${submitStatus === 'loading' ? 'animate-spin' : 'transition-transform group-hover:-translate-y-1 group-hover:translate-x-1'}`} />
-                      <span>{submitStatus === 'loading' ? 'Transmitting...' : 'Dispatch Inquiry'}</span>
+                      <span>{submitStatus === 'loading' ? dict.submitting : dict.submitBtn}</span>
                     </div>
                   </MagneticButton>
                 </div>
@@ -326,7 +326,7 @@ export default function ContactSection() {
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
              className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(15,22,21,0.6),rgba(9,14,13,0.8))] p-6 sm:rounded-[3rem] sm:p-8 lg:p-10"
            >
-               <p className="mb-6 text-[9px] font-bold uppercase tracking-[0.28em] text-gold-400/60 sm:mb-8 sm:text-[10px] sm:tracking-[0.5em]">Field Contacts</p>
+               <p className="mb-6 text-[9px] font-bold uppercase tracking-[0.28em] text-gold-400/60 sm:mb-8 sm:text-[10px] sm:tracking-[0.5em]">{dict.contactInfo}</p>
                <div className="space-y-6 sm:space-y-8">
                   {contactNodes.map((node) => {
                     const Icon = node.icon;

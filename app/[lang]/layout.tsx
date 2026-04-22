@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
+import { i18n, Locale } from "@/i18n.config";
+
+export async function generateStaticParams() {
+  return i18n.locales.map((locale) => ({ lang: locale }));
+}
 import SmoothScroll from "@/components/smooth-scroll";
 import AnalyticsBeacon from "@/components/analytics-beacon";
 import Preloader from "@/components/preloader";
@@ -63,9 +68,17 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest"
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({
+  children,
+  params,
+}: Readonly<{
+  children: React.ReactNode;
+  params: Promise<{ lang: string }>;
+}>) {
+  const { lang } = await params;
+
   return (
-    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`} suppressHydrationWarning>
+    <html lang={lang} className={`${bodyFont.variable} ${displayFont.variable}`} suppressHydrationWarning>
       <body className="overflow-x-hidden bg-black text-white selection:bg-gold-400/30" suppressHydrationWarning>
         <a href="#top" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[200] focus:rounded-md focus:bg-white/95 focus:px-3 focus:py-2 focus:text-sm focus:text-black">
           Skip to content
