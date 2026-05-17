@@ -10,7 +10,8 @@
         "type-check": "tsc --noEmit",
         "upload:blob-assets": "node ./scripts/upload-blob-assets.mjs",
         "upload:gallery-slike": "node ./scripts/upload-gallery-slike.mjs",
-        "import:nove-gallery": "node ./scripts/import-nove-gallery.mjs"
+        "import:nove-gallery": "node ./scripts/import-nove-gallery.mjs",
+        "optimize:images": "node ./scripts/optimize-local-images.mjs"
     },
     "dependencies": {
         "@vercel/blob": "^2.3.1",
@@ -30,6 +31,7 @@
         "eslint": "^9.21.0",
         "eslint-config-next": "^16.1.6",
         "postcss": "^8.5.3",
+        "sharp": "^0.34.5",
         "tailwindcss": "^3.4.17",
         "typescript": "^5.8.2"
     }
