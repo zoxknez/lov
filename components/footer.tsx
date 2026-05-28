@@ -185,7 +185,7 @@ export default function Footer({ dict }: { dict: any }) {
         {/* BOTTOM COMMAND BAR */}
         <div className="mt-12 flex flex-col gap-8 border-t border-white/5 pt-8 md:mt-20 md:flex-row md:items-center md:justify-between md:gap-10">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-10">
-            <p className="text-[9px] font-black uppercase tracking-[0.22em] text-white/25 sm:text-[10px] sm:tracking-[0.4em] whitespace-nowrap">
+            <p className="text-[9px] font-black uppercase tracking-[0.15em] text-white/25 sm:text-[10px] sm:tracking-[0.4em] leading-relaxed max-w-[280px] sm:max-w-none">
               &copy; {new Date().getFullYear()} {dict.copyright}
             </p>
             
