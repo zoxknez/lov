@@ -183,37 +183,44 @@ export default function Footer({ dict }: { dict: any }) {
         </div>
 
         {/* BOTTOM COMMAND BAR */}
-        <div className="mt-12 flex flex-col gap-8 md:mt-20 md:flex-row md:items-center md:justify-between md:gap-10">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-14">
-            <p className="text-[9px] font-black uppercase tracking-[0.22em] text-white/20 sm:text-[10px] sm:tracking-[0.4em]">
+        <div className="mt-12 flex flex-col gap-8 border-t border-white/5 pt-8 md:mt-20 md:flex-row md:items-center md:justify-between md:gap-10">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-10">
+            <p className="text-[9px] font-black uppercase tracking-[0.22em] text-white/25 sm:text-[10px] sm:tracking-[0.4em] whitespace-nowrap">
               &copy; {new Date().getFullYear()} {dict.copyright}
             </p>
             
-            <div className="flex flex-wrap items-center gap-3 rounded-full border border-gold-500/10 bg-gold-400/5 px-5 py-2.5 backdrop-blur-3xl shadow-glow sm:px-6">
-              <ShieldCheck className="h-4 w-4 text-gold-400/60" />
-              <span className="text-[8px] font-black uppercase tracking-[0.18em] text-gold-300/80 sm:text-[9px] sm:tracking-[0.35em]">
+            <div className="flex items-center gap-3 shrink-0 rounded-full border border-gold-500/15 bg-gold-400/[0.03] px-4 py-2 backdrop-blur-3xl shadow-glow">
+              <ShieldCheck className="h-3.5 w-3.5 text-gold-400/60 shrink-0" />
+              <span className="text-[8px] font-black uppercase tracking-[0.2em] text-gold-300/80 whitespace-nowrap">
                 {dict.secureProtocol}
               </span>
-              <div className="h-2 w-2 rounded-full bg-green-500 shadow-glow animate-pulse" />
+              <div className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 sm:gap-12 lg:gap-20">
-             <div className="flex items-center gap-4 group">
-                <Clock className="h-4 w-4 text-gold-400/40" />
+          <div className="flex flex-wrap items-center gap-6 sm:gap-8 md:gap-10">
+             {/* NZ Time */}
+             <div className="flex items-center gap-3 group">
+                <Clock className="h-4 w-4 text-gold-400/30 group-hover:text-gold-400/60 transition-colors shrink-0" />
                 <div className="flex flex-col">
-                   <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.3em]">{dict.nzOpTime}</span>
-                   <span className="text-sm font-mono font-bold text-gold-400 tabular-nums">{nzTime}</span>
+                   <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.25em] leading-none mb-1">{dict.nzOpTime}</span>
+                   <span className="text-xs font-mono font-bold text-gold-400/90 tabular-nums tracking-wide">{nzTime}</span>
                 </div>
              </div>
 
-             <div className="group flex items-center gap-5">
-               <div className="text-left sm:text-right">
-                 <p className="text-[9px] font-black uppercase tracking-[0.24em] text-white/40 leading-none transition-colors group-hover:text-gold-400 sm:text-[10px] sm:tracking-[0.5em]">
-                   {dict.basedInNZ}
-                 </p>
-               </div>
-               <Mountain className="h-6 w-6 text-gold-400/20 group-hover:text-gold-400/50 transition-colors" />
+             {/* Vertical Divider */}
+             <div className="hidden h-8 w-px bg-white/5 sm:block" />
+
+             {/* Base Location */}
+             <div className="flex items-center gap-3 group">
+                <Mountain className="h-4 w-4 text-gold-400/30 group-hover:text-gold-400/60 transition-colors shrink-0" />
+                <div className="flex flex-col">
+                   <span className="text-[8px] font-black text-white/20 uppercase tracking-[0.25em] leading-none mb-1">{dict.basedInNZ}</span>
+                   <span className="text-xs font-bold text-gold-400/90 uppercase tracking-wider">Ohakune Base</span>
+                </div>
              </div>
           </div>
         </div>
