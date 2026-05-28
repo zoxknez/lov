@@ -11,7 +11,7 @@ const inquirySchema = z.object({
   email: z.string().email().max(180),
   phone: z.string().max(80).optional().default(""),
   subject: z.string().min(2).max(80),
-  message: z.string().min(10).max(2000),
+  message: z.string().min(2).max(2000), // Reduced minimum length to 2 characters to allow shorter/test messages
   antiBotField: z.string().max(0).optional().default(""),
   turnstileToken: z.string().max(2048).optional().default("")
 });
@@ -308,7 +308,9 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ ok: false, error: "Invalid request payload." }, { status: 400 });
+      const detailedError = error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');
+      console.error("Zod validation failed:", detailedError);
+      return NextResponse.json({ ok: false, error: `Invalid request payload: ${detailedError}` }, { status: 400 });
     }
 
     console.error("Inquiry submission failed", error);

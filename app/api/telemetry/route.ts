@@ -24,12 +24,12 @@ export async function POST(request: Request) {
   }
 
   try {
-    const contentType = request.headers.get("content-type");
-    if (!contentType?.includes("application/json")) {
+    const bodyText = await request.text();
+    if (!bodyText) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
 
-    const payload = (await request.json()) as TelemetryPayload;
+    const payload = JSON.parse(bodyText) as TelemetryPayload;
     if (!payload?.name) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
